@@ -63,3 +63,29 @@ This is an example of two entities having different reactions to the same Entity
 Each Entity will have mappings that prescribe certain reactions to collisions with other Entities. When the character takes the first powerup. The old Entity will be removed and the powerup version of that Entity will take its place. The rules of each game will decide a second powerup will affect gameplay or not by changing the mapping that prescribes the reactions to collisions. For example, say Mario colliding with two flowers at once allows for him to be hit by an enemy twice before losing a life. Then when Mario collides with the first flower, the regular Mario Entity will be replaced by the Big Mario Entity. The Big Mario will have a prescribed reaction to mushrooms that will increase the number of times it can be hit by an enemy before it turns to regular Mario again. Therefore, when Big Mario collides with the second flower, Big Mario's enemy tolerance will have increased.  
 8. A two-player game is selected.
 The View will contain ViewListeners that will react to user input. The ViewListeners will include KeyListeners so that the View knows when keys such as 'space' or 'right' have been pressed. This means that each of the keys could be connected to a certain interaction in the game. Each Entity will contain a mapping that enumerates the keys to which it is supposed to react and what reaction is required. Therefore, one player can use the 'up', 'right', 'left', 'down' keys while the second player can use keys such as 'w',' a', 's', and 'd'. The keys that each player will react to will be enumerated in the data file that contains the contents of the game.
+
+### bmw54 Use Cases
+1. An enemy launches a projectile at the player.
+    Each entity has access to a list of entities in the level in the form of an interface with restricted abilities. The entity can either add an entity to the list, or delete itself. In the game document, the enemy designed to create projectiles would be given the ID of the entity it is creating. As part of its ``updateSelf``, it would create a copy of this entity and add it to the list. This new entity could behave in many ways. We would likely have a certain AI that just acts like a bullet, moving forward until it encounters an obsticle.
+    
+2. The user tries to load a game file which doesn't have an image for one of its enemies.
+    When the user tries to load the game, the ``DataReader`` begins going through the file and creating the game. This includes creating all of the enemies. When the ``DataReader`` is given the the name of an image file that doesn't exist in the game's folder, the ``DataReader`` would throw a ``DataReaderException`` describing that the image file wasn't given correctly, and the user is returned to the main menu. No game is loaded.
+
+3. A fireball hits an enemy, destroying it.
+    When described in the game file, each entity is given a list of entities that it can be destroyed by. In its ``updateSelf``, entities will be able to check if they are colliding with any of these entities. In that case, the entity removes itself from the list of entities in the game.
+
+4. The player tries to walk to the left when there is a wall in the way
+    The ``updateSelf`` method of the player AI will check the player's next state and will only allow the player to move if there is no collision with terrain in that direction. This is also how the player stops falling when they land on the ground.
+
+5. The game includes entities that react to the user input besides the player. For example, a door that opens whenever you press the jump button.
+    All entities will be assigned an AI that responds to input from the controller. Most of them will likely be assigned an AI that does nothing in response to player input, but others will be able to move or change.
+    
+6. The game has many player entities that all run and jump with the input from the user.
+    As mentioned above, every entity is assigned a way to react to user input. One of these AIs will lay out how the player moves and jumps. Having a second player is as easy as creating two copies of this entity in the level, both with the given AI. 
+
+7. The game has terrain that moves. For example a playform that moves back and forth.
+    This terrain would be an entity whos collision AI holds the player in place on the platform so it doesn't slide out from under them.
+
+8. A level has multiple ways of ending, for example, two exit doors, either of which ends the level.
+    To handle complicated end conditions, we plan to allow the game designer to specify some simple AND/OR logic in the game file when setting the rules for ending the level. They would be choosing from a palete of possible end conditions and can choose to say "x AND (y OR z)." Our plan is to make a simple parser which checks for this and creates a level with teh correct level end conditions. In this case, the designer could specify that the level ends when the player collides with entity "door1" OR collides with entity "door2."
+
