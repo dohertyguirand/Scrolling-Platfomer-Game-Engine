@@ -35,7 +35,7 @@ Doherty Guirand (dg211)
 
 ### Responsibilities
 
-Doherty:
+Doherty: Game primary, View secondary
 Cary: 
 Sam: Game primary, Data secondary.
 Braeden: 
