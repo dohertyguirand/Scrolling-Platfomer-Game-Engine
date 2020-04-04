@@ -80,6 +80,6 @@ c) I understand that if I do not abide by these terms and conditions, I will suf
 consequences as stated in this contract. 
 1) Braeden Ward, 4/1/20
 2) Samuel Thompson, 4/3/20
-3) ___________________________________________________date____________
+3) Doherty Guirand, 4/4/20
 4) ___________________________________________________date____________
 5) ___________________________________________________date____________
