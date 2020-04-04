@@ -38,5 +38,5 @@ Doherty Guirand (dg211)
 Doherty: Game primary, View secondary
 Cary: 
 Sam: Game primary, Data secondary.
-Braeden: 
+Braeden: Data primary, Game secondary
 Chris: 
