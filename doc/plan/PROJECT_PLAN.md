@@ -39,4 +39,4 @@ Doherty: Game primary, View secondary
 Cary: 
 Sam: Game primary, Data secondary.
 Braeden: Data primary, Game secondary
-Chris: 
+Chris: View Primary, Game secondary

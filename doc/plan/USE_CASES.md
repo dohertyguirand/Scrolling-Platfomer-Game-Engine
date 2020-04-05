@@ -89,3 +89,23 @@ The View will contain ViewListeners that will react to user input. The ViewListe
 8. A level has multiple ways of ending, for example, two exit doors, either of which ends the level.
     To handle complicated end conditions, we plan to allow the game designer to specify some simple AND/OR logic in the game file when setting the rules for ending the level. They would be choosing from a palete of possible end conditions and can choose to say "x AND (y OR z)." Our plan is to make a simple parser which checks for this and creates a level with teh correct level end conditions. In this case, the designer could specify that the level ends when the player collides with entity "door1" OR collides with entity "door2."
 
+### ccw43 Use Cases
+1. The player wants to save the current progress of the game and come back later. The user pauses the game with a keystroke, and chooses rhe option to save. The engine saves the level on which the user was at. When coming back, the user selects the game and then selects the load game option, bringing them back to the point.
+
+2. User completes the game. The screen congratulates the user and brings them back to the home screen.
+
+3. The user wants to enter cheat codes. We have an options button on the home screen which cheat codes are a selection. 
+Player is prompted to enter a keystroke that can give  a user infinite lives.
+
+4. Player presses both the left and right button at the same time. The player should stand still and not move in either direction.
+
+5. The game allows the user to go off the screen and come in on the opposite side. The algortihm must recognize that the 
+player is off the screen and return him going in the same direction on the opposite side of the screen
+
+6. The user hovers over the game that they are about to play in the home screen. The screen should slightly increase in 
+size as if it is highlighted and play a clip of the game int he background of the square.
+
+7. The game has a checkpoint within the level. This allows for users to die past that checkpoint and respawn their character 
+at the place where the checkpoint is while resetting the level up to that point.
+
+8. In a game, the player lands on top of an entity. The user would not get injured or lose a life but the entity would get destroyed.
