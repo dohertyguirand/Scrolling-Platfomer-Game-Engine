@@ -89,3 +89,42 @@ The View will contain ViewListeners that will react to user input. The ViewListe
 8. A level has multiple ways of ending, for example, two exit doors, either of which ends the level.
     To handle complicated end conditions, we plan to allow the game designer to specify some simple AND/OR logic in the game file when setting the rules for ending the level. They would be choosing from a palete of possible end conditions and can choose to say "x AND (y OR z)." Our plan is to make a simple parser which checks for this and creates a level with teh correct level end conditions. In this case, the designer could specify that the level ends when the player collides with entity "door1" OR collides with entity "door2."
 
+### css57 Use Cases
+
+1. The player touches something like a flag pole which ends the level and needs an animation
+for the player sliding down it. Entities will have set interactions and there will be a EndCondition
+class to define when the level ends.
+
+2. The user presses the up arrow.
+    The view sees that the up arrow has been pressed so it notifies the input listener and
+    updates it to tell it "up" was the input. The Game is then notified there was an "up"
+    input so it consults the resource files and runs the method that corresponds to up input.
+    
+3. The player collects a coin item.
+    The Game updates 2 entities: the coin entity, so that it is no longer displayed, and the
+    coin counter. The property bindings in the View update the display of these entities accordingly.
+    
+4. The player moves left and a new entity appears on screen.
+    The Game fetches the new entity from the DataReader and adds it to the list of existing entities.
+    The property binding on the list size in the View is activated and the new entity is created
+    and displayed in the View. This may require an API add entity method, and a property binding to
+    an entity object to be added to the entity list.
+    
+5. A player entity moves right.
+    The player entity position property is updated in the backend. The binding in the front end,
+    which is one of many automatically bound properties, is updated and the entity is redrawn.
+    
+6. The game is lost.
+    A game over message and final score is displayed and all the level and entity info is cleared.
+    Eventually return to the main menu.
+    
+7. The user clicks on an entity.
+    Nothing happens to the entity in the front end. The user input is transmitted to the back end
+    as normal, and it includes the mouse position. The back end checks to see which entities
+    if any are at the mouse position and executes entities' onClicked methods.
+    
+8. The player entity warps from one side of the screen across to the other.
+    A collision is detected between the player entity and the background/wall/camera entity.
+    The interaction is defined in the data files such that the player position changes to the other
+    side of the screen.
+    
