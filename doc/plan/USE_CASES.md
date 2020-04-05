@@ -128,3 +128,24 @@ class to define when the level ends.
     The interaction is defined in the data files such that the player position changes to the other
     side of the screen.
     
+### ccw43 Use Cases
+1. The player wants to save the current progress of the game and come back later. The user pauses the game with a keystroke, and chooses rhe option to save. The engine saves the level on which the user was at. When coming back, the user selects the game and then selects the load game option, bringing them back to the point.
+
+2. User completes the game. The screen congratulates the user and brings them back to the home screen.
+
+3. The user wants to enter cheat codes. We have an options button on the home screen which cheat codes are a selection. 
+Player is prompted to enter a keystroke that can give  a user infinite lives.
+
+4. Player presses both the left and right button at the same time. The player should stand still and not move in either direction.
+
+5. The game allows the user to go off the screen and come in on the opposite side. The algortihm must recognize that the 
+player is off the screen and return him going in the same direction on the opposite side of the screen
+
+6. The user hovers over the game that they are about to play in the home screen. The screen should slightly increase in 
+size as if it is highlighted and play a clip of the game int he background of the square.
+
+7. The game has a checkpoint within the level. This allows for users to die past that checkpoint and respawn their character 
+at the place where the checkpoint is while resetting the level up to that point.
+
+8. In a game, the player lands on top of an entity. The user would not get injured or lose a life but the entity would get destroyed.
+
