@@ -1,6 +1,7 @@
-package ooga;
+package ooga.game;
 
 import java.util.List;
+import ooga.Entity;
 
 /**
  * An instance of a loaded game that holds all levels and global game data. Must be populated

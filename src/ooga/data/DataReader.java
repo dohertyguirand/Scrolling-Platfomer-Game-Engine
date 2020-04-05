@@ -1,6 +1,8 @@
-package ooga;
+package ooga.data;
 
 import java.util.List;
+import ooga.OogaDataException;
+import ooga.game.Game;
 
 /**
  * Handles the interaction with game data files, including interpretation and writing.

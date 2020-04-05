@@ -1,6 +1,7 @@
-package ooga;
+package ooga.game;
 
 import java.util.List;
+import ooga.Entity;
 
 /**
  * Represents one in-game level, including its end conditions and list of entities.
