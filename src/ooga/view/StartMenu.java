@@ -9,13 +9,13 @@ import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ooga.data.DataReader;
+import ooga.data.OogaDataReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ public class StartMenu extends Application {
   final Image[] myImages = new Image[4];
   final ImageView[] myPics = new ImageView[4];
 
-  public StartMenu(DataReader myDataReader) {
+  public StartMenu(OogaDataReader myDataReader) {
   }
 
   public String getGameSelected() {
