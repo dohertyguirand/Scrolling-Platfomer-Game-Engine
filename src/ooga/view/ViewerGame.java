@@ -9,11 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import ooga.UserInputListener;
 import ooga.data.DataReader;
 import ooga.data.Entity;
 import ooga.data.ImageEntity;
 import ooga.data.TextEntity;
 import ooga.game.Game;
+import ooga.game.OogaGame;
 
 import java.util.ResourceBundle;
 
@@ -25,13 +27,13 @@ public class ViewerGame {
   private ResourceBundle myResources;
   private Group myEntityGroup;
   private String myGameName;
+  private Scene myGameScene;
 
   public ViewerGame(String gameName, DataReader dataReader){
     myGameName = gameName;
-    Game game = new Game(gameName);
+    Game game = new OogaGame(gameName);
     setUpGameEntities(game);
-    // set up user input listeners and handlers
-    
+    setUpInputListeners(game);
     setUpGameStage();
   }
 
@@ -91,8 +93,8 @@ public class ViewerGame {
     animation.getKeyFrames().add(frame);
     animation.play();
 
-    Scene display = new Scene(myEntityGroup, WINDOW_WIDTH, WINDOW_HEIGHT);
-    gameStage.setScene(display);
+    myGameScene = new Scene(myEntityGroup, WINDOW_WIDTH, WINDOW_HEIGHT);
+    gameStage.setScene(myGameScene);
     gameStage.setTitle(myGameName);
     gameStage.show();
   }
@@ -102,5 +104,12 @@ public class ViewerGame {
   }
 
   private void showError(Stage stage, String animation_error, ResourceBundle myResources) {
+  }
+
+  private void setUpInputListeners(Game game) {
+    UserInputListener userInputListener = game.makeUserInputListener();
+    myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getCharacter()));
+    myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()));
+    // add more input types here as needed, like mouse drag events
   }
 }

@@ -3,6 +3,7 @@ package ooga.game;
 import java.util.List;
 
 import javafx.collections.ObservableList;
+import ooga.UserInputListener;
 import ooga.data.Entity;
 
 /**
@@ -46,4 +47,6 @@ public interface Game {
    * @param input A String identifying the type of input, like "Forward" or "ActionButton".
    */
   void handleUserInput(String input);
+
+  UserInputListener makeUserInputListener();
 }

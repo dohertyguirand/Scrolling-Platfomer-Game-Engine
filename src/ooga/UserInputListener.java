@@ -33,6 +33,12 @@ public interface UserInputListener {
   void reactToButton(String buttonID);
 
   /**
+   * React to a key being pressed. Use data files to determine appropriate action
+   * @param keyName string name of key
+   */
+  void reactToKeyPress(String keyName);
+
+  /**
    * Handles the higher-level action of selecting a game to play through the UI.
    * The implementation CANNOT assume that this will only be called if there isn't any
    * game already active.
