@@ -22,11 +22,14 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public List<String> getGameFiles(String folderPath) throws OogaDataException {
+        return null;
+    }
+
+    @Override
+    public Game loadGame(String filePath) throws OogaDataException {
         try {
-            File fXmlFile = new File("/Users/mkyong/staff.xml");
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
+            File fXmlFile = new File(filePath);
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
 
             //optional, but recommended
             //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
@@ -61,11 +64,6 @@ public class OogaDataReader implements DataReader{
             e.printStackTrace();
         }
 
-        return null;
-    }
-
-    @Override
-    public Game loadGame(String filePath) throws OogaDataException {
         return null;
     }
 
