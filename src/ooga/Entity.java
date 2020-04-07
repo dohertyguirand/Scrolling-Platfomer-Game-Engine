@@ -1,6 +1,7 @@
 package ooga;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -24,6 +25,14 @@ public interface Entity {
   void updateSelf(double elapsedTime);
 
   /**
+   * Sets the mappings of behaviors that will be carried out when the entity collides with
+   * another entity, based on what type of entity is being collided into.
+   * @param behaviorMap A Map that connects the name of the entity that is being collided with
+   *                    with the list of behaviors that should happen upon this collision.
+   */
+  void setCollisionBehaviors(Map<String,List<CollisionBehavior>> behaviorMap);
+
+  /**
    * Reacts to colliding with a specific entity type based on its list of reactions mapped to
    * entity names, as defined by the game data.
    * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
@@ -45,4 +54,14 @@ public interface Entity {
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();
+
+  /**
+   * @param newPosition The new position for the entity to have in the level.
+   */
+  void setPosition(List<Double> newPosition);
+
+  /**
+   * Marks this entity for removal by the next frame, and prevents it from taking further actions.
+   */
+  void destroySelf();
 }

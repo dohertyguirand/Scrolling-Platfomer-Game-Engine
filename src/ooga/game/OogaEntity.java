@@ -1,18 +1,31 @@
-package ooga;
+package ooga.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import ooga.CollisionBehavior;
+import ooga.ControlsBehavior;
+import ooga.Entity;
+import ooga.MovementBehavior;
+import ooga.game.PhysicsEntity;
 
 public class OogaEntity implements Entity {
 
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
+  private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private double myXPos;
   private double myYPos;
+  private boolean isDestroyed;
+  //TODO: Use or remove
+  private PhysicsEntity myPhysics;
 
   public OogaEntity() {
     myControlsBehaviors = new ArrayList<>();
     myMovementBehaviors = new ArrayList<>();
+    isDestroyed = false;
+
   }
 
   //TODO: Consider making more flexible constructors or setter methods so that behaviors
@@ -20,6 +33,7 @@ public class OogaEntity implements Entity {
   public OogaEntity(MovementBehavior perFrameBehavior, ControlsBehavior controls) {
     this();
     myMovementBehaviors.add(perFrameBehavior);
+    perFrameBehavior.setTarget(this);
     myControlsBehaviors.add(controls);
   }
 
@@ -42,11 +56,21 @@ public class OogaEntity implements Entity {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime);
     }
+    myPhysics.updateSelf(elapsedTime);
+  }
+
+  @Override
+  public void setCollisionBehaviors(Map<String, List<CollisionBehavior>> behaviorMap) {
+    myCollisionBehaviors = new HashMap<>(behaviorMap);
   }
 
   @Override
   public void handleCollision(String collidingEntity) {
-
+    if (myCollisionBehaviors.containsKey(collidingEntity)) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
+        behavior.doCollision(collidingEntity);
+      }
+    }
   }
 
   @Override
@@ -58,5 +82,16 @@ public class OogaEntity implements Entity {
   @Override
   public List<Double> getPosition() {
     return List.of(myXPos,myYPos);
+  }
+
+  @Override
+  public void setPosition(List<Double> newPosition) {
+    myXPos = newPosition.get(0);
+    myYPos = newPosition.get(1);
+  }
+
+  @Override
+  public void destroySelf() {
+    isDestroyed = true;
   }
 }
