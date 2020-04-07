@@ -12,10 +12,15 @@ public class OogaEntity implements Entity {
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private double myXPos;
   private double myYPos;
+  private boolean isDestroyed;
+  //TODO: Use or remove
+  private List<Double> myMovementVector;
 
   public OogaEntity() {
     myControlsBehaviors = new ArrayList<>();
     myMovementBehaviors = new ArrayList<>();
+    myMovementVector = List.of(0.0,0.0);
+    isDestroyed = false;
   }
 
   //TODO: Consider making more flexible constructors or setter methods so that behaviors
@@ -70,5 +75,10 @@ public class OogaEntity implements Entity {
   @Override
   public List<Double> getPosition() {
     return List.of(myXPos,myYPos);
+  }
+
+  @Override
+  public void destroySelf() {
+    isDestroyed = true;
   }
 }

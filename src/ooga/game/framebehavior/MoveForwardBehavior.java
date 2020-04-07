@@ -1,4 +1,7 @@
-package ooga;
+package ooga.game.framebehavior;
+
+import ooga.Entity;
+import ooga.MovementBehavior;
 
 public class MoveForwardBehavior implements MovementBehavior {
 

@@ -54,4 +54,9 @@ public interface Entity {
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();
+
+  /**
+   * Marks this entity for removal by the next frame, and prevents it from taking further actions.
+   */
+  void destroySelf();
 }
