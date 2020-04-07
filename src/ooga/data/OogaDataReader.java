@@ -13,6 +13,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
+/**
+ * info @ https://mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
+ * TODO: create a better header
+ */
+
 public class OogaDataReader implements DataReader{
 
     @Override
