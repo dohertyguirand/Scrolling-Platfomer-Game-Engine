@@ -1,10 +1,17 @@
 # API Changes
 
+## Data
+- Added method ``getPauseButtonImage`` in DataReader to fetch an Image object representing
+the pause button
+
 ## Game API
 - getEntities now returns an observable list instead of list
 - added method ``makeUserInputListener`` to create a listener that will react to inputs
 - note that a lot of the methods in UserInputListener are unnecessary, like ReactToGameSelect,
 since the game will always know what game it is running and is not responsible for choosing game
+- added method ``reactToPauseButton``
+- UserInputListener method probably shouldn't take a String input, as the Game should be
+responsible for determining where to save
 
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.

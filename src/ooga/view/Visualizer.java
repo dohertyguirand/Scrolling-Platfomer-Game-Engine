@@ -1,22 +1,16 @@
 package ooga.view;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import ooga.data.DataReader;
-import ooga.game.Game;
+import ooga.data.OogaDataReader;
 
 import java.util.ResourceBundle;
 
 public class Visualizer extends Application {
 
-  private Stage myStage;
   private ResourceBundle myResources;
-  private DataReader myDataReader;
+  private OogaDataReader myDataReader;
 
   public static void main(String[] args) {
     launch(args);
@@ -24,12 +18,11 @@ public class Visualizer extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    myDataReader = new DataReader();
-    myStage = primaryStage;
+    myDataReader = new OogaDataReader();
     Scene display = setUpStartMenuDisplay();
-    myStage.setScene(display);
-    myStage.setTitle(myResources.getString("StartMenuTitle"));
-    myStage.show();
+    primaryStage.setScene(display);
+    primaryStage.setTitle(myResources.getString("StartMenuTitle"));
+    primaryStage.show();
   }
 
   private Scene setUpStartMenuDisplay() {
@@ -39,11 +32,7 @@ public class Visualizer extends Application {
   }
 
   private void startGame(String gameName) {
-    ViewerGame game = new ViewerGame(gameName, myDataReader);
+    new ViewerGame(gameName, myDataReader);
   }
-
-  private void showError(Stage stage, String animation_error, ResourceBundle myResources) {
-  }
-
 
 }

@@ -48,9 +48,8 @@ public interface UserInputListener {
 
   /**
    * Handles when the command is given to save the game to a file.
-   * @param filepath The filepath at which to save the file.
    */
-  void reactToGameSave(String filepath);
+  void reactToGameSave();
 
   /**
    * Handles when the command is given to quit the currently running game.
@@ -59,4 +58,9 @@ public interface UserInputListener {
    */
   void reactToGameQuit();
 
+  /**
+   * indicates the pause button was clicked in the ui
+   * @param paused whether or not the button clicked was pause or resume
+   */
+  void reactToPauseButton(boolean paused);
 }
