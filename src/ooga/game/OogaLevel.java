@@ -1,8 +1,11 @@
 package ooga.game;
-
 import javafx.collections.ObservableList;
-import ooga.Entity;
 
+import java.util.List;
+import ooga.EntityAPI;
+import ooga.data.Entity;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +20,11 @@ public class OogaLevel implements Level{
     public OogaLevel(List<Entity> Entities){
         myEntities = (ObservableList<Entity>) Entities;
     }
+
+    public OogaLevel() {
+        this(new ArrayList<>());
+    }
+
     @Override
     public ObservableList<Entity> getEntities() {
         return myEntities;

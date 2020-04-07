@@ -1,5 +1,4 @@
 package ooga.data;
-
 import ooga.OogaDataException;
 import ooga.game.Game;
 

@@ -3,14 +3,14 @@ package ooga.view;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Scene;
-import ooga.data.DataReader;
+import ooga.data.OogaDataReader;
 
 public class StartMenu {
 
   private StringProperty gameSelected = new SimpleStringProperty();
   private Scene myScene;
 
-  public StartMenu(DataReader myDataReader) {
+  public StartMenu(OogaDataReader myDataReader) {
   }
 
   public String getGameSelected() {
