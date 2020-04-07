@@ -31,20 +31,20 @@ public class StartMenu extends Application {
   final Image[] myImages = new Image[4];
   final ImageView[] myPics = new ImageView[4];
 
-//  public StartMenu(DataReader myDataReader) {
-//  }
-//
-//  public String getGameSelected() {
-//    return gameSelected.get();
-//  }
-//
-//  public StringProperty gameSelectedProperty() {
-//    return gameSelected;
-//  }
-//
-//  public Scene getScene() {
-//    return myScene;
-//  }
+  public StartMenu(DataReader myDataReader) {
+  }
+
+  public String getGameSelected() {
+    return gameSelected.get();
+  }
+
+  public StringProperty gameSelectedProperty() {
+    return gameSelected;
+  }
+
+  public Scene getScene() {
+    return myScene;
+  }
 
   @Override
   public void start(Stage primaryStage) throws Exception {

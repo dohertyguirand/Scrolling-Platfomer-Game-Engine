@@ -1,12 +1,17 @@
 package ooga.game;
 
+
 import java.util.List;
+import javafx.collections.ObservableList;
 import ooga.Entity;
+import ooga.UserInputListener;
 
 public class OogaGame implements Game {
+  public OogaGame(String gameName) {
+  }
 
   @Override
-  public List<Entity> getEntities() {
+  public ObservableList<Entity> getEntities() {
     return null;
   }
 
@@ -28,5 +33,9 @@ public class OogaGame implements Game {
   @Override
   public void handleUserInput(String input) {
 
+  }
+  @Override
+  public UserInputListener makeUserInputListener() {
+    return null;
   }
 }
