@@ -1,11 +1,8 @@
-package ooga.tests;
+package ooga;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-import ooga.Entity;
-import ooga.MoveForwardBehavior;
-import ooga.OogaEntity;
 
 class EntityTest {
 
