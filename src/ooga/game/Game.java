@@ -1,7 +1,9 @@
 package ooga.game;
 
 import java.util.List;
-import ooga.Entity;
+
+import javafx.collections.ObservableList;
+import ooga.data.Entity;
 
 /**
  * An instance of a loaded game that holds all levels and global game data. Must be populated
@@ -15,7 +17,7 @@ public interface Game {
    * This includes the player, enemies, terrain, powerups, etc., but not background or in-game
    * UI.
    */
-  List<Entity> getEntities();
+  ObservableList<Entity> getEntities();
 
   /**
    * Runs anything that needs to be run by the game, levels, or any entities in a level when
