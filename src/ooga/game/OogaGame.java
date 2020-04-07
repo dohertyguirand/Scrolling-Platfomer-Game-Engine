@@ -1,14 +1,16 @@
 package ooga.game;
 
 import java.util.List;
+
+import javafx.collections.ObservableList;
 import ooga.Entity;
 
 public class OogaGame implements Game {
 
   @Override
-  public List<Entity> getEntities() {
+  public ObservableList<Entity> getEntities() {
     return null;
-  }
+  } //return myLevel.getEntities
 
   @Override
   public void doGameStart() {
