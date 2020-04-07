@@ -42,27 +42,41 @@ public class OogaDataReader implements DataReader{
             //doc.getDocumentElement().normalize();
 
             System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+            //print information about the game
+            System.out.println("Game title: " + doc.getElementsByTagName("Name").item(0).getTextContent());
+            System.out.println("Description: " + doc.getElementsByTagName("Description").item(0).getTextContent());
+            System.out.println("Thumbnail: " + doc.getElementsByTagName("Thumbnail").item(0).getTextContent());
 
             // in the xml create a list of all 'Level' nodes
             NodeList levelList = doc.getElementsByTagName("Level");
+            System.out.println("Number of levels: " + levelList.getLength());
 
             System.out.println("----------------------------");
-            System.out.println("Level List length: " + levelList.getLength());
 
+            //loop through all levels and display their information
             for (int i=0; i<levelList.getLength(); i++) {
                 Node currentLevel = levelList.item(i);
-                System.out.println("\nCurrent Element: " + currentLevel.getNodeName());
-                NodeList currentLevelChildren = currentLevel.getChildNodes();
-                for (int j=0; j<currentLevelChildren.getLength(); j++) {
-                    Node currentChild = currentLevelChildren.item(j);
+                Element levelAsElement = (Element) currentLevel;
+                // print ID and end conditions
+                System.out.println("Level " + levelAsElement.getElementsByTagName("ID").item(0).getTextContent());
+                System.out.println("End Condition: " + levelAsElement.getElementsByTagName("EndCondition").item(0).getTextContent());
+
+                //loop through and print instances
+                Element currentLevelInstances = (Element) levelAsElement.getElementsByTagName("Instances").item(0);
+                System.out.println(currentLevelInstances.getElementsByTagName("Instance").getLength() + " Instances:");
+                for (int j=0; j<currentLevelInstances.getElementsByTagName("Instance").getLength(); j++) {
+                    Element currentChild = (Element) currentLevelInstances.getElementsByTagName("Instance").item(j);
                     if(currentChild.getNodeType() == Node.ELEMENT_NODE){
-                        System.out.print("\t Current Element: " + currentChild.getNodeName());
-                        if(currentChild.getChildNodes().getLength() > 1){
-                            System.out.println("\t CurrentChildren: ");
-                        }
-                        else System.out.println("\t Current Text: " + currentChild.getTextContent());
+                        // for each instance, print its type and location
+                        String type = currentChild.getElementsByTagName("Type").item(0).getTextContent();
+                        String xpos = currentChild.getElementsByTagName("XPos").item(0).getTextContent();
+                        String ypos = currentChild.getElementsByTagName("YPos").item(0).getTextContent();
+                        System.out.println(String.format("\t%s at x:%s y:%s", type, xpos, ypos));
                     }
                 }
+
+                // a space afterwards for asthetics
+                System.out.println();
             }
         } catch (Exception e) {
             // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)

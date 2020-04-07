@@ -49,28 +49,28 @@
         <Instance>
           <Type>SmallMario</Type>
           <XPos>0</XPos>
-          <Ypos>0</Ypos>
+          <YPos>0</YPos>
         </Instance>
         <Instance>
           <Type>Brick</Type>
           <XPos>0</XPos>
-          <Ypos>1</Ypos>
+          <YPos>1</YPos>
         </Instance>
         <Instance>
           <Type>Brick</Type>
           <XPos>1</XPos>
-          <Ypos>1</Ypos>
+          <YPos>1</YPos>
         </Instance>
         <Instance>
           <Type>Brick</Type>
           <XPos>2</XPos>
-          <Ypos>1</Ypos>
+          <YPos>1</YPos>
           <Size>2.0</Size>
         </Instance>
         <Instance>
           <Type>Koopa</Type>
           <XPos>2</XPos>
-          <Ypos>0</Ypos>
+          <YPos>0</YPos>
         </Instance>
       </Instances>
     </Level>
