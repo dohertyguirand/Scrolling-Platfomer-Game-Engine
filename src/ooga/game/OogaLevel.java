@@ -11,7 +11,7 @@ import java.util.List;
  * TODO: fully flesh this out to be a working class
  */
 public class OogaLevel implements Level{
-    List<Entity> myEntities;
+    private List<Entity> myEntities;
 
     public OogaLevel(List<Entity> Entities){
         myEntities = Entities;

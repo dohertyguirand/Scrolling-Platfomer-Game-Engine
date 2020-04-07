@@ -4,13 +4,13 @@ import ooga.OogaDataException;
 import ooga.data.OogaDataReader;
 
 public class DataReaderTest {
-    public void runTest(){
+    public void runTest(String filePath){
         OogaDataReader testDataReader = new OogaDataReader();
-        String testFilePath = "jetbrains://idea/navigate/reference?project=final_team17&fqn=data.example-mario";
+        String testFilePath = filePath;
         try {
-            testDataReader.getGameFiles(testFilePath);
+            testDataReader.loadGame(testFilePath);
         } catch (OogaDataException e) {
-            // TODO: Fix this Braeden
+            // TODO: Fix this, Braeden
             System.out.println("Test Failed");
             e.printStackTrace();
         }

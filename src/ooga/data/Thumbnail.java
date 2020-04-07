@@ -7,11 +7,13 @@ import java.awt.*;
  * to give initially including but not limited to the thumbnail image, the game's title, and the game's description.
  */
 public class Thumbnail {
-    private Image myImage;
+    private String myImageFile;
     private String myTitle;
     private String myDescription;
 
-    public Thumbnail(String imageFileName, String title, String myDescription){
-
+    public Thumbnail(String imageFileName, String title, String description){
+        myImageFile = imageFileName;
+        myTitle = title;
+        myDescription = description;
     }
 }
