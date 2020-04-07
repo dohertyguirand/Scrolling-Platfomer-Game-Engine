@@ -29,6 +29,5 @@ public class GravityBehavior implements MovementBehavior {
     public void doMovementUpdate(double elapsedTime) {
         myPhysics.setAcceleration(List.of(X_MOVE_PER_SECOND,Y_MOVE_PER_SECOND));
         myEntity.move(elapsedTime * X_MOVE_PER_SECOND, elapsedTime * Y_MOVE_PER_SECOND);
-        myEntity.
     }
 }

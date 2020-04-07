@@ -95,6 +95,11 @@ public class OogaPhysicsEntity implements Entity, PhysicsEntity {
   }
 
   @Override
+  public void setPosition(List<Double> newPosition) {
+
+  }
+
+  @Override
   public void destroySelf() {
     isDestroyed = true;
   }
