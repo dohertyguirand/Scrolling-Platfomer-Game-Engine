@@ -10,6 +10,12 @@ package ooga;
 public interface MovementBehavior {
 
   /**
+   * Sets the Entity who will enact this behavior, and will then have the behavior affect them.
+   * @param e The Entity to have the behavior control.
+   */
+  void setTarget(Entity e);
+
+  /**
    * Performs the subclass-specific implementation that happens per frame.
    * @param elapsedTime The time since the previous frame.
    */

@@ -1,4 +1,7 @@
-package ooga;
+package ooga.data;
+
+import ooga.OogaDataException;
+import ooga.game.Game;
 
 /**
  * Handles saving the state of currently active games, or restoring save games.

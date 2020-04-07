@@ -67,6 +67,9 @@ The program will have APIs for:
         - point values of game objectives 
         - number of levels, their starting configurations, and the order in which they are played
         - keys used for interaction **
+    - Entity
+        - Should define which of its properties are related to UI display
+        - Shouldn't have any javafx here (only references to images, etc)
 - Front End (draws things)
     - Objectives: Draw lots of images, including background, terrain, and entities.
     - What data does it need?
@@ -79,14 +82,20 @@ The program will have APIs for:
     - Has data about entities, background, HUD bound to backend values, so that it can redraw whenever something changes.
     - Asks the data loader for images, asks the back end for entities and their locations.
         - It can ask an entity (or whatever it gets back from the engine) about its image, location, size, etc., and it controls the JavaFX root, so that it can draw an image there.
+        - It should have a list of entities that is bound to a list of entities in the Game so that
+        new entities are added in view whenever they are created in Game
+            - View will have a method that binds each UI property of an entity
+        - Entity will be part of Data but View will likely have its own version/subclass
     - Drawable (can just be an imageView)
         - Has a framerate of its animation, has many images, has a size, position, angle.
         - Reacts to time passing and its corresponding back end entity changing.
     - User Input
         - The engine, which initializes the front end, also signs up to be notified of and react to user input.
+        - This should be part of some class which handles all bindings/interactions between Game and View
 - Where is ``main()`` located?
-    - The program is booted from Engine
-    - Engine will make a DataReader, ask the data reader to read a file based on what the user wants to play 
+    - The program is booted from View (not engine, because of property bindings)
+    - View will make a DataReader, ask the data reader to read a file based on what the user wants to play 
+    - View will make a Game and create property bindings and give it the DataReader instance
 
 
 
