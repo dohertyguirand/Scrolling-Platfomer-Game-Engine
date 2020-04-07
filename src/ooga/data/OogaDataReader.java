@@ -62,10 +62,12 @@ public class OogaDataReader implements DataReader{
                 System.out.println("End Condition: " + levelAsElement.getElementsByTagName("EndCondition").item(0).getTextContent());
 
                 //loop through and print instances
-                Element currentLevelInstances = (Element) levelAsElement.getElementsByTagName("Instances").item(0);
-                System.out.println(currentLevelInstances.getElementsByTagName("Instance").getLength() + " Instances:");
-                for (int j=0; j<currentLevelInstances.getElementsByTagName("Instance").getLength(); j++) {
-                    Element currentChild = (Element) currentLevelInstances.getElementsByTagName("Instance").item(j);
+                NodeList currentLevelInstances =
+                        ((Element) levelAsElement.getElementsByTagName("Instances").item(0)).getElementsByTagName("Instance");
+                System.out.println(currentLevelInstances.getLength() + " Instances:");
+
+                for (int j=0; j<currentLevelInstances.getLength(); j++) {
+                    Element currentChild = (Element) currentLevelInstances.item(j);
                     if(currentChild.getNodeType() == Node.ELEMENT_NODE){
                         // for each instance, print its type and location
                         String type = currentChild.getElementsByTagName("Type").item(0).getTextContent();
@@ -75,7 +77,7 @@ public class OogaDataReader implements DataReader{
                     }
                 }
 
-                // a space afterwards for asthetics
+                // a space afterwards for ~asthetics~
                 System.out.println();
             }
         } catch (Exception e) {
