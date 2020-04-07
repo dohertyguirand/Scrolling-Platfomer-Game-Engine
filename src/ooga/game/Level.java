@@ -1,7 +1,7 @@
 package ooga.game;
 
 import java.util.List;
-import ooga.Entity;
+import ooga.EntityAPI;
 
 /**
  * Represents one in-game level, including its end conditions and list of entities.
@@ -11,7 +11,7 @@ public interface Level {
   /**
    * @return A List of all Entities in the level.
    */
-  List<Entity> getEntities();
+  List<EntityAPI> getEntities();
 
   /**
    * Usually relies on an owned instance of LevelEndCondition to handle the unique logic of

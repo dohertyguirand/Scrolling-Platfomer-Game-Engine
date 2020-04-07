@@ -1,10 +1,12 @@
 package ooga.game;
 
-import java.util.List;
-import ooga.Entity;
+import javafx.collections.ObservableList;
+import ooga.UserInputListener;
+import ooga.data.Entity;
 
 public class OogaGame implements Game {
 
+<<<<<<< HEAD
   private List<Level> myLevels;
   private Level currentLevel;
 
@@ -13,10 +15,13 @@ public class OogaGame implements Game {
     if (!levels.isEmpty()) {
       currentLevel = levels.get(0);
     }
+=======
+  public OogaGame(String gameName) {
+>>>>>>> master
   }
 
   @Override
-  public List<Entity> getEntities() {
+  public ObservableList<Entity> getEntities() {
     return null;
   }
 
@@ -39,5 +44,10 @@ public class OogaGame implements Game {
   @Override
   public void handleUserInput(String input) {
 
+  }
+
+  @Override
+  public UserInputListener makeUserInputListener() {
+    return null;
   }
 }

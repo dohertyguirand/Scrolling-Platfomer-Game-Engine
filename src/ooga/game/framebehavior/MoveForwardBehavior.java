@@ -1,15 +1,15 @@
 package ooga.game.framebehavior;
 
-import ooga.Entity;
+import ooga.EntityAPI;
 import ooga.MovementBehavior;
 
 public class MoveForwardBehavior implements MovementBehavior {
 
   public static final double X_MOVE_PER_SECOND = 10;
   public static final double Y_MOVE_PER_SECOND = 0;
-  private Entity myEntity;
+  private EntityAPI myEntity;
 
-  public MoveForwardBehavior(Entity e) {
+  public MoveForwardBehavior(EntityAPI e) {
     setTarget(e);
   }
 
@@ -18,7 +18,7 @@ public class MoveForwardBehavior implements MovementBehavior {
   }
 
   @Override
-  public void setTarget(Entity e) {
+  public void setTarget(EntityAPI e) {
     myEntity = e;
   }
 

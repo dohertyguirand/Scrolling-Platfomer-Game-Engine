@@ -33,6 +33,12 @@ public interface UserInputListener {
   void reactToButton(String buttonID);
 
   /**
+   * React to a key being pressed. Use data files to determine appropriate action
+   * @param keyName string name of key
+   */
+  void reactToKeyPress(String keyName);
+
+  /**
    * Handles the higher-level action of selecting a game to play through the UI.
    * The implementation CANNOT assume that this will only be called if there isn't any
    * game already active.
@@ -42,9 +48,8 @@ public interface UserInputListener {
 
   /**
    * Handles when the command is given to save the game to a file.
-   * @param filepath The filepath at which to save the file.
    */
-  void reactToGameSave(String filepath);
+  void reactToGameSave();
 
   /**
    * Handles when the command is given to quit the currently running game.
@@ -53,4 +58,9 @@ public interface UserInputListener {
    */
   void reactToGameQuit();
 
+  /**
+   * indicates the pause button was clicked in the ui
+   * @param paused whether or not the button clicked was pause or resume
+   */
+  void reactToPauseButton(boolean paused);
 }

@@ -1,15 +1,49 @@
-package ooga.game;
+package ooga.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.beans.property.*;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
 import ooga.EntityAPI;
 import ooga.MovementBehavior;
+import ooga.game.PhysicsEntity;
 
-public class OogaEntity implements EntityAPI {
+public abstract class Entity implements EntityAPI {
+
+  private BooleanProperty activeInView = new SimpleBooleanProperty(true);
+  private DoubleProperty x = new SimpleDoubleProperty();
+  private DoubleProperty y = new SimpleDoubleProperty();
+
+  public double getX() {
+    return x.get();
+  }
+
+  public DoubleProperty xProperty() {
+    return x;
+  }
+
+  public double getY() {
+    return y.get();
+  }
+
+  public DoubleProperty yProperty() {
+    return y;
+  }
+
+  public boolean isActiveInView() {
+    return activeInView.get();
+  }
+
+  public BooleanProperty activeInViewProperty() {
+    return activeInView;
+  }
+
+  public void setActiveInView(boolean activeInView) {
+    this.activeInView.set(activeInView);
+  }
 
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
@@ -19,29 +53,6 @@ public class OogaEntity implements EntityAPI {
   private boolean isDestroyed;
   //TODO: Use or remove
   private PhysicsEntity myPhysics;
-
-  public OogaEntity() {
-    myControlsBehaviors = new ArrayList<>();
-    myMovementBehaviors = new ArrayList<>();
-    isDestroyed = false;
-
-  }
-
-  //TODO: Consider making more flexible constructors or setter methods so that behaviors
-  //TODO: are swappable.
-  public OogaEntity(MovementBehavior perFrameBehavior, ControlsBehavior controls) {
-    this();
-    myMovementBehaviors.add(perFrameBehavior);
-    perFrameBehavior.setTarget(this);
-    myControlsBehaviors.add(controls);
-  }
-
-  public OogaEntity(MovementBehavior perFrameBehavior) {
-    this();
-    perFrameBehavior.setTarget(this);
-    myMovementBehaviors.add(perFrameBehavior);
-  }
-
 
   @Override
   public void reactToControls(String controls) {

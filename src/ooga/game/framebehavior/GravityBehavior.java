@@ -1,7 +1,7 @@
 package ooga.game.framebehavior;
 
 import java.util.List;
-import ooga.Entity;
+import ooga.EntityAPI;
 import ooga.MovementBehavior;
 import ooga.game.PhysicsEntity;
 
@@ -13,7 +13,7 @@ public class GravityBehavior implements MovementBehavior {
 
     public static final double X_MOVE_PER_SECOND = 0;
     public static final double Y_MOVE_PER_SECOND = -10;
-    private Entity myEntity;
+    private EntityAPI myEntity;
     private PhysicsEntity myPhysics;
 
     public void setPhysicsTarget(PhysicsEntity e) {
@@ -21,7 +21,7 @@ public class GravityBehavior implements MovementBehavior {
     }
 
     @Override
-    public void setTarget(Entity e) {
+    public void setTarget(EntityAPI e) {
         myEntity = e;
     }
 

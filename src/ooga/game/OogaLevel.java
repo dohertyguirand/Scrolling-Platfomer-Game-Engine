@@ -1,15 +1,15 @@
 package ooga.game;
 
-import ooga.Entity;
+import ooga.EntityAPI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OogaLevel implements Level {
 
-    List<Entity> myEntities;
+    List<EntityAPI> myEntities;
 
-    public OogaLevel(List<Entity> entities) {
+    public OogaLevel(List<EntityAPI> entities) {
         myEntities = entities;
     }
 
@@ -18,7 +18,7 @@ public class OogaLevel implements Level {
     }
 
     @Override
-    public List<Entity> getEntities() {
+    public List<EntityAPI> getEntities() {
         return new ArrayList<>(myEntities);
     }
 

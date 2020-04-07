@@ -1,13 +1,13 @@
 package ooga.game.asyncbehavior;
 
 import ooga.CollisionBehavior;
-import ooga.Entity;
+import ooga.EntityAPI;
 
 public class DestroySelfBehavior implements CollisionBehavior {
 
-    private Entity myEntity;
+    private EntityAPI myEntity;
 
-    public DestroySelfBehavior(Entity e) {
+    public DestroySelfBehavior(EntityAPI e) {
         myEntity = e;
     }
 

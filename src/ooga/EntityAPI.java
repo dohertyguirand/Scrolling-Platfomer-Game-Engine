@@ -9,7 +9,7 @@ import java.util.Map;
  * Relies on access to the list of all entities if it wants to do
  * anything besides affect itself.
  */
-public interface Entity {
+public interface EntityAPI {
 
   /**
    * 'Controls' will be a String mapping to a controls type from a shared back end resource file.
