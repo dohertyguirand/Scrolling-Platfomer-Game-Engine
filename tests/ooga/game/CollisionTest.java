@@ -3,7 +3,6 @@ package ooga.game;
 import ooga.CollisionBehavior;
 import ooga.Entity;
 import ooga.MoveUpCollision;
-import ooga.OogaEntity;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
 import org.junit.jupiter.api.Test;

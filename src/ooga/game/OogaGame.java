@@ -5,6 +5,16 @@ import ooga.Entity;
 
 public class OogaGame implements Game {
 
+  private List<Level> myLevels;
+  private Level currentLevel;
+
+  public OogaGame(List<Level> levels) {
+    myLevels = levels;
+    if (!levels.isEmpty()) {
+      currentLevel = levels.get(0);
+    }
+  }
+
   @Override
   public List<Entity> getEntities() {
     return null;
@@ -17,12 +27,13 @@ public class OogaGame implements Game {
 
   @Override
   public void doCollisionLoop() {
-
   }
 
   @Override
   public void doUpdateLoop(double elapsedTime) {
-
+    for (Entity e : currentLevel.getEntities()) {
+      e.updateSelf(elapsedTime);
+    }
   }
 
   @Override

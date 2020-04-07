@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
 import ooga.Entity;
-import ooga.OogaEntity;
 import ooga.game.framebehavior.MoveForwardBehavior;
 import org.junit.jupiter.api.Test;
 

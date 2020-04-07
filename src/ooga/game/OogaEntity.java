@@ -1,9 +1,14 @@
-package ooga;
+package ooga.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import ooga.CollisionBehavior;
+import ooga.ControlsBehavior;
+import ooga.Entity;
+import ooga.MovementBehavior;
+import ooga.game.PhysicsEntity;
 
 public class OogaEntity implements Entity {
 
@@ -14,13 +19,13 @@ public class OogaEntity implements Entity {
   private double myYPos;
   private boolean isDestroyed;
   //TODO: Use or remove
-  private List<Double> myMovementVector;
+  private PhysicsEntity myPhysics;
 
   public OogaEntity() {
     myControlsBehaviors = new ArrayList<>();
     myMovementBehaviors = new ArrayList<>();
-    myMovementVector = List.of(0.0,0.0);
     isDestroyed = false;
+
   }
 
   //TODO: Consider making more flexible constructors or setter methods so that behaviors
@@ -28,6 +33,7 @@ public class OogaEntity implements Entity {
   public OogaEntity(MovementBehavior perFrameBehavior, ControlsBehavior controls) {
     this();
     myMovementBehaviors.add(perFrameBehavior);
+    perFrameBehavior.setTarget(this);
     myControlsBehaviors.add(controls);
   }
 
@@ -50,6 +56,7 @@ public class OogaEntity implements Entity {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime);
     }
+    myPhysics.updateSelf(elapsedTime);
   }
 
   @Override
@@ -75,6 +82,12 @@ public class OogaEntity implements Entity {
   @Override
   public List<Double> getPosition() {
     return List.of(myXPos,myYPos);
+  }
+
+  @Override
+  public void setPosition(List<Double> newPosition) {
+    myXPos = newPosition.get(0);
+    myYPos = newPosition.get(1);
   }
 
   @Override

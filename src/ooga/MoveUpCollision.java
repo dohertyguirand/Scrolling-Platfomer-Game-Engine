@@ -1,20 +1,17 @@
 package ooga;
 
-import ooga.CollisionBehavior;
-import ooga.Entity;
-
 public class MoveUpCollision implements CollisionBehavior {
 
   private Entity mySubject;
-  private double myMoveDisance;
+  private double myMoveDistance;
 
   public MoveUpCollision(Entity subject, double moveDistance) {
     mySubject = subject;
-    myMoveDisance = moveDistance;
+    myMoveDistance = moveDistance;
   }
 
   @Override
   public void doCollision(String collidingEntity) {
-    mySubject.move(0,myMoveDisance);
+    mySubject.move(0, myMoveDistance);
   }
 }

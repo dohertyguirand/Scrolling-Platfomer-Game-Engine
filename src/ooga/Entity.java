@@ -56,6 +56,11 @@ public interface Entity {
   List<Double> getPosition();
 
   /**
+   * @param newPosition The new position for the entity to have in the level.
+   */
+  void setPosition(List<Double> newPosition);
+
+  /**
    * Marks this entity for removal by the next frame, and prevents it from taking further actions.
    */
   void destroySelf();
