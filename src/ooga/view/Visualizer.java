@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ooga.data.OogaDataReader;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class Visualizer extends Application {
@@ -17,7 +18,7 @@ public class Visualizer extends Application {
   }
 
   @Override
-  public void start(Stage primaryStage) {
+  public void start(Stage primaryStage) throws IOException {
     myDataReader = new OogaDataReader();
     Scene display = setUpStartMenuDisplay();
     primaryStage.setScene(display);
@@ -25,8 +26,8 @@ public class Visualizer extends Application {
     primaryStage.show();
   }
 
-  private Scene setUpStartMenuDisplay() {
-    StartMenu startMenu = new StartMenu(myDataReader);
+  private Scene setUpStartMenuDisplay() throws IOException {
+    StartMenu startMenu = new StartMenu();
     startMenu.gameSelectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal));
     return startMenu.getScene();
   }
@@ -34,5 +35,4 @@ public class Visualizer extends Application {
   private void startGame(String gameName) {
     new ViewerGame(gameName, myDataReader);
   }
-
 }

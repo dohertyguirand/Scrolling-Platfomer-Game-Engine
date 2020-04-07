@@ -2,8 +2,8 @@ package ooga.data;
 import ooga.OogaDataException;
 import ooga.game.Game;
 
-import java.util.List;
 
+import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;

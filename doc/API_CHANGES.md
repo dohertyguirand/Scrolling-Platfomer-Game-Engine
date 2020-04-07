@@ -1,5 +1,7 @@
 # API Changes
 
+## Game API
+=======
 ## Data
 - Added method ``getPauseButtonImage`` in DataReader to fetch an Image object representing
 the pause button
@@ -13,6 +15,7 @@ since the game will always know what game it is running and is not responsible f
 - UserInputListener method probably shouldn't take a String input, as the Game should be
 responsible for determining where to save
 
+
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.
 - Added ``getPosition`` method so that a JUnit test could check whether ``updateSelf`` was working for
@@ -23,6 +26,7 @@ with another entity, and have that behavior swapped out at runtime.
 - Added ``setPosition`` so that behaviors with access to the entity can teleport it around the level.
 - Added several properties including activeInView which determines whether the entity will be
 displayed
+
 
 ### MovementBehavior
 - Added ``setTarget`` method as a way to resolve an issue where an Entity needed to know 
