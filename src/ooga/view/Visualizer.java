@@ -30,5 +30,4 @@ public class Visualizer extends Application {
   private void startGame(String gameName) {
     new ViewerGame(gameName);
   }
-
 }

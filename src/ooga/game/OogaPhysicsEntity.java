@@ -1,49 +1,16 @@
-package ooga.data;
+package ooga.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javafx.beans.property.*;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
-import ooga.EntityAPI;
+import ooga.Entity;
 import ooga.MovementBehavior;
-import ooga.game.PhysicsEntity;
 
-public abstract class Entity implements EntityAPI {
-
-  private BooleanProperty activeInView = new SimpleBooleanProperty(true);
-  private DoubleProperty x = new SimpleDoubleProperty();
-  private DoubleProperty y = new SimpleDoubleProperty();
-
-  public double getX() {
-    return x.get();
-  }
-
-  public DoubleProperty xProperty() {
-    return x;
-  }
-
-  public double getY() {
-    return y.get();
-  }
-
-  public DoubleProperty yProperty() {
-    return y;
-  }
-
-  public boolean isActiveInView() {
-    return activeInView.get();
-  }
-
-  public BooleanProperty activeInViewProperty() {
-    return activeInView;
-  }
-
-  public void setActiveInView(boolean activeInView) {
-    this.activeInView.set(activeInView);
-  }
+@Deprecated
+public class OogaPhysicsEntity implements Entity, PhysicsEntity {
 
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
@@ -54,11 +21,44 @@ public abstract class Entity implements EntityAPI {
   //TODO: Use or remove
   private PhysicsEntity myPhysics;
 
+  public OogaPhysicsEntity() {
+    myControlsBehaviors = new ArrayList<>();
+    myMovementBehaviors = new ArrayList<>();
+    isDestroyed = false;
+
+  }
+
+  //TODO: Consider making more flexible constructors or setter methods so that behaviors
+  //TODO: are swappable.
+  public OogaPhysicsEntity(MovementBehavior perFrameBehavior, ControlsBehavior controls) {
+    this();
+    myMovementBehaviors.add(perFrameBehavior);
+    perFrameBehavior.setTarget(this);
+    myControlsBehaviors.add(controls);
+  }
+
+  public OogaPhysicsEntity(MovementBehavior perFrameBehavior) {
+    this();
+    perFrameBehavior.setTarget(this);
+    myMovementBehaviors.add(perFrameBehavior);
+  }
+
+
   @Override
   public void reactToControls(String controls) {
     for (ControlsBehavior behavior : myControlsBehaviors) {
       behavior.reactToControls(controls);
     }
+  }
+
+  @Override
+  public void setVelocity(List<Double> velocityVector) {
+
+  }
+
+  @Override
+  public void setAcceleration(List<Double> accelVector) {
+
   }
 
   @Override
@@ -96,8 +96,7 @@ public abstract class Entity implements EntityAPI {
 
   @Override
   public void setPosition(List<Double> newPosition) {
-    myXPos = newPosition.get(0);
-    myYPos = newPosition.get(1);
+
   }
 
   @Override
