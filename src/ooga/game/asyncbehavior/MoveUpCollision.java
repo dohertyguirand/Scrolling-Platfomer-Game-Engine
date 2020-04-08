@@ -1,4 +1,7 @@
-package ooga;
+package ooga.game.asyncbehavior;
+
+import ooga.CollisionBehavior;
+import ooga.EntityAPI;
 
 public class MoveUpCollision implements CollisionBehavior {
 
