@@ -12,13 +12,11 @@ import ooga.game.Game;
 public interface DataReader {
 
   /**
-   * Returns a list of filepaths to thumbnail images from game data files in a given folder.
+   * Returns a list of thumbnails for all the available games.
    * Returns an empty list if there are no files containing thumbnails.
-   * @param folderPath The folder to check for thumbnails/game options.
-   * @return The list of thumbnails of games in the given directory.
-   * @throws OogaDataException if the given filepath isn't a directory.
+   * @return The list of thumbnails of games.
    */
-  List<String> getThumbnails(String folderPath) throws OogaDataException;
+  List<Thumbnail> getThumbnails();
 
   /**
    * Returns the filepaths to every game file detected in the folder. Doesn't guarantee

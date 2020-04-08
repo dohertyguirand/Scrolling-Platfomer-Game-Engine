@@ -19,12 +19,10 @@ import java.io.File;
 
 public class OogaDataReader implements DataReader{
     private String myLibraryFilePath;
-//    private Map<String entityName, OogaEntity entityDefinition>
-
-//    @Override
-//    public List<Thumbnail> getThumbnails(String folderPath) throws OogaDataException {
-//        return null;
-//    }
+    @Override
+    public List<Thumbnail> getThumbnails() {
+        return null;
+    }
 
     /**
      * give the Game a list of level ID's in the order that they're listed in the .xml files, its name to entity map
@@ -38,18 +36,12 @@ public class OogaDataReader implements DataReader{
         return null;
     }
 
-//    @Override
-//    public List<String> getGameFiles(String folderPath) throws OogaDataException {
-//        return null;
-//    }
-
     @Override
-    public List<String> getThumbnails(String folderPath) throws OogaDataException {
+    public List<String> getGameFiles(String folderPath) throws OogaDataException {
         return null;
     }
 
-    @Override
-    public List<String> getGameFiles(String folderPath) throws OogaDataException {
+    public List<String> getThumbnails(String folderPath) throws OogaDataException {
         return null;
     }
 

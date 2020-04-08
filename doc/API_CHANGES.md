@@ -5,6 +5,7 @@
 ## Data
 - Added method ``getPauseButtonImage`` in DataReader to fetch an Image object representing
 the pause button
+- DataReader getThumbnails no longer takes String arg
 
 ## Game API
 - getEntities now returns an observable list instead of list
