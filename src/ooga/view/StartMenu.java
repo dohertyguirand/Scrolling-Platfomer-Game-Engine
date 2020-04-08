@@ -34,14 +34,22 @@ public class StartMenu {
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double GAME_IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
   private final double GAME_IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
-  private Scene myScene;
+  private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
+  private final double ZERO = Double.parseDouble(myResources.getString("zero"));
+  private final double MAX_SCROLLBAR = Double.parseDouble(myResources.getString("maxScrollbar"));
+  private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
+  private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
+
+
+
+    private Scene myScene;
   private ScrollBar myScrollbar;
   private HBox myHbox;
-  final Image[] myImages = new Image[4];
+  final Image[] myImages = new Image[3];
   final ImageView[] myPics = new ImageView[4];
-  private ImageView imagev1;
-  private ImageView imagev2;
-  private ImageView imagev3;
+  private ImageView imagev1 = new ImageView();
+  private ImageView imagev2 = new ImageView();
+  private ImageView imagev3 = new ImageView();
 
 
   public Scene getScene() {
@@ -88,11 +96,11 @@ public class StartMenu {
 
   private void horizontalScroller() {
       myScrollbar = new ScrollBar();
-      myScrollbar.setLayoutY(450);
-      myScrollbar.setMin(0);
+      myScrollbar.setLayoutY(SCROLLBAR_Y);
+      myScrollbar.setMin(ZERO);
       myScrollbar.setOrientation(Orientation.HORIZONTAL);
       myScrollbar.setPrefWidth(WINDOW_WIDTH);
-      myScrollbar.setMax(360);
+      myScrollbar.setMax(MAX_SCROLLBAR);
 
     myScrollbar.valueProperty().addListener(new ChangeListener<Number>() {
       public void changed(ObservableValue<? extends Number> ov,
@@ -104,8 +112,8 @@ public class StartMenu {
 
   private void hbarsettings() {
     myHbox = new HBox();
-    myHbox.setLayoutY(350);
-    myHbox.setSpacing(50);
+    myHbox.setLayoutY(HBOX_Y_LAYOUT);
+    myHbox.setSpacing(HBOX_SPACING);
   }
 
   private void addimages() {
@@ -120,14 +128,16 @@ public class StartMenu {
   }
 
   public void initialize() {
-    imagev1 = new ImageView();
-    imagev2 = new ImageView();
-    imagev3 = new ImageView();
-    Image i = new Image(new File("resources/data/menu_images/pick.gif").toURI().toString());
+      for (int i = 1; i <4; i++) {
+          Image k = new Image(new File("resources/data/menu_images/title"+i+".gif").toURI().toString());
+          imagev1.setImage(i);
+      }
+
+    Image i = new Image(new File("resources/data/menu_images/title1.gif").toURI().toString());
     imagev1.setImage(i);
-    Image j = new Image(new File("resources/data/menu_images/your.gif").toURI().toString());
+    Image j = new Image(new File("resources/data/menu_images/title2.gif").toURI().toString());
     imagev2.setImage(j);
-    Image k = new Image(new File("resources/data/menu_images/your.gif").toURI().toString());
+    Image k = new Image(new File("resources/data/menu_images/title2.gif").toURI().toString());
     imagev3.setImage(k);
 
     imagev1.setX(300); imagev1.setY(200);
