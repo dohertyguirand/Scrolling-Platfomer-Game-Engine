@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
-import ooga.Entity;
+import ooga.data.Entity;
 import ooga.MovementBehavior;
 
 @Deprecated
-public class OogaPhysicsEntity implements Entity, PhysicsEntity {
+public class OogaPhysicsEntity extends Entity implements PhysicsEntity {
 
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;

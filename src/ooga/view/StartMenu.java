@@ -17,10 +17,13 @@ import javafx.stage.Stage;
 import ooga.data.DataReader;
 import ooga.data.OogaDataReader;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
 public class StartMenu {
 
@@ -30,6 +33,9 @@ public class StartMenu {
   private HBox myHbox;
   final Image[] myImages = new Image[4];
   final ImageView[] myPics = new ImageView[4];
+  private ImageView imagev1;
+  private ImageView imagev2;
+  private ImageView imagev3;
 
   public String getGameSelected() {
     return gameSelected.get();
@@ -44,6 +50,8 @@ public class StartMenu {
   }
 
   public StartMenu() throws IOException {
+    myScene.getStylesheets().add("resources/data/Scrollbar.css");
+
 
     Group root = new Group();
     Pane pane = new Pane();
@@ -59,6 +67,7 @@ public class StartMenu {
     horizontalScroller();
     hbarsettings();
     addimages();
+    initialize();
 
 
     pane.getChildren().addAll(imgView);
@@ -99,5 +108,21 @@ public class StartMenu {
       final ImageView pic = myPics[i] = new ImageView((myImages[i]));
       myHbox.getChildren().add(myPics[i]);
     }
+  }
+
+  public void initialize() {
+    imagev1 = new ImageView();
+    imagev2 = new ImageView();
+    imagev3 = new ImageView();
+    Image i = new Image(new File("resources/data/menu_images/pick.gif").toURI().toString());
+    imagev1.setImage(i);
+    Image j = new Image(new File("resources/data/menu_images/your.gif").toURI().toString());
+    imagev2.setImage(j);
+    Image k = new Image(new File("resources/data/menu_images/your.gif").toURI().toString());
+    imagev3.setImage(k);
+
+    imagev1.setX(300); imagev1.setY(200);
+    imagev2.setX(400); imagev2.setY(200);
+    imagev3.setX(500); imagev3.setY(200);
   }
 }

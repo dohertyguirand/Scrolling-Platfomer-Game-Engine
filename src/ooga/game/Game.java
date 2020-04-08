@@ -1,7 +1,7 @@
 package ooga.game;
 
 import java.util.List;
-import ooga.Entity;
+import ooga.data.Entity;
 
 import javafx.collections.ObservableList;
 import ooga.UserInputListener;
