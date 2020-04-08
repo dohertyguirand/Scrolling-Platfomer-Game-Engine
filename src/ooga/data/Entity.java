@@ -17,6 +17,8 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
   private DoubleProperty x = new SimpleDoubleProperty();
   private DoubleProperty y = new SimpleDoubleProperty();
+  private List<Double> myVelocity;
+
 
   public double getX() {
     return x.get();
@@ -59,16 +61,15 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   @Override
   public void reactToControls(String controls) {
     for (ControlsBehavior behavior : myControls.get(controls)) {
-      behavior.reactToControls(controls);
+      behavior.reactToControls(this);
     }
   }
 
   @Override
   public void updateSelf(double elapsedTime) {
     for (MovementBehavior behavior : myMovementBehaviors) {
-      behavior.doMovementUpdate(elapsedTime);
+      behavior.doMovementUpdate(elapsedTime,this);
     }
-    myPhysics.updateSelf(elapsedTime);
   }
 
   @Override
@@ -105,5 +106,26 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   @Override
   public void destroySelf() {
     isDestroyed = true;
+  }
+
+  @Override
+  public void moveByVelocity() {
+    myXPos += myVelocity.get(0);
+    myYPos += myVelocity.get(1);
+  }
+
+  @Override
+  public void changeVelocity(double xChange, double yChange) {
+    myVelocity = List.of(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
+  }
+
+  @Override
+  public void setVelocity(double xVelocity, double yVelocity) {
+    myVelocity = List.of(xVelocity, yVelocity);
+  }
+
+  @Override
+  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
+    myMovementBehaviors = behaviors;
   }
 }

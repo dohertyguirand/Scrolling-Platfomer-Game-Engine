@@ -33,6 +33,12 @@ public interface EntityAPI {
   void setCollisionBehaviors(Map<String,List<CollisionBehavior>> behaviorMap);
 
   /**
+   * Sets the behaviors that will be carried out for every frame
+   * @param behaviors A List of MovementBehaviors
+   */
+  void setMovementBehaviors(List<MovementBehavior> behaviors);
+
+  /**
    * Reacts to colliding with a specific entity type based on its list of reactions mapped to
    * entity names, as defined by the game data.
    * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
