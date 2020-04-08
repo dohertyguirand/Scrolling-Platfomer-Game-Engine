@@ -1,6 +1,5 @@
 package ooga.view;
 
-import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -8,36 +7,43 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import ooga.data.OogaDataReader;
+import ooga.data.Thumbnail;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class StartMenu {
 
+  private OogaDataReader myDataReader;
   private StringProperty gameSelected = new SimpleStringProperty();
+  private ResourceBundle myResources = ResourceBundle.getBundle("./Resources.config");
+  private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
+  private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
+  private final double GAME_IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
+  private final double GAME_IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
   private Scene myScene;
   private ScrollBar myScrollbar;
   private HBox myHbox;
-  final Image[] myImages = new Image[4];
-  final ImageView[] myPics = new ImageView[4];
 
   public StartMenu() {
 
+    myDataReader = new OogaDataReader();
+
     Group root = new Group();
     Pane pane = new Pane();
-    pane.setPrefSize(800,800);
+    pane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 
-    ImageView imgView = new ImageView("resources/data/menu_images/menubackground.jpg");
-    imgView.setFitWidth(800);
-    imgView.setFitHeight(800);
+    ImageView imgView = new ImageView(myResources.getString("menuBackgroundLocation"));
+    imgView.setFitWidth(WINDOW_WIDTH);
+    imgView.setFitHeight(WINDOW_HEIGHT);
 
     horizontalScroller();
     hbarsettings();
@@ -59,6 +65,10 @@ public class StartMenu {
     return gameSelected;
   }
 
+  public void setGameSelected(String gameSelected) {
+    this.gameSelected.set(gameSelected);
+  }
+
   public Scene getScene() {
     return myScene;
   }
@@ -68,7 +78,7 @@ public class StartMenu {
       myScrollbar.setLayoutY(450);
       myScrollbar.setMin(0);
       myScrollbar.setOrientation(Orientation.HORIZONTAL);
-      myScrollbar.setPrefWidth(800);
+      myScrollbar.setPrefWidth(WINDOW_WIDTH);
       myScrollbar.setMax(360);
 
     myScrollbar.valueProperty().addListener(new ChangeListener<Number>() {
@@ -85,13 +95,14 @@ public class StartMenu {
     myHbox.setSpacing(50);
   }
 
-  private void addimages() throws IOException {
-    for (int i = 1; i < 4; i++) {
-      InputStream is = Files.newInputStream(Paths.get("resources/data/menu_images/image" +(i)+ ".png"));
-      final Image image = myImages[i] =
-              new Image(is);
-      final ImageView pic = myPics[i] = new ImageView((myImages[i]));
-      myHbox.getChildren().add(myPics[i]);
+  private void addimages() {
+    List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+    for (Thumbnail thumbnail : thumbnails) {
+      Button gameButton = new Button(thumbnail.getDescription(), new ImageView(thumbnail.getImageFile()));
+      gameButton.setOnAction(e -> setGameSelected(thumbnail.getTitle()));
+      gameButton.setOnMouseEntered(e -> gameButton.resize(GAME_IMAGE_WIDTH*1.25, GAME_IMAGE_HEIGHT*1.25));
+      gameButton.setOnMouseExited(e -> gameButton.resize(GAME_IMAGE_WIDTH, GAME_IMAGE_HEIGHT));
+      myHbox.getChildren().add(gameButton);
     }
   }
 }

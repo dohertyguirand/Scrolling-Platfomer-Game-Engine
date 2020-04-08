@@ -23,10 +23,8 @@ import java.util.ResourceBundle;
 public class ViewerGame {
 
   private static final double MILLISECOND_DELAY = 1000;
-  public static final double WINDOW_WIDTH = 1000;
-  public static final double WINDOW_HEIGHT = 800; //TODO: put these in resource file or in data
-  private String RESOURCE_LOCATION = "./Resources.";
-  private String PAUSE_BUTTON_LOCATION = RESOURCE_LOCATION + "pauseButton.png";
+  private ResourceBundle myResources = ResourceBundle.getBundle("./Resources.config");
+  private String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private Group myEntityGroup;
   private Group myRoot;
   private String myGameName;
@@ -121,7 +119,8 @@ public class ViewerGame {
 
     myRoot = new Group();
     myRoot.getChildren().add(myEntityGroup);
-    myGameScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
+    myGameScene = new Scene(myRoot, Double.parseDouble(myResources.getString("windowWidth")),
+            Double.parseDouble(myResources.getString("windowHeight")));
     myGameStage.setScene(myGameScene);
     myGameStage.setTitle(myGameName);
     myGameStage.show();
