@@ -51,6 +51,11 @@ public interface EntityAPI {
   void move(double xDistance, double yDistance);
 
   /**
+   * Moves the entity by its internally stored velocity
+   */
+  void moveByVelocity();
+
+  /**
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();
@@ -64,4 +69,18 @@ public interface EntityAPI {
    * Marks this entity for removal by the next frame, and prevents it from taking further actions.
    */
   void destroySelf();
+
+  /**
+   *
+   * @param xChange The x-value of the change in velocity.
+   * @param yChange The y-value of the change in velocity.
+   */
+  void changeVelocity(double xChange, double yChange);
+
+  /**
+   *
+   * @param xVelocity The x-value of the new velocity.
+   * @param yVelocity The y-value of the new velocity.
+   */
+  void setVelocity(double xVelocity, double yVelocity);
 }

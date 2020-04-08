@@ -19,7 +19,6 @@ import java.io.File;
 
 public class OogaDataReader implements DataReader{
     private String myLibraryFilePath;
-    private Map<String entityName, OogaEntity entityDefinition>
 
     @Override
     public List<Thumbnail> getThumbnails(String folderPath) throws OogaDataException {
@@ -38,10 +37,10 @@ public class OogaDataReader implements DataReader{
         return null;
     }
 
-//    @Override
-//    public List<String> getGameFiles(String folderPath) throws OogaDataException {
-//        return null;
-//    }
+    @Override
+    public List<String> getGameFiles(String folderPath) throws OogaDataException {
+        return null;
+    }
 
     @Override
     public Game loadGame(String filePath) throws OogaDataException {

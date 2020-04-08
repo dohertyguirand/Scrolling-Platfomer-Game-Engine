@@ -9,9 +9,10 @@ import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
 import ooga.EntityAPI;
 import ooga.MovementBehavior;
+import ooga.game.EntityInternal;
 import ooga.game.PhysicsEntity;
 
-public abstract class Entity implements EntityAPI {
+public abstract class Entity implements EntityAPI, EntityInternal {
 
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
   private DoubleProperty x = new SimpleDoubleProperty();
@@ -48,6 +49,7 @@ public abstract class Entity implements EntityAPI {
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
+  private Map<String,List<ControlsBehavior>> myControls;
   private double myXPos;
   private double myYPos;
   private boolean isDestroyed;
@@ -56,7 +58,7 @@ public abstract class Entity implements EntityAPI {
 
   @Override
   public void reactToControls(String controls) {
-    for (ControlsBehavior behavior : myControlsBehaviors) {
+    for (ControlsBehavior behavior : myControls.get(controls)) {
       behavior.reactToControls(controls);
     }
   }

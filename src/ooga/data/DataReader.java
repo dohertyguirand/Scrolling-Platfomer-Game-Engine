@@ -18,7 +18,7 @@ public interface DataReader {
    * @return The list of thumbnails of games in the given directory.
    * @throws OogaDataException if the given filepath isn't a directory.
    */
-  List<String> getThumbnails(String folderPath) throws OogaDataException;
+  List<Thumbnail> getThumbnails(String folderPath) throws OogaDataException;
 
   /**
    * Returns the filepaths to every game file detected in the folder. Doesn't guarantee

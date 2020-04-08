@@ -27,6 +27,9 @@ with another entity, and have that behavior swapped out at runtime.
 - Added several properties including activeInView which determines whether the entity will be
 displayed
 
+### ControlsBehavior
+- Modified ``reactToControls()`` to take in the subject entity as a parameter.
+
 
 ### MovementBehavior
 - Added ``setTarget`` method as a way to resolve an issue where an Entity needed to know 
