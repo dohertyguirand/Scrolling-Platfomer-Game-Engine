@@ -12,3 +12,11 @@
 - Third issue: Allowing entities to react to collisions dynamically based on the other entity's
 state. i.e., having their downward velocity canceled when they fall onto floor, otherwise having
 their sideways velocity canceled.
+
+- added a resource file called inputs
+    - the key in the file is the user input 
+    - the value is the keyinput for backend 
+    - this way there can be multiple inputs that map to the same keyinput for backend
+   
+   
+- Need to figure out if entity is touching the ground before it jumps 

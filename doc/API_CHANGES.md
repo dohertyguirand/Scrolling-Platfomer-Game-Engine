@@ -31,3 +31,6 @@ displayed
 ### MovementBehavior
 - Added ``setTarget`` method as a way to resolve an issue where an Entity needed to know 
 movement behavior and a movement behavior needed to know what entity it was modifying.
+- Removed ``setTarget`` 
+- Added a second parameter "Entity subject"  in ``doMovementUpdate`` method as another solution to how the MovementBehavior knows which Entity it
+is updating 
