@@ -19,6 +19,19 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   private DoubleProperty y = new SimpleDoubleProperty();
   private List<Double> myVelocity;
 
+  private List<ControlsBehavior> myControlsBehaviors;
+  private List<MovementBehavior> myMovementBehaviors;
+  private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
+  private Map<String,List<ControlsBehavior>> myControls;
+  private double myXPos;
+  private double myYPos;
+  private boolean isDestroyed;
+
+  public Entity() {
+    myVelocity = List.of(0.,0.);
+    myXPos = 0;
+    myYPos = 0;
+  }
 
   public double getX() {
     return x.get();
@@ -47,16 +60,6 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   public void setActiveInView(boolean activeInView) {
     this.activeInView.set(activeInView);
   }
-
-  private List<ControlsBehavior> myControlsBehaviors;
-  private List<MovementBehavior> myMovementBehaviors;
-  private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
-  private Map<String,List<ControlsBehavior>> myControls;
-  private double myXPos;
-  private double myYPos;
-  private boolean isDestroyed;
-  //TODO: Use or remove
-  private PhysicsEntity myPhysics;
 
   @Override
   public void reactToControls(String controls) {

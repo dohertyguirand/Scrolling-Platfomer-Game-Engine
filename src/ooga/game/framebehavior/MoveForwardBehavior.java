@@ -21,7 +21,7 @@ public class MoveForwardBehavior implements MovementBehavior {
   }
 
   @Override
-  public void doMovementUpdate(double elapsedTime, Entity subject) {
+  public void doMovementUpdate(double elapsedTime, EntityAPI subject) {
     subject.move(xMovePerFrame * elapsedTime,yMovePerFrame * elapsedTime);
   }
 }

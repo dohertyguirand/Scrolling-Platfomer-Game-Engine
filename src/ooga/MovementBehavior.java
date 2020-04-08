@@ -16,5 +16,5 @@ public interface MovementBehavior {
    * @param elapsedTime The time since the previous frame.
    * @param subject The entity to perform the update upon.
    */
-  void doMovementUpdate(double elapsedTime, Entity subject);
+  void doMovementUpdate(double elapsedTime, EntityAPI subject);
 }

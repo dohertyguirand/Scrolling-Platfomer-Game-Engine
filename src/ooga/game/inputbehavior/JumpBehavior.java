@@ -2,6 +2,7 @@ package ooga.game.inputbehavior;
 
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
+import ooga.EntityAPI;
 import ooga.data.Entity;
 import ooga.game.EntityInternal;
 
@@ -15,7 +16,7 @@ public class JumpBehavior implements ControlsBehavior {
   }
 
   @Override
-  public void reactToControls(Entity subject) {
+  public void reactToControls(EntityAPI subject) {
     if (subject.getPosition().get(1) <= GROUND_LEVEL) {
       subject.changeVelocity(0, myYVelocity);
     }

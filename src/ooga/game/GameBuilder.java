@@ -12,6 +12,7 @@ public class GameBuilder {
     MovementBehavior birdMovement = new MoveForwardBehavior();
     EntityAPI bird = new OogaEntity(birdMovement);
     entities.add(bird);
-    return new OogaGame();
+//    return new OogaGame();
+    return null;
   }
 }

@@ -20,7 +20,7 @@ public class GravityBehavior implements MovementBehavior {
     }
 
     @Override
-    public void doMovementUpdate(double elapsedTime, Entity subject) {
+    public void doMovementUpdate(double elapsedTime, EntityAPI subject) {
         subject.changeVelocity(myGravityVector.get(0),myGravityVector.get(1));
         if (subject.getPosition().get(1) <= 0) {
             subject.setVelocity(0,0);

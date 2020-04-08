@@ -15,5 +15,5 @@ public interface ControlsBehavior {
    * @param subject The entity that owns this controls behavior. This is the entity that should
    *                be modified.
    */
-  void reactToControls(Entity subject);
+  void reactToControls(EntityAPI subject);
 }

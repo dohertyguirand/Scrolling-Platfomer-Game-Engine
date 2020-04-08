@@ -32,13 +32,11 @@ public class OogaEntity implements EntityAPI {
   public OogaEntity(MovementBehavior perFrameBehavior, ControlsBehavior controls) {
     this();
     myMovementBehaviors.add(perFrameBehavior);
-    perFrameBehavior.setTarget(this);
     myControlsBehaviors.add(controls);
   }
 
   public OogaEntity(MovementBehavior perFrameBehavior) {
     this();
-    perFrameBehavior.setTarget(this);
     myMovementBehaviors.add(perFrameBehavior);
   }
 
@@ -46,14 +44,14 @@ public class OogaEntity implements EntityAPI {
   @Override
   public void reactToControls(String controls) {
     for (ControlsBehavior behavior : myControlsBehaviors) {
-      behavior.reactToControls(controls);
+      behavior.reactToControls(this);
     }
   }
 
   @Override
   public void updateSelf(double elapsedTime) {
     for (MovementBehavior behavior : myMovementBehaviors) {
-      behavior.doMovementUpdate(elapsedTime);
+      behavior.doMovementUpdate(elapsedTime,this);
     }
     myPhysics.updateSelf(elapsedTime);
   }
@@ -61,6 +59,11 @@ public class OogaEntity implements EntityAPI {
   @Override
   public void setCollisionBehaviors(Map<String, List<CollisionBehavior>> behaviorMap) {
     myCollisionBehaviors = new HashMap<>(behaviorMap);
+  }
+
+  @Override
+  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
+
   }
 
   @Override
@@ -79,6 +82,11 @@ public class OogaEntity implements EntityAPI {
   }
 
   @Override
+  public void moveByVelocity() {
+
+  }
+
+  @Override
   public List<Double> getPosition() {
     return List.of(myXPos,myYPos);
   }
@@ -92,5 +100,15 @@ public class OogaEntity implements EntityAPI {
   @Override
   public void destroySelf() {
     isDestroyed = true;
+  }
+
+  @Override
+  public void changeVelocity(double xChange, double yChange) {
+
+  }
+
+  @Override
+  public void setVelocity(double xVelocity, double yVelocity) {
+
   }
 }
