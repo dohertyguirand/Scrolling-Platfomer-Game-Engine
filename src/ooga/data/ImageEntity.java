@@ -2,6 +2,7 @@ package ooga.data;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class ImageEntity extends OogaEntity {
@@ -10,10 +11,17 @@ public class ImageEntity extends OogaEntity {
   private DoubleProperty height = new SimpleDoubleProperty();
   private DoubleProperty width = new SimpleDoubleProperty();
 
-  public ImageEntity(String name) {
+  public ImageEntity(String name, String imageFilePath) {
     super(name);
     width.setValue(10.0);
     height.setValue(10.0);
+    if (imageFilePath != null) {
+      imageLocation = new SimpleStringProperty(imageFilePath);
+    }
+  }
+
+  public ImageEntity(String name) {
+    this(name,null);
   }
 
   public ImageEntity() {
