@@ -28,6 +28,7 @@ public class StartMenu {
   private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
   private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
   private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
+  private final double GAME_IMAGE_RESIZE_FACTOR = Double.parseDouble(myResources.getString("gameImageResizeFactor"));
 
   private Scene myScene;
   private ScrollPane myScrollPane;
@@ -86,7 +87,7 @@ public class StartMenu {
       resizeImage(gameImage, 1);
       Button gameButton = new Button(null, gameImage);
       gameButton.setOnAction(e -> setGameSelected(thumbnail.getTitle()));
-      gameButton.setOnMouseEntered(e -> resizeImage(gameImage, 1.25));
+      gameButton.setOnMouseEntered(e -> resizeImage(gameImage, GAME_IMAGE_RESIZE_FACTOR));
       gameButton.setOnMouseExited(e -> resizeImage(gameImage, 1));
       gameButton.setTooltip(new Tooltip(thumbnail.getDescription()));
       myHBox.getChildren().add(gameButton);
