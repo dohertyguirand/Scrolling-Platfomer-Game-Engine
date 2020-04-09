@@ -13,10 +13,11 @@ import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.framebehavior.GravityBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
+import ooga.game.inputbehavior.JumpBehavior;
 import org.junit.jupiter.api.Test;
 
 
-class EntityAPITest {
+class EntityTest {
 
   @Test
   void testGravity(){
@@ -56,5 +57,17 @@ class EntityAPITest {
     dino.updateSelf(1.0);
     dino.handleCollision("Cactus");
     assertTrue(dino.isDestroyed());
+  }
+
+  @Test
+  public void testControls() {
+    Entity testEntity = new ImageEntity();
+    double jumpSpeedY = 10.0;
+    testEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(jumpSpeedY))));
+    testEntity.reactToControls("UpKey");
+    double elapsedTime = 1.0;
+    double expectedY = elapsedTime * jumpSpeedY;
+    testEntity.updateSelf(1.0);
+    assertEquals(List.of(0.0,expectedY),testEntity.getPosition());
   }
 }

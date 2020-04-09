@@ -18,7 +18,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private DoubleProperty myYPos = new SimpleDoubleProperty();
   private List<Double> myVelocity;
 
-  private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
@@ -96,6 +95,11 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setCollisionBehaviors(Map<String, List<CollisionBehavior>> behaviorMap) {
     myCollisionBehaviors = new HashMap<>(behaviorMap);
+  }
+
+  @Override
+  public void setControlsBehaviors(Map<String, List<ControlsBehavior>> behaviors) {
+    myControls = new HashMap<>(behaviors);
   }
 
   @Override
