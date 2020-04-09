@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
 import ooga.game.Game;
@@ -32,7 +33,7 @@ public class ViewerGame {
   private PauseMenu myPauseMenu;
   private OogaDataReader myDataReader;
 
-  public ViewerGame(String gameName, OogaDataReader dataReader){
+  public ViewerGame(String gameName, OogaDataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myGameName = gameName;
     Game game = new OogaGame(gameName);
@@ -43,7 +44,7 @@ public class ViewerGame {
   }
 
   private void setUpGameEntities(Game game){
-    ObservableList<Entity> gameEntities = game.getEntities();
+    ObservableList<Entity> gameEntities = game.getAbstractEntities();
     // add listener here to handle entities being created/removed
     // this listener should set the "active" property of the entity,
     //    which will trigger a listener that removes it from the group

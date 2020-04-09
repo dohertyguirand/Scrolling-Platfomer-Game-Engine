@@ -2,11 +2,15 @@ package ooga.game;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
 import java.util.List;
 
+import java.util.Map;
+import ooga.CollisionBehavior;
 import ooga.EntityAPI;
 import ooga.MovementBehavior;
 import ooga.data.ImageEntity;
+import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.framebehavior.GravityBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
 import org.junit.jupiter.api.Test;
@@ -38,5 +42,19 @@ class EntityAPITest {
 
       assertEquals(expectedPosition,subject.getPosition());
     }
+  }
+
+  @Test
+  public void testDinosaur() {
+    EntityAPI dino = new ImageEntity();
+    EntityAPI cactus = new ImageEntity();
+    Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
+    collisionMap.put("Cactus", List.of(new MoveUpCollision(dino, 20.01)));
+    dino.setCollisionBehaviors(collisionMap);
+    dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
+
+    dino.updateSelf(1.0);
+    dino.handleCollision("Cactus");
+    assertTrue(dino.isDestroyed());
   }
 }

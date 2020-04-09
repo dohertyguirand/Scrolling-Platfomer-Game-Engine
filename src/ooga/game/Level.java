@@ -14,7 +14,7 @@ public interface Level {
   /**
    * @return A List of all Entities in the level.
    */
-  ObservableList<Entity> getEntities();
+  ObservableList<EntityAPI> getEntities();
 
   /**
    * Usually relies on an owned instance of LevelEndCondition to handle the unique logic of

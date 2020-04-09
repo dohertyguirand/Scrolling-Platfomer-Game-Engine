@@ -2,6 +2,8 @@ package ooga;
 
 import java.util.List;
 import java.util.Map;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -10,6 +12,20 @@ import java.util.Map;
  * anything besides affect itself.
  */
 public interface EntityAPI {
+
+  public double getX();
+
+  public DoubleProperty xProperty();
+
+  public double getY();
+
+  public DoubleProperty yProperty();
+
+  public boolean isActiveInView();
+
+  public BooleanProperty activeInViewProperty();
+
+  public void setActiveInView(boolean activeInView);
 
   /**
    * 'Controls' will be a String mapping to a controls type from a shared back end resource file.
@@ -67,6 +83,16 @@ public interface EntityAPI {
   List<Double> getPosition();
 
   /**
+   * @return The width of the entity.
+   */
+  double getWidth();
+
+  /**
+   * @return The height of the entity.
+   */
+  double getHeight();
+
+  /**
    * @param newPosition The new position for the entity to have in the level.
    */
   void setPosition(List<Double> newPosition);
@@ -75,6 +101,11 @@ public interface EntityAPI {
    * Marks this entity for removal by the next frame, and prevents it from taking further actions.
    */
   void destroySelf();
+
+  /**
+   * @return True if this entity has been destroyed and should be removed.
+   */
+  boolean isDestroyed();
 
   /**
    *
@@ -89,4 +120,5 @@ public interface EntityAPI {
    * @param yVelocity The y-value of the new velocity.
    */
   void setVelocity(double xVelocity, double yVelocity);
+
 }

@@ -10,6 +10,11 @@ public class ImageEntity extends Entity {
   private DoubleProperty height = new SimpleDoubleProperty();
   private DoubleProperty width = new SimpleDoubleProperty();
 
+  public ImageEntity() {
+    width.setValue(10.0);
+    height.setValue(10.0);
+  }
+
   public String getImageLocation() {
     return imageLocation.get();
   }
@@ -18,16 +23,19 @@ public class ImageEntity extends Entity {
     return imageLocation;
   }
 
-  public double getHeight() {
-    return height.get();
-  }
-
   public DoubleProperty heightProperty() {
     return height;
   }
 
+  @Override
   public double getWidth() {
     return width.get();
+  }
+
+
+  @Override
+  public double getHeight() {
+    return height.get();
   }
 
   public DoubleProperty widthProperty() {

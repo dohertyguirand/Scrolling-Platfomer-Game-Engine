@@ -3,6 +3,7 @@ package ooga.view;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ooga.OogaDataException;
 import ooga.data.OogaDataReader;
 
 import java.io.IOException;
@@ -33,6 +34,12 @@ public class Visualizer extends Application {
   }
 
   private void startGame(String gameName) {
-    new ViewerGame(gameName, myDataReader);
+    try {
+      new ViewerGame(gameName, myDataReader);
+    }
+    catch (OogaDataException e) {
+      //Sam added this, because he made it possible for the OogaGame constructor to throw
+      // an exception, so that the view can decide what to do when no game is found.
+    }
   }
 }

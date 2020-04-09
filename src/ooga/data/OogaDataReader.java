@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
+import java.util.Map;
 
 /**
  * info @ https://mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
@@ -18,27 +19,25 @@ import java.io.File;
  */
 
 public class OogaDataReader implements DataReader{
-    private String myLibraryFilePath;
+    private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
+    //TODO: we as a team need to make an EntityDefinition interface
+    // That is what should be in this map, not a full interface
+    //TODO: If DataReader stores no game specific information, then Braeden needs to decide how this EntityMap will be
+    // stored and distributed; shouldn't be too hard
+    //private Map<String, Entity> myEntityMap;
 
     @Override
-    public List<Thumbnail> getThumbnails(String folderPath) throws OogaDataException {
+    public List<Thumbnail> getThumbnails(String folderName) throws OogaDataException{
         return null;
     }
 
-    /**
-     * give the Game a list of level ID's in the order that they're listed in the .xml files, its name to entity map
-     * as well as anythiing else the game will need directly after it's created
-     * @param
-     * @return
-     * @throws OogaDataException
-     */
-    //@Override
+    @Override
     public List<Integer> getBasicGameInfo(String gameName) throws OogaDataException {
         return null;
     }
 
     @Override
-    public List<String> getGameFiles(String folderPath) throws OogaDataException {
+    public List<String> getGameFilePaths(String folderPath) throws OogaDataException {
         return null;
     }
 
@@ -75,7 +74,7 @@ public class OogaDataReader implements DataReader{
 
                 //loop through and print instances
                 NodeList currentLevelInstances =
-                        ((Element) levelAsElement.getElementsByTagName("Instances").item(0)).getElementsByTagName("Instance");
+                    ((Element) levelAsElement.getElementsByTagName("Instances").item(0)).getElementsByTagName("Instance");
                 System.out.println(currentLevelInstances.getLength() + " Instances:");
 
                 for (int j=0; j<currentLevelInstances.getLength(); j++) {

@@ -1,6 +1,5 @@
 package ooga.game;
 
-import java.util.List;
 import ooga.EntityAPI;
 
 import javafx.collections.ObservableList;
@@ -19,7 +18,15 @@ public interface Game {
    * This includes the player, enemies, terrain, powerups, etc., but not background or in-game
    * UI.
    */
-  ObservableList<Entity> getEntities();
+  ObservableList<EntityAPI> getEntities();
+
+
+  //TODO: Remove, since this causes an abstraction (Game) to rely on an implementation (Entity)
+  /**
+   * @return The list of entities as a list of abstract Entity class objects instead of as
+   * EntityAPI objects.
+   */
+  ObservableList<Entity> getAbstractEntities();
 
   /**
    * Runs anything that needs to be run by the game, levels, or any entities in a level when

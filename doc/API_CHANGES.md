@@ -26,6 +26,13 @@ with another entity, and have that behavior swapped out at runtime.
 - Added ``setPosition`` so that behaviors with access to the entity can teleport it around the level.
 - Added several properties including activeInView which determines whether the entity will be
 displayed
+- Added ``getHeight`` and ``getWidth`` so that collision detection can do its job 
+under the assumption of square collisions.
+- Added ``Entity`` abstract class methods to ``EntityAPI``, so that we can hopefully unite the two.
+The motivation was that View relies on Entities, but it asks the Game interface to get entities
+as a list, and I don't want Game to rely on implementation details of EntityAPI (even though Entity
+is abstract). The ultimate solution is to make a distinction between the 'front-facing' part of Entity
+and the rest.
 
 ### ControlsBehavior
 - Modified ``reactToControls()`` to take in the subject entity as a parameter.

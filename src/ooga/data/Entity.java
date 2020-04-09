@@ -1,6 +1,5 @@
 package ooga.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,53 +9,57 @@ import ooga.ControlsBehavior;
 import ooga.EntityAPI;
 import ooga.MovementBehavior;
 import ooga.game.EntityInternal;
-import ooga.game.PhysicsEntity;
 
 public abstract class Entity implements EntityAPI, EntityInternal {
 
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
-  private DoubleProperty x = new SimpleDoubleProperty();
-  private DoubleProperty y = new SimpleDoubleProperty();
+  private DoubleProperty myXPos = new SimpleDoubleProperty();
+  private DoubleProperty myYPos = new SimpleDoubleProperty();
   private List<Double> myVelocity;
 
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
-  private double myXPos;
-  private double myYPos;
   private boolean isDestroyed;
 
   public Entity() {
     myVelocity = List.of(0.,0.);
-    myXPos = 0;
-    myYPos = 0;
+    myXPos.set(0);
+    myYPos.set(0);
   }
 
+  @Override
   public double getX() {
-    return x.get();
+    return myXPos.get();
   }
 
+  @Override
   public DoubleProperty xProperty() {
-    return x;
+    return myXPos;
   }
 
+  @Override
   public double getY() {
-    return y.get();
+    return myYPos.get();
   }
 
+  @Override
   public DoubleProperty yProperty() {
-    return y;
+    return myYPos;
   }
 
+  @Override
   public boolean isActiveInView() {
     return activeInView.get();
   }
 
+  @Override
   public BooleanProperty activeInViewProperty() {
     return activeInView;
   }
 
+  @Override
   public void setActiveInView(boolean activeInView) {
     this.activeInView.set(activeInView);
   }
@@ -91,19 +94,37 @@ public abstract class Entity implements EntityAPI, EntityInternal {
 
   @Override
   public void move(double xDistance, double yDistance) {
-    myXPos += xDistance;
-    myYPos += yDistance;
+    myXPos.set(myXPos.get() + xDistance);
+    myYPos.set(myYPos.get() + yDistance);
   }
 
   @Override
   public List<Double> getPosition() {
-    return List.of(myXPos,myYPos);
+    return List.of(myXPos.get(),myYPos.get());
+  }
+
+  @Override
+  public double getWidth() {
+    //TODO: Make this reflect the entity's width.
+    return 100;
+  }
+
+  @Override
+  public double getHeight() {
+    //TODO: Make this reflect the entity's height.
+    return 100;
+  }
+
+  @Override
+  public boolean isDestroyed() {
+    //TODO: Tie this to an instance variable (activeInView?)
+    return false;
   }
 
   @Override
   public void setPosition(List<Double> newPosition) {
-    myXPos = newPosition.get(0);
-    myYPos = newPosition.get(1);
+    myXPos.set(newPosition.get(0));
+    myYPos.set(newPosition.get(1));
   }
 
   @Override
@@ -113,8 +134,7 @@ public abstract class Entity implements EntityAPI, EntityInternal {
 
   @Override
   public void moveByVelocity() {
-    myXPos += myVelocity.get(0);
-    myYPos += myVelocity.get(1);
+    move(myVelocity.get(0),myVelocity.get(1));
   }
 
   @Override

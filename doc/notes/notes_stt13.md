@@ -20,3 +20,8 @@ their sideways velocity canceled.
    
    
 - Need to figure out if entity is touching the ground before it jumps 
+
+- Notes for Google Dino game:
+    - Entities: Dino and Cactus
+    - Dino entity: Has jumping for movement (and ducking), has gravity for falling, 
+    has interaction with Cactus that causes Dino to stop existing.

@@ -1,4 +1,5 @@
 package ooga.game;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
@@ -15,10 +16,11 @@ import java.util.List;
  * TODO: fully flesh this out to be a working class
  */
 public class OogaLevel implements Level{
-    private ObservableList<Entity> myEntities;
+    private ObservableList<EntityAPI> myEntities;
 
-    public OogaLevel(List<Entity> Entities){
-        myEntities = (ObservableList<Entity>) Entities;
+    public OogaLevel(List<EntityAPI> Entities){
+//        myEntities = (ObservableList<EntityAPI>) Entities;
+        myEntities = FXCollections.observableList(Entities);
     }
 
     public OogaLevel() {
@@ -26,7 +28,7 @@ public class OogaLevel implements Level{
     }
 
     @Override
-    public ObservableList<Entity> getEntities() {
+    public ObservableList<EntityAPI> getEntities() {
         return myEntities;
     }
 

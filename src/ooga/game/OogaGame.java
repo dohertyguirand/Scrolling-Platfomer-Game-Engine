@@ -3,29 +3,46 @@ package ooga.game;
 
 import java.util.List;
 import javafx.collections.ObservableList;
-import ooga.data.Entity;
+import ooga.EntityAPI;
+import ooga.OogaDataException;
+import ooga.data.DataReader;
 import ooga.UserInputListener;
+import ooga.data.Entity;
+import ooga.data.OogaDataReader;
 
-  public class OogaGame implements Game {
+public class OogaGame implements Game {
 
-    private List<Level> myLevels;
+    private List<Integer> myLevelIds;
     private Level currentLevel;
     private String myName;
+    private DataReader myDataReader;
 
-//  public OogaGame(List<Level> levels) {
-//    myLevels = levels;
-//    if (!levels.isEmpty()) {
-//      currentLevel = levels.get(0);
-//    }
-//  }
-  public OogaGame(String gameName) {
+  public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myName = gameName;
+    myDataReader = dataReader;
+    myLevelIds = myDataReader.getBasicGameInfo(gameName);
+  }
+
+    public OogaGame(String gameName) throws OogaDataException {
+      myName = gameName;
+      //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
+      myDataReader = new OogaDataReader();
+      myLevelIds = myDataReader.getBasicGameInfo(gameName);
+    }
+
+  public OogaGame(Level startingLevel) {
+    currentLevel = startingLevel;
   }
 
   @Override
-  public ObservableList<Entity> getEntities() {
+  public ObservableList<EntityAPI> getEntities() {
+    return currentLevel.getEntities();
+  }
+
+  @Override
+  public ObservableList<Entity> getAbstractEntities() {
     return null;
-  } //return myLevel.getEntities
+  }
 
   @Override
   public void doGameStart() {
@@ -38,7 +55,7 @@ import ooga.UserInputListener;
 
   @Override
   public void doUpdateLoop(double elapsedTime) {
-    for (Entity e : currentLevel.getEntities()) {
+    for (EntityAPI e : currentLevel.getEntities()) {
       e.updateSelf(elapsedTime);
     }
   }
