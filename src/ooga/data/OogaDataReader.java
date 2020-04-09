@@ -6,6 +6,8 @@ import ooga.game.Game;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
+import ooga.game.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -25,6 +27,12 @@ public class OogaDataReader implements DataReader{
     //TODO: If DataReader stores no game specific information, then Braeden needs to decide how this EntityMap will be
     // stored and distributed; shouldn't be too hard
     //private Map<String, Entity> myEntityMap;
+    public OogaDataReader(String givenFilePath){
+        myLibraryFilePath = givenFilePath;
+    }
+    public OogaDataReader(){
+        this("");
+    }
 
     @Override
     public List<Thumbnail> getThumbnails() {
@@ -42,9 +50,14 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public Game loadGame(String filePath) throws OogaDataException {
+    public Level loadLevel(String gameName, String levelID) throws OogaDataException {
+        // at the time of writing this, the OogaDataReader doesn't use the given Strings ^
+        // I will change this when I have that workign properly
+        // -Braeden
         try {
             // create a new document to parse
+            // String filePath = myLibraryFilePath;
+            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/resources/example-mario/example_mario.xml";
             File fXmlFile = new File(filePath);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
 
