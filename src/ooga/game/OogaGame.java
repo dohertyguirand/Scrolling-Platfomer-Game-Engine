@@ -12,7 +12,7 @@ import ooga.data.ImageEntity;
 import ooga.data.OogaEntity;
 import ooga.data.OogaDataReader;
 
-public class OogaGame implements Game {
+public class OogaGame implements Game, UserInputListener {
 
   //TODO: Remove hard-coded filepath
   public static final String gameLibraryPath = "data/GamesLibrary/";
@@ -120,5 +120,53 @@ public class OogaGame implements Game {
   @Override
   public UserInputListener makeUserInputListener() {
     return null;
+  }
+
+  /**
+   * @param mouseX The X-coordinate of the mouse click, in in-game screen coordinates
+   *               (not "view-relative" coordinates).
+   * @param mouseY The Y-coordinate of the mouse click, in-game screen coordinates.
+   */
+  @Override
+  public void reactToMouseClick(double mouseX, double mouseY) {
+
+  }
+
+  /**
+   * React to a key being pressed. Use data files to determine appropriate action
+   *
+   * @param keyName string name of key
+   */
+  @Override
+  public void reactToKeyPress(String keyName) {
+
+  }
+
+  /**
+   * Handles when the command is given to save the game to a file.
+   */
+  @Override
+  public void reactToGameSave() {
+
+  }
+
+  /**
+   * Handles when the command is given to quit the currently running game.
+   * This might be modified to account for identifying which game must close when
+   * there are multiple games open.
+   */
+  @Override
+  public void reactToGameQuit() {
+
+  }
+
+  /**
+   * indicates the pause button was clicked in the ui
+   *
+   * @param paused whether or not the button clicked was pause or resume
+   */
+  @Override
+  public void reactToPauseButton(boolean paused) {
+
   }
 }

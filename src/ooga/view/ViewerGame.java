@@ -41,7 +41,7 @@ public class ViewerGame {
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();
-    setUpInputListeners();
+    setUpInputListeners(myGame);
   }
 
   private void setUpGameEntities(){
@@ -138,8 +138,7 @@ public class ViewerGame {
     alert.showAndWait();
   }
 
-  private void setUpInputListeners() {
-    UserInputListener userInputListener = myGame.makeUserInputListener();
+  private void setUpInputListeners(UserInputListener userInputListener) {
     setUpPauseMenuListeners(userInputListener);
     myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getCharacter()));
     myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()));
