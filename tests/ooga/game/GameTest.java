@@ -1,10 +1,13 @@
 package ooga.game;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 import ooga.EntityAPI;
 import ooga.data.ImageEntity;
+import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +37,18 @@ public class GameTest {
 
   @Test
   void testDoCollisionLoop() {
+    EntityAPI destructibleEntity = new ImageEntity("entity1");
+    destructibleEntity.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
+    EntityAPI obstacleEntity = new ImageEntity("entity2");
+    Level level = new OogaLevel(List.of(destructibleEntity,obstacleEntity));
+    OogaGame game = new OogaGame(level);
+    game.doCollisionLoop();
+    assertTrue(destructibleEntity.isDestroyed());
 
+
+//    EntityAPI removable = new ImageEntity();
+//    removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
+//    removable.handleCollision("entity2");
+//    assertTrue(removable.isDestroyed());
   }
 }

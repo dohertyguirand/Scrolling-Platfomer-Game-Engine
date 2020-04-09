@@ -17,6 +17,7 @@ public class OogaGame implements Game {
     private Level currentLevel;
     private String myName;
     private DataReader myDataReader;
+    private CollisionDetector myCollisionDetector;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myName = gameName;
@@ -24,14 +25,18 @@ public class OogaGame implements Game {
     myLevelIds = myDataReader.getBasicGameInfo(gameName);
   }
 
-    public OogaGame(String gameName) throws OogaDataException {
-      myName = gameName;
-      //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
-      myDataReader = new OogaDataReader();
-      myLevelIds = myDataReader.getBasicGameInfo(gameName);
-    }
+  public OogaGame(String gameName) throws OogaDataException {
+    myName = gameName;
+    //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
+    myDataReader = new OogaDataReader();
+    myLevelIds = myDataReader.getBasicGameInfo(gameName);
+    //TODO: Make the type of collision detector configurable.
+    myCollisionDetector = new OogaCollisionDetector();
+  }
 
   public OogaGame(Level startingLevel) {
+    myName = "Unnamed";
+    myCollisionDetector = new OogaCollisionDetector();
     currentLevel = startingLevel;
   }
 
@@ -52,6 +57,13 @@ public class OogaGame implements Game {
 
   @Override
   public void doCollisionLoop() {
+    for (EntityAPI target : currentLevel.getEntities()) {
+      for (EntityAPI collidingWith : currentLevel.getEntities()) {
+        if (myCollisionDetector.isColliding(target,collidingWith)) {
+          target.handleCollision(collidingWith.getName());
+        }
+      }
+    }
   }
 
   @Override

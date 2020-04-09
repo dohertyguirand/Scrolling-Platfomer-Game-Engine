@@ -25,3 +25,7 @@ their sideways velocity canceled.
     - Entities: Dino and Cactus
     - Dino entity: Has jumping for movement (and ducking), has gravity for falling, 
     has interaction with Cactus that causes Dino to stop existing.
+    
+- Notes from meeting on 4/9/2020:
+    - I can make one generic 'updateGameByOneFrame' method in Game so that the view only has to 
+    call one thing.

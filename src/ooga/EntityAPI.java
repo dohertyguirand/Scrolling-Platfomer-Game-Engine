@@ -28,6 +28,11 @@ public interface EntityAPI {
   public void setActiveInView(boolean activeInView);
 
   /**
+   * @return The name identifying what type of entity this is, as defined in the game file.
+   */
+  public String getName();
+
+  /**
    * 'Controls' will be a String mapping to a controls type from a shared back end resource file.
    * @param controls The String identifier of the type of control input that must be handled.
    */

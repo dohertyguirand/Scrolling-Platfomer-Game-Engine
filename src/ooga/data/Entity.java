@@ -1,5 +1,6 @@
 package ooga.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,25 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
   private boolean isDestroyed;
+  private String myName;
 
   public Entity() {
     myVelocity = List.of(0.,0.);
     myXPos.set(0);
     myYPos.set(0);
+    myCollisionBehaviors = new HashMap<>();
+    myMovementBehaviors = new ArrayList<>();
+    myControls = new HashMap<>();
+  }
+
+  public Entity(String name) {
+    this();
+    myName = name;
+  }
+
+  @Override
+  public String getName() {
+    return myName;
   }
 
   @Override
