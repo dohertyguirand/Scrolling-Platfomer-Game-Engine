@@ -1,10 +1,13 @@
 # API Changes
 
-## Game API
-=======
 ## Data
 - Added method ``getPauseButtonImage`` in DataReader to fetch an Image object representing
 the pause button
+- 4/7/20 Removed ``getPauseButtonImage`` in DataReader because view is going to do that on its own
+- 4/7/20 Changed ``getGameFiles`` to ``getGameFilePaths`` in DataReader to make the purpose more explicit
+- 4/7/20 Changed ``getThumbnails`` in DataReader to return a list of Thumbnails instead of Strings
+- 4/7/20 Added ``getBasicGameInfo`` in DataReader which takes a game's name and give it basic info. More description in the API.
+
 - DataReader getThumbnails no longer takes String arg
 
 ## Game API

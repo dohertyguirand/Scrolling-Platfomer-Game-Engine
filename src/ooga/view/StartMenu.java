@@ -15,12 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ooga.data.OogaDataReader;
 import ooga.data.Thumbnail;
-import java.io.File;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 
 import java.util.List;
@@ -121,15 +117,6 @@ public class StartMenu {
   }
 
   public void initialize() throws IOException {
-    for (int i = 1, k = 300; i < 4; i++, k+=100) {
-      InputStream is = Files.newInputStream(Paths.get("src/view/Resources/menu_images/title" +(i)+ ".gif"));
-      final Image image = myImages[i] =
-              new Image(is);
-      final ImageView pic = myPics[i] = new ImageView((myImages[i]));
-      myPics[i].setX(k);
-      myPics[i].setY(200);
-      myHbox.getChildren().add(myPics[i]);
-    }
   }
 
 

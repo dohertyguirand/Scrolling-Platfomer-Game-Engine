@@ -87,11 +87,7 @@ public class ViewerGame {
     myPauseMenu = new PauseMenu();
     Scene pauseScene = new Scene(myPauseMenu);
     Button pauseButton = new Button();
-<<<<<<< HEAD
-//    pauseButton.setGraphic(myDataReader.getPauseButtonImage());
-=======
     pauseButton.setGraphic(getPauseButtonImage());
->>>>>>> 1c4de2d5602e574ed814b34ccb875ac1ad44cf09
     pauseButton.setOnAction(e -> {
       myGameStage.setScene(pauseScene);
       myPauseMenu.setResumed(false);
