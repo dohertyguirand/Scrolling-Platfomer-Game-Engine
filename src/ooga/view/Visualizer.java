@@ -5,10 +5,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class Visualizer extends Application {
 
-  //private ResourceBundle myResources;
+  private ResourceBundle myResources;
   private static final String START_MENU_TITLE = "Choose a Game";
 
   public static void main(String[] args) {

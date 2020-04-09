@@ -15,12 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ooga.data.OogaDataReader;
 import ooga.data.Thumbnail;
-import java.io.File;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 
 import java.util.List;
@@ -29,7 +25,7 @@ import java.util.ResourceBundle;
 public class StartMenu {
   private OogaDataReader myDataReader;
   private StringProperty gameSelected = new SimpleStringProperty();
-  private ResourceBundle myResources = ResourceBundle.getBundle("./Resources.config");
+  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources/config.properties");
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double GAME_IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
@@ -121,15 +117,15 @@ public class StartMenu {
   }
 
   public void initialize() throws IOException {
-    for (int i = 1, k = 300; i < 4; i++, k+=100) {
-      InputStream is = Files.newInputStream(Paths.get("src/view/Resources/menu_images/title" +(i)+ ".gif"));
-      final Image image = myImages[i] =
-              new Image(is);
-      final ImageView pic = myPics[i] = new ImageView((myImages[i]));
-      myPics[i].setX(k);
-      myPics[i].setY(200);
-      myHbox.getChildren().add(myPics[i]);
-    }
+//    for (int i = 1, k = 300; i < 4; i++, k+=100) {
+//      InputStream is = Files.newInputStream(Paths.get("src/view/Resources/menu_images/title" +(i)+ ".gif"));
+//      final Image image = myImages[i] =
+//              new Image(is);
+//      final ImageView pic = myPics[i] = new ImageView((myImages[i]));
+//      myPics[i].setX(k);
+//      myPics[i].setY(200);
+//      myHbox.getChildren().add(myPics[i]);
+//    }
   }
 
 
