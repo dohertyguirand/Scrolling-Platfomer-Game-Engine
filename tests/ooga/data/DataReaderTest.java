@@ -4,6 +4,9 @@ import ooga.OogaDataException;
 import ooga.data.OogaDataReader;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This is a class that just tests DataReader and makes sure it is working correctly.
  * @author braedenward
@@ -13,12 +16,12 @@ public class DataReaderTest {
     @Test
     public void runTest(){
         OogaDataReader testDataReader = new OogaDataReader();
-        testDataReader.getThumbnails();
+        List<Thumbnail> thumbnailList = testDataReader.getThumbnails();
+        for(Thumbnail t : thumbnailList){
+            System.out.println(String.format("Title: %s \nDescription: %s \nImage: %s\n", t.getTitle(), t.getDescription(), t.getImageFile()));
+        }
         try {
-            // at the time of writing this, the OogaDataReader doesn't use the given Strings
-            // I will change this when I have that workign properly
-            // -Braeden
-            testDataReader.loadLevel("GameName", "LevelID");
+            testDataReader.loadLevel("Super Mario Bros", "1");
         } catch (OogaDataException e) {
             // TODO: Fix this, Braeden
             System.out.println("Test Failed");
