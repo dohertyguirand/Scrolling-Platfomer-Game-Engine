@@ -1,4 +1,4 @@
-package ooga.view;
+/*package ooga.view;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -87,4 +87,4 @@ public class StartMenuOptions {
     }
 
 
-}
+}*/

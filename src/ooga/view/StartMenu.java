@@ -25,13 +25,12 @@ import java.util.ResourceBundle;
 public class StartMenu {
   private OogaDataReader myDataReader;
   private StringProperty gameSelected = new SimpleStringProperty();
-  private ResourceBundle myResources = ResourceBundle.getBundle("./Resources.config");
+  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double GAME_IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
   private final double GAME_IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
   private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
-  private final double ZERO = Double.parseDouble(myResources.getString("zero"));
   private final double MAX_SCROLLBAR = Double.parseDouble(myResources.getString("maxScrollbar"));
   private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
   private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
@@ -86,7 +85,7 @@ public class StartMenu {
   private void horizontalScroller() {
       myScrollbar = new ScrollBar();
       myScrollbar.setLayoutY(SCROLLBAR_Y);
-      myScrollbar.setMin(ZERO);
+      myScrollbar.setMin(0);
       myScrollbar.setOrientation(Orientation.HORIZONTAL);
       myScrollbar.setPrefWidth(WINDOW_WIDTH);
       myScrollbar.setMax(MAX_SCROLLBAR);
