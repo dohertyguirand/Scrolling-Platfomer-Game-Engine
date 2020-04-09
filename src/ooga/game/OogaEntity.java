@@ -67,12 +67,21 @@ public class OogaEntity implements EntityAPI {
   }
 
   @Override
+  public void setReactions(Map<String, List<ControlsBehavior>> controlsMap) {
+
+  }
+
+  @Override
   public void handleCollision(String collidingEntity) {
     if (myCollisionBehaviors.containsKey(collidingEntity)) {
       for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
         behavior.doCollision(collidingEntity);
       }
     }
+  }
+
+  @Override
+  public void react(String controlKey, String collidingEntity) {
   }
 
   @Override
@@ -109,6 +118,5 @@ public class OogaEntity implements EntityAPI {
 
   @Override
   public void setVelocity(double xVelocity, double yVelocity) {
-
   }
 }

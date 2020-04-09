@@ -39,13 +39,23 @@ public interface EntityAPI {
   void setMovementBehaviors(List<MovementBehavior> behaviors);
 
   /**
+   * Sets the Controls that will be carried out for each collision and/or user control
+   * @param controlsMap A Mpp that connects the name of the Control the Control Behaviors
+   */
+  void setReactions(Map<String,List<ControlsBehavior>> controlsMap);
+
+                            /**
    * Reacts to colliding with a specific entity type based on its list of reactions mapped to
    * entity names, as defined by the game data.
    * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
    * dies when hit by a fireball.
    * @param collidingEntity The String identifier of the enemy being collided with.
    */
+  void handleCollision(String collidingEntity);
+
+
   void react(String controlKey, String collidingEntity);
+
 
   /**
    * Moves the entity by the specified amount in the x and y direction.

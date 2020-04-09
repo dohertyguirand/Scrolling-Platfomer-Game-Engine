@@ -13,7 +13,7 @@ public class ReactionBehavior {
      * @param ControlKey - String that references to the Specific Control
      * @param CollisionEntity - String the type of Entity that is part of the Collision
      */
-    public String reactToInputs(String ControlKey, String CollisionEntity){
+    public String getReaction(String ControlKey, String CollisionEntity){
         String key = CollisionEntity+ControlKey;
         String reaction = reactionMappings.getString(key);
         return reaction;

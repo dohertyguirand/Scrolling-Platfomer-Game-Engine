@@ -1,13 +1,13 @@
 package ooga.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+
 import javafx.beans.property.*;
 import ooga.*;
 import ooga.game.EntityInternal;
-import ooga.game.PhysicsEntity;
 
 public abstract class Entity implements EntityAPI, EntityInternal {
 
@@ -18,7 +18,7 @@ public abstract class Entity implements EntityAPI, EntityInternal {
 
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
-  private Map<String, ControlsBehavior> myReactions;
+  private Map<String, List<ControlsBehavior>> myReactions;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
   private ReactionBehavior reactionBehavior;
@@ -80,15 +80,21 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   }
 
   @Override
+  public void handleCollision(String collidingEntity){
+    if (myCollisionBehaviors.containsKey(collidingEntity)) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
+        behavior.doCollision(collidingEntity);
+      }
+    }
+  }
+
+  @Override
   public void react(String controlKey, String collidingEntity) {
-    String reaction = reactionBehavior.reactToInputs(controlKey,collidingEntity);
-    ControlsBehavior behavior = myReactions.get(reaction);
-    behavior.reactToControls(this);
-//    if (myCollisionBehaviors.containsKey(collidingEntity)) {
-//      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
-//        behavior.doCollision(collidingEntity);
-//      }
-//    }
+    String reaction = reactionBehavior.getReaction(controlKey,collidingEntity);
+    List<ControlsBehavior> behaviors = myReactions.get(reaction);
+    for(ControlsBehavior behavior : behaviors){
+      behavior.reactToControls(this);
+    }
   }
 
   @Override
@@ -132,5 +138,14 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   @Override
   public void setMovementBehaviors(List<MovementBehavior> behaviors) {
     myMovementBehaviors = behaviors;
+  }
+
+  @Override
+  public void setReactions(Map<String, List<ControlsBehavior>> map){
+    myReactions = map;
+  }
+
+  public void setReactionBehavior(String filepath) {
+    reactionBehavior = new ReactionBehavior(ResourceBundle.getBundle(filepath));
   }
 }
