@@ -42,7 +42,7 @@ as a list, and I don't want Game to rely on implementation details of EntityAPI 
 is abstract). The ultimate solution is to make a distinction between the 'front-facing' part of Entity
 and the rest.
 - Added ``getName`` so that collisions can use the name of the entity.
-
+- Added ``getVelocity`` so that the Entity knows it 
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require

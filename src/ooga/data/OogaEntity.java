@@ -123,6 +123,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
+  public List<Double> getVelocity(){return myVelocity;}
+
+  @Override
   public double getWidth() {
     //TODO: Make this reflect the entity's width.
     return 100;
