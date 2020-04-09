@@ -1,8 +1,6 @@
 package ooga.game;
 
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import ooga.EntityAPI;
+import ooga.Entity;
 
 /**
  * Detects collisions between entities. Can likely be static.
@@ -17,5 +15,5 @@ public interface CollisionDetector {
    * @return True if entities a and b are colliding (touching) and should thus run their
    * collision actions.
    */
-  boolean isColliding(EntityAPI a, EntityAPI b);
+  boolean isColliding(Entity a, Entity b);
 }

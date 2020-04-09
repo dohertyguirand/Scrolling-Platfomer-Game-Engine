@@ -4,7 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
 
-public class ImageEntity extends Entity {
+public class ImageEntity extends OogaEntity {
 
   private StringProperty imageLocation = null;
   private DoubleProperty height = new SimpleDoubleProperty();

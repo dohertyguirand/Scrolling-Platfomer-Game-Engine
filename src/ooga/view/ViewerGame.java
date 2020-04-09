@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import ooga.EntityAPI;
+import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
@@ -45,17 +45,17 @@ public class ViewerGame {
   }
 
   private void setUpGameEntities(){
-    ObservableList<EntityAPI> gameEntities = myGame.getEntities();
+    ObservableList<Entity> gameEntities = myGame.getEntities();
     // add listener here to handle entities being created/removed
     // this listener should set the "active" property of the entity,
     //    which will trigger a listener that removes it from the group
-    gameEntities.addListener((ListChangeListener<EntityAPI>) c -> {
+    gameEntities.addListener((ListChangeListener<Entity>) c -> {
       while (c.next()) {
         if(c.wasAdded() || c.wasRemoved()){
-          for (EntityAPI removedItem : c.getRemoved()) {
+          for (Entity removedItem : c.getRemoved()) {
             removedItem.setActiveInView(false);
           }
-          for (EntityAPI addedItem : c.getAddedSubList()) {
+          for (Entity addedItem : c.getAddedSubList()) {
             addedItem.setActiveInView(true);
             myEntityGroup.getChildren().add(makeViewEntity(addedItem));
           }
@@ -64,7 +64,7 @@ public class ViewerGame {
     });
 
     myEntityGroup = new Group();
-    for(EntityAPI entity : gameEntities){
+    for(Entity entity : gameEntities){
       Node viewEntity = makeViewEntity(entity);
       myEntityGroup.getChildren().add(viewEntity);
       entity.activeInViewProperty().addListener((o, oldVal, newVal) -> {
@@ -74,7 +74,7 @@ public class ViewerGame {
     }
   }
 
-  private Node makeViewEntity(EntityAPI entity){
+  private Node makeViewEntity(Entity entity){
     if(entity.getClass().equals(ImageEntity.class)){
       return (new ViewImageEntity((ImageEntity)entity)).getNode();
     }

@@ -1,14 +1,14 @@
 package ooga.game.asyncbehavior;
 
 import ooga.CollisionBehavior;
-import ooga.EntityAPI;
+import ooga.Entity;
 
 public class MoveUpCollision implements CollisionBehavior {
 
-  private EntityAPI mySubject;
+  private Entity mySubject;
   private double myMoveDistance;
 
-  public MoveUpCollision(EntityAPI subject, double moveDistance) {
+  public MoveUpCollision(Entity subject, double moveDistance) {
     //TODO: Change this constructor, since behaviors no longer need to be
     // initialized with subjects.
     mySubject = subject;
@@ -16,7 +16,7 @@ public class MoveUpCollision implements CollisionBehavior {
   }
 
   @Override
-  public void doCollision(EntityAPI subject, String collidingEntity) {
+  public void doCollision(Entity subject, String collidingEntity) {
     subject.move(0, myMoveDistance);
   }
 }

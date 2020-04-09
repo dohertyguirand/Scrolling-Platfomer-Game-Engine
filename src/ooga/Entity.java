@@ -11,7 +11,7 @@ import javafx.beans.property.DoubleProperty;
  * Relies on access to the list of all entities if it wants to do
  * anything besides affect itself.
  */
-public interface EntityAPI {
+public interface Entity {
 
   public double getX();
 

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Map;
-import ooga.EntityAPI;
+import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
@@ -19,7 +19,7 @@ public class GameTest {
 
   @Test
   void testDoUpdateLoop() {
-    EntityAPI moveForwardEntity = new ImageEntity();
+    Entity moveForwardEntity = new ImageEntity();
     moveForwardEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,20.0)));
     Level level = new OogaLevel(List.of(moveForwardEntity));
     OogaGame game = new OogaGame(level);
@@ -30,16 +30,16 @@ public class GameTest {
       expectedX += elapsedTime * 10.0;
       expectedY += elapsedTime * 20.0;
       game.doUpdateLoop(elapsedTime);
-      EntityAPI targetEntity = game.getEntities().get(0);
+      Entity targetEntity = game.getEntities().get(0);
       assertEquals(List.of(expectedX,expectedY),targetEntity.getPosition());
     }
   }
 
   @Test
   void testDoCollisionLoop() {
-    EntityAPI destructibleEntity = new ImageEntity("entity1");
+    Entity destructibleEntity = new ImageEntity("entity1");
     destructibleEntity.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
-    EntityAPI obstacleEntity = new ImageEntity("entity2");
+    Entity obstacleEntity = new ImageEntity("entity2");
     Level level = new OogaLevel(List.of(destructibleEntity,obstacleEntity));
     OogaGame game = new OogaGame(level);
     game.doCollisionLoop();

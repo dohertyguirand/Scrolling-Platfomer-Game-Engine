@@ -1,12 +1,12 @@
 package ooga.game.framebehavior;
 
-import ooga.EntityAPI;
+import ooga.Entity;
 import ooga.MovementBehavior;
 
 public class MoveForwardBehavior implements MovementBehavior {
 
 
-  private EntityAPI myEntity;
+  private Entity myEntity;
   private double xMovePerFrame;
   private double yMovePerFrame;
 
@@ -20,7 +20,7 @@ public class MoveForwardBehavior implements MovementBehavior {
   }
 
   @Override
-  public void doMovementUpdate(double elapsedTime, EntityAPI subject) {
+  public void doMovementUpdate(double elapsedTime, Entity subject) {
     subject.move(xMovePerFrame * elapsedTime,yMovePerFrame * elapsedTime);
   }
 }

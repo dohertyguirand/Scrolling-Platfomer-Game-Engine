@@ -15,5 +15,5 @@ public interface CollisionBehavior {
    * @param collidingEntity The String identifying the type of entity that the calling entity
    *                        is colliding with.
    */
-  void doCollision(EntityAPI thisEntity, String collidingEntity);
+  void doCollision(Entity thisEntity, String collidingEntity);
 }

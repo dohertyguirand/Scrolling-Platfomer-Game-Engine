@@ -1,7 +1,5 @@
 package ooga;
 
-import ooga.data.Entity;
-
 /**
  * Handles per-frame actions that an entity does regardless of triggers like collisions
  * or input.
@@ -16,5 +14,5 @@ public interface MovementBehavior {
    * @param elapsedTime The time since the previous frame.
    * @param subject The entity to perform the update upon.
    */
-  void doMovementUpdate(double elapsedTime, EntityAPI subject);
+  void doMovementUpdate(double elapsedTime, Entity subject);
 }

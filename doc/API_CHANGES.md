@@ -11,6 +11,8 @@ the pause button
 - 4/8/20 Changed ``loadGame`` to ``loadLevel`` in DataReader according to a change we made in a meeting to how 
 DataReader loads and reports information. Changed its description and return type accordingly.
 - 4/8/20 Changed ``loadLevel`` so that it takes a Game name and a level ID instead of a file path.
+- 4/9/20 Added ``getEntityMap`` so that the Game can ask for the map of entity definitions needed to
+create new Entity instances.
 
 ## Game API
 - getEntities now returns an observable list instead of list

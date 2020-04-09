@@ -1,7 +1,5 @@
 package ooga;
 
-import ooga.data.Entity;
-
 /**
  * Determines how an entity reacts to in-game user input of any kind.
  * Example: In Super Mario Bros, Mario can be moved with left and right keys.
@@ -15,5 +13,5 @@ public interface ControlsBehavior {
    * @param subject The entity that owns this controls behavior. This is the entity that should
    *                be modified.
    */
-  void reactToControls(EntityAPI subject);
+  void reactToControls(Entity subject);
 }

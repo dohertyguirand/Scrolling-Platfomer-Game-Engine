@@ -2,7 +2,7 @@ package ooga.data;
 
 import javafx.beans.property.StringProperty;
 
-public class TextEntity extends Entity {
+public class TextEntity extends OogaEntity {
 
   private StringProperty text;
 

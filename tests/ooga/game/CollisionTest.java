@@ -1,7 +1,7 @@
 package ooga.game;
 
 import ooga.CollisionBehavior;
-import ooga.EntityAPI;
+import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
@@ -21,7 +21,7 @@ public class CollisionTest {
 
   @Test
   void testMoveUpCollision() {
-    EntityAPI e = new ImageEntity();
+    Entity e = new ImageEntity();
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
     collisionMap.put("TestEntity2", List.of(new MoveUpCollision(e, 20.01)));
     e.setCollisionBehaviors(collisionMap);
@@ -34,9 +34,9 @@ public class CollisionTest {
 
   @Test
   void testCollisionDetection() {
-    EntityAPI a = new ImageEntity();
+    Entity a = new ImageEntity();
     a.setPosition(List.of(0.,0.));
-    EntityAPI b = new ImageEntity();
+    Entity b = new ImageEntity();
 
     b.setPosition(List.of(0.,0.));
     assertTrue(new OogaCollisionDetector().isColliding(a,b));
@@ -53,7 +53,7 @@ public class CollisionTest {
 
   @Test
   public void testDestroySelfCollision() {
-    EntityAPI removable = new ImageEntity();
+    Entity removable = new ImageEntity();
     removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
     removable.handleCollision("entity2");
     assertTrue(removable.isDestroyed());

@@ -3,7 +3,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
-import ooga.EntityAPI;
+import ooga.Entity;
 
 import java.util.ArrayList;
 
@@ -14,9 +14,9 @@ import java.util.ArrayList;
  * TODO: fully flesh this out to be a working class
  */
 public class OogaLevel implements Level{
-    private ObservableList<EntityAPI> myEntities;
+    private ObservableList<Entity> myEntities;
 
-    public OogaLevel(List<EntityAPI> Entities){
+    public OogaLevel(List<Entity> Entities){
 //        myEntities = (ObservableList<EntityAPI>) Entities;
         myEntities = FXCollections.observableArrayList(Entities);
     }
@@ -26,12 +26,12 @@ public class OogaLevel implements Level{
     }
 
     @Override
-    public ObservableList<EntityAPI> getEntities() {
+    public ObservableList<Entity> getEntities() {
         return myEntities;
     }
 
     @Override
-    public void removeEntity(EntityAPI e) {
+    public void removeEntity(Entity e) {
         myEntities.removeAll(List.of(e));
     }
 

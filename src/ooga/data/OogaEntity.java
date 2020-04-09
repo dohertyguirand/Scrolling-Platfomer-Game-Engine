@@ -7,10 +7,11 @@ import java.util.Map;
 import javafx.beans.property.*;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
+import ooga.Entity;
 import ooga.MovementBehavior;
 import ooga.game.EntityInternal;
 
-public abstract class Entity implements ooga.EntityAPI, EntityInternal {
+public abstract class OogaEntity implements Entity, EntityInternal {
 
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
   private DoubleProperty myXPos = new SimpleDoubleProperty();
@@ -24,7 +25,7 @@ public abstract class Entity implements ooga.EntityAPI, EntityInternal {
   private boolean isDestroyed;
   private String myName;
 
-  public Entity() {
+  public OogaEntity() {
     myVelocity = List.of(0.,0.);
     myXPos.set(0);
     myYPos.set(0);
@@ -33,7 +34,7 @@ public abstract class Entity implements ooga.EntityAPI, EntityInternal {
     myControls = new HashMap<>();
   }
 
-  public Entity(String name) {
+  public OogaEntity(String name) {
     this();
     myName = name;
   }

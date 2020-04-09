@@ -7,8 +7,7 @@ import java.util.List;
 
 import java.util.Map;
 import ooga.CollisionBehavior;
-import ooga.EntityAPI;
-import ooga.MovementBehavior;
+import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.asyncbehavior.MoveUpCollision;
@@ -47,8 +46,8 @@ class EntityAPITest {
 
   @Test
   public void testDinosaur() {
-    EntityAPI dino = new ImageEntity();
-    EntityAPI cactus = new ImageEntity();
+    Entity dino = new ImageEntity();
+    Entity cactus = new ImageEntity();
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
     collisionMap.put("Cactus", List.of(new MoveUpCollision(dino, 20.01), new DestroySelfBehavior()));
     dino.setCollisionBehaviors(collisionMap);
