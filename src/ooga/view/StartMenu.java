@@ -40,18 +40,11 @@ public class StartMenu {
   private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
   private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
 
-
-
-    private Scene myScene;
+  private Scene myScene;
   private ScrollBar myScrollbar;
   private HBox myHbox;
   final Image[] myImages = new Image[3];
   final ImageView[] myPics = new ImageView[4];
-  private ImageView imagev1 = new ImageView();
-  private ImageView imagev2 = new ImageView();
-  private ImageView imagev3 = new ImageView();
-
-
   public Scene getScene() {
     return myScene;
   }
@@ -127,21 +120,17 @@ public class StartMenu {
     }
   }
 
-  public void initialize() {
-      for (int i = 1; i <4; i++) {
-          Image k = new Image(new File("resources/data/menu_images/title"+i+".gif").toURI().toString());
-          imagev1.setImage(i);
-      }
-
-    Image i = new Image(new File("resources/data/menu_images/title1.gif").toURI().toString());
-    imagev1.setImage(i);
-    Image j = new Image(new File("resources/data/menu_images/title2.gif").toURI().toString());
-    imagev2.setImage(j);
-    Image k = new Image(new File("resources/data/menu_images/title2.gif").toURI().toString());
-    imagev3.setImage(k);
-
-    imagev1.setX(300); imagev1.setY(200);
-    imagev2.setX(400); imagev2.setY(200);
-    imagev3.setX(500); imagev3.setY(200);
+  public void initialize() throws IOException {
+    for (int i = 1, k = 300; i < 4; i++, k+=100) {
+      InputStream is = Files.newInputStream(Paths.get("src/view/Resources/menu_images/title" +(i)+ ".gif"));
+      final Image image = myImages[i] =
+              new Image(is);
+      final ImageView pic = myPics[i] = new ImageView((myImages[i]));
+      myPics[i].setX(k);
+      myPics[i].setY(200);
+      myHbox.getChildren().add(myPics[i]);
+    }
   }
+
+
 }
