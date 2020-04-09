@@ -13,8 +13,8 @@ public class ImageEntity extends OogaEntity {
 
   public ImageEntity(String name, String imageFilePath) {
     super(name);
-    width.setValue(10.0);
-    height.setValue(10.0);
+    width.setValue(100.0);
+    height.setValue(100.0);
     if (imageFilePath != null) {
       imageLocation = new SimpleStringProperty(imageFilePath);
     }
@@ -40,17 +40,6 @@ public class ImageEntity extends OogaEntity {
 
   public DoubleProperty heightProperty() {
     return height;
-  }
-
-  @Override
-  public double getWidth() {
-    return width.get();
-  }
-
-
-  @Override
-  public double getHeight() {
-    return height.get();
   }
 
   public DoubleProperty widthProperty() {

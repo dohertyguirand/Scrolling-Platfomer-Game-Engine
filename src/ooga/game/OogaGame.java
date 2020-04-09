@@ -31,13 +31,18 @@ public class OogaGame implements Game, UserInputListener {
   public OogaGame() {
     myName = "Unnamed";
     //TODO: Remove dependency between OogaGame and ImageEntity
-    Entity sampleEntity = new ImageEntity("entity1", "file:data/games-library/example-mario/brick.png");
-    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(1.0,0.1)));
+    List<Entity> entities = new ArrayList<>();
+    Entity sampleEntity = new ImageEntity("entity1", "file:data/games-library/example-mario/koopa.png");
+    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(0.010,0)));
     sampleEntity.setPosition(List.of(400-100.0,400+100.0));
-    Entity otherEntity = new ImageEntity("entity2","file:data/games-library/example-mario/koopa.png");
-    otherEntity.setPosition(List.of(400.0,400.0));
-    sampleEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(1.0))));
-    currentLevel = new OogaLevel(List.of(sampleEntity,otherEntity));
+    sampleEntity.setPosition(List.of(400.0,400.0));
+    sampleEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(0.10))));
+    entities.add(sampleEntity);
+
+//    Entity otherEntity = new ImageEntity("entity2","file:data/games-library/example-mario/koopa.png");
+//    otherEntity.setPosition(List.of(400.0,400.0));
+//    entities.add(otherEntity);
+    currentLevel = new OogaLevel(entities);
   }
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
@@ -88,7 +93,7 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void doGameStep(double elapsedTime) {
-
+    doUpdateLoop(elapsedTime);
   }
 
   @Override
@@ -148,7 +153,9 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void reactToKeyPress(String keyName) {
-
+    for (Entity e : currentLevel.getEntities()) {
+      e.reactToControls(keyName);
+    }
   }
 
   /**
