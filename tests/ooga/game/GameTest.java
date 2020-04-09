@@ -1,6 +1,7 @@
 package ooga.game;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -12,9 +13,11 @@ import ooga.game.framebehavior.MoveForwardBehavior;
 import org.junit.jupiter.api.Test;
 
 public class GameTest {
+
   @Test
   void testGameInitialize() {
-
+    Game game = new OogaGame();
+    assertNotEquals(game.getEntities().size(),0);
   }
 
   @Test
