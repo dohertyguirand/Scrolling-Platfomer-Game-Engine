@@ -144,7 +144,7 @@ public class ViewerGame {
 
   private void setUpInputListeners(UserInputListener userInputListener) {
     setUpPauseMenuListeners(userInputListener);
-    myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getCharacter()));
+    myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getText()));
     myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()));
     // add more input types here as needed, like mouse drag events
   }
