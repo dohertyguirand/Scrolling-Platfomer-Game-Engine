@@ -22,6 +22,7 @@ import java.util.Map;
 
 public class OogaDataReader implements DataReader{
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
+    private static String DEFAULT_LIBRARY_FILE = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary";
     //TODO: we as a team need to make an EntityDefinition interface
     // That is what should be in this map, not a full interface
     //TODO: If DataReader stores no game specific information, then Braeden needs to decide how this EntityMap will be
@@ -31,7 +32,7 @@ public class OogaDataReader implements DataReader{
         myLibraryFilePath = givenFilePath;
     }
     public OogaDataReader(){
-        this("");
+        this(DEFAULT_LIBRARY_FILE);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class OogaDataReader implements DataReader{
         try {
             // create a new document to parse
             // String filePath = myLibraryFilePath;
-            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/resources/example-mario/example_mario.xml";
+            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary";
             File fXmlFile = new File(filePath);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
 
