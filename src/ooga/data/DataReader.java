@@ -31,13 +31,12 @@ public interface DataReader {
   List<String> getGameFilePaths(String folderPath) throws OogaDataException;
 
   /**
-   * Give a Game a list of level ID's in the order that they're listed in the .xml files, its name to entity map,
-   * as well as anything else a Game will need directly after it's created
+   * Give a Game a list of level ID's in the order that they're listed in the .xml files
    * @param gameName the name of the Game at the start of the .xml file
    * @return A list of Integers, the ID's of the Level written in the game file
    * @throws OogaDataException if the String given isn't a directory or the cooresponding file is not properly formatted
    */
-  List<Integer> getBasicGameInfo(String gameName) throws OogaDataException;
+  List<String> getBasicGameInfo(String gameName) throws OogaDataException;
 
   /**
    * @param gameName The name of the game
@@ -50,7 +49,7 @@ public interface DataReader {
 
   /**
    * Gives a game a map of its usable entities from their names to their definitions.
-   * @param game
+   * @param gameName: the name of a game
    * @return
    */
   Map<String, EntityDefinition> getEntityMap(String gameName);

@@ -72,7 +72,7 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public List<Integer> getBasicGameInfo(String gameName) throws OogaDataException {
+    public List<String> getBasicGameInfo(String gameName) throws OogaDataException {
         return null;
     }
 
@@ -90,7 +90,7 @@ public class OogaDataReader implements DataReader{
         try {
             // create a new document to parse
             // String filePath = myLibraryFilePath;
-            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary";
+            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary/example-mario/example_mario.xml";
             File fXmlFile = new File(filePath);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
 
