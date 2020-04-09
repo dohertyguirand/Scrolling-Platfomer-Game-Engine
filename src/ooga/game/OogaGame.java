@@ -13,7 +13,7 @@ import ooga.data.OogaDataReader;
 
 public class OogaGame implements Game {
 
-    private List<Integer> myLevelIds;
+    private List<String> myLevelIds;
     private Level currentLevel;
     private String myName;
     private DataReader myDataReader;
