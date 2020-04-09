@@ -33,9 +33,6 @@ public class StartMenu {
   private Scene myScene;
   private ScrollPane myScrollPane;
   private HBox myHBox;
-  public Scene getScene() {
-    return myScene;
-  }
 
   public StartMenu() {
     myDataReader = new OogaDataReader();
@@ -57,6 +54,10 @@ public class StartMenu {
     myScene = new Scene(root);
     String SCROLLBAR_CSS_LOCATION = myResources.getString("scrollBarCSSLocation");
     myScene.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
+  }
+
+  public Scene getScene() {
+    return myScene;
   }
 
   public StringProperty gameSelectedProperty() {
