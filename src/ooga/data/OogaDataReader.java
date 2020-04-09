@@ -21,6 +21,7 @@ import java.util.Map;
  */
 
 public class OogaDataReader implements DataReader{
+
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static String DEFAULT_LIBRARY_FILE = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary";
     //TODO: we as a team need to make an EntityDefinition interface
@@ -47,6 +48,10 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public List<String> getGameFilePaths(String folderPath) throws OogaDataException {
+        return null;
+    }
+
+    public List<String> getThumbnails(String folderPath) throws OogaDataException {
         return null;
     }
 

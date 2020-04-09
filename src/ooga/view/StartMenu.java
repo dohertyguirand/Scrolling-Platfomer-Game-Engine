@@ -16,25 +16,33 @@ import javafx.scene.layout.Pane;
 import ooga.data.OogaDataReader;
 import ooga.data.Thumbnail;
 
+import java.io.IOException;
+
 
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class StartMenu {
-
   private OogaDataReader myDataReader;
   private StringProperty gameSelected = new SimpleStringProperty();
-  private ResourceBundle myResources = ResourceBundle.getBundle("./Resources.config");
+  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double GAME_IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
   private final double GAME_IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
+  private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
+  private final double MAX_SCROLLBAR = Double.parseDouble(myResources.getString("maxScrollbar"));
+  private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
+  private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
+
   private Scene myScene;
   private ScrollBar myScrollbar;
   private HBox myHbox;
+  public Scene getScene() {
+    return myScene;
+  }
 
   public StartMenu() {
-
     myDataReader = new OogaDataReader();
 
     Group root = new Group();
@@ -49,12 +57,12 @@ public class StartMenu {
     hbarsettings();
     addimages();
 
-
     pane.getChildren().addAll(imgView);
     root.getChildren().addAll(pane, myHbox, myScrollbar);
 
 
     myScene = new Scene(root);
+    myScene.getStylesheets().add("ooga/view/Resources.Scrollbar.css");
   }
 
   public String getGameSelected() {
@@ -69,30 +77,21 @@ public class StartMenu {
     this.gameSelected.set(gameSelected);
   }
 
-  public Scene getScene() {
-    return myScene;
-  }
-
   private void horizontalScroller() {
       myScrollbar = new ScrollBar();
-      myScrollbar.setLayoutY(450);
+      myScrollbar.setLayoutY(SCROLLBAR_Y);
       myScrollbar.setMin(0);
       myScrollbar.setOrientation(Orientation.HORIZONTAL);
       myScrollbar.setPrefWidth(WINDOW_WIDTH);
-      myScrollbar.setMax(360);
+      myScrollbar.setMax(MAX_SCROLLBAR);
 
-    myScrollbar.valueProperty().addListener(new ChangeListener<Number>() {
-      public void changed(ObservableValue<? extends Number> ov,
-                          Number old_val, Number new_val) {
-        myHbox.setLayoutX(-new_val.doubleValue());
-      }
-    });
+    myScrollbar.valueProperty().addListener((ov, old_val, new_val) -> myHbox.setLayoutX(-new_val.doubleValue()));
   }
 
   private void hbarsettings() {
     myHbox = new HBox();
-    myHbox.setLayoutY(350);
-    myHbox.setSpacing(50);
+    myHbox.setLayoutY(HBOX_Y_LAYOUT);
+    myHbox.setSpacing(HBOX_SPACING);
   }
 
   private void addimages() {
@@ -105,4 +104,5 @@ public class StartMenu {
       myHbox.getChildren().add(gameButton);
     }
   }
+
 }
