@@ -7,8 +7,10 @@ the pause button
 - 4/7/20 Changed ``getGameFiles`` to ``getGameFilePaths`` in DataReader to make the purpose more explicit
 - 4/7/20 Changed ``getThumbnails`` in DataReader to return a list of Thumbnails instead of Strings
 - 4/7/20 Added ``getBasicGameInfo`` in DataReader which takes a game's name and give it basic info. More description in the API.
-
 - DataReader getThumbnails no longer takes String arg
+- 4/8/20 Changed ``loadGame`` to ``loadLevel`` in DataReader according to a change we made in a meeting to how 
+DataReader loads and reports information. Changed its description and return type accordingly.
+- 4/8/20 Changed ``loadLevel`` so that it takes a Game name and a level ID instead of a file path.
 
 ## Game API
 - getEntities now returns an observable list instead of list

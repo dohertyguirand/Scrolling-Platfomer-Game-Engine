@@ -14,7 +14,10 @@ public class DataReaderTest {
         OogaDataReader testDataReader = new OogaDataReader();
         String testFilePath = filePath;
         try {
-            testDataReader.loadGame(testFilePath);
+            // at the time of writing this, the OogaDataReader doesn't use the given Strings
+            // I will change this when I have that workign properly
+            // -Braeden
+            testDataReader.loadLevel("GameName", "LevelID");
         } catch (OogaDataException e) {
             // TODO: Fix this, Braeden
             System.out.println("Test Failed");

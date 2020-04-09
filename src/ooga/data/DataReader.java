@@ -3,6 +3,7 @@ package ooga.data;
 import java.util.List;
 import ooga.OogaDataException;
 import ooga.game.Game;
+import ooga.game.Level;
 
 /**
  * Handles the interaction with game data files, including interpretation and writing.
@@ -15,7 +16,6 @@ public interface DataReader {
    * Returns a list of thumbnails for all the available games.
    * Returns an empty list if there are no files containing thumbnails.
    * @return The list of thumbnails of games.
-         * @throws OogaDataException if the given filepath isn't a directory.
    */
   List<Thumbnail> getThumbnails() throws OogaDataException;
 
@@ -38,12 +38,13 @@ public interface DataReader {
   List<Integer> getBasicGameInfo(String gameName) throws OogaDataException;
 
   /**
-   * @param filePath The relative filepath of the game, including the filename.
-   * @return A fully loaded Game that is runnable by the engine and represents the game in the
+   * @param gameName The name of the game
+   * @param levelID  The ID of the level the game is asking for
+   * @return A fully loaded Level that is runnable by the game and represents the level in the
    * data file.
-   * @throws OogaDataException If the file given is not a valid game.
+   * @throws OogaDataException If the file given is not correctly formatted.
    */
-  Game loadGame(String filePath) throws OogaDataException;
+  Level loadLevel(String gameName, String levelID) throws OogaDataException;
 
   /**
    * Saves the current state of the game so it can easily be loaded from where the player
