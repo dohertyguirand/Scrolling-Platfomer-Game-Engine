@@ -3,17 +3,16 @@ package ooga.view;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import ooga.CollisionBehavior;
 
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 
-public class PauseMenu extends Pane {
+public class PauseMenu extends BorderPane {
   private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
@@ -37,22 +36,19 @@ public class PauseMenu extends Pane {
     put(quit, "Quit");
     put(save, "Save");
   }};
-  private ScrollPane myScrollPane;
+
 
   public PauseMenu(){
+    this.setWidth(WINDOW_WIDTH);
+    this.setHeight(WINDOW_HEIGHT);
     this.getStylesheets().add("ooga/view/Resources/PauseMenu.css");
-    /**
-     * Hey this is braeden, just noting here that I commented out those three lines below because they were causing errors
-     * [thumbs up emoji]
-     */
-    //Rectangle background = new Rectangle(ViewerGame.WINDOW_WIDTH, ViewerGame.WINDOW_HEIGHT, BACKGROUND_COLOR);
-    //this.getChildren().add(background);
     VBox buttonVBox = new VBox(SPACING);
     for(Map.Entry<BooleanProperty, String> buttonPropertyAndName : buttonPropertiesAndNames.entrySet()){
       buttonVBox.getChildren().add(makeButton(buttonPropertyAndName.getKey(), buttonPropertyAndName.getValue()));
     }
-    //VBox.setMargin(buttonVBox, new Insets(MARGIN, 0, 0, ViewerGame.WINDOW_WIDTH/2));
-    this.getChildren().add(buttonVBox);
+    this.setCenter(buttonVBox);
+    this.setTop(new Text("PAUSED"));
+   // this.getChildren().add(buttonVBox);
     this.setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
   }
 
@@ -76,6 +72,7 @@ public class PauseMenu extends Pane {
     Button button = new Button(text);
     button.setOnAction(e -> statusProperty.setValue(!statusProperty.getValue()));
     button.setTextFill(BUTTON_COLOR);
+    button.setAlignment(Pos.CENTER);
     return button;
   }
 }

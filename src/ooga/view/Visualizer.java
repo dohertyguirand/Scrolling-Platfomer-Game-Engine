@@ -23,6 +23,7 @@ public class Visualizer extends Application {
     primaryStage.setScene(display);
     primaryStage.setTitle(START_MENU_TITLE);
     primaryStage.show();
+    primaryStage.setResizable(false);
   }
 
   private Scene setUpStartMenuDisplay() throws IOException {
