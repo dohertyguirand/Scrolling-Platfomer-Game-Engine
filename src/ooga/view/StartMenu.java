@@ -2,21 +2,16 @@ package ooga.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ooga.data.OogaDataReader;
 import ooga.data.Thumbnail;
-
-import java.io.IOException;
 
 
 import java.util.List;
@@ -55,7 +50,7 @@ public class StartMenu {
 
     horizontalScroller();
     hbarsettings();
-    addimages();
+    addImages();
 
     pane.getChildren().addAll(imgView);
     root.getChildren().addAll(pane, myHbox, myScrollbar);
@@ -91,15 +86,22 @@ public class StartMenu {
     myHbox.setSpacing(HBOX_SPACING);
   }
 
-  private void addimages() {
+  private void addImages() {
     List<Thumbnail> thumbnails = myDataReader.getThumbnails();
     for (Thumbnail thumbnail : thumbnails) {
-      Button gameButton = new Button(thumbnail.getDescription(), new ImageView(thumbnail.getImageFile()));
+      ImageView gameImage = new ImageView(thumbnail.getImageFile());
+      resizeImage(gameImage, 1);
+      Button gameButton = new Button(thumbnail.getDescription(), gameImage);
       gameButton.setOnAction(e -> setGameSelected(thumbnail.getTitle()));
-      gameButton.setOnMouseEntered(e -> gameButton.resize(GAME_IMAGE_WIDTH*1.25, GAME_IMAGE_HEIGHT*1.25));
-      gameButton.setOnMouseExited(e -> gameButton.resize(GAME_IMAGE_WIDTH, GAME_IMAGE_HEIGHT));
+      gameButton.setOnMouseEntered(e -> resizeImage(gameImage, 1.25));
+      gameButton.setOnMouseExited(e -> resizeImage(gameImage, 1));
       myHbox.getChildren().add(gameButton);
     }
+  }
+
+  private void resizeImage(ImageView gameImage, double resizeFactor) {
+    gameImage.setFitWidth(GAME_IMAGE_WIDTH*resizeFactor);
+    gameImage.setFitHeight(GAME_IMAGE_HEIGHT*resizeFactor);
   }
 
 }
