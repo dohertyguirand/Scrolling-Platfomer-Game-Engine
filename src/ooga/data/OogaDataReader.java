@@ -27,7 +27,7 @@ public class OogaDataReader implements DataReader{
     //private Map<String, Entity> myEntityMap;
 
     @Override
-    public List<Thumbnail> getThumbnails(String folderPath) throws OogaDataException {
+    public List<Thumbnail> getThumbnails() {
         return null;
     }
 

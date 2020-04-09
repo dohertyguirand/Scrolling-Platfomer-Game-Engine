@@ -3,36 +3,31 @@ package ooga.view;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ooga.data.OogaDataReader;
-
-import java.io.IOException;
-import java.util.ResourceBundle;
 
 public class Visualizer extends Application {
 
-  private ResourceBundle myResources;
-  private OogaDataReader myDataReader;
+  //private ResourceBundle myResources;
+  private static final String START_MENU_TITLE = "Choose a Game";
 
   public static void main(String[] args) {
     launch(args);
   }
 
   @Override
-  public void start(Stage primaryStage) throws IOException {
-    myDataReader = new OogaDataReader();
+  public void start(Stage primaryStage) {
     Scene display = setUpStartMenuDisplay();
     primaryStage.setScene(display);
-    primaryStage.setTitle(myResources.getString("StartMenuTitle"));
+    primaryStage.setTitle(START_MENU_TITLE);
     primaryStage.show();
   }
 
-  private Scene setUpStartMenuDisplay() throws IOException {
+  private Scene setUpStartMenuDisplay() {
     StartMenu startMenu = new StartMenu();
     startMenu.gameSelectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal));
     return startMenu.getScene();
   }
 
   private void startGame(String gameName) {
-    new ViewerGame(gameName, myDataReader);
+    new ViewerGame(gameName);
   }
 }
