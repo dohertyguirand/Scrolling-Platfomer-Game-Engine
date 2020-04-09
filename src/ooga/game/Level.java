@@ -17,6 +17,11 @@ public interface Level {
   ObservableList<EntityAPI> getEntities();
 
   /**
+   * Removes an entity from the level, if it is in the level.
+   */
+  void removeEntity(EntityAPI e);
+
+  /**
    * Usually relies on an owned instance of LevelEndCondition to handle the unique logic of
    * a specific level's end condition.
    * @return True if the level should end, which should cause the game to progress.

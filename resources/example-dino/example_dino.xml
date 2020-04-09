@@ -1,0 +1,63 @@
+<Game>
+  <Name>Chrome Dino</Name>
+  <Thumbnail>mario_logo.png</Thumbnail>
+  <Description>Straight from the mind of Shigeru Miyamoto.</Description>
+  <Entities>
+    <Entity>
+      <Name>Dino</Name>
+      <Width>120</Width>
+      <Height>120</Height>
+      <Image>mario.png</Image>
+      <Movement>
+        <MovementBehavior>Gravity</MovementBehavior>
+        <MovementBehavior>MoveForward</MovementBehavior>
+      </Movement>
+      <Controls>
+        <ControlInput>
+          <Key>UpKey</Key>
+          <ControlBehavior>JumpBehavior</ControlBehavior>
+        </ControlInput>
+      </Controls>
+      <Collisions>
+        <EntityCollision>
+          <With>Cactus</With>
+          <Reaction>RemoveSelf</Reaction>
+        </EntityCollision>
+      </Collisions>
+    </Entity>
+    <Entity>
+      <Name>Cactus</Name>
+      <Width>50</Width>
+      <Height>120</Height>
+      <Image>koopa.png</Image>
+    </Entity>
+  </Entities>
+  <Levels>
+    <Level>
+      <ID>1</ID>
+      <EndCondition>DestroyAll Koopa</EndCondition>
+      <Instances>
+        <Instance>
+          <Type>Dino</Type>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+        </Instance>
+        <Instance>
+          <Type>Cactus</Type>
+          <XPos>100</XPos>
+          <YPos>0</YPos>
+        </Instance>
+        <Instance>
+          <Type>Cactus</Type>
+          <XPos>200</XPos>
+          <YPos>0</YPos>
+        </Instance>
+        <Instance>
+          <Type>Cactus</Type>
+          <XPos>300</XPos>
+          <YPos>0</YPos>
+        </Instance>
+      </Instances>
+    </Level>
+  </Levels>
+</Game>

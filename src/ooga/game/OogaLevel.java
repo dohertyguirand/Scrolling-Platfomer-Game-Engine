@@ -20,7 +20,7 @@ public class OogaLevel implements Level{
 
     public OogaLevel(List<EntityAPI> Entities){
 //        myEntities = (ObservableList<EntityAPI>) Entities;
-        myEntities = FXCollections.observableList(Entities);
+        myEntities = FXCollections.observableArrayList(Entities);
     }
 
     public OogaLevel() {
@@ -30,6 +30,11 @@ public class OogaLevel implements Level{
     @Override
     public ObservableList<EntityAPI> getEntities() {
         return myEntities;
+    }
+
+    @Override
+    public void removeEntity(EntityAPI e) {
+        myEntities.removeAll(List.of(e));
     }
 
     @Override

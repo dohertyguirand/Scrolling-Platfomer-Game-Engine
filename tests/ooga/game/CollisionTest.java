@@ -55,12 +55,9 @@ public class CollisionTest {
 
   @Test
   public void testDestroySelfCollision() {
-//    EntityAPI e = new OogaEntity(new MoveForwardBehavior());
-//    Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
-//    collisionMap.put("TestEntity2", List.of(new DestroySelfBehavior(e)));
-//    e.setCollisionBehaviors(collisionMap);
-//    Level testLevel = new OogaLevel(List.of(e));
-//    e.handleCollision("TestEntity2");
-//    assertEquals(0, testLevel.getEntities().size());
+    EntityAPI removable = new ImageEntity();
+    removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
+    removable.handleCollision("entity2");
+    assertTrue(removable.isDestroyed());
   }
 }

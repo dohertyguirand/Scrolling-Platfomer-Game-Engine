@@ -9,12 +9,14 @@ public class MoveUpCollision implements CollisionBehavior {
   private double myMoveDistance;
 
   public MoveUpCollision(EntityAPI subject, double moveDistance) {
+    //TODO: Change this constructor, since behaviors no longer need to be
+    // initialized with subjects.
     mySubject = subject;
     myMoveDistance = moveDistance;
   }
 
   @Override
-  public void doCollision(String collidingEntity) {
-    mySubject.move(0, myMoveDistance);
+  public void doCollision(EntityAPI subject, String collidingEntity) {
+    subject.move(0, myMoveDistance);
   }
 }

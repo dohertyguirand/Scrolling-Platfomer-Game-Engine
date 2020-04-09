@@ -87,7 +87,7 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   public void handleCollision(String collidingEntity) {
     if (myCollisionBehaviors.containsKey(collidingEntity)) {
       for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
-        behavior.doCollision(collidingEntity);
+        behavior.doCollision(this, collidingEntity);
       }
     }
   }
@@ -117,8 +117,7 @@ public abstract class Entity implements EntityAPI, EntityInternal {
 
   @Override
   public boolean isDestroyed() {
-    //TODO: Tie this to an instance variable (activeInView?)
-    return false;
+    return isDestroyed;
   }
 
   @Override

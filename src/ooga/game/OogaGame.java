@@ -1,6 +1,7 @@
 package ooga.game;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.ObservableList;
 import ooga.EntityAPI;
@@ -55,8 +56,17 @@ public class OogaGame implements Game {
 
   @Override
   public void doUpdateLoop(double elapsedTime) {
+    List<EntityAPI> destroyedEntities = new ArrayList<>();
     for (EntityAPI e : currentLevel.getEntities()) {
       e.updateSelf(elapsedTime);
+      if (e.isDestroyed()) {
+        destroyedEntities.add(e);
+      }
+    }
+    for (EntityAPI destroyed : destroyedEntities) {
+      if (destroyed.isDestroyed()) {
+        currentLevel.removeEntity(destroyed);
+      }
     }
   }
 

@@ -5,14 +5,8 @@ import ooga.EntityAPI;
 
 public class DestroySelfBehavior implements CollisionBehavior {
 
-    private EntityAPI myEntity;
-
-    public DestroySelfBehavior(EntityAPI e) {
-        myEntity = e;
-    }
-
     @Override
-    public void doCollision(String collidingEntity) {
-        myEntity.destroySelf();
+    public void doCollision(EntityAPI thisEntity, String collidingEntity) {
+        thisEntity.destroySelf();
     }
 }

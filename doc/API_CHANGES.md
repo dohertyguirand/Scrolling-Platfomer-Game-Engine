@@ -34,6 +34,11 @@ as a list, and I don't want Game to rely on implementation details of EntityAPI 
 is abstract). The ultimate solution is to make a distinction between the 'front-facing' part of Entity
 and the rest.
 
+### Level
+- Added ``removeEntity`` so that the game can remove destroyed entities.
+The alternative would be internal 'garbage collection' inside level, but that would also require
+at least one new method.
+
 ### ControlsBehavior
 - Modified ``reactToControls()`` to take in the subject entity as a parameter.
 
@@ -44,3 +49,8 @@ movement behavior and a movement behavior needed to know what entity it was modi
 - Removed ``setTarget`` 
 - Added a second parameter "Entity subject"  in ``doMovementUpdate`` method as another solution to how the MovementBehavior knows which Entity it
 is updating 
+
+### CollisionBehavior
+- 4/9/2020: Modified ``handleCollision`` to take an entity as a paramter, so that
+it can have an effect on whatever entity calls it. Possibly could change to EntityInternal.
+Also could change to take two entities, since two are involved in a collision.
