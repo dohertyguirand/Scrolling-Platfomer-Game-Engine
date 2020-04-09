@@ -54,7 +54,8 @@ public class StartMenu {
     root.getChildren().addAll(pane, myScrollPane);
 
     myScene = new Scene(root);
-    myScene.getStylesheets().add("ooga/view/Resources/Scrollbar.css");
+    String SCROLLBAR_CSS_LOCATION = myResources.getString("scrollBarCSSLocation");
+    myScene.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
   }
 
   public StringProperty gameSelectedProperty() {
@@ -96,5 +97,4 @@ public class StartMenu {
     gameImage.setFitWidth(GAME_IMAGE_WIDTH*resizeFactor);
     gameImage.setFitHeight(GAME_IMAGE_HEIGHT*resizeFactor);
   }
-
 }
