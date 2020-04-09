@@ -10,6 +10,7 @@ import ooga.CollisionBehavior;
 import ooga.EntityAPI;
 import ooga.MovementBehavior;
 import ooga.data.ImageEntity;
+import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.framebehavior.GravityBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
@@ -49,7 +50,7 @@ class EntityAPITest {
     EntityAPI dino = new ImageEntity();
     EntityAPI cactus = new ImageEntity();
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
-    collisionMap.put("Cactus", List.of(new MoveUpCollision(dino, 20.01)));
+    collisionMap.put("Cactus", List.of(new MoveUpCollision(dino, 20.01), new DestroySelfBehavior()));
     dino.setCollisionBehaviors(collisionMap);
     dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
 
