@@ -23,6 +23,5 @@ public class GravityBehavior implements MovementBehavior {
         if (subject.getPosition().get(1) <= 0) {
             subject.setVelocity(0,0);
         }
-        subject.moveByVelocity();
     }
 }

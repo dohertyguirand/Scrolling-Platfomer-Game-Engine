@@ -90,6 +90,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);
     }
+    moveByVelocity();
   }
 
   @Override
