@@ -3,6 +3,7 @@ package ooga.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
@@ -11,6 +12,8 @@ import ooga.UserInputListener;
 import ooga.data.ImageEntity;
 import ooga.data.OogaEntity;
 import ooga.data.OogaDataReader;
+import ooga.game.framebehavior.MoveForwardBehavior;
+import ooga.game.inputbehavior.JumpBehavior;
 
 public class OogaGame implements Game, UserInputListener {
 
@@ -27,7 +30,13 @@ public class OogaGame implements Game, UserInputListener {
 
   public OogaGame() {
     myName = "Unnamed";
-    currentLevel = new OogaLevel(new ArrayList<>());
+    //TODO: Remove dependency between OogaGame and ImageEntity
+    Entity sampleEntity = new ImageEntity("entity1");
+    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(1.0,0.1)));
+    sampleEntity.setPosition(List.of(-100.0,100.0));
+    Entity otherEntity = new ImageEntity("entity2");
+    sampleEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(1.0))));
+    currentLevel = new OogaLevel(List.of(sampleEntity,otherEntity));
   }
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
@@ -46,7 +55,6 @@ public class OogaGame implements Game, UserInputListener {
     myCollisionDetector = new OogaCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
-
     myLevelIds = myDataReader.getBasicGameInfo(gameName);
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
   }
