@@ -15,8 +15,9 @@ public interface DataReader {
    * Returns a list of thumbnails for all the available games.
    * Returns an empty list if there are no files containing thumbnails.
    * @return The list of thumbnails of games.
+         * @throws OogaDataException if the given filepath isn't a directory.
    */
-  List<Thumbnail> getThumbnails();
+  List<Thumbnail> getThumbnails() throws OogaDataException;
 
   /**
    * Returns the filepaths to every game file detected in the folder. Doesn't guarantee
@@ -25,7 +26,16 @@ public interface DataReader {
    * @return A list of filepaths of game data files in the given folder.
    * @throws OogaDataException if the given filepath isn't a directory.
    */
-  List<String> getGameFiles(String folderPath) throws OogaDataException;
+  List<String> getGameFilePaths(String folderPath) throws OogaDataException;
+
+  /**
+   * Give a Game a list of level ID's in the order that they're listed in the .xml files, its name to entity map,
+   * as well as anything else a Game will need directly after it's created
+   * @param gameName the name of the Game at the start of the .xml file
+   * @return A list of Integers, the ID's of the Level written in the game file
+   * @throws OogaDataException if the String given isn't a directory or the cooresponding file is not properly formatted
+   */
+  List<Integer> getBasicGameInfo(String gameName) throws OogaDataException;
 
   /**
    * @param filePath The relative filepath of the game, including the filename.

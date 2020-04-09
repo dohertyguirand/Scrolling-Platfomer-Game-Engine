@@ -30,13 +30,17 @@ public class PauseMenu extends Group {
   }};
 
   public PauseMenu(){
-    Rectangle background = new Rectangle(ViewerGame.WINDOW_WIDTH, ViewerGame.WINDOW_HEIGHT, BACKGROUND_COLOR);
-    this.getChildren().add(background);
+    /**
+     * Hey this is braeden, just noting here that I commented out those three lines below because they were causing errors
+     * [thumbs up emoji]
+     */
+    //Rectangle background = new Rectangle(ViewerGame.WINDOW_WIDTH, ViewerGame.WINDOW_HEIGHT, BACKGROUND_COLOR);
+    //this.getChildren().add(background);
     VBox buttonVBox = new VBox(SPACING);
     for(Map.Entry<BooleanProperty, String> buttonPropertyAndName : buttonPropertiesAndNames.entrySet()){
       buttonVBox.getChildren().add(makeButton(buttonPropertyAndName.getKey(), buttonPropertyAndName.getValue()));
     }
-    VBox.setMargin(buttonVBox, new Insets(MARGIN, 0, 0, ViewerGame.WINDOW_WIDTH/2));
+    //VBox.setMargin(buttonVBox, new Insets(MARGIN, 0, 0, ViewerGame.WINDOW_WIDTH/2));
     this.getChildren().add(buttonVBox);
   }
 
