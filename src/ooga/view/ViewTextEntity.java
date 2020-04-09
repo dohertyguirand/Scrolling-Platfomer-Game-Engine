@@ -3,7 +3,7 @@ package ooga.view;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
-import ooga.data.Entity;
+import ooga.data.OogaEntity;
 import ooga.data.TextEntity;
 
 public class ViewTextEntity extends ViewEntity {
@@ -15,7 +15,7 @@ public class ViewTextEntity extends ViewEntity {
     bindTextProperty(entity.textProperty());
   }
 
-  public void bindGenericProperties(Entity entity) {
+  public void bindGenericProperties(OogaEntity entity) {
     text.xProperty().bind(entity.xProperty());
     text.yProperty().bind(entity.yProperty());
     // add more properties here if needed

@@ -1,10 +1,7 @@
 package ooga.game;
 
-import java.util.List;
-
 import javafx.collections.ObservableList;
-import ooga.EntityAPI;
-import ooga.data.Entity;
+import ooga.Entity;
 
 /**
  * Represents one in-game level, including its end conditions and list of entities.
@@ -15,6 +12,11 @@ public interface Level {
    * @return A List of all Entities in the level.
    */
   ObservableList<Entity> getEntities();
+
+  /**
+   * Removes an entity from the level, if it is in the level.
+   */
+  void removeEntity(Entity e);
 
   /**
    * Usually relies on an owned instance of LevelEndCondition to handle the unique logic of

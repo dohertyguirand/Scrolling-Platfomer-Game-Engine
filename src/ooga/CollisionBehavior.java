@@ -10,8 +10,10 @@ public interface CollisionBehavior {
 
   /**
    * Performs the specific collision behavior implementation.
+   * @param thisEntity The entity that is reacting to a collision with the colliding entity, which
+   *                   should own this behavior.
    * @param collidingEntity The String identifying the type of entity that the calling entity
    *                        is colliding with.
    */
-  void doCollision(String collidingEntity);
+  void doCollision(Entity thisEntity, String collidingEntity);
 }

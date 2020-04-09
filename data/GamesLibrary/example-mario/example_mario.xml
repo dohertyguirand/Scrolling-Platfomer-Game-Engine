@@ -9,7 +9,12 @@
       <Height>120</Height>
       <Image>mario.png</Image>
       <MovementBehavior>Player</MovementBehavior>
-      <ControlsBehavior>PlayerControls</ControlsBehavior>
+      <Controls>
+        <ControlInput>
+          <Key>UpKey</Key>
+          <ControlBehavior>JumpBehavior</ControlBehavior>
+        </ControlInput>
+      </Controls>
       <Collisions>
         <EntityCollision>
           <With>Koopa</With>

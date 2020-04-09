@@ -9,13 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import ooga.Entity;
+import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
-import ooga.game.Game;
 import ooga.game.OogaGame;
 
 import java.util.ResourceBundle;
@@ -34,9 +34,10 @@ public class ViewerGame {
   private OogaGame myGame;
   private Timeline myAnimation;
 
-  public ViewerGame(String gameName){
+
+  public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
-    myGame = new OogaGame(gameName);
+    myGame = new OogaGame(gameName, new OogaDataReader());
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();

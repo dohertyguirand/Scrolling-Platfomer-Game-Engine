@@ -1,31 +1,54 @@
 package ooga.game;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.ObservableList;
-import ooga.data.Entity;
+import ooga.Entity;
+import ooga.OogaDataException;
+import ooga.data.DataReader;
 import ooga.UserInputListener;
+import ooga.data.OogaEntity;
+import ooga.data.OogaDataReader;
 
-  public class OogaGame implements Game {
+public class OogaGame implements Game {
 
-    private List<Level> myLevels;
+    private List<Integer> myLevelIds;
     private Level currentLevel;
     private String myName;
+    private DataReader myDataReader;
+    private CollisionDetector myCollisionDetector;
 
-//  public OogaGame(List<Level> levels) {
-//    myLevels = levels;
-//    if (!levels.isEmpty()) {
-//      currentLevel = levels.get(0);
-//    }
-//  }
-  public OogaGame(String gameName) {
+  public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myName = gameName;
+    myDataReader = dataReader;
+    myLevelIds = myDataReader.getBasicGameInfo(gameName);
+  }
+
+  public OogaGame(String gameName) throws OogaDataException {
+    myName = gameName;
+    //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
+    myDataReader = new OogaDataReader();
+    myLevelIds = myDataReader.getBasicGameInfo(gameName);
+    //TODO: Make the type of collision detector configurable.
+    myCollisionDetector = new OogaCollisionDetector();
+  }
+
+  public OogaGame(Level startingLevel) {
+    myName = "Unnamed";
+    myCollisionDetector = new OogaCollisionDetector();
+    currentLevel = startingLevel;
   }
 
   @Override
   public ObservableList<Entity> getEntities() {
+    return currentLevel.getEntities();
+  }
+
+  @Override
+  public ObservableList<OogaEntity> getAbstractEntities() {
     return null;
-  } //return myLevel.getEntities
+  }
 
   @Override
   public void doGameStart() {
@@ -34,12 +57,28 @@ import ooga.UserInputListener;
 
   @Override
   public void doCollisionLoop() {
+    for (Entity target : currentLevel.getEntities()) {
+      for (Entity collidingWith : currentLevel.getEntities()) {
+        if (myCollisionDetector.isColliding(target,collidingWith)) {
+          target.handleCollision(collidingWith.getName());
+        }
+      }
+    }
   }
 
   @Override
   public void doUpdateLoop(double elapsedTime) {
+    List<Entity> destroyedEntities = new ArrayList<>();
     for (Entity e : currentLevel.getEntities()) {
       e.updateSelf(elapsedTime);
+      if (e.isDestroyed()) {
+        destroyedEntities.add(e);
+      }
+    }
+    for (Entity destroyed : destroyedEntities) {
+      if (destroyed.isDestroyed()) {
+        currentLevel.removeEntity(destroyed);
+      }
     }
   }
 

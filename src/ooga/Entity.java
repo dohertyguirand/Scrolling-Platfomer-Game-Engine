@@ -2,6 +2,8 @@ package ooga;
 
 import java.util.List;
 import java.util.Map;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -9,7 +11,26 @@ import java.util.Map;
  * Relies on access to the list of all entities if it wants to do
  * anything besides affect itself.
  */
-public interface EntityAPI {
+public interface Entity {
+
+  public double getX();
+
+  public DoubleProperty xProperty();
+
+  public double getY();
+
+  public DoubleProperty yProperty();
+
+  public boolean isActiveInView();
+
+  public BooleanProperty activeInViewProperty();
+
+  public void setActiveInView(boolean activeInView);
+
+  /**
+   * @return The name identifying what type of entity this is, as defined in the game file.
+   */
+  public String getName();
 
   /**
    * 'Controls' will be a String mapping to a controls type from a shared back end resource file.
@@ -33,6 +54,12 @@ public interface EntityAPI {
   void setCollisionBehaviors(Map<String,List<CollisionBehavior>> behaviorMap);
 
   /**
+   * Sets the behaviors that will be carried out for every frame
+   * @param behaviors A List of MovementBehaviors
+   */
+  void setMovementBehaviors(List<MovementBehavior> behaviors);
+
+  /**
    * Reacts to colliding with a specific entity type based on its list of reactions mapped to
    * entity names, as defined by the game data.
    * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
@@ -51,9 +78,24 @@ public interface EntityAPI {
   void move(double xDistance, double yDistance);
 
   /**
+   * Moves the entity by its internally stored velocity
+   */
+  void moveByVelocity();
+
+  /**
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();
+
+  /**
+   * @return The width of the entity.
+   */
+  double getWidth();
+
+  /**
+   * @return The height of the entity.
+   */
+  double getHeight();
 
   /**
    * @param newPosition The new position for the entity to have in the level.
@@ -64,4 +106,24 @@ public interface EntityAPI {
    * Marks this entity for removal by the next frame, and prevents it from taking further actions.
    */
   void destroySelf();
+
+  /**
+   * @return True if this entity has been destroyed and should be removed.
+   */
+  boolean isDestroyed();
+
+  /**
+   *
+   * @param xChange The x-value of the change in velocity.
+   * @param yChange The y-value of the change in velocity.
+   */
+  void changeVelocity(double xChange, double yChange);
+
+  /**
+   *
+   * @param xVelocity The x-value of the new velocity.
+   * @param yVelocity The y-value of the new velocity.
+   */
+  void setVelocity(double xVelocity, double yVelocity);
+
 }

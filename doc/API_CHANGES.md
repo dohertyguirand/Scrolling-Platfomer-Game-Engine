@@ -11,6 +11,8 @@ the pause button
 - 4/8/20 Changed ``loadGame`` to ``loadLevel`` in DataReader according to a change we made in a meeting to how 
 DataReader loads and reports information. Changed its description and return type accordingly.
 - 4/8/20 Changed ``loadLevel`` so that it takes a Game name and a level ID instead of a file path.
+- 4/9/20 Added ``getEntityMap`` so that the Game can ask for the map of entity definitions needed to
+create new Entity instances.
 
 ## Game API
 - getEntities now returns an observable list instead of list
@@ -32,8 +34,32 @@ with another entity, and have that behavior swapped out at runtime.
 - Added ``setPosition`` so that behaviors with access to the entity can teleport it around the level.
 - Added several properties including activeInView which determines whether the entity will be
 displayed
+- Added ``getHeight`` and ``getWidth`` so that collision detection can do its job 
+under the assumption of square collisions.
+- Added ``Entity`` abstract class methods to ``EntityAPI``, so that we can hopefully unite the two.
+The motivation was that View relies on Entities, but it asks the Game interface to get entities
+as a list, and I don't want Game to rely on implementation details of EntityAPI (even though Entity
+is abstract). The ultimate solution is to make a distinction between the 'front-facing' part of Entity
+and the rest.
+- Added ``getName`` so that collisions can use the name of the entity.
+
+### Level
+- Added ``removeEntity`` so that the game can remove destroyed entities.
+The alternative would be internal 'garbage collection' inside level, but that would also require
+at least one new method.
+
+### ControlsBehavior
+- Modified ``reactToControls()`` to take in the subject entity as a parameter.
 
 
 ### MovementBehavior
 - Added ``setTarget`` method as a way to resolve an issue where an Entity needed to know 
 movement behavior and a movement behavior needed to know what entity it was modifying.
+- Removed ``setTarget`` 
+- Added a second parameter "Entity subject"  in ``doMovementUpdate`` method as another solution to how the MovementBehavior knows which Entity it
+is updating 
+
+### CollisionBehavior
+- 4/9/2020: Modified ``handleCollision`` to take an entity as a paramter, so that
+it can have an effect on whatever entity calls it. Possibly could change to EntityInternal.
+Also could change to take two entities, since two are involved in a collision.

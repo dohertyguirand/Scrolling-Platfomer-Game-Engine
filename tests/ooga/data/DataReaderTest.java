@@ -1,7 +1,8 @@
-package ooga.tests;
+package ooga.data;
 
 import ooga.OogaDataException;
 import ooga.data.OogaDataReader;
+import org.junit.jupiter.api.Test;
 
 /**
  * This is a class that just tests DataReader and makes sure it is working correctly. It should be moved/changed so that it is
@@ -10,6 +11,8 @@ import ooga.data.OogaDataReader;
  * @author braedenward
  */
 public class DataReaderTest {
+
+    @Test
     public void runTest(String filePath){
         OogaDataReader testDataReader = new OogaDataReader();
         String testFilePath = filePath;

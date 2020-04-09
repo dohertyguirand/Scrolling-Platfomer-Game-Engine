@@ -1,11 +1,10 @@
 package ooga.view;
 
 import javafx.beans.property.StringProperty;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ooga.data.Entity;
+import ooga.data.OogaEntity;
 import ooga.data.ImageEntity;
 
 public class ViewImageEntity extends ViewEntity {
@@ -18,7 +17,7 @@ public class ViewImageEntity extends ViewEntity {
     bindSizeProperties(entity);
   }
 
-  public void bindGenericProperties(Entity entity) {
+  public void bindGenericProperties(OogaEntity entity) {
     imageView.xProperty().bind(entity.xProperty());
     imageView.yProperty().bind(entity.yProperty());
     // add more properties here if needed

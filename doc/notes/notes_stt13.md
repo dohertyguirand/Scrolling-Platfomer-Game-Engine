@@ -12,3 +12,20 @@
 - Third issue: Allowing entities to react to collisions dynamically based on the other entity's
 state. i.e., having their downward velocity canceled when they fall onto floor, otherwise having
 their sideways velocity canceled.
+
+- added a resource file called inputs
+    - the key in the file is the user input 
+    - the value is the keyinput for backend 
+    - this way there can be multiple inputs that map to the same keyinput for backend
+   
+   
+- Need to figure out if entity is touching the ground before it jumps 
+
+- Notes for Google Dino game:
+    - Entities: Dino and Cactus
+    - Dino entity: Has jumping for movement (and ducking), has gravity for falling, 
+    has interaction with Cactus that causes Dino to stop existing.
+    
+- Notes from meeting on 4/9/2020:
+    - I can make one generic 'updateGameByOneFrame' method in Game so that the view only has to 
+    call one thing.

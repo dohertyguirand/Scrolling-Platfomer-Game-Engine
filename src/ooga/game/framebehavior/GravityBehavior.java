@@ -1,9 +1,8 @@
 package ooga.game.framebehavior;
 
 import java.util.List;
-import ooga.EntityAPI;
+import ooga.Entity;
 import ooga.MovementBehavior;
-import ooga.game.PhysicsEntity;
 
 /**
  * Uses constant downward motion to simulate basic gravity.
@@ -11,23 +10,19 @@ import ooga.game.PhysicsEntity;
  */
 public class GravityBehavior implements MovementBehavior {
 
-    public static final double X_MOVE_PER_SECOND = 0;
-    public static final double Y_MOVE_PER_SECOND = -10;
-    private EntityAPI myEntity;
-    private PhysicsEntity myPhysics;
+    private List<Double> myGravityVector;
+    private Entity myEntity;
 
-    public void setPhysicsTarget(PhysicsEntity e) {
-        myPhysics = e;
+    public GravityBehavior(double xGrav, double yGrav) {
+        myGravityVector = List.of(xGrav,yGrav);
     }
 
     @Override
-    public void setTarget(EntityAPI e) {
-        myEntity = e;
-    }
-
-    @Override
-    public void doMovementUpdate(double elapsedTime) {
-        myPhysics.setAcceleration(List.of(X_MOVE_PER_SECOND,Y_MOVE_PER_SECOND));
-        myEntity.move(elapsedTime * X_MOVE_PER_SECOND, elapsedTime * Y_MOVE_PER_SECOND);
+    public void doMovementUpdate(double elapsedTime, Entity subject) {
+        subject.changeVelocity(myGravityVector.get(0),myGravityVector.get(1));
+        if (subject.getPosition().get(1) <= 0) {
+            subject.setVelocity(0,0);
+        }
+        subject.moveByVelocity();
     }
 }

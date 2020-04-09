@@ -1,10 +1,10 @@
 package ooga.game;
 
 import ooga.CollisionBehavior;
-import ooga.EntityAPI;
-import ooga.MoveUpCollision;
+import ooga.Entity;
+import ooga.data.ImageEntity;
+import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
-import ooga.game.framebehavior.MoveForwardBehavior;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CollisionTest {
 
@@ -19,7 +21,7 @@ public class CollisionTest {
 
   @Test
   void testMoveUpCollision() {
-    EntityAPI e = new OogaEntity(new MoveForwardBehavior());
+    Entity e = new ImageEntity();
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
     collisionMap.put("TestEntity2", List.of(new MoveUpCollision(e, 20.01)));
     e.setCollisionBehaviors(collisionMap);
@@ -31,13 +33,29 @@ public class CollisionTest {
   }
 
   @Test
+  void testCollisionDetection() {
+    Entity a = new ImageEntity();
+    a.setPosition(List.of(0.,0.));
+    Entity b = new ImageEntity();
+
+    b.setPosition(List.of(0.,0.));
+    assertTrue(new OogaCollisionDetector().isColliding(a,b));
+
+    a.move(2.0 * a.getWidth(),0);
+    assertFalse(new OogaCollisionDetector().isColliding(a,b));
+
+    b.move(0,b.getHeight()*2.0);
+    assertFalse(new OogaCollisionDetector().isColliding(b,a));
+
+    a.setPosition(b.getPosition());
+    assertTrue(new OogaCollisionDetector().isColliding(b,a));
+  }
+
+  @Test
   public void testDestroySelfCollision() {
-    EntityAPI e = new OogaEntity(new MoveForwardBehavior());
-    Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
-    collisionMap.put("TestEntity2", List.of(new DestroySelfBehavior(e)));
-    e.setCollisionBehaviors(collisionMap);
-    Level testLevel = new OogaLevel(List.of(e));
-    e.handleCollision("TestEntity2");
-    assertEquals(0, testLevel.getEntities().size());
+    Entity removable = new ImageEntity();
+    removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
+    removable.handleCollision("entity2");
+    assertTrue(removable.isDestroyed());
   }
 }

@@ -1,11 +1,10 @@
 package ooga.game;
 
-import java.util.List;
-import ooga.data.Entity;
+import ooga.Entity;
+import ooga.data.OogaEntity;
 
 import javafx.collections.ObservableList;
 import ooga.UserInputListener;
-import ooga.data.Entity;
 
 /**
  * An instance of a loaded game that holds all levels and global game data. Must be populated
@@ -20,6 +19,14 @@ public interface Game {
    * UI.
    */
   ObservableList<Entity> getEntities();
+
+
+  //TODO: Remove, since this causes an abstraction (Game) to rely on an implementation (Entity)
+  /**
+   * @return The list of entities as a list of abstract Entity class objects instead of as
+   * EntityAPI objects.
+   */
+  ObservableList<OogaEntity> getAbstractEntities();
 
   /**
    * Runs anything that needs to be run by the game, levels, or any entities in a level when
