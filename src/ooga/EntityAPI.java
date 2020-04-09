@@ -45,7 +45,7 @@ public interface EntityAPI {
    * dies when hit by a fireball.
    * @param collidingEntity The String identifier of the enemy being collided with.
    */
-  void handleCollision(String collidingEntity);
+  void react(String controlKey, String collidingEntity);
 
   /**
    * Moves the entity by the specified amount in the x and y direction.

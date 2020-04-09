@@ -5,10 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.beans.property.*;
-import ooga.CollisionBehavior;
-import ooga.ControlsBehavior;
-import ooga.EntityAPI;
-import ooga.MovementBehavior;
+import ooga.*;
 import ooga.game.EntityInternal;
 import ooga.game.PhysicsEntity;
 
@@ -21,8 +18,10 @@ public abstract class Entity implements EntityAPI, EntityInternal {
 
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
+  private Map<String, ControlsBehavior> myReactions;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
+  private ReactionBehavior reactionBehavior;
   private double myXPos;
   private double myYPos;
   private boolean isDestroyed;
@@ -81,12 +80,15 @@ public abstract class Entity implements EntityAPI, EntityInternal {
   }
 
   @Override
-  public void handleCollision(String collidingEntity) {
-    if (myCollisionBehaviors.containsKey(collidingEntity)) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
-        behavior.doCollision(collidingEntity);
-      }
-    }
+  public void react(String controlKey, String collidingEntity) {
+    String reaction = reactionBehavior.reactToInputs(controlKey,collidingEntity);
+    ControlsBehavior behavior = myReactions.get(reaction);
+    behavior.reactToControls(this);
+//    if (myCollisionBehaviors.containsKey(collidingEntity)) {
+//      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
+//        behavior.doCollision(collidingEntity);
+//      }
+//    }
   }
 
   @Override
