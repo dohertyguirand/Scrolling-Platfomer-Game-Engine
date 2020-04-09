@@ -44,7 +44,7 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public List<Integer> getBasicGameInfo(String gameName) throws OogaDataException {
+    public List<String> getBasicGameInfo(String gameName) throws OogaDataException {
         return null;
     }
 
