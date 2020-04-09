@@ -40,28 +40,6 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public List<Thumbnail> getThumbnails() {
-        //TODO: complete this class
-//        // at the time of writing this, the OogaDataReader doesn't use the given Strings ^
-//        // I will change this when I have that workign properly
-//        // -Braeden
-//        try {
-//            // create a new document to parse
-//
-//            File fXmlFile = new File(myLibraryFilePath);
-//            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
-//
-//            //optional, but recommended
-//            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-//            //doc.getDocumentElement().normalize();
-//            String thumbnailName = doc.getElementsByTagName("Thumbnail").item(0).getTextContent();
-//            System.out.println("Thumbnail: " + doc.getElementsByTagName("Thumbnail").item(0).getTextContent());
-//
-//        }
-//        catch (Exception e) {
-//            // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
-//            e.printStackTrace();
-//        }
-
         // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
         ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
         File libraryFile = new File(myLibraryFilePath);
