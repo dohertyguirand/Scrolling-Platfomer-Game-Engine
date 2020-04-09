@@ -9,7 +9,7 @@ import java.util.Map;
  * Relies on access to the list of all entities if it wants to do
  * anything besides affect itself.
  */
-public interface Entity {
+public interface EntityAPI {
 
   /**
    * 'Controls' will be a String mapping to a controls type from a shared back end resource file.
@@ -33,6 +33,12 @@ public interface Entity {
   void setCollisionBehaviors(Map<String,List<CollisionBehavior>> behaviorMap);
 
   /**
+   * Sets the behaviors that will be carried out for every frame
+   * @param behaviors A List of MovementBehaviors
+   */
+  void setMovementBehaviors(List<MovementBehavior> behaviors);
+
+  /**
    * Reacts to colliding with a specific entity type based on its list of reactions mapped to
    * entity names, as defined by the game data.
    * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
@@ -51,6 +57,11 @@ public interface Entity {
   void move(double xDistance, double yDistance);
 
   /**
+   * Moves the entity by its internally stored velocity
+   */
+  void moveByVelocity();
+
+  /**
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();
@@ -64,4 +75,18 @@ public interface Entity {
    * Marks this entity for removal by the next frame, and prevents it from taking further actions.
    */
   void destroySelf();
+
+  /**
+   *
+   * @param xChange The x-value of the change in velocity.
+   * @param yChange The y-value of the change in velocity.
+   */
+  void changeVelocity(double xChange, double yChange);
+
+  /**
+   *
+   * @param xVelocity The x-value of the new velocity.
+   * @param yVelocity The y-value of the new velocity.
+   */
+  void setVelocity(double xVelocity, double yVelocity);
 }

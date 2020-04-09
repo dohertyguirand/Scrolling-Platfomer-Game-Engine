@@ -1,24 +1,31 @@
 package ooga.game;
 
+
 import java.util.List;
-import ooga.Entity;
+import javafx.collections.ObservableList;
+import ooga.data.Entity;
+import ooga.UserInputListener;
 
-public class OogaGame implements Game {
+  public class OogaGame implements Game {
 
-  private List<Level> myLevels;
-  private Level currentLevel;
+    private List<Level> myLevels;
+    private Level currentLevel;
+    private String myName;
 
-  public OogaGame(List<Level> levels) {
-    myLevels = levels;
-    if (!levels.isEmpty()) {
-      currentLevel = levels.get(0);
-    }
+//  public OogaGame(List<Level> levels) {
+//    myLevels = levels;
+//    if (!levels.isEmpty()) {
+//      currentLevel = levels.get(0);
+//    }
+//  }
+  public OogaGame(String gameName) {
+    myName = gameName;
   }
 
   @Override
-  public List<Entity> getEntities() {
+  public ObservableList<Entity> getEntities() {
     return null;
-  }
+  } //return myLevel.getEntities
 
   @Override
   public void doGameStart() {
@@ -39,5 +46,9 @@ public class OogaGame implements Game {
   @Override
   public void handleUserInput(String input) {
 
+  }
+  @Override
+  public UserInputListener makeUserInputListener() {
+    return null;
   }
 }

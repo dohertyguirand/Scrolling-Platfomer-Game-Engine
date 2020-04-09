@@ -1,49 +1,69 @@
-package ooga.game;
+package ooga.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.beans.property.*;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
 import ooga.EntityAPI;
 import ooga.MovementBehavior;
+import ooga.game.EntityInternal;
+import ooga.game.PhysicsEntity;
 
-public class OogaEntity implements EntityAPI {
+public abstract class Entity implements EntityAPI, EntityInternal {
+
+  private BooleanProperty activeInView = new SimpleBooleanProperty(true);
+  private DoubleProperty x = new SimpleDoubleProperty();
+  private DoubleProperty y = new SimpleDoubleProperty();
+  private List<Double> myVelocity;
 
   private List<ControlsBehavior> myControlsBehaviors;
   private List<MovementBehavior> myMovementBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
+  private Map<String,List<ControlsBehavior>> myControls;
   private double myXPos;
   private double myYPos;
   private boolean isDestroyed;
-  //TODO: Use or remove
-  private PhysicsEntity myPhysics;
 
-  public OogaEntity() {
-    myControlsBehaviors = new ArrayList<>();
-    myMovementBehaviors = new ArrayList<>();
-    isDestroyed = false;
-
+  public Entity() {
+    myVelocity = List.of(0.,0.);
+    myXPos = 0;
+    myYPos = 0;
   }
 
-  //TODO: Consider making more flexible constructors or setter methods so that behaviors
-  //TODO: are swappable.
-  public OogaEntity(MovementBehavior perFrameBehavior, ControlsBehavior controls) {
-    this();
-    myMovementBehaviors.add(perFrameBehavior);
-    myControlsBehaviors.add(controls);
+  public double getX() {
+    return x.get();
   }
 
-  public OogaEntity(MovementBehavior perFrameBehavior) {
-    this();
-    myMovementBehaviors.add(perFrameBehavior);
+  public DoubleProperty xProperty() {
+    return x;
   }
 
+  public double getY() {
+    return y.get();
+  }
+
+  public DoubleProperty yProperty() {
+    return y;
+  }
+
+  public boolean isActiveInView() {
+    return activeInView.get();
+  }
+
+  public BooleanProperty activeInViewProperty() {
+    return activeInView;
+  }
+
+  public void setActiveInView(boolean activeInView) {
+    this.activeInView.set(activeInView);
+  }
 
   @Override
   public void reactToControls(String controls) {
-    for (ControlsBehavior behavior : myControlsBehaviors) {
+    for (ControlsBehavior behavior : myControls.get(controls)) {
       behavior.reactToControls(this);
     }
   }
@@ -53,17 +73,11 @@ public class OogaEntity implements EntityAPI {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);
     }
-    myPhysics.updateSelf(elapsedTime);
   }
 
   @Override
   public void setCollisionBehaviors(Map<String, List<CollisionBehavior>> behaviorMap) {
     myCollisionBehaviors = new HashMap<>(behaviorMap);
-  }
-
-  @Override
-  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
-
   }
 
   @Override
@@ -79,11 +93,6 @@ public class OogaEntity implements EntityAPI {
   public void move(double xDistance, double yDistance) {
     myXPos += xDistance;
     myYPos += yDistance;
-  }
-
-  @Override
-  public void moveByVelocity() {
-
   }
 
   @Override
@@ -103,12 +112,23 @@ public class OogaEntity implements EntityAPI {
   }
 
   @Override
-  public void changeVelocity(double xChange, double yChange) {
+  public void moveByVelocity() {
+    myXPos += myVelocity.get(0);
+    myYPos += myVelocity.get(1);
+  }
 
+  @Override
+  public void changeVelocity(double xChange, double yChange) {
+    myVelocity = List.of(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
   }
 
   @Override
   public void setVelocity(double xVelocity, double yVelocity) {
+    myVelocity = List.of(xVelocity, yVelocity);
+  }
 
+  @Override
+  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
+    myMovementBehaviors = behaviors;
   }
 }

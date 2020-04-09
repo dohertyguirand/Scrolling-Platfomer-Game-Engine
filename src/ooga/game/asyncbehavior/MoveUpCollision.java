@@ -1,11 +1,14 @@
-package ooga;
+package ooga.game.asyncbehavior;
+
+import ooga.CollisionBehavior;
+import ooga.EntityAPI;
 
 public class MoveUpCollision implements CollisionBehavior {
 
-  private Entity mySubject;
+  private EntityAPI mySubject;
   private double myMoveDistance;
 
-  public MoveUpCollision(Entity subject, double moveDistance) {
+  public MoveUpCollision(EntityAPI subject, double moveDistance) {
     mySubject = subject;
     myMoveDistance = moveDistance;
   }
