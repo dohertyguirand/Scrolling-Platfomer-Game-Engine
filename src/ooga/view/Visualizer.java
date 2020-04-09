@@ -32,12 +32,13 @@ public class Visualizer extends Application {
   }
 
   private void startGame(String gameName) {
-    try {
-      new ViewerGame(gameName);
-    }
-    catch (OogaDataException e) {
-      //Sam added this, because he made it possible for the OogaGame constructor to throw
-      // an exception, so that the view can decide what to do when no game is found.
+    if (gameName != null) {
+      try {
+        new ViewerGame(gameName);
+      } catch (OogaDataException e) {
+        //Sam added this, because he made it possible for the OogaGame constructor to throw
+        // an exception, so that the view can decide what to do when no game is found.
+      }
     }
   }
 }
