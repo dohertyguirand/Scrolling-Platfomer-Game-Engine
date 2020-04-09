@@ -37,7 +37,7 @@ public class ViewerGame {
 
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
-    myGame = new OogaGame(gameName, new OogaDataReader());
+    myGame = new OogaGame();
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();

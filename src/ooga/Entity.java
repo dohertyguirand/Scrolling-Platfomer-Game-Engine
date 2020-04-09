@@ -60,6 +60,14 @@ public interface Entity {
   void setMovementBehaviors(List<MovementBehavior> behaviors);
 
   /**
+   * Sets the mappings of behaviors that will be carried out when controls are inputted,
+   * by mapping behaviors to controls.
+   * @param behaviors The Map from standardized control input strings to ControlsBehaviors that
+   *                  define this entity's reaction to controls.
+   */
+  void setControlsBehaviors(Map<String,List<ControlsBehavior>> behaviors);
+
+  /**
    * Reacts to colliding with a specific entity type based on its list of reactions mapped to
    * entity names, as defined by the game data.
    * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
