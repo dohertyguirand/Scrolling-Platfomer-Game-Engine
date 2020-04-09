@@ -65,15 +65,12 @@ public class StartMenu {
     myScene.getStylesheets().add("ooga/view/Resources/Scrollbar.css");
   }
 
-  public String getGameSelected() {
-    return gameSelected.get();
-  }
-
   public StringProperty gameSelectedProperty() {
     return gameSelected;
   }
 
   public void setGameSelected(String gameSelected) {
+    this.gameSelected.set(null);
     this.gameSelected.set(gameSelected);
   }
 
