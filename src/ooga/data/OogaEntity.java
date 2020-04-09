@@ -80,6 +80,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void reactToControls(String controls) {
+    if (!myControls.containsKey(controls)) {
+      return;
+    }
     for (ControlsBehavior behavior : myControls.get(controls)) {
       behavior.reactToControls(this);
     }

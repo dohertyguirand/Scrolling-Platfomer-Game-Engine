@@ -7,7 +7,7 @@ public class KeyboardControls implements ControlsInterpreter {
   private ResourceBundle myResources;
 
   public KeyboardControls() {
-    myResources = ResourceBundle.getBundle("resources.inputs/keyboard");
+    myResources = ResourceBundle.getBundle("ooga/game/resources/inputs/keyboard");
   }
 
   @Override

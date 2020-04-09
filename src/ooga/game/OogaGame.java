@@ -8,14 +8,13 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.DataReader;
 import ooga.UserInputListener;
-import ooga.data.ImageEntity;
 import ooga.data.OogaEntity;
 import ooga.data.OogaDataReader;
 
 public class OogaGame implements Game {
 
   //TODO: Remove hard-coded filepath
-  public static final String gameLibraryPath = "data/GamesLibrary/";
+  public static final String GAME_LIBRARY_PATH = "data/GamesLibrary/";
 
   private List<String> myLevelIds;
   private int myLevel;
@@ -31,16 +30,11 @@ public class OogaGame implements Game {
   }
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
+    myDataReader = dataReader;
+    myLevel = 0;
+    myLevelIds = myDataReader.getBasicGameInfo(gameName);
     myName = gameName;
     myDataReader = dataReader;
-    myLevelIds = myDataReader.getBasicGameInfo(gameName);
-  }
-
-  public OogaGame(String gameName) throws OogaDataException {
-    myLevel = 0;
-    myName = gameName;
-    //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
-    myDataReader = new OogaDataReader();
     myLevelIds = myDataReader.getBasicGameInfo(gameName);
     //TODO: Make the type of collision detector configurable.
     myCollisionDetector = new OogaCollisionDetector();
@@ -51,9 +45,15 @@ public class OogaGame implements Game {
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
   }
 
+  public OogaGame(String gameName) throws OogaDataException {
+    //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
+    this(gameName, new OogaDataReader(GAME_LIBRARY_PATH));
+  }
+
   public OogaGame(Level startingLevel) {
     myName = "Unnamed";
     myCollisionDetector = new OogaCollisionDetector();
+    myControlsInterpreter = new KeyboardControls();
     currentLevel = startingLevel;
   }
 
