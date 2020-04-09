@@ -2,11 +2,9 @@ package ooga.game;
 
 import ooga.CollisionBehavior;
 import ooga.EntityAPI;
-import ooga.data.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
-import ooga.game.framebehavior.MoveForwardBehavior;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

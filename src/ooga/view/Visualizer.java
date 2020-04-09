@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
-import ooga.data.OogaDataReader;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -12,7 +11,7 @@ import java.util.ResourceBundle;
 public class Visualizer extends Application {
 
   private ResourceBundle myResources;
-  private OogaDataReader myDataReader;
+  private static final String START_MENU_TITLE = "Choose a Game";
 
   public static void main(String[] args) {
     launch(args);
@@ -20,10 +19,9 @@ public class Visualizer extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
-    myDataReader = new OogaDataReader();
     Scene display = setUpStartMenuDisplay();
     primaryStage.setScene(display);
-    primaryStage.setTitle(myResources.getString("StartMenuTitle"));
+    primaryStage.setTitle(START_MENU_TITLE);
     primaryStage.show();
   }
 
@@ -35,7 +33,7 @@ public class Visualizer extends Application {
 
   private void startGame(String gameName) {
     try {
-      new ViewerGame(gameName, myDataReader);
+      new ViewerGame(gameName);
     }
     catch (OogaDataException e) {
       //Sam added this, because he made it possible for the OogaGame constructor to throw

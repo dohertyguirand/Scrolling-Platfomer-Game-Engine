@@ -1,10 +1,7 @@
 package ooga.game.inputbehavior;
 
-import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
 import ooga.EntityAPI;
-import ooga.data.Entity;
-import ooga.game.EntityInternal;
 
 public class JumpBehavior implements ControlsBehavior {
 

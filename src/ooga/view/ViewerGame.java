@@ -9,12 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import ooga.EntityAPI;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
-import ooga.game.Game;
 import ooga.game.OogaGame;
 
 import java.util.ResourceBundle;
@@ -22,39 +23,39 @@ import java.util.ResourceBundle;
 public class ViewerGame {
 
   private static final double MILLISECOND_DELAY = 1000;
-  public static final double WINDOW_WIDTH = 1000;
-  public static final double WINDOW_HEIGHT = 800; //TODO: put these in resource file or in data
-  private ResourceBundle myResources;
+  private ResourceBundle myResources = ResourceBundle.getBundle("./Resources.config");
+  private String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private Group myEntityGroup;
   private Group myRoot;
   private String myGameName;
   private Scene myGameScene;
   private Stage myGameStage;
   private PauseMenu myPauseMenu;
-  private OogaDataReader myDataReader;
+  private OogaGame myGame;
+  private Timeline myAnimation;
 
-  public ViewerGame(String gameName, OogaDataReader dataReader) throws OogaDataException {
-    myDataReader = dataReader;
+
+  public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
-    Game game = new OogaGame(gameName);
-    setUpGameEntities(game);
+    myGame = new OogaGame(gameName, new OogaDataReader());
+    setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();
-    setUpInputListeners(game);
+    setUpInputListeners();
   }
 
-  private void setUpGameEntities(Game game){
-    ObservableList<Entity> gameEntities = game.getAbstractEntities();
+  private void setUpGameEntities(){
+    ObservableList<EntityAPI> gameEntities = myGame.getEntities();
     // add listener here to handle entities being created/removed
     // this listener should set the "active" property of the entity,
     //    which will trigger a listener that removes it from the group
-    gameEntities.addListener((ListChangeListener<Entity>) c -> {
+    gameEntities.addListener((ListChangeListener<EntityAPI>) c -> {
       while (c.next()) {
         if(c.wasAdded() || c.wasRemoved()){
-          for (Entity removedItem : c.getRemoved()) {
+          for (EntityAPI removedItem : c.getRemoved()) {
             removedItem.setActiveInView(false);
           }
-          for (Entity addedItem : c.getAddedSubList()) {
+          for (EntityAPI addedItem : c.getAddedSubList()) {
             addedItem.setActiveInView(true);
             myEntityGroup.getChildren().add(makeViewEntity(addedItem));
           }
@@ -63,7 +64,7 @@ public class ViewerGame {
     });
 
     myEntityGroup = new Group();
-    for(Entity entity : gameEntities){
+    for(EntityAPI entity : gameEntities){
       Node viewEntity = makeViewEntity(entity);
       myEntityGroup.getChildren().add(viewEntity);
       entity.activeInViewProperty().addListener((o, oldVal, newVal) -> {
@@ -73,7 +74,7 @@ public class ViewerGame {
     }
   }
 
-  private Node makeViewEntity(Entity entity){
+  private Node makeViewEntity(EntityAPI entity){
     if(entity.getClass().equals(ImageEntity.class)){
       return (new ViewImageEntity((ImageEntity)entity)).getNode();
     }
@@ -87,7 +88,7 @@ public class ViewerGame {
     myPauseMenu = new PauseMenu();
     Scene pauseScene = new Scene(myPauseMenu);
     Button pauseButton = new Button();
-//    pauseButton.setGraphic(myDataReader.getPauseButtonImage());
+    pauseButton.setGraphic(getPauseButtonImage());
     pauseButton.setOnAction(e -> {
       myGameStage.setScene(pauseScene);
       myPauseMenu.setResumed(false);
@@ -95,6 +96,10 @@ public class ViewerGame {
     pauseButton.setLayoutX(0);
     pauseButton.setLayoutY(0);
     myRoot.getChildren().add(pauseButton);
+  }
+
+  private ImageView getPauseButtonImage(){
+    return new ImageView(PAUSE_BUTTON_LOCATION);
   }
 
   private void setUpGameStage() {
@@ -108,20 +113,22 @@ public class ViewerGame {
         //myErrorMessage.setText(myLanguageResources.getString("IOError"));
       }
     });
-    Timeline animation = new Timeline();
-    animation.setCycleCount(Timeline.INDEFINITE);
-    animation.getKeyFrames().add(frame);
-    animation.play();
+    myAnimation = new Timeline();
+    myAnimation.setCycleCount(Timeline.INDEFINITE);
+    myAnimation.getKeyFrames().add(frame);
+    myAnimation.play();
 
     myRoot = new Group();
     myRoot.getChildren().add(myEntityGroup);
-    myGameScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
+    myGameScene = new Scene(myRoot, Double.parseDouble(myResources.getString("windowWidth")),
+            Double.parseDouble(myResources.getString("windowHeight")));
     myGameStage.setScene(myGameScene);
     myGameStage.setTitle(myGameName);
     myGameStage.show();
   }
 
   private void step() {
+    myGame.doUpdateLoop(myAnimation.getCurrentTime().toMillis());
     myRoot.requestLayout();
   }
 
@@ -131,8 +138,8 @@ public class ViewerGame {
     alert.showAndWait();
   }
 
-  private void setUpInputListeners(Game game) {
-    UserInputListener userInputListener = game.makeUserInputListener();
+  private void setUpInputListeners() {
+    UserInputListener userInputListener = myGame.makeUserInputListener();
     setUpPauseMenuListeners(userInputListener);
     myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getCharacter()));
     myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()));

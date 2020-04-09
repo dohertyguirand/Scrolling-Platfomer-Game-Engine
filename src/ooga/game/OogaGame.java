@@ -4,7 +4,6 @@ package ooga.game;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.ObservableList;
-import ooga.EntityAPI;
 import ooga.OogaDataException;
 import ooga.data.DataReader;
 import ooga.UserInputListener;
@@ -41,7 +40,7 @@ public class OogaGame implements Game {
   }
 
   @Override
-  public ObservableList<EntityAPI> getEntities() {
+  public ObservableList<ooga.EntityAPI> getEntities() {
     return currentLevel.getEntities();
   }
 
@@ -57,8 +56,8 @@ public class OogaGame implements Game {
 
   @Override
   public void doCollisionLoop() {
-    for (EntityAPI target : currentLevel.getEntities()) {
-      for (EntityAPI collidingWith : currentLevel.getEntities()) {
+    for (ooga.EntityAPI target : currentLevel.getEntities()) {
+      for (ooga.EntityAPI collidingWith : currentLevel.getEntities()) {
         if (myCollisionDetector.isColliding(target,collidingWith)) {
           target.handleCollision(collidingWith.getName());
         }
@@ -68,14 +67,14 @@ public class OogaGame implements Game {
 
   @Override
   public void doUpdateLoop(double elapsedTime) {
-    List<EntityAPI> destroyedEntities = new ArrayList<>();
-    for (EntityAPI e : currentLevel.getEntities()) {
+    List<ooga.EntityAPI> destroyedEntities = new ArrayList<>();
+    for (ooga.EntityAPI e : currentLevel.getEntities()) {
       e.updateSelf(elapsedTime);
       if (e.isDestroyed()) {
         destroyedEntities.add(e);
       }
     }
-    for (EntityAPI destroyed : destroyedEntities) {
+    for (ooga.EntityAPI destroyed : destroyedEntities) {
       if (destroyed.isDestroyed()) {
         currentLevel.removeEntity(destroyed);
       }

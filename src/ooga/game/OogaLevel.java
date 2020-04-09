@@ -4,10 +4,8 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 import ooga.EntityAPI;
-import ooga.data.Entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is a rough draft of a Level that will work for now. More should likely be added later.

@@ -3,8 +3,6 @@ package ooga.game.framebehavior;
 import java.util.List;
 import ooga.EntityAPI;
 import ooga.MovementBehavior;
-import ooga.data.Entity;
-import ooga.game.PhysicsEntity;
 
 /**
  * Uses constant downward motion to simulate basic gravity.

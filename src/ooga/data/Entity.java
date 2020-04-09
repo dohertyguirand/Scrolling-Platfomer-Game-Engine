@@ -7,11 +7,10 @@ import java.util.Map;
 import javafx.beans.property.*;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
-import ooga.EntityAPI;
 import ooga.MovementBehavior;
 import ooga.game.EntityInternal;
 
-public abstract class Entity implements EntityAPI, EntityInternal {
+public abstract class Entity implements ooga.EntityAPI, EntityInternal {
 
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
   private DoubleProperty myXPos = new SimpleDoubleProperty();

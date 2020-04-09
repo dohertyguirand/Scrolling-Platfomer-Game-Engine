@@ -6,6 +6,8 @@ import ooga.game.Game;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
+import ooga.game.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -19,15 +21,25 @@ import java.util.Map;
  */
 
 public class OogaDataReader implements DataReader{
+
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
+    private static String DEFAULT_LIBRARY_FILE = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary";
+
     //TODO: we as a team need to make an EntityDefinition interface
     // That is what should be in this map, not a full interface
     //TODO: If DataReader stores no game specific information, then Braeden needs to decide how this EntityMap will be
     // stored and distributed; shouldn't be too hard
     //private Map<String, Entity> myEntityMap;
 
+    public OogaDataReader(String givenFilePath){
+        myLibraryFilePath = givenFilePath;
+    }
+    public OogaDataReader(){
+        this(DEFAULT_LIBRARY_FILE);
+    }
+
     @Override
-    public List<Thumbnail> getThumbnails(String folderName) throws OogaDataException{
+    public List<Thumbnail> getThumbnails() {
         return null;
     }
 
@@ -41,10 +53,16 @@ public class OogaDataReader implements DataReader{
         return null;
     }
 
+
     @Override
-    public Game loadGame(String filePath) throws OogaDataException {
+    public Level loadLevel(String gameName, String levelID) throws OogaDataException {
+        // at the time of writing this, the OogaDataReader doesn't use the given Strings ^
+        // I will change this when I have that workign properly
+        // -Braeden
         try {
             // create a new document to parse
+            // String filePath = myLibraryFilePath;
+            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary";
             File fXmlFile = new File(filePath);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
 
