@@ -38,15 +38,11 @@ public class StartMenu {
   private Scene myScene;
   private ScrollBar myScrollbar;
   private HBox myHbox;
-  final Image[] myImages = new Image[3];
-  final ImageView[] myPics = new ImageView[4];
   public Scene getScene() {
     return myScene;
   }
 
-  public StartMenu() throws IOException {
-    myScene.getStylesheets().add("resources/data/Scrollbar.css");
-
+  public StartMenu() {
     myDataReader = new OogaDataReader();
 
     Group root = new Group();
@@ -60,14 +56,13 @@ public class StartMenu {
     horizontalScroller();
     hbarsettings();
     addimages();
-    initialize();
-
 
     pane.getChildren().addAll(imgView);
     root.getChildren().addAll(pane, myHbox, myScrollbar);
 
 
     myScene = new Scene(root);
+    myScene.getStylesheets().add("ooga/view/Resources.Scrollbar.css");
   }
 
   public String getGameSelected() {
@@ -90,12 +85,7 @@ public class StartMenu {
       myScrollbar.setPrefWidth(WINDOW_WIDTH);
       myScrollbar.setMax(MAX_SCROLLBAR);
 
-    myScrollbar.valueProperty().addListener(new ChangeListener<Number>() {
-      public void changed(ObservableValue<? extends Number> ov,
-                          Number old_val, Number new_val) {
-        myHbox.setLayoutX(-new_val.doubleValue());
-      }
-    });
+    myScrollbar.valueProperty().addListener((ov, old_val, new_val) -> myHbox.setLayoutX(-new_val.doubleValue()));
   }
 
   private void hbarsettings() {
@@ -114,9 +104,5 @@ public class StartMenu {
       myHbox.getChildren().add(gameButton);
     }
   }
-
-  public void initialize() throws IOException {
-  }
-
 
 }
