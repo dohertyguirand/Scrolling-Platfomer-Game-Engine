@@ -62,7 +62,7 @@ public class OogaDataReader implements DataReader{
 //            // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
 //            e.printStackTrace();
 //        }
-        Thumbnail marioThumbnail = new Thumbnail("data/GamesLibrary/example-mario/mario_logo.jpg",
+        Thumbnail marioThumbnail = new Thumbnail("file:data/GamesLibrary/example-mario/mario_logo.jpg",
                 "Super Mario Bros",
                 "Straight from the mind of Shigeru Miyamoto.");
         ArrayList<Thumbnail> ret = new ArrayList();

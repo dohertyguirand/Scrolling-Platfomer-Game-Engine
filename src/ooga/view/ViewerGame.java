@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 public class ViewerGame {
 
   private static final double MILLISECOND_DELAY = 1000;
-  private ResourceBundle myResources = ResourceBundle.getBundle("./Resources.config");
+  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private Group myEntityGroup;
   private Group myRoot;
