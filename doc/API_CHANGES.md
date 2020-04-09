@@ -22,6 +22,7 @@ since the game will always know what game it is running and is not responsible f
 - added method ``reactToPauseButton``
 - UserInputListener method probably shouldn't take a String input, as the Game should be
 responsible for determining where to save
+- now has a doGameStep method that view calls during its step method
 
 
 ### Entity

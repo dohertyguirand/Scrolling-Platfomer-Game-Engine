@@ -1,6 +1,8 @@
 package ooga.data;
 
 import java.util.List;
+import java.util.Map;
+
 import ooga.OogaDataException;
 import ooga.game.Game;
 import ooga.game.Level;
@@ -45,6 +47,13 @@ public interface DataReader {
    * @throws OogaDataException If the file given is not correctly formatted.
    */
   Level loadLevel(String gameName, String levelID) throws OogaDataException;
+
+  /**
+   * Gives a game a map of its usable entities from their names to their definitions.
+   * @param game
+   * @return
+   */
+  Map<String, EntityDefinition> getEntityMap(String gameName);
 
   /**
    * Saves the current state of the game so it can easily be loaded from where the player

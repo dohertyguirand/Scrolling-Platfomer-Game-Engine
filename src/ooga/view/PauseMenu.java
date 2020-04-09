@@ -5,18 +5,27 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import ooga.CollisionBehavior;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 
-public class PauseMenu extends Group {
-
-  private static final Color BACKGROUND_COLOR = Color.BLUE;
+public class PauseMenu extends Pane {
+  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+  private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
+  private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
+  private static final Color BACKGROUND_COLOR = Color.NAVY;
   private static final Paint BUTTON_COLOR = Color.RED;
   private static final double SPACING = 30;
   private static final double MARGIN = 50;
@@ -28,8 +37,10 @@ public class PauseMenu extends Group {
     put(quit, "Quit");
     put(save, "Save");
   }};
+  private ScrollPane myScrollPane;
 
   public PauseMenu(){
+    this.getStylesheets().add("ooga/view/Resources/PauseMenu.css");
     /**
      * Hey this is braeden, just noting here that I commented out those three lines below because they were causing errors
      * [thumbs up emoji]
@@ -42,6 +53,7 @@ public class PauseMenu extends Group {
     }
     //VBox.setMargin(buttonVBox, new Insets(MARGIN, 0, 0, ViewerGame.WINDOW_WIDTH/2));
     this.getChildren().add(buttonVBox);
+    this.setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
   }
 
   public BooleanProperty resumedProperty() {
