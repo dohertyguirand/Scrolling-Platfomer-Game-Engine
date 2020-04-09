@@ -28,7 +28,9 @@ public class OogaDataReader implements DataReader{
     // That is what should be in this map, not a full interface
     //TODO: If DataReader stores no game specific information, then Braeden needs to decide how this EntityMap will be
     // stored and distributed; shouldn't be too hard
-    //private Map<String, Entity> myEntityMap;
+    // create
+    // private Map<String, EntityDefinition> myEntityMap;
+
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
     }
@@ -115,6 +117,11 @@ public class OogaDataReader implements DataReader{
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    @Override
+    public Map<String, EntityDefinition> getEntityMap(String gameName) {
         return null;
     }
 
