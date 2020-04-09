@@ -128,7 +128,7 @@ public class ViewerGame {
   }
 
   private void step() {
-    myGame.doUpdateLoop(myAnimation.getCurrentTime().toMillis());
+    myGame.doGameStep(myAnimation.getCurrentTime().toMillis());
     myRoot.requestLayout();
   }
 

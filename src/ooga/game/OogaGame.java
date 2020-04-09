@@ -72,6 +72,16 @@ public class OogaGame implements Game {
 
   }
 
+  /**
+   * Updates things in the gaem according to how much time has passed
+   *
+   * @param elapsedTime time passed in milliseconds
+   */
+  @Override
+  public void doGameStep(double elapsedTime) {
+
+  }
+
   @Override
   public void doCollisionLoop() {
     for (Entity target : currentLevel.getEntities()) {
