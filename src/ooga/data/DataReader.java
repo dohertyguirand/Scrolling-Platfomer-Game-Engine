@@ -37,7 +37,7 @@ public interface DataReader {
    * @return A list of Integers, the ID's of the Level written in the game file
    * @throws OogaDataException if the String given isn't a directory or the cooresponding file is not properly formatted
    */
-  List<Integer> getBasicGameInfo(String gameName) throws OogaDataException;
+  List<String> getBasicGameInfo(String gameName) throws OogaDataException;
 
   /**
    * @param gameName The name of the game
