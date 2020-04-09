@@ -22,9 +22,10 @@ import java.util.ResourceBundle;
 
 public class ViewerGame {
 
-  private static final double MILLISECOND_DELAY = 1000;
+  private static final double MILLISECOND_DELAY = 33.33;
   private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
-  private String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
+  private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
+  private final double PAUSE_BUTTON_SIZE = Double.parseDouble(myResources.getString("pauseButtonSize"));
   private Group myEntityGroup;
   private Group myRoot;
   private String myGameName;
@@ -37,11 +38,11 @@ public class ViewerGame {
 
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
-    myGame = new OogaGame(gameName, new OogaDataReader());
+    myGame = new OogaGame();
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();
-    setUpInputListeners();
+    setUpInputListeners(myGame);
   }
 
   private void setUpGameEntities(){
@@ -86,7 +87,7 @@ public class ViewerGame {
 
   private void setUpPauseButton() {
     myPauseMenu = new PauseMenu();
-    Scene pauseScene = new Scene(myPauseMenu);
+    Scene pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
     Button pauseButton = new Button();
     pauseButton.setGraphic(getPauseButtonImage());
     pauseButton.setOnAction(e -> {
@@ -99,7 +100,10 @@ public class ViewerGame {
   }
 
   private ImageView getPauseButtonImage(){
-    return new ImageView(PAUSE_BUTTON_LOCATION);
+    ImageView imageView = new ImageView(PAUSE_BUTTON_LOCATION);
+    imageView.setFitHeight(PAUSE_BUTTON_SIZE);
+    imageView.setFitWidth(PAUSE_BUTTON_SIZE);
+    return imageView;
   }
 
   private void setUpGameStage() {
@@ -128,7 +132,7 @@ public class ViewerGame {
   }
 
   private void step() {
-    myGame.doUpdateLoop(myAnimation.getCurrentTime().toMillis());
+    myGame.doGameStep(myAnimation.getCurrentTime().toMillis());
     myRoot.requestLayout();
   }
 
@@ -138,10 +142,9 @@ public class ViewerGame {
     alert.showAndWait();
   }
 
-  private void setUpInputListeners() {
-    UserInputListener userInputListener = myGame.makeUserInputListener();
+  private void setUpInputListeners(UserInputListener userInputListener) {
     setUpPauseMenuListeners(userInputListener);
-    myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getCharacter()));
+    myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getText()));
     myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()));
     // add more input types here as needed, like mouse drag events
   }
@@ -155,12 +158,8 @@ public class ViewerGame {
     });
     myPauseMenu.quitProperty().addListener((o, oldVal, newVal) -> {
       userInputListener.reactToGameQuit();
-      quitGame();
+      myGameStage.close();
     });
     myPauseMenu.saveProperty().addListener((o, oldVal, newVal) -> userInputListener.reactToGameSave());
-  }
-
-  private void quitGame() {
-    // close the window?
   }
 }

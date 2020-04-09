@@ -16,6 +16,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
   private DoubleProperty myXPos = new SimpleDoubleProperty();
   private DoubleProperty myYPos = new SimpleDoubleProperty();
+  private DoubleProperty myWidth;
+  private DoubleProperty myHeight;
+
   private List<Double> myVelocity;
 
   private List<MovementBehavior> myMovementBehaviors;
@@ -28,6 +31,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myVelocity = List.of(0.,0.);
     myXPos.set(0);
     myYPos.set(0);
+    myWidth = new SimpleDoubleProperty(100);
+    myHeight = new SimpleDoubleProperty(100);
     myCollisionBehaviors = new HashMap<>();
     myMovementBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
@@ -129,13 +134,13 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public double getWidth() {
     //TODO: Make this reflect the entity's width.
-    return 100;
+    return myWidth.getValue();
   }
 
   @Override
   public double getHeight() {
     //TODO: Make this reflect the entity's height.
-    return 100;
+    return myHeight.getValue();
   }
 
   @Override

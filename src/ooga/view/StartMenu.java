@@ -2,21 +2,16 @@ package ooga.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.image.Image;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ooga.data.OogaDataReader;
 import ooga.data.Thumbnail;
-
-import java.io.IOException;
 
 
 import java.util.List;
@@ -31,16 +26,13 @@ public class StartMenu {
   private final double GAME_IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
   private final double GAME_IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
   private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
-  private final double MAX_SCROLLBAR = Double.parseDouble(myResources.getString("maxScrollbar"));
   private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
   private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
+  private final double GAME_IMAGE_RESIZE_FACTOR = Double.parseDouble(myResources.getString("gameImageResizeFactor"));
 
   private Scene myScene;
-  private ScrollBar myScrollbar;
-  private HBox myHbox;
-  public Scene getScene() {
-    return myScene;
-  }
+  private ScrollPane myScrollPane;
+  private HBox myHBox;
 
   public StartMenu() {
     myDataReader = new OogaDataReader();
@@ -54,19 +46,18 @@ public class StartMenu {
     imgView.setFitHeight(WINDOW_HEIGHT);
 
     horizontalScroller();
-    hbarsettings();
-    addimages();
+    addImages();
 
     pane.getChildren().addAll(imgView);
-    root.getChildren().addAll(pane, myHbox, myScrollbar);
-
+    root.getChildren().addAll(pane, myScrollPane);
 
     myScene = new Scene(root);
-    myScene.getStylesheets().add("ooga/view/Resources.Scrollbar.css");
+    String SCROLLBAR_CSS_LOCATION = myResources.getString("scrollBarCSSLocation");
+    myScene.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
   }
 
-  public String getGameSelected() {
-    return gameSelected.get();
+  public Scene getScene() {
+    return myScene;
   }
 
   public StringProperty gameSelectedProperty() {
@@ -74,35 +65,38 @@ public class StartMenu {
   }
 
   public void setGameSelected(String gameSelected) {
+    this.gameSelected.set(null);
     this.gameSelected.set(gameSelected);
   }
 
   private void horizontalScroller() {
-      myScrollbar = new ScrollBar();
-      myScrollbar.setLayoutY(SCROLLBAR_Y);
-      myScrollbar.setMin(0);
-      myScrollbar.setOrientation(Orientation.HORIZONTAL);
-      myScrollbar.setPrefWidth(WINDOW_WIDTH);
-      myScrollbar.setMax(MAX_SCROLLBAR);
-
-    myScrollbar.valueProperty().addListener((ov, old_val, new_val) -> myHbox.setLayoutX(-new_val.doubleValue()));
+      myHBox = new HBox();
+      myHBox.setLayoutY(HBOX_Y_LAYOUT);
+      myHBox.setSpacing(HBOX_SPACING);
+      myScrollPane = new ScrollPane();
+      myScrollPane.setLayoutY(SCROLLBAR_Y);
+      myScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+      myScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+      myScrollPane.setPrefWidth(WINDOW_WIDTH);
+      myScrollPane.setContent(myHBox);
   }
 
-  private void hbarsettings() {
-    myHbox = new HBox();
-    myHbox.setLayoutY(HBOX_Y_LAYOUT);
-    myHbox.setSpacing(HBOX_SPACING);
-  }
-
-  private void addimages() {
+  private void addImages() {
     List<Thumbnail> thumbnails = myDataReader.getThumbnails();
     for (Thumbnail thumbnail : thumbnails) {
-      Button gameButton = new Button(thumbnail.getDescription(), new ImageView(thumbnail.getImageFile()));
+      ImageView gameImage = new ImageView(thumbnail.getImageFile());
+      resizeImage(gameImage, 1);
+      Button gameButton = new Button(null, gameImage);
       gameButton.setOnAction(e -> setGameSelected(thumbnail.getTitle()));
-      gameButton.setOnMouseEntered(e -> gameButton.resize(GAME_IMAGE_WIDTH*1.25, GAME_IMAGE_HEIGHT*1.25));
-      gameButton.setOnMouseExited(e -> gameButton.resize(GAME_IMAGE_WIDTH, GAME_IMAGE_HEIGHT));
-      myHbox.getChildren().add(gameButton);
+      gameButton.setOnMouseEntered(e -> resizeImage(gameImage, GAME_IMAGE_RESIZE_FACTOR));
+      gameButton.setOnMouseExited(e -> resizeImage(gameImage, 1));
+      gameButton.setTooltip(new Tooltip(thumbnail.getDescription()));
+      myHBox.getChildren().add(gameButton);
     }
   }
 
+  private void resizeImage(ImageView gameImage, double resizeFactor) {
+    gameImage.setFitWidth(GAME_IMAGE_WIDTH*resizeFactor);
+    gameImage.setFitHeight(GAME_IMAGE_HEIGHT*resizeFactor);
+  }
 }

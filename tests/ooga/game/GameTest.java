@@ -1,6 +1,7 @@
 package ooga.game;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -16,10 +17,12 @@ import ooga.game.inputbehavior.JumpBehavior;
 import org.junit.jupiter.api.Test;
 
 public class GameTest {
+
   @Test
   void testGameInitialize() throws OogaDataException {
     Game loadTest = new OogaGame("Super Mario Bros", new OogaDataReader());
     assertTrue(loadTest.getEntities().size() > 0);
+
   }
 
   @Test

@@ -1,7 +1,7 @@
 <Game>
   <Name>Chrome Dino</Name>
-  <Thumbnail>mario_logo.png</Thumbnail>
-  <Description>Straight from the mind of Shigeru Miyamoto.</Description>
+  <Thumbnail>mario_logo.jpg</Thumbnail>
+  <Description>Back from the jurassic period to entertain you while your wifi is down.</Description>
   <Entities>
     <Entity>
       <Name>Dino</Name>

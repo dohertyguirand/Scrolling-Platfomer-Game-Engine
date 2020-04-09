@@ -35,6 +35,12 @@ public interface Game {
   void doGameStart();
 
   /**
+   * Updates things in the gaem according to how much time has passed
+   * @param elapsedTime time passed in milliseconds
+   */
+  void doGameStep(double elapsedTime);
+
+  /**
    * Detects all collisions between entities in the current level and has them resolve their
    * collisions. Can cause entities to be created or removed. The rate at which this is called
    * depends on how often this and doUpdateLoop are called.
