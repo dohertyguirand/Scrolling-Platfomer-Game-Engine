@@ -14,7 +14,6 @@ public class ProfileTest extends Application {
         JFXPanel jfxPanel = new JFXPanel();
         ViewProfile profile = new ViewProfile();
         profile.setProfileName("Dodo");
-        //profile.setProfilePhoto("ooga/view/Resources/defaultphoto.jpg");
         profile.setStats(new HashMap<>(){{
             put("SuperMario", 100);
             put("Dino", 1000000);

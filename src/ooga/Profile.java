@@ -1,5 +1,7 @@
 package ooga;
 
+import javafx.scene.image.Image;
+
 import java.util.Map;
 
 public interface Profile {
@@ -12,6 +14,7 @@ public interface Profile {
      */
     void setProfilePhoto(String photoPath);
     //TODO: Maybe change this to be an image such as jpg so user can drag and drop
+
 
     /**
      * Changes the users Profile Name.
