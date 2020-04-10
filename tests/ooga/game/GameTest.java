@@ -7,17 +7,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
+import ooga.OogaDataException;
 import ooga.data.ImageEntity;
+import ooga.data.OogaDataReader;
+import ooga.data.OogaEntity;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
+import ooga.game.inputbehavior.JumpBehavior;
 import org.junit.jupiter.api.Test;
 
 public class GameTest {
 
   @Test
-  void testGameInitialize() {
-    Game game = new OogaGame();
-    assertNotEquals(game.getEntities().size(),0);
+  void testGameInitialize() throws OogaDataException {
+    Game loadTest = new OogaGame();
+    assertTrue(loadTest.getEntities().size() > 0);
+
   }
 
   @Test
@@ -47,11 +52,27 @@ public class GameTest {
     OogaGame game = new OogaGame(level);
     game.doCollisionLoop();
     assertTrue(destructibleEntity.isDestroyed());
+  }
 
+  @Test
+  void testInputHandling() {
+    double highJumpHeight = 50.0;
+    Entity highJumpEntity = new ImageEntity("high");
+    highJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(highJumpHeight))));
+//    highJumpEntity.setControlsBehaviors(Map.of("DownKey",List.of(new JumpBehavior(highJumpHeight))));
+    double lowJumpHeight = 10.0;
+    Entity lowJumpEntity = new ImageEntity("low");
+    lowJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(lowJumpHeight))));
 
-//    EntityAPI removable = new ImageEntity();
-//    removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
-//    removable.handleCollision("entity2");
-//    assertTrue(removable.isDestroyed());
+    double elapsedTime = 1.0;
+    Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity));
+    Game testGame = new OogaGame(testLevel);
+    testGame.handleUserInput("W");
+    testGame.doUpdateLoop(elapsedTime);
+    double expectedHighHeight = elapsedTime * highJumpHeight;
+    double expectedLowHeight = elapsedTime * lowJumpHeight;
+    assertEquals(List.of(0.0,expectedHighHeight),highJumpEntity.getPosition());
+    assertEquals(List.of(0.0,expectedLowHeight),lowJumpEntity.getPosition());
+
   }
 }

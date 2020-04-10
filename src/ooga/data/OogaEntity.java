@@ -85,7 +85,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void reactToControls(String controls) {
-    if (myControls.get(controls) == null) { return; }
+    if (!myControls.containsKey(controls)) {
+      return;
+    }
     for (ControlsBehavior behavior : myControls.get(controls)) {
       behavior.reactToControls(this);
     }
@@ -96,7 +98,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);
     }
-    this.moveByVelocity();
+    moveByVelocity(elapsedTime);
   }
 
   @Override
@@ -121,7 +123,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void move(double xDistance, double yDistance) {
     myXPos.set(myXPos.get() + xDistance);
-    myYPos.set(myYPos.get() - yDistance);
+    myYPos.set(myYPos.get() + yDistance);
   }
 
   @Override
@@ -130,7 +132,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public List<Double> getVelocity(){return myVelocity;}
+
+  public List<Double> getVelocity() {
+    return new ArrayList<>(myVelocity);
+  }
 
   @Override
   public double getWidth() {
@@ -161,8 +166,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void moveByVelocity() {
-    move(myVelocity.get(0),myVelocity.get(1));
+  public void moveByVelocity(double elapsedTime) {
+    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
   }
 
   @Override
