@@ -1,4 +1,5 @@
 package ooga.data;
+import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.game.Game;
 
@@ -9,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
+import ooga.game.OogaLevel;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -46,7 +48,6 @@ public class OogaDataReader implements DataReader{
         System.out.println("Reading thumbnails");
         // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
         ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
-
         for (File gameFile : getAllGameFiles()){
             try {
                 // create a new document to parse
@@ -140,70 +141,109 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public Level loadLevel(String gameName, String levelID) throws OogaDataException {
-        // at the time of writing this, the OogaDataReader doesn't use the given Strings ^
-        // I will change this when I have that working properly
-        // -Braeden
+        ArrayList<Entity> initialEntities = new ArrayList<>();
+        File gameFile = findGame(gameName);
         try {
-            // create a new document to parse
-            // String filePath = myLibraryFilePath;
-            //SAM modified this because relative filepaths work a bit better on my machine
-            String filePath = "data/games-library/example-mario/example_mario.xml";
-            File fXmlFile = new File(filePath);
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
-
-            //optional, but recommended
-            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-            //doc.getDocumentElement().normalize();
-
-            System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
-            //print information about the game
-            System.out.println("Game title: " + doc.getElementsByTagName("Name").item(0).getTextContent());
-            System.out.println("Description: " + doc.getElementsByTagName("Description").item(0).getTextContent());
-            System.out.println("Thumbnail: " + doc.getElementsByTagName("Thumbnail").item(0).getTextContent());
-
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
             // in the xml create a list of all 'Level' nodes
-            NodeList levelList = doc.getElementsByTagName("Level");
-            System.out.println("Number of levels: " + levelList.getLength());
-
-            System.out.println("----------------------------");
-
-            //loop through all levels and display their information
-            for (int i=0; i<levelList.getLength(); i++) {
-                Node currentLevel = levelList.item(i);
-                Element levelAsElement = (Element) currentLevel;
-                // print ID and end conditions
-                System.out.println("Level " + levelAsElement.getElementsByTagName("ID").item(0).getTextContent());
-                System.out.println("End Condition: " + levelAsElement.getElementsByTagName("EndCondition").item(0).getTextContent());
-
-                //loop through and print instances
-                NodeList currentLevelInstances =
-                    ((Element) levelAsElement.getElementsByTagName("Instances").item(0)).getElementsByTagName("Instance");
-                System.out.println(currentLevelInstances.getLength() + " Instances:");
-
-                for (int j=0; j<currentLevelInstances.getLength(); j++) {
-                    Element currentChild = (Element) currentLevelInstances.item(j);
-                    if(currentChild.getNodeType() == Node.ELEMENT_NODE){
-                        // for each instance, print its type and location
-                        String type = currentChild.getElementsByTagName("Type").item(0).getTextContent();
-                        String xpos = currentChild.getElementsByTagName("XPos").item(0).getTextContent();
-                        String ypos = currentChild.getElementsByTagName("YPos").item(0).getTextContent();
-                        System.out.println(String.format("\t%s at x:%s y:%s", type, xpos, ypos));
-                    }
-                }
-
-                // a space afterwards for ~asthetics~
-                System.out.println();
+            NodeList entityNodes = doc.getElementsByTagName("Entity");
+            System.out.println("There are "+entityNodes.getLength()+" entities in this file.");
+            System.out.print("They are ");
+            // add all IDs to the list
+            for (int i = 0; i < entityNodes.getLength(); i++) {
+                Node currentEntity = entityNodes.item(i);
+                Element entityElement = (Element) currentEntity;
+                String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+                System.out.print(entityName+" ");
             }
-        } catch (Exception e) {
-            // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
-            e.printStackTrace();
+            System.out.println(".");
+        } catch (SAXException | ParserConfigurationException | IOException e) {
+            // this error will never happen because it would have happened in findGame()
+            throw new OogaDataException("This error should not ever occur");
         }
+
+        OogaLevel newLevel = new OogaLevel(initialEntities);
+
+//        try {
+//            // create a new document to parse
+//            // String filePath = myLibraryFilePath;
+//            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/games-library/example-mario/example_mario.xml";
+//            File fXmlFile = new File(filePath);
+//            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
+//
+//            //optional, but recommended
+//            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+//            //doc.getDocumentElement().normalize();
+//
+//            System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+//            //print information about the game
+//            System.out.println("Game title: " + doc.getElementsByTagName("Name").item(0).getTextContent());
+//            System.out.println("Description: " + doc.getElementsByTagName("Description").item(0).getTextContent());
+//            System.out.println("Thumbnail: " + doc.getElementsByTagName("Thumbnail").item(0).getTextContent());
+//
+//            // in the xml create a list of all 'Level' nodes
+//            NodeList levelList = doc.getElementsByTagName("Level");
+//            System.out.println("Number of levels: " + levelList.getLength());
+//
+//            System.out.println("----------------------------");
+//
+//            //loop through all levels and display their information
+//            for (int i=0; i<levelList.getLength(); i++) {
+//                Node currentLevel = levelList.item(i);
+//                Element levelAsElement = (Element) currentLevel;
+//                // print ID and end conditions
+//                System.out.println("Level " + levelAsElement.getElementsByTagName("ID").item(0).getTextContent());
+//                System.out.println("End Condition: " + levelAsElement.getElementsByTagName("EndCondition").item(0).getTextContent());
+//
+//                //loop through and print instances
+//                NodeList currentLevelInstances =
+//                    ((Element) levelAsElement.getElementsByTagName("Instances").item(0)).getElementsByTagName("Instance");
+//                System.out.println(currentLevelInstances.getLength() + " Instances:");
+//
+//                for (int j=0; j<currentLevelInstances.getLength(); j++) {
+//                    Element currentChild = (Element) currentLevelInstances.item(j);
+//                    if(currentChild.getNodeType() == Node.ELEMENT_NODE){
+//                        // for each instance, print its type and location
+//                        String type = currentChild.getElementsByTagName("Type").item(0).getTextContent();
+//                        String xpos = currentChild.getElementsByTagName("XPos").item(0).getTextContent();
+//                        String ypos = currentChild.getElementsByTagName("YPos").item(0).getTextContent();
+//                        System.out.println(String.format("\t%s at x:%s y:%s", type, xpos, ypos));
+//                    }
+//                }
+//
+//                // a space afterwards for ~asthetics~
+//                System.out.println();
+//            }
+//        } catch (Exception e) {
+//            // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
+//            e.printStackTrace();
+//        }
 
         return null;
     }
 
     @Override
-    public Map<String, EntityDefinition> getEntityMap(String gameName) {
+    public Map<String, ImageEntityDefinition> getEntityMap(String gameName) throws OogaDataException {
+        File gameFile = findGame(gameName);
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
+            // in the xml create a list of all 'Level' nodes
+            NodeList entityNodes = doc.getElementsByTagName("Entity");
+            System.out.println("There are "+entityNodes.getLength()+" entities in this file.");
+            System.out.print("They are ");
+            // add all entities to the map
+            for (int i = 0; i < entityNodes.getLength(); i++) {
+                // create a new entity
+                Node currentEntity = entityNodes.item(i);
+                Element entityElement = (Element) currentEntity;
+                String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+                System.out.print(entityName+" ");
+            }
+            System.out.println(".");
+        } catch (SAXException | ParserConfigurationException | IOException e) {
+            // this error will never happen because it would have happened in findGame()
+            throw new OogaDataException("This error should not ever occur");
+        }
         return null;
     }
 

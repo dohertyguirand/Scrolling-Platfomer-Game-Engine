@@ -5,6 +5,7 @@ import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
+import ooga.game.asyncbehavior.StopDownwardVelocity;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -57,5 +58,15 @@ public class CollisionTest {
     removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
     removable.handleCollision("entity2");
     assertTrue(removable.isDestroyed());
+  }
+
+  @Test
+  public void testStopDownwardVelocity(){
+    Entity fallingEnity = new ImageEntity();
+    fallingEnity.setCollisionBehaviors(Map.of("Floor", List.of(new StopDownwardVelocity())));
+    fallingEnity.setVelocity(100.0,100.0);
+    fallingEnity.handleCollision("Floor");
+    List<Double> velocity = fallingEnity.getVelocity();
+    assertEquals(0.0,velocity.get(1));
   }
 }

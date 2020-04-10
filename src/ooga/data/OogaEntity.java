@@ -132,6 +132,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
+
   public List<Double> getVelocity() {
     return new ArrayList<>(myVelocity);
   }

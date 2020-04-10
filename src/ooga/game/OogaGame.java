@@ -53,6 +53,8 @@ public class OogaGame implements Game, UserInputListener {
     }
 
     currentLevel = new OogaLevel(entities);
+    myControlsInterpreter = new KeyboardControls();
+    myCollisionDetector = new OogaCollisionDetector();
   }
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
