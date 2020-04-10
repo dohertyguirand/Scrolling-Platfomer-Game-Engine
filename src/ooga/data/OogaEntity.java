@@ -96,6 +96,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);
     }
+    this.moveByVelocity();
   }
 
   @Override
@@ -120,7 +121,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void move(double xDistance, double yDistance) {
     myXPos.set(myXPos.get() + xDistance);
-    myYPos.set(myYPos.get() + yDistance);
+    myYPos.set(myYPos.get() - yDistance);
   }
 
   @Override

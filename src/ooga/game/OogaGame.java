@@ -43,6 +43,8 @@ public class OogaGame implements Game, UserInputListener {
 //    otherEntity.setPosition(List.of(400.0,400.0));
 //    entities.add(otherEntity);
     currentLevel = new OogaLevel(entities);
+    myControlsInterpreter = new KeyboardControls();
+    myCollisionDetector = new OogaCollisionDetector();
   }
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
@@ -153,8 +155,9 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void reactToKeyPress(String keyName) {
+    String inputType = myControlsInterpreter.translateInput(keyName);
     for (Entity e : currentLevel.getEntities()) {
-      e.reactToControls(keyName);
+      e.reactToControls(inputType);
     }
   }
 
