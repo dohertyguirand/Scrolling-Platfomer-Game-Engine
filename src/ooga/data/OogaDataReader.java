@@ -74,8 +74,7 @@ public class OogaDataReader implements DataReader{
                         e.printStackTrace();
                     }
 
-                    // TODO: get rid of this magic value v
-                    String fullImagePath = "file:data/games-library/"+gameDirectory.getName()+"/"+gameThumbnailImageName;
+                    String fullImagePath = "file:" + myLibraryFilePath + "/" + gameDirectory.getName() + "/" + gameThumbnailImageName;
                     Thumbnail newThumbnail = new Thumbnail(fullImagePath, gameTitle, gameDescription);
                     thumbnailList.add(newThumbnail);
                 }
@@ -86,11 +85,52 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public List<String> getBasicGameInfo(String gameName) throws OogaDataException {
-        String exampleID = "1";
-        ArrayList<String> returnList = new ArrayList<>();
-        returnList.add(exampleID);
-        return returnList;
+    public List<String> getBasicGameInfo(String givenGameName) throws OogaDataException {
+        ArrayList<String> IDList = new ArrayList<>();
+        ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
+        File libraryFile = new File(myLibraryFilePath);
+        // loop through the library and find the correct game
+        for (File gameDirectory : Objects.requireNonNull(libraryFile.listFiles())){
+            if(!gameDirectory.isDirectory()) continue;
+
+            // go through the game folder and find the game file
+            for (File gameFile : Objects.requireNonNull(gameDirectory.listFiles())){
+                // check if the file is a .xml
+                String[] splitFile = gameFile.getName().split("\\.");
+                String fileExtension = splitFile[splitFile.length-1];
+                if(!fileExtension.equals("xml")) continue;
+
+                // check if this game file is the correct game file
+                Document doc;
+                try {
+                    // create a new document to parse
+                    File fXmlFile = new File(String.valueOf(gameFile));
+                    doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
+                }
+                catch (Exception e) {
+                    // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
+                    e.printStackTrace();
+                    break;
+                }
+
+                String gameTitle = doc.getElementsByTagName("Name").item(0).getTextContent();
+
+                if (gameTitle.equals(givenGameName)) {
+                    // in the xml create a list of all 'Level' nodes
+                    NodeList levelList = doc.getElementsByTagName("Level");
+                    //loop through all levels and display their information
+                    for (int i = 0; i < levelList.getLength(); i++) {
+                        Node currentLevel = levelList.item(i);
+                        Element levelAsElement = (Element) currentLevel;
+                        // print ID and end conditions
+                        String newID = levelAsElement.getElementsByTagName("ID").item(0).getTextContent();
+                        IDList.add(newID);
+                    }
+                    break;
+                }
+            }
+        }
+        return IDList;
     }
 
     @Override
