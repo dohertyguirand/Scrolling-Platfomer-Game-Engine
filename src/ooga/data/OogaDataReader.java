@@ -222,26 +222,36 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public Map<String, ImageEntityDefinition> getEntityMap(String gameName) throws OogaDataException {
+        Map<String, ImageEntityDefinition> retMap = new HashMap<>();
         File gameFile = findGame(gameName);
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
             // in the xml create a list of all 'Level' nodes
             NodeList entityNodes = doc.getElementsByTagName("Entity");
-            System.out.println("There are "+entityNodes.getLength()+" entities in this file.");
-            System.out.print("They are ");
             // add all entities to the map
             for (int i = 0; i < entityNodes.getLength(); i++) {
                 // create a new entity
                 Node currentEntity = entityNodes.item(i);
+                // if the entity has an image, it is an imageEntity
                 Element entityElement = (Element) currentEntity;
-                String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
-                System.out.print(entityName+" ");
+                if(entityElement.getElementsByTagName("Image").getLength() > 0) {
+                    // add the ImageEntity to the map
+                    String newName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+                    ImageEntityDefinition newIED = createImageEntityDefinition(entityElement);
+                    retMap.put(newName, newIED);
+                }
+                else{
+                    //TODO: add case for text Entity (figure out how you can add both to the same map and still distinguish them on the game side)
+                }
             }
-            System.out.println(".");
         } catch (SAXException | ParserConfigurationException | IOException e) {
             // this error will never happen because it would have happened in findGame()
             throw new OogaDataException("This error should not ever occur");
         }
+        return retMap;
+    }
+
+    private ImageEntityDefinition createImageEntityDefinition(Element entityElement){
         return null;
     }
 
