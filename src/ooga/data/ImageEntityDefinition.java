@@ -10,18 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ImageEntityDefinition {
-    private StringProperty imageLocation = null;
-    private DoubleProperty height = new SimpleDoubleProperty();
-    private DoubleProperty width = new SimpleDoubleProperty();
-    private BooleanProperty activeInView = new SimpleBooleanProperty(true);
-    private DoubleProperty myWidth;
-    private DoubleProperty myHeight;
+    private DoubleProperty myHeight = new SimpleDoubleProperty();
+    private DoubleProperty myWidth = new SimpleDoubleProperty();
     private List<MovementBehavior> myMovementBehaviors;
     private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
     private Map<String,List<ControlsBehavior>> myControls;
     private String myName;
 
-    public ImageEntityDefinition(){
+    public ImageEntityDefinition(String name, Double height, Double width){
 
     }
     public ImageEntity createEntity(Double xpos, Double ypos){

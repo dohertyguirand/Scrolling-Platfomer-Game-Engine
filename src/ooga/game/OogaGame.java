@@ -86,6 +86,8 @@ public class OogaGame implements Game, UserInputListener {
 
   @Override
   public ObservableList<Entity> getEntities() {
+    System.out.println("currentLevel = " + currentLevel);
+    System.out.println("currentLevel.getEntities() = " + currentLevel.getEntities());
     return currentLevel.getEntities();
   }
 

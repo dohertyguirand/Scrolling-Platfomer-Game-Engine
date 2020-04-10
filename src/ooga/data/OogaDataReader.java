@@ -45,6 +45,7 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public List<Thumbnail> getThumbnails() {
+        System.out.println("Reading thumbnails");
         // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
         ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
         for (File gameFile : getAllGameFiles()){
@@ -58,7 +59,8 @@ public class OogaDataReader implements DataReader{
                 String gameDescription = doc.getElementsByTagName("Description").item(0).getTextContent();
                 String gameThumbnailImageName = doc.getElementsByTagName("Thumbnail").item(0).getTextContent();
 
-                String fullImagePath = "file:" + myLibraryFilePath + "/" + gameFile.getParentFile() + "/" + gameThumbnailImageName;
+                System.out.println("file:" + gameFile.getParentFile() + "/" + gameThumbnailImageName);
+                String fullImagePath = "file:" + gameFile.getParentFile() + "/" + gameThumbnailImageName;
                 Thumbnail newThumbnail = new Thumbnail(fullImagePath, gameTitle, gameDescription);
                 thumbnailList.add(newThumbnail);
             } catch (SAXException | ParserConfigurationException | IOException e) {
