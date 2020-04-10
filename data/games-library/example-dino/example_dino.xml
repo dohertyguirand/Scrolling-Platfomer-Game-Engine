@@ -1,6 +1,6 @@
 <Game>
   <Name>Chrome Dino</Name>
-  <Thumbnail>mario_logo.jpg</Thumbnail>
+  <Thumbnail>dino_logo.jpg</Thumbnail>
   <Description>Back from the jurassic period to entertain you while your wifi is down.</Description>
   <Entities>
     <Entity>

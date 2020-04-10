@@ -20,7 +20,7 @@ public class GameTest {
 
   @Test
   void testGameInitialize() throws OogaDataException {
-    Game loadTest = new OogaGame("Super Mario Bros", new OogaDataReader());
+    Game loadTest = new OogaGame();
     assertTrue(loadTest.getEntities().size() > 0);
 
   }

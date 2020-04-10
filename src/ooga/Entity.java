@@ -87,13 +87,19 @@ public interface Entity {
 
   /**
    * Moves the entity by its internally stored velocity
+   * @param elapsedTime
    */
-  void moveByVelocity();
+  void moveByVelocity(double elapsedTime);
 
   /**
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();
+
+  /**
+   * @return The X and Y velocity of the Entity, in that order.
+   */
+  List<Double> getVelocity();
 
   /**
    * @return The width of the entity.
