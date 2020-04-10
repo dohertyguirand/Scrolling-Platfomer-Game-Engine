@@ -57,7 +57,7 @@ public class PauseMenu extends BorderPane {
     this.setTop(makeMenuTitle());
     this.setLeft(setMenuItems());
     this.setCenterShape(true);
-    this.setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
+   // this.setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
   }
 
   public BooleanProperty resumedProperty() {

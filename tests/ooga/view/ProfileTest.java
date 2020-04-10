@@ -11,7 +11,6 @@ public class ProfileTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        JFXPanel jfxPanel = new JFXPanel();
         ViewProfile profile = new ViewProfile();
         profile.setProfileName("Dodo");
         profile.setStats(new HashMap<>(){{
