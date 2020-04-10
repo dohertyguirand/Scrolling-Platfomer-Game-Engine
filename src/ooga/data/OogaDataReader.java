@@ -1,7 +1,5 @@
 package ooga.data;
-import ooga.Entity;
-import ooga.MovementBehavior;
-import ooga.OogaDataException;
+import ooga.*;
 import ooga.game.Game;
 
 
@@ -13,8 +11,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
 import ooga.game.OogaLevel;
+import ooga.game.asyncbehavior.DestroySelfBehavior;
+import ooga.game.asyncbehavior.MoveUpCollision;
+import ooga.game.asyncbehavior.StopDownwardVelocity;
 import ooga.game.framebehavior.GravityBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
+import ooga.game.inputbehavior.JumpBehavior;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -49,7 +51,6 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public List<Thumbnail> getThumbnails() {
-        System.out.println("Reading thumbnails");
         // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
         ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
         for (File gameFile : getAllGameFiles()){
@@ -63,7 +64,6 @@ public class OogaDataReader implements DataReader{
                 String gameDescription = doc.getElementsByTagName("Description").item(0).getTextContent();
                 String gameThumbnailImageName = doc.getElementsByTagName("Thumbnail").item(0).getTextContent();
 
-                System.out.println("file:" + gameFile.getParentFile() + "/" + gameThumbnailImageName);
                 String fullImagePath = "file:" + gameFile.getParentFile() + "/" + gameThumbnailImageName;
                 Thumbnail newThumbnail = new Thumbnail(fullImagePath, gameTitle, gameDescription);
                 thumbnailList.add(newThumbnail);
@@ -151,77 +151,18 @@ public class OogaDataReader implements DataReader{
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
             // in the xml create a list of all 'Level' nodes
             NodeList entityNodes = doc.getElementsByTagName("Entity");
-            System.out.println("There are "+entityNodes.getLength()+" entities in this file.");
-            System.out.print("They are ");
             // add all IDs to the list
             for (int i = 0; i < entityNodes.getLength(); i++) {
                 Node currentEntity = entityNodes.item(i);
                 Element entityElement = (Element) currentEntity;
                 String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
-                System.out.print(entityName+" ");
             }
-            System.out.println(".");
         } catch (SAXException | ParserConfigurationException | IOException e) {
             // this error will never happen because it would have happened in findGame()
             throw new OogaDataException("This error should not ever occur");
         }
 
         OogaLevel newLevel = new OogaLevel(initialEntities);
-
-//        try {
-//            // create a new document to parse
-//            // String filePath = myLibraryFilePath;
-//            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/games-library/example-mario/example_mario.xml";
-//            File fXmlFile = new File(filePath);
-//            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
-//
-//            //optional, but recommended
-//            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-//            //doc.getDocumentElement().normalize();
-//
-//            System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
-//            //print information about the game
-//            System.out.println("Game title: " + doc.getElementsByTagName("Name").item(0).getTextContent());
-//            System.out.println("Description: " + doc.getElementsByTagName("Description").item(0).getTextContent());
-//            System.out.println("Thumbnail: " + doc.getElementsByTagName("Thumbnail").item(0).getTextContent());
-//
-//            // in the xml create a list of all 'Level' nodes
-//            NodeList levelList = doc.getElementsByTagName("Level");
-//            System.out.println("Number of levels: " + levelList.getLength());
-//
-//            System.out.println("----------------------------");
-//
-//            //loop through all levels and display their information
-//            for (int i=0; i<levelList.getLength(); i++) {
-//                Node currentLevel = levelList.item(i);
-//                Element levelAsElement = (Element) currentLevel;
-//                // print ID and end conditions
-//                System.out.println("Level " + levelAsElement.getElementsByTagName("ID").item(0).getTextContent());
-//                System.out.println("End Condition: " + levelAsElement.getElementsByTagName("EndCondition").item(0).getTextContent());
-//
-//                //loop through and print instances
-//                NodeList currentLevelInstances =
-//                    ((Element) levelAsElement.getElementsByTagName("Instances").item(0)).getElementsByTagName("Instance");
-//                System.out.println(currentLevelInstances.getLength() + " Instances:");
-//
-//                for (int j=0; j<currentLevelInstances.getLength(); j++) {
-//                    Element currentChild = (Element) currentLevelInstances.item(j);
-//                    if(currentChild.getNodeType() == Node.ELEMENT_NODE){
-//                        // for each instance, print its type and location
-//                        String type = currentChild.getElementsByTagName("Type").item(0).getTextContent();
-//                        String xpos = currentChild.getElementsByTagName("XPos").item(0).getTextContent();
-//                        String ypos = currentChild.getElementsByTagName("YPos").item(0).getTextContent();
-//                        System.out.println(String.format("\t%s at x:%s y:%s", type, xpos, ypos));
-//                    }
-//                }
-//
-//                // a space afterwards for ~asthetics~
-//                System.out.println();
-//            }
-//        } catch (Exception e) {
-//            // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
-//            e.printStackTrace();
-//        }
 
         return null;
     }
@@ -267,25 +208,94 @@ public class OogaDataReader implements DataReader{
         Double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
         Double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
         String imagePath = myLibraryFilePath + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
+        System.out.print(String.format("Name: %s ", name));
 
         List<MovementBehavior> movementBehaviors = new ArrayList<>();
         for (int i=0; i<entityElement.getElementsByTagName("MovementBehavior").getLength(); i++){
-            String behavior = entityElement.getElementsByTagName("MovementBehavior").item(i).getTextContent();
-            System.out.println(name + " " + behavior);
+            // create an array of the behavior name and its space-separated parameters
+            String[] behavior = entityElement.getElementsByTagName("MovementBehavior").item(i).getTextContent().split(" ");
             // TODO: improve the way this determines the type of Behavior
-            if(behavior.equals("Gravity")){
-                // TODO: settle difference betweeen GravityBehavior and the .xml's: GravityBehavior asks for a vector that isn't given in the file
-                // maybe there should be a default stored in either GravityBehavior or OogaDataReader
-                // for now there's just hard coded values
-                movementBehaviors.add(new GravityBehavior(0, -10));
-            }else if(behavior.equals("MoveForward")){
-                movementBehaviors.add(new MoveForwardBehavior());
+            // determine what type of behavior it is
+            if(behavior[0].equals("Gravity")){
+                double xGrav = 0.0, yGrav = 0.1;
+                if (behavior.length == 2) {
+                    yGrav = Double.parseDouble(behavior[1]);
+                }
+                if (behavior.length >= 3) {
+                    xGrav = Double.parseDouble(behavior[1]);
+                    yGrav = Double.parseDouble(behavior[2]);
+                }
+                System.out.print(String.format("Movement Behavior: Gravity %f, %f ", xGrav,yGrav));
+                movementBehaviors.add(new GravityBehavior(xGrav, yGrav));
+            }else if(behavior[0].equals("MoveForward")){
+                double xVel = 0.0, yVel = 0.0;
+                if (behavior.length == 2) {
+                    xVel = Double.parseDouble(behavior[1]);
+                }
+                if (behavior.length >= 3) {
+                    xVel = Double.parseDouble(behavior[1]);
+                    yVel = Double.parseDouble(behavior[2]);
+                }
+                System.out.print(String.format("Movement Behavior: MoveForward %f, %f ", xVel,yVel));
+                movementBehaviors.add(new MoveForwardBehavior(xVel, yVel));
             }else{
                 throw new OogaDataException("Movement Behavior listed in game file is not recognized");
             }
         }
 
-        ImageEntityDefinition newIED = null;
+        Map<String,List<CollisionBehavior>> collisionBehaviors = new HashMap<>();
+        for (int i=0; i<entityElement.getElementsByTagName("EntityCollision").getLength(); i++){
+            Element behaviorElement = (Element) entityElement.getElementsByTagName("EntityCollision").item(i);
+            String collisionObject = behaviorElement.getElementsByTagName("With").item(0).getTextContent();
+            ArrayList<CollisionBehavior> reactions = new ArrayList<>();
+            //loop through all reactions and add them to the list
+            for (int j=0; j<behaviorElement.getElementsByTagName("Reaction").getLength(); j++) {
+                String reaction = behaviorElement.getElementsByTagName("Reaction").item(j).getTextContent();
+                // TODO: improve the way this determines the type of Behavior
+                // determine what type of behavior it is
+                if (reaction.equals("RemoveSelf")) {
+                    System.out.print("Collision Behavior: " + collisionObject + " RemoveSelf ");
+                    reactions.add(new DestroySelfBehavior());
+                } else if (reaction.equals("StopDownwardVelocity")) {
+                    System.out.print("Collision Behavior: " + collisionObject + " StopDownwardVel ");
+                    reactions.add(new StopDownwardVelocity());
+                } else if(reaction.equals("MoveUp")){
+                    //TODO: verify this useage, I can't find it used anywhere so I'm not sure what this does
+                } else {
+                    throw new OogaDataException("Collision Behavior listed in game file is not recognized");
+                }
+            }
+            collisionBehaviors.put(collisionObject, reactions);
+        }
+
+
+        Map<String, List<ControlsBehavior>> controlBehaviors = new HashMap<>();
+        for (int i=0; i<entityElement.getElementsByTagName("ControlInput").getLength(); i++){
+            Element behaviorElement = (Element) entityElement.getElementsByTagName("ControlInput").item(i);
+            String keyPressed = behaviorElement.getElementsByTagName("Key").item(0).getTextContent();
+            ArrayList<ControlsBehavior> reactions = new ArrayList<>();
+            //loop through all reactions and add them to the list
+            for (int j=0; j<behaviorElement.getElementsByTagName("Reaction").getLength(); j++) {
+                // create an array of the behavior name and its space-separated parameters
+                String[] reaction = behaviorElement.getElementsByTagName("Reaction").item(j).getTextContent().split(" ");
+                // TODO: improve the way this determines the type of Behavior
+                // determine what type of behavior it is
+                if (reaction[0].equals("JumpBehavior -1.2")) {
+                    double yVel = -1.2;
+                    if(reaction.length>=2) yVel = Double.parseDouble(reaction[1]);
+                    System.out.print("Control Behavior: " + keyPressed + " Jump ");
+                    reactions.add(new JumpBehavior(yVel));
+                } else {
+                    throw new OogaDataException("Control Behavior listed in game file is not recognized");
+                }
+            }
+            controlBehaviors.put(keyPressed, reactions);
+        }
+
+        ImageEntityDefinition newIED = new ImageEntityDefinition(name, height, width, imagePath, movementBehaviors,
+                 collisionBehaviors, controlBehaviors);
+
+        System.out.println();
 
         return newIED;
     }

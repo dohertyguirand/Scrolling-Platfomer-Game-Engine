@@ -1,5 +1,6 @@
 package ooga.data;
 
+import ooga.Entity;
 import ooga.OogaDataException;
 import org.junit.jupiter.api.Test;
 
@@ -69,6 +70,12 @@ public class DataReaderTest {
         } catch (OogaDataException e) {
             fail();
             e.printStackTrace();
+        }
+        for(String key : retMap.keySet()){
+            Entity e = retMap.get(key).makeInstanceAt(0.0,0.0);
+            System.out.print("Name: "+ key + "   ");
+            System.out.print("Height: " + e.getHeight()+"   ");
+            System.out.println("Width: " + e.getWidth());
         }
         System.out.println(retMap);
     }
