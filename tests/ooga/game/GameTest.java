@@ -56,12 +56,15 @@ public class GameTest {
 
   @Test
   void testInputHandling() {
+    double startingHeight = 400;
     double highJumpHeight = 50.0;
     Entity highJumpEntity = new ImageEntity("high");
+    highJumpEntity.setPosition(List.of(0.0,startingHeight));
     highJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(highJumpHeight))));
 //    highJumpEntity.setControlsBehaviors(Map.of("DownKey",List.of(new JumpBehavior(highJumpHeight))));
     double lowJumpHeight = 10.0;
     Entity lowJumpEntity = new ImageEntity("low");
+    lowJumpEntity.setPosition(List.of(0.0,startingHeight));
     lowJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(lowJumpHeight))));
 
     double elapsedTime = 1.0;
@@ -71,8 +74,8 @@ public class GameTest {
     testGame.doUpdateLoop(elapsedTime);
     double expectedHighHeight = elapsedTime * highJumpHeight;
     double expectedLowHeight = elapsedTime * lowJumpHeight;
-    assertEquals(List.of(0.0,expectedHighHeight),highJumpEntity.getPosition());
-    assertEquals(List.of(0.0,expectedLowHeight),lowJumpEntity.getPosition());
+    assertEquals(List.of(0.0,startingHeight+expectedHighHeight),highJumpEntity.getPosition());
+    assertEquals(List.of(0.0,startingHeight+expectedLowHeight),lowJumpEntity.getPosition());
 
   }
 }
