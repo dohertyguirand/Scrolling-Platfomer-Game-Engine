@@ -1,16 +1,20 @@
 package ooga.data;
 import ooga.Entity;
+import ooga.MovementBehavior;
 import ooga.OogaDataException;
 import ooga.game.Game;
 
 
 import java.io.IOException;
 import java.util.*;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
 import ooga.game.OogaLevel;
+import ooga.game.framebehavior.GravityBehavior;
+import ooga.game.framebehavior.MoveForwardBehavior;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -256,15 +260,26 @@ public class OogaDataReader implements DataReader{
      * @param entityElement the Node describing the requested Entity
      * @return
      */
-    private ImageEntityDefinition createImageEntityDefinition(Element entityElement){
+    private ImageEntityDefinition createImageEntityDefinition(Element entityElement) throws OogaDataException {
         String name = entityElement.getElementsByTagName("Name").item(0).getTextContent();
         Double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
         Double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
         String imagePath = myLibraryFilePath + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
+
+        List<MovementBehavior> movementBehaviors = new ArrayList<>();
         for (int i=0; i<entityElement.getElementsByTagName("MovementBehavior").getLength(); i++){
             String behavior = entityElement.getElementsByTagName("MovementBehavior").item(i).getTextContent();
-            if(behavior.equals("")){
-
+            System.out.println(name + " " + behavior);
+            // TODO: improve the way this determines the type of Behavior
+            if(behavior.equals("Gravity")){
+                // TODO: settle difference betweeen GravityBehavior and the .xml's: GravityBehavior asks for a vector that isn't given in the file
+                // maybe there should be a default stored in either GravityBehavior or OogaDataReader
+                // for now there's just hard coded values
+                movementBehaviors.add(new GravityBehavior(0, -10));
+            }else if(behavior.equals("MoveForward")){
+                movementBehaviors.add(new MoveForwardBehavior());
+            }else{
+                throw new OogaDataException("Movement Behavior listed in game file is not recognized");
             }
         }
 

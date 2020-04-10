@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This is a class that just tests DataReader and makes sure it is working correctly.
@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class DataReaderTest {
     private OogaDataReader testDataReader = new OogaDataReader();
-    private String GAME_NAME = "Super Mario Bros";
+    private String GAME_NAME = "Chrome Dino";
+    //private String GAME_NAME = "Super Mario Bros";
     private ArrayList<String> ID_LIST  = new ArrayList<>(List.of("1"));
 
     @Test
@@ -58,5 +59,17 @@ public class DataReaderTest {
     public void testGetGameFilePaths(){
         List<String> pathList = testDataReader.getGameFilePaths();
         System.out.println(pathList);
+    }
+
+    @Test
+    public void testGetEntityMap(){
+        Map<String, ImageEntityDefinition> retMap = null;
+        try {
+            retMap = testDataReader.getEntityMap(GAME_NAME);
+        } catch (OogaDataException e) {
+            fail();
+            e.printStackTrace();
+        }
+        System.out.println(retMap);
     }
 }
