@@ -12,8 +12,6 @@ public class Main {
      */
     public static void main (String[] args) {
         System.out.println("Hello world");
-//        DataReaderTest drt = new DataReaderTest();
-//        drt.runTest("/Users/braedenward/Desktop/CS308/final_team17/resources/example-mario/example_mario.xml");
     }
 }
 

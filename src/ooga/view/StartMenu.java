@@ -28,13 +28,11 @@ public class StartMenu {
   private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
   private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
   private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
+  private final double GAME_IMAGE_RESIZE_FACTOR = Double.parseDouble(myResources.getString("gameImageResizeFactor"));
 
   private Scene myScene;
   private ScrollPane myScrollPane;
   private HBox myHBox;
-  public Scene getScene() {
-    return myScene;
-  }
 
   public StartMenu() {
     myDataReader = new OogaDataReader();
@@ -54,7 +52,12 @@ public class StartMenu {
     root.getChildren().addAll(pane, myScrollPane);
 
     myScene = new Scene(root);
-    myScene.getStylesheets().add("ooga/view/Resources/Scrollbar.css");
+    String SCROLLBAR_CSS_LOCATION = myResources.getString("scrollBarCSSLocation");
+    myScene.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
+  }
+
+  public Scene getScene() {
+    return myScene;
   }
 
   public StringProperty gameSelectedProperty() {
@@ -85,7 +88,7 @@ public class StartMenu {
       resizeImage(gameImage, 1);
       Button gameButton = new Button(null, gameImage);
       gameButton.setOnAction(e -> setGameSelected(thumbnail.getTitle()));
-      gameButton.setOnMouseEntered(e -> resizeImage(gameImage, 1.25));
+      gameButton.setOnMouseEntered(e -> resizeImage(gameImage, GAME_IMAGE_RESIZE_FACTOR));
       gameButton.setOnMouseExited(e -> resizeImage(gameImage, 1));
       gameButton.setTooltip(new Tooltip(thumbnail.getDescription()));
       myHBox.getChildren().add(gameButton);
@@ -96,5 +99,4 @@ public class StartMenu {
     gameImage.setFitWidth(GAME_IMAGE_WIDTH*resizeFactor);
     gameImage.setFitHeight(GAME_IMAGE_HEIGHT*resizeFactor);
   }
-
 }

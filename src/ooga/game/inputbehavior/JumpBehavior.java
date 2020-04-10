@@ -14,8 +14,8 @@ public class JumpBehavior implements ControlsBehavior {
 
   @Override
   public void reactToControls(Entity subject) {
-    if (subject.getPosition().get(1) <= GROUND_LEVEL) {
+//    if (subject.getPosition().get(1) <= GROUND_LEVEL) {
       subject.changeVelocity(0, myYVelocity);
-    }
+//    }
   }
 }

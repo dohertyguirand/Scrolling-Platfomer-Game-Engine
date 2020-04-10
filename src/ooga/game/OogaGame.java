@@ -3,6 +3,7 @@ package ooga.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
@@ -11,11 +12,13 @@ import ooga.UserInputListener;
 import ooga.data.ImageEntity;
 import ooga.data.OogaEntity;
 import ooga.data.OogaDataReader;
+import ooga.game.framebehavior.MoveForwardBehavior;
+import ooga.game.inputbehavior.JumpBehavior;
 
 public class OogaGame implements Game, UserInputListener {
 
   //TODO: Remove hard-coded filepath
-  public static final String gameLibraryPath = "data/GamesLibrary/";
+  public static final String gameLibraryPath = "data/games-library/";
 
   private List<String> myLevelIds;
   private int myLevel;
@@ -27,7 +30,19 @@ public class OogaGame implements Game, UserInputListener {
 
   public OogaGame() {
     myName = "Unnamed";
-    currentLevel = new OogaLevel(new ArrayList<>());
+    //TODO: Remove dependency between OogaGame and ImageEntity
+    List<Entity> entities = new ArrayList<>();
+    Entity sampleEntity = new ImageEntity("entity1", "file:data/games-library/example-mario/koopa.png");
+    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(0.010,0)));
+    sampleEntity.setPosition(List.of(400-100.0,400+100.0));
+    sampleEntity.setPosition(List.of(400.0,400.0));
+    sampleEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(0.10))));
+    entities.add(sampleEntity);
+
+//    Entity otherEntity = new ImageEntity("entity2","file:data/games-library/example-mario/koopa.png");
+//    otherEntity.setPosition(List.of(400.0,400.0));
+//    entities.add(otherEntity);
+    currentLevel = new OogaLevel(entities);
   }
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
@@ -46,7 +61,6 @@ public class OogaGame implements Game, UserInputListener {
     myCollisionDetector = new OogaCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
-
     myLevelIds = myDataReader.getBasicGameInfo(gameName);
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
   }
@@ -79,7 +93,7 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void doGameStep(double elapsedTime) {
-
+    doUpdateLoop(elapsedTime);
   }
 
   @Override
@@ -139,7 +153,9 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void reactToKeyPress(String keyName) {
-
+    for (Entity e : currentLevel.getEntities()) {
+      e.reactToControls(keyName);
+    }
   }
 
   /**

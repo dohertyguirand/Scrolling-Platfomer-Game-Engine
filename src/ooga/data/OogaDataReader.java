@@ -3,18 +3,19 @@ import ooga.OogaDataException;
 import ooga.game.Game;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
 import java.io.File;
-import java.util.Map;
 
 /**
  * info @ https://mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
@@ -24,7 +25,7 @@ import java.util.Map;
 public class OogaDataReader implements DataReader{
 
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
-    private static String DEFAULT_LIBRARY_FILE = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary";
+    private static String DEFAULT_LIBRARY_FILE = "data/games-library";
 
     //TODO: we as a team need to make an EntityDefinition interface
     // That is what should be in this map, not a full interface
@@ -42,55 +43,109 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public List<Thumbnail> getThumbnails() {
-        //TODO: complete this class
-//        // at the time of writing this, the OogaDataReader doesn't use the given Strings ^
-//        // I will change this when I have that workign properly
-//        // -Braeden
-//        try {
-//            // create a new document to parse
-//
-//            File fXmlFile = new File(myLibraryFilePath);
-//            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
-//
-//            //optional, but recommended
-//            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-//            //doc.getDocumentElement().normalize();
-//            String thumbnailName = doc.getElementsByTagName("Thumbnail").item(0).getTextContent();
-//            System.out.println("Thumbnail: " + doc.getElementsByTagName("Thumbnail").item(0).getTextContent());
-//
-//        }
-//        catch (Exception e) {
-//            // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
-//            e.printStackTrace();
-//        }
-        Thumbnail marioThumbnail = new Thumbnail("file:data/GamesLibrary/example-mario/mario_logo.jpg",
-                "Super Mario Bros",
-                "Straight from the mind of Shigeru Miyamoto.");
-        ArrayList<Thumbnail> ret = new ArrayList();
-        ret.add(marioThumbnail);
-        return ret;
+        // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
+        ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
+
+        for (File gameFile : getAllGameFiles()){
+            try {
+                // create a new document to parse
+                File fXmlFile = new File(String.valueOf(gameFile));
+                Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
+
+                // find the required information in the document
+                String gameTitle = doc.getElementsByTagName("Name").item(0).getTextContent();
+                String gameDescription = doc.getElementsByTagName("Description").item(0).getTextContent();
+                String gameThumbnailImageName = doc.getElementsByTagName("Thumbnail").item(0).getTextContent();
+
+                String fullImagePath = "file:" + myLibraryFilePath + "/" + gameFile.getParentFile() + "/" + gameThumbnailImageName;
+                Thumbnail newThumbnail = new Thumbnail(fullImagePath, gameTitle, gameDescription);
+                thumbnailList.add(newThumbnail);
+            } catch (SAXException | ParserConfigurationException | IOException e) {
+                // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
+                e.printStackTrace();
+            }
+        }
+
+        return thumbnailList;
     }
 
     @Override
-    public List<String> getBasicGameInfo(String gameName) throws OogaDataException {
-        return null;
+    public List<String> getBasicGameInfo(String givenGameName) throws OogaDataException {
+        ArrayList<String> IDList = new ArrayList<>();
+        File gameFile = findGame(givenGameName);
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
+            // in the xml create a list of all 'Level' nodes
+            NodeList levelList = doc.getElementsByTagName("Level");
+            // add all IDs to the list
+            for (int i = 0; i < levelList.getLength(); i++) {
+                Node currentLevel = levelList.item(i);
+                Element levelAsElement = (Element) currentLevel;
+                String newID = levelAsElement.getElementsByTagName("ID").item(0).getTextContent();
+                IDList.add(newID);
+            }
+        } catch (SAXException | ParserConfigurationException | IOException e) {
+            // this error will never happen because it would have happened in findGame()
+            throw new OogaDataException("This error should not ever occur");
+        }
+        return IDList;
     }
 
     @Override
-    public List<String> getGameFilePaths(String folderPath) throws OogaDataException {
-        return null;
+    public List<String> getGameFilePaths() {
+        ArrayList<String> FilePaths = new ArrayList<>();
+        for(File f : getAllGameFiles()){
+            FilePaths.add(f.getPath());
+        }
+        return FilePaths;
+    }
+
+    private List<File> getAllGameFiles(){
+        ArrayList<File> fileList = new ArrayList<>();
+        File libraryFile = new File(myLibraryFilePath);
+        // loop through the library and find each game
+        for (File gameDirectory : Objects.requireNonNull(libraryFile.listFiles())){
+            if(!gameDirectory.isDirectory()) continue;
+            // go through the game folder and find the game file
+            for (File gameFile : Objects.requireNonNull(gameDirectory.listFiles())){
+                // check if the file is a .xml
+                String[] splitFile = gameFile.getName().split("\\.");
+                String fileExtension = splitFile[splitFile.length-1];
+                if(fileExtension.equals("xml")) fileList.add(gameFile);
+            }
+        }
+        return fileList;
+    }
+
+    private File findGame(String givenGameName) throws OogaDataException {
+        List<File> gameFiles = getAllGameFiles();
+        for(File f : gameFiles) {
+            // check if this game file is the correct game file
+            try {
+                // create a new document to parse
+                File fXmlFile = new File(String.valueOf(f));
+                Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
+                String gameTitle = doc.getElementsByTagName("Name").item(0).getTextContent();
+                if (gameTitle.equals(givenGameName)) return f;
+            } catch (SAXException | ParserConfigurationException | IOException e) {
+                // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
+                e.printStackTrace();
+                break;
+            }
+        }
+        throw new OogaDataException("Requested game name not found in Library");
     }
 
 
     @Override
     public Level loadLevel(String gameName, String levelID) throws OogaDataException {
         // at the time of writing this, the OogaDataReader doesn't use the given Strings ^
-        // I will change this when I have that workign properly
+        // I will change this when I have that working properly
         // -Braeden
         try {
             // create a new document to parse
             // String filePath = myLibraryFilePath;
-            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/GamesLibrary";
+            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/games-library/example-mario/example_mario.xml";
             File fXmlFile = new File(filePath);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
 
