@@ -22,7 +22,7 @@ public interface EntityInternal {
   /**
    * Moves the entity by its internally stored velocity
    */
-  void moveByVelocity();
+  void moveByVelocity(double elapsedTime);
 
   /**
    * @return The X and Y position of the Entity, in that order.

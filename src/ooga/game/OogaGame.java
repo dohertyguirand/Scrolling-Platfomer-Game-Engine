@@ -12,13 +12,15 @@ import ooga.UserInputListener;
 import ooga.data.ImageEntity;
 import ooga.data.OogaEntity;
 import ooga.data.OogaDataReader;
+import ooga.game.asyncbehavior.DestroySelfBehavior;
+import ooga.game.framebehavior.GravityBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
 import ooga.game.inputbehavior.JumpBehavior;
 
 public class OogaGame implements Game, UserInputListener {
 
   //TODO: Remove hard-coded filepath
-  public static final String gameLibraryPath = "data/games-library/";
+  public static final String GAME_LIBRARY_PATH = "data/games-library/";
 
   private List<String> myLevelIds;
   private int myLevel;
@@ -30,32 +32,37 @@ public class OogaGame implements Game, UserInputListener {
 
   public OogaGame() {
     myName = "Unnamed";
+    myControlsInterpreter = new KeyboardControls();
+    myCollisionDetector = new OogaCollisionDetector();
     //TODO: Remove dependency between OogaGame and ImageEntity
     List<Entity> entities = new ArrayList<>();
-    Entity sampleEntity = new ImageEntity("entity1", "file:data/games-library/example-mario/koopa.png");
-    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(0.010,0)));
-    sampleEntity.setPosition(List.of(400-100.0,400+100.0));
-    sampleEntity.setPosition(List.of(400.0,400.0));
-    sampleEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(0.10))));
+    Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/googe_dino.bmp");
+//    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(100/1000.0,0),
+//                                              new GravityBehavior(0,100.0/1000)));
+    sampleEntity.setMovementBehaviors(List.of(new GravityBehavior(0,100.0/1000)));
+    sampleEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(-1200.0/1000))));
+    sampleEntity.setCollisionBehaviors(Map.of("cactus",List.of(new DestroySelfBehavior())));
+    sampleEntity.setPosition(List.of(400.0-300,400.0));
     entities.add(sampleEntity);
 
-//    Entity otherEntity = new ImageEntity("entity2","file:data/games-library/example-mario/koopa.png");
-//    otherEntity.setPosition(List.of(400.0,400.0));
-//    entities.add(otherEntity);
+    for (int i = 0; i < 10; i ++) {
+      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/cactus.jpeg");
+      otherEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(-450.0/1000,0)));
+      otherEntity.setPosition(List.of(1200.0 + 800 * i,400.0));
+      entities.add(otherEntity);
+    }
+
     currentLevel = new OogaLevel(entities);
+    myControlsInterpreter = new KeyboardControls();
+    myCollisionDetector = new OogaCollisionDetector();
   }
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
+    myDataReader = dataReader;
+    myLevel = 0;
+    myLevelIds = myDataReader.getBasicGameInfo(gameName);
     myName = gameName;
     myDataReader = dataReader;
-    myLevelIds = myDataReader.getBasicGameInfo(gameName);
-  }
-
-  public OogaGame(String gameName) throws OogaDataException {
-    myLevel = 0;
-    myName = gameName;
-    //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
-    myDataReader = new OogaDataReader();
     myLevelIds = myDataReader.getBasicGameInfo(gameName);
     //TODO: Make the type of collision detector configurable.
     myCollisionDetector = new OogaCollisionDetector();
@@ -65,9 +72,15 @@ public class OogaGame implements Game, UserInputListener {
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
   }
 
+  public OogaGame(String gameName) throws OogaDataException {
+    //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
+    this(gameName, new OogaDataReader(GAME_LIBRARY_PATH));
+  }
+
   public OogaGame(Level startingLevel) {
     myName = "Unnamed";
     myCollisionDetector = new OogaCollisionDetector();
+    myControlsInterpreter = new KeyboardControls();
     currentLevel = startingLevel;
   }
 
@@ -94,15 +107,25 @@ public class OogaGame implements Game, UserInputListener {
   @Override
   public void doGameStep(double elapsedTime) {
     doUpdateLoop(elapsedTime);
+    doCollisionLoop();
   }
 
   @Override
   public void doCollisionLoop() {
+    List<Entity> destroyedEntities = new ArrayList<>();
     for (Entity target : currentLevel.getEntities()) {
       for (Entity collidingWith : currentLevel.getEntities()) {
-        if (myCollisionDetector.isColliding(target,collidingWith)) {
+        if (collidingWith != target && myCollisionDetector.isColliding(target,collidingWith)) {
           target.handleCollision(collidingWith.getName());
+          if (target.isDestroyed()) {
+            destroyedEntities.add(target);
+          }
         }
+      }
+    }
+    for (Entity destroyed : destroyedEntities) {
+      if (destroyed.isDestroyed()) {
+        currentLevel.removeEntity(destroyed);
       }
     }
   }
@@ -153,9 +176,11 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void reactToKeyPress(String keyName) {
-    for (Entity e : currentLevel.getEntities()) {
-      e.reactToControls(keyName);
-    }
+    System.out.println(keyName);
+    handleUserInput(keyName);
+//    for (Entity e : currentLevel.getEntities()) {
+//      e.reactToControls(keyName);
+//    }
   }
 
   /**
