@@ -64,3 +64,14 @@ is updating
 - 4/9/2020: Modified ``handleCollision`` to take an entity as a paramter, so that
 it can have an effect on whatever entity calls it. Possibly could change to EntityInternal.
 Also could change to take two entities, since two are involved in a collision.
+
+### Profile
+- 4/10/20 added Profile API to start implementing player profiles
+- 4/10/20 added  the following methods
+    ``setProfilePhoto(String photoPath)``
+    ``setProfileName(String name)``
+    ``setStats(Map<String,Integer> stats)``
+    ``getStats()``
+    ``updateStats(String gameName, Integer highScore)``
+    ``getGameStats(String gameName)``
+    ``getProfileName()``

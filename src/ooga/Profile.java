@@ -13,9 +13,7 @@ public interface Profile {
      * @param photoPath A String that represents the File Path to make an ImageView
      */
     void setProfilePhoto(String photoPath);
-    //TODO: Maybe change this to be an image such as jpg so user can drag and drop
-
-
+    
     /**
      * Changes the users Profile Name.
      * @param name A String representing the new Profile name
