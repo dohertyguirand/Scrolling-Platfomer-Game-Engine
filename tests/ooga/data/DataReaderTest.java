@@ -68,8 +68,8 @@ public class DataReaderTest {
         try {
             retMap = testDataReader.getEntityMap(GAME_NAME);
         } catch (OogaDataException e) {
-            fail();
             e.printStackTrace();
+            fail();
         }
         for(String key : retMap.keySet()){
             Entity e = retMap.get(key).makeInstanceAt(0.0,0.0);
