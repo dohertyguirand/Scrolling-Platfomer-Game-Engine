@@ -35,7 +35,7 @@ class EntityTest {
       subject.updateSelf(testElapsedTime);
       expectedVelocity = List.of(expectedVelocity.get(0) + xGrav, expectedVelocity.get(1) + yGrav);
       System.out.println("exp = " + expectedVelocity);
-      if (expectedPosition.get(1) <= 0) {
+      if (expectedPosition.get(1) >= 400) {
         expectedVelocity = List.of(0.0,0.0);
       }
       expectedPosition = List.of(expectedPosition.get(0)+ expectedVelocity.get(0),expectedPosition.get(1)+expectedVelocity.get(1));
@@ -64,10 +64,12 @@ class EntityTest {
     Entity testEntity = new ImageEntity();
     double jumpSpeedY = 10.0;
     testEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(jumpSpeedY))));
+    testEntity.setPosition(List.of(0.0,500.0));
     testEntity.reactToControls("UpKey");
     double elapsedTime = 1.0;
+    System.out.println("testEntity.getVelocity() = " + testEntity.getVelocity());
+    testEntity.updateSelf(elapsedTime);
     double expectedY = elapsedTime * jumpSpeedY;
-    testEntity.updateSelf(1.0);
-    assertEquals(List.of(0.0,expectedY),testEntity.getPosition());
+    assertEquals(List.of(0.0,expectedY + 500),testEntity.getPosition());
   }
 }
