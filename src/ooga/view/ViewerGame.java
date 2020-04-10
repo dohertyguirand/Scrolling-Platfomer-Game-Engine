@@ -39,6 +39,8 @@ public class ViewerGame {
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
     myGame = new OogaGame();
+    //SAM added this as the way to make a Game once file loading works.
+//    myGame = new OogaGame(gameName, new OogaDataReader());
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();
