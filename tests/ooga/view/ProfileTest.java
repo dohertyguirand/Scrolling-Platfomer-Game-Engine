@@ -19,7 +19,7 @@ public class ProfileTest extends Application {
             put("Doodle Jump", 3000);
         }});
         profile.showProfile();
-        Scene scene = new Scene(profile);
+        Scene scene = new Scene(profile.getPane());
         stage.setScene(scene);
         stage.show();
     }
