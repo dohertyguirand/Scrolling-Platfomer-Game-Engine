@@ -17,7 +17,7 @@ public class ImageEntityDefinition {
     private Map<String,List<ControlsBehavior>> myControls;
     private String myName;
 
-    public ImageEntityDefinition(String name, Double){
+    public ImageEntityDefinition(String name, Double height, Double width){
 
     }
     public ImageEntity createEntity(Double xpos, Double ypos){
