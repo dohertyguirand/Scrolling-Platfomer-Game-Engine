@@ -43,7 +43,7 @@ public interface DataReader {
    * @param levelID  The ID of the level the game is asking for
    * @return A fully loaded Level that is runnable by the game and represents the level in the
    * data file.
-   * @throws OogaDataException If the file given is not correctly formatted.
+   * @throws OogaDataException If the given name isn't in the library or the ID is not in the game.
    */
   Level loadLevel(String gameName, String levelID) throws OogaDataException;
 
@@ -52,7 +52,7 @@ public interface DataReader {
    * @return A map of all the entities described in a game file of the given name.
    * It maps from the entities' names to their definitions.
    */
-  Map<String, EntityDefinition> getEntityMap(String gameName);
+  Map<String, ImageEntityDefinition> getEntityMap(String gameName) throws OogaDataException;
 
   /**
    * Saves the current state of the game so it can easily be loaded from where the player
