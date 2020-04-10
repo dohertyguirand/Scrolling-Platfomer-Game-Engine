@@ -145,7 +145,8 @@ public class OogaDataReader implements DataReader{
         try {
             // create a new document to parse
             // String filePath = myLibraryFilePath;
-            String filePath = "/Users/braedenward/Desktop/CS308/final_team17/data/games-library/example-mario/example_mario.xml";
+            //SAM modified this because relative filepaths work a bit better on my machine
+            String filePath = "data/games-library/example-mario/example_mario.xml";
             File fXmlFile = new File(filePath);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
 
