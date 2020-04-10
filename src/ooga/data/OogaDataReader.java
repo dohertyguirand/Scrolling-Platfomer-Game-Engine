@@ -144,18 +144,32 @@ public class OogaDataReader implements DataReader{
 
 
     @Override
-    public Level loadLevel(String gameName, String levelID) throws OogaDataException {
+    public Level loadLevel(String givenGameName, String givenLevelID) throws OogaDataException {
         ArrayList<Entity> initialEntities = new ArrayList<>();
-        File gameFile = findGame(gameName);
+        File gameFile = findGame(givenGameName);
+        Map<String, ImageEntityDefinition> entityMap = getEntityMap(givenGameName);
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
             // in the xml create a list of all 'Level' nodes
-            NodeList entityNodes = doc.getElementsByTagName("Entity");
-            // add all IDs to the list
-            for (int i = 0; i < entityNodes.getLength(); i++) {
-                Node currentEntity = entityNodes.item(i);
-                Element entityElement = (Element) currentEntity;
-                String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+            NodeList levelNodes = doc.getElementsByTagName("Level");
+            // for each check the ID
+            for (int i = 0; i < levelNodes.getLength(); i++) {
+                Element level = (Element) levelNodes.item(i);
+                String levelID = level.getElementsByTagName("ID").item(0).getTextContent();
+                if(levelID.equals(givenLevelID)){
+                    // in the xml create a list of all 'Instance' nodes
+                    NodeList entityNodes = doc.getElementsByTagName("Instance");
+                    // for each, save a copy of the specified instance at the specified place
+                    for (int j = 0; j < entityNodes.getLength(); j++) {
+                        Node currentEntity = entityNodes.item(j);
+                        Element entityElement = (Element) currentEntity;
+                        String entityName = entityElement.getElementsByTagName("Type").item(0).getTextContent();
+                        double xPosition = Double.parseDouble(entityElement.getElementsByTagName("XPos").item(0).getTextContent());
+                        double yPosition = Double.parseDouble(entityElement.getElementsByTagName("YPos").item(0).getTextContent());
+                        System.out.println(String.format("%s @ %f,%f", entityName, xPosition, yPosition));
+                        initialEntities.add(entityMap.get(entityName).makeInstanceAt(xPosition,yPosition));
+                    }
+                }
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
             // this error will never happen because it would have happened in findGame()
@@ -164,7 +178,7 @@ public class OogaDataReader implements DataReader{
 
         OogaLevel newLevel = new OogaLevel(initialEntities);
 
-        return null;
+        return newLevel;
     }
 
     @Override
