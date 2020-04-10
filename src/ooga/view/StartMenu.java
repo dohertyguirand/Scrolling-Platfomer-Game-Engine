@@ -29,7 +29,8 @@ public class StartMenu {
   private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
   private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
   private final double GAME_IMAGE_RESIZE_FACTOR = Double.parseDouble(myResources.getString("gameImageResizeFactor"));
-
+  private String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
+  private String HBOX_STYLE = myResources.getString("hboxcss");
   private Scene myScene;
   private ScrollPane myScrollPane;
   private HBox myHBox;
@@ -71,11 +72,13 @@ public class StartMenu {
 
   private void horizontalScroller() {
       myHBox = new HBox();
+      myHBox.setStyle(HBOX_STYLE);
       myHBox.setLayoutY(HBOX_Y_LAYOUT);
       myHBox.setSpacing(HBOX_SPACING);
       myScrollPane = new ScrollPane();
+      myScrollPane.setStyle(SCROLL_PANE_STYLE);
       myScrollPane.setLayoutY(SCROLLBAR_Y);
-      myScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+      myScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
       myScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
       myScrollPane.setPrefWidth(WINDOW_WIDTH);
       myScrollPane.setContent(myHBox);
