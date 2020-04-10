@@ -251,8 +251,26 @@ public class OogaDataReader implements DataReader{
         return retMap;
     }
 
+    /**
+     * Read the .xml file and create a new EntityDefinition as it describes
+     * @param entityElement the Node describing the requested Entity
+     * @return
+     */
     private ImageEntityDefinition createImageEntityDefinition(Element entityElement){
-        return null;
+        String name = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+        Double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
+        Double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
+        String imagePath = myLibraryFilePath + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
+        for (int i=0; i<entityElement.getElementsByTagName("MovementBehavior").getLength(); i++){
+            String behavior = entityElement.getElementsByTagName("MovementBehavior").item(i).getTextContent();
+            if(behavior.equals("")){
+
+            }
+        }
+
+        ImageEntityDefinition newIED = null;
+
+        return newIED;
     }
 
     @Override
