@@ -2,6 +2,7 @@ package ooga.game;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.collections.ObservableList;
@@ -29,6 +30,7 @@ public class OogaGame implements Game, UserInputListener {
   private DataReader myDataReader;
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
+  private List<String> myActiveKeys = new ArrayList<>();
 
   public OogaGame() {
     myName = "Unnamed";
@@ -108,7 +110,7 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void doGameStep(double elapsedTime) {
-    doUpdateLoop(elapsedTime);
+    doUpdateLoopNew(elapsedTime, findCollisions());
     doCollisionLoop();
   }
 
@@ -118,7 +120,7 @@ public class OogaGame implements Game, UserInputListener {
     for (Entity target : currentLevel.getEntities()) {
       for (Entity collidingWith : currentLevel.getEntities()) {
         if (collidingWith != target && myCollisionDetector.isColliding(target,collidingWith)) {
-          target.handleCollision(collidingWith.getName());
+          target.handleCollision(collidingWith);
           if (target.isDestroyed()) {
             destroyedEntities.add(target);
           }
@@ -132,11 +134,46 @@ public class OogaGame implements Game, UserInputListener {
     }
   }
 
+  private Map<Entity,List<Entity>> findCollisions() {
+    Map<Entity,List<Entity>> ret = new HashMap<>();
+    for (Entity target : currentLevel.getEntities()) {
+      List<Entity> entityCollisions = new ArrayList<>();
+      for (Entity collidingWith : currentLevel.getEntities()) {
+        if (collidingWith != target && myCollisionDetector.isColliding(target,collidingWith)) {
+          entityCollisions.add(collidingWith);
+        }
+      }
+      ret.put(target,entityCollisions);
+    }
+    return ret;
+  }
+
   @Override
   public void doUpdateLoop(double elapsedTime) {
     List<Entity> destroyedEntities = new ArrayList<>();
     for (Entity e : currentLevel.getEntities()) {
-      e.updateSelf(elapsedTime);
+      for (String input : myActiveKeys) {
+        e.reactToControls(input);
+      }
+      e.updateSelf(elapsedTime, new ArrayList<>());
+      if (e.isDestroyed()) {
+        destroyedEntities.add(e);
+      }
+    }
+    for (Entity destroyed : destroyedEntities) {
+      if (destroyed.isDestroyed()) {
+        currentLevel.removeEntity(destroyed);
+      }
+    }
+  }
+
+  public void doUpdateLoopNew(double elapsedTime, Map<Entity,List<Entity>> collisions) {
+    List<Entity> destroyedEntities = new ArrayList<>();
+    for (Entity e : currentLevel.getEntities()) {
+      for (String input : myActiveKeys) {
+        e.reactToControls(input);
+      }
+      e.updateSelf(elapsedTime, collisions.get(e));
       if (e.isDestroyed()) {
         destroyedEntities.add(e);
       }
@@ -152,7 +189,7 @@ public class OogaGame implements Game, UserInputListener {
   public void handleUserInput(String input) {
     String inputType = myControlsInterpreter.translateInput(input);
     for (Entity e : currentLevel.getEntities()) {
-      e.reactToControls(inputType);
+//      e.reactToControls(inputType);
     }
   }
 
@@ -178,11 +215,22 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void reactToKeyPress(String keyName) {
-    System.out.println(keyName);
+    String inputType = myControlsInterpreter.translateInput(keyName);
+    System.out.println(keyName + "pressed.");
+    if (!myActiveKeys.contains(inputType)) {
+      myActiveKeys.add(inputType);
+    }
     handleUserInput(keyName);
 //    for (Entity e : currentLevel.getEntities()) {
 //      e.reactToControls(keyName);
 //    }
+  }
+
+  @Override
+  public void reactToKeyRelease(String keyName) {
+    String inputType = myControlsInterpreter.translateInput(keyName);
+    System.out.println(keyName + "released.");
+    myActiveKeys.remove(inputType);
   }
 
   /**

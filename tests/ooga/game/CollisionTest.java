@@ -29,7 +29,7 @@ public class CollisionTest {
     for (int i = 0; i < NUM_MOVE_UP_ASSERTS; i++) {
       List<Double> expectedPos = List.of(0.0, i * 20.01);
       assertEquals(expectedPos, e.getPosition());
-      e.handleCollision("TestEntity2");
+      e.handleCollision(new ImageEntity("TestEntity2"));
     }
   }
 
@@ -56,7 +56,7 @@ public class CollisionTest {
   public void testDestroySelfCollision() {
     Entity removable = new ImageEntity();
     removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
-    removable.handleCollision("entity2");
+    removable.handleCollision(new ImageEntity("entity2"));
     assertTrue(removable.isDestroyed());
   }
 
@@ -65,7 +65,7 @@ public class CollisionTest {
     Entity fallingEnity = new ImageEntity();
     fallingEnity.setCollisionBehaviors(Map.of("Floor", List.of(new StopDownwardVelocity())));
     fallingEnity.setVelocity(100.0,100.0);
-    fallingEnity.handleCollision("Floor");
+    fallingEnity.handleCollision(new ImageEntity("Floor"));
     List<Double> velocity = fallingEnity.getVelocity();
     assertEquals(0.0,velocity.get(1));
   }

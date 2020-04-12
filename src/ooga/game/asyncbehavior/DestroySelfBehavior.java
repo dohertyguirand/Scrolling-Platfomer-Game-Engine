@@ -6,7 +6,7 @@ import ooga.Entity;
 public class DestroySelfBehavior implements CollisionBehavior {
 
     @Override
-    public void doCollision(Entity thisEntity, String collidingEntity) {
-        thisEntity.destroySelf();
+    public void doCollision(Entity subject, Entity collidingEntity) {
+        subject.destroySelf();
     }
 }

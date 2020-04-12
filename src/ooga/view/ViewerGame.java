@@ -16,6 +16,8 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
+import ooga.game.ControlsTestGameCreation;
+import ooga.game.Game;
 import ooga.game.OogaGame;
 
 import java.util.ResourceBundle;
@@ -32,19 +34,20 @@ public class ViewerGame {
   private Scene myGameScene;
   private Stage myGameStage;
   private PauseMenu myPauseMenu;
-  private OogaGame myGame;
+  private Game myGame;
   private Timeline myAnimation;
 
 
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
-    myGame = new OogaGame();
+    OogaGame targetGame =  ControlsTestGameCreation.getGame();
+    myGame = targetGame;
     //SAM added this as the way to make a Game once file loading works.
 //    myGame = new OogaGame(gameName, new OogaDataReader());
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();
-    setUpInputListeners(myGame);
+    setUpInputListeners(targetGame);
   }
 
   private void setUpGameEntities(){
@@ -147,6 +150,7 @@ public class ViewerGame {
   private void setUpInputListeners(UserInputListener userInputListener) {
     setUpPauseMenuListeners(userInputListener);
     myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getText()));
+    myGameScene.setOnKeyReleased(e -> userInputListener.reactToKeyRelease(e.getText()));
     myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()));
     // add more input types here as needed, like mouse drag events
   }

@@ -10,7 +10,7 @@ import ooga.MovementBehavior;
  */
 public class GravityBehavior implements MovementBehavior {
 
-    public static final int GROUND_LEVEL = 400;
+    public static final int GROUND_LEVEL = 12000;
 
     private List<Double> myGravityVector;
 

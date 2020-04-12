@@ -94,9 +94,12 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime) {
+  public void updateSelf(double elapsedTime, List<Entity> collisions) {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);
+    }
+    for (Entity collidingWith : collisions) {
+      handleCollision(collidingWith);
     }
     moveByVelocity(elapsedTime);
   }
@@ -112,9 +115,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void handleCollision(String collidingEntity) {
-    if (myCollisionBehaviors.containsKey(collidingEntity)) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
+  public void handleCollision(Entity collidingEntity) {
+    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
         behavior.doCollision(this, collidingEntity);
       }
     }

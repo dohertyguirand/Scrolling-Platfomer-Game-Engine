@@ -2,6 +2,7 @@ package ooga.game;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +33,7 @@ class EntityTest {
     List<Double> expectedPosition = List.of(0.0,100.0);
 
     for (int i = 0 ; i < numTests; i ++) {
-      subject.updateSelf(testElapsedTime);
+      subject.updateSelf(testElapsedTime, new ArrayList<>());
       expectedVelocity = List.of(expectedVelocity.get(0) + xGrav, expectedVelocity.get(1) + yGrav);
       System.out.println("exp = " + expectedVelocity);
       if (expectedPosition.get(1) >= 400) {
@@ -48,14 +49,14 @@ class EntityTest {
   @Test
   public void testDinosaur() {
     Entity dino = new ImageEntity();
-    Entity cactus = new ImageEntity();
+    Entity cactus = new ImageEntity("cactus");
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
     collisionMap.put("Cactus", List.of(new MoveUpCollision(dino, 20.01), new DestroySelfBehavior()));
     dino.setCollisionBehaviors(collisionMap);
     dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
 
-    dino.updateSelf(1.0);
-    dino.handleCollision("Cactus");
+    dino.updateSelf(1.0, new ArrayList<>());
+    dino.handleCollision(cactus);
     assertTrue(dino.isDestroyed());
   }
 
@@ -68,7 +69,7 @@ class EntityTest {
     testEntity.reactToControls("UpKey");
     double elapsedTime = 1.0;
     System.out.println("testEntity.getVelocity() = " + testEntity.getVelocity());
-    testEntity.updateSelf(elapsedTime);
+    testEntity.updateSelf(elapsedTime, new ArrayList<>());
     double expectedY = elapsedTime * jumpSpeedY;
     assertEquals(List.of(0.0,expectedY + 500),testEntity.getPosition());
   }

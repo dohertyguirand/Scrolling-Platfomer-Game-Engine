@@ -42,8 +42,9 @@ public interface Entity {
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
+   * @param collisions The list of entities that is being collided with.
    */
-  void updateSelf(double elapsedTime);
+  void updateSelf(double elapsedTime, List<Entity> collisions);
 
   /**
    * Sets the mappings of behaviors that will be carried out when the entity collides with
@@ -74,7 +75,7 @@ public interface Entity {
    * dies when hit by a fireball.
    * @param collidingEntity The String identifier of the enemy being collided with.
    */
-  void handleCollision(String collidingEntity);
+  void handleCollision(Entity collidingEntity);
 
   /**
    * Moves the entity by the specified amount in the x and y direction.

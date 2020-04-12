@@ -16,7 +16,7 @@ public class MoveUpCollision implements CollisionBehavior {
   }
 
   @Override
-  public void doCollision(Entity subject, String collidingEntity) {
+  public void doCollision(Entity subject, Entity collidingEntity) {
     subject.move(0, myMoveDistance);
   }
 }
