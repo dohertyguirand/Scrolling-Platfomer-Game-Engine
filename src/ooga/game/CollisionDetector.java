@@ -16,4 +16,20 @@ public interface CollisionDetector {
    * collision actions.
    */
   boolean isColliding(Entity a, Entity b);
+
+  /**
+   * NOTE: The order of a and b doesn't matter.
+   * @param a The entity to check for collision with Entity a.
+   * @param b The entity to check for collision with Entity b.
+   * @return True if entities a and b are colliding vertically (not diagonally).
+   */
+  boolean isCollidingVertically(Entity a, Entity b);
+
+  /**
+   * NOTE: The order of a and b doesn't matter.
+   * @param a The entity to check for collision with Entity a.
+   * @param b The entity to check for collision with Entity b.
+   * @return True if entities a and b are colliding sideways (not diagonally).
+   */
+  boolean isCollidingHorizontally(Entity a, Entity b);
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import javafx.beans.property.*;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
@@ -20,6 +21,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private DoubleProperty myHeight;
 
   private List<Double> myVelocity;
+  private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
   private List<MovementBehavior> myMovementBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
@@ -36,6 +38,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myCollisionBehaviors = new HashMap<>();
     myMovementBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
+    myVelocityVectors = new Stack<>();
   }
 
   public OogaEntity(String name) {
@@ -101,6 +104,11 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     for (Entity collidingWith : collisions) {
       handleCollision(collidingWith);
     }
+//    moveByVelocity(elapsedTime);
+  }
+
+  @Override
+  public void executeMovement(double elapsedTime) {
     moveByVelocity(elapsedTime);
   }
 
@@ -125,8 +133,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void move(double xDistance, double yDistance) {
-    myXPos.set(myXPos.get() + xDistance);
-    myYPos.set(myYPos.get() + yDistance);
+//    myXPos.set(myXPos.get() + xDistance);
+//    myYPos.set(myYPos.get() + yDistance);
+    myVelocityVectors.add(List.of(xDistance,yDistance));
   }
 
   @Override
@@ -135,9 +144,13 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-
   public List<Double> getVelocity() {
-    return new ArrayList<>(myVelocity);
+    List<Double> ret = new ArrayList<>(myVelocity);
+    for (List<Double> vector : myVelocityVectors) {
+      ret.set(0,ret.get(0)+vector.get(0));
+      ret.set(0,ret.get(0)+vector.get(0));
+    }
+    return ret;
   }
 
   @Override
@@ -169,7 +182,17 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   private void moveByVelocity(double elapsedTime) {
-    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
+//    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
+    changePosition(myVelocity,elapsedTime);
+    while (!myVelocityVectors.isEmpty()) {
+//      changePosition(myVelocityVectors.pop(),elapsedTime);
+      myVelocityVectors.pop();
+    }
+  }
+
+  private void changePosition(List<Double> velocity, double elapsedTime) {
+    myXPos.set(myXPos.get() + (velocity.get(0) * elapsedTime));
+    myYPos.set(myYPos.get() + (velocity.get(1) * elapsedTime));
   }
 
   @Override

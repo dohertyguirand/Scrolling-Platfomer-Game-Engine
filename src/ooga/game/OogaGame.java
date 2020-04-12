@@ -86,6 +86,13 @@ public class OogaGame implements Game, UserInputListener {
     currentLevel = startingLevel;
   }
 
+  public OogaGame(Level startingLevel, CollisionDetector collisions) {
+    myName = "Unnamed";
+    myCollisionDetector = collisions;
+    myControlsInterpreter = new KeyboardControls();
+    currentLevel = startingLevel;
+  }
+
   @Override
   public ObservableList<Entity> getEntities() {
     System.out.println("currentLevel = " + currentLevel);
@@ -110,8 +117,10 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void doGameStep(double elapsedTime) {
-    doUpdateLoopNew(elapsedTime, findCollisions());
-    doCollisionLoop();
+
+
+    doUpdateLoopNew(elapsedTime, new HashMap<>());
+//    doCollisionLoop();
   }
 
   @Override
@@ -168,21 +177,40 @@ public class OogaGame implements Game, UserInputListener {
   }
 
   public void doUpdateLoopNew(double elapsedTime, Map<Entity,List<Entity>> collisions) {
-    List<Entity> destroyedEntities = new ArrayList<>();
+    //1. calculate all automatic movement
+    //2. calculate all controls-based movement
+    //3. find collisions
+    //4. calculate effect of collisions.
+    //5. execute movement.
     for (Entity e : currentLevel.getEntities()) {
       for (String input : myActiveKeys) {
         e.reactToControls(input);
       }
-      e.updateSelf(elapsedTime, collisions.get(e));
-      if (e.isDestroyed()) {
-        destroyedEntities.add(e);
-      }
+      e.updateSelf(elapsedTime, new ArrayList<>());
     }
-    for (Entity destroyed : destroyedEntities) {
-      if (destroyed.isDestroyed()) {
-        currentLevel.removeEntity(destroyed);
+    Map<Entity,List<Entity>> currentCollisions = findCollisions();
+    for (Entity e : currentLevel.getEntities()) {
+      for (Entity collidingWith : currentCollisions.get(e)) {
+        e.handleCollision(collidingWith);
       }
+      e.executeMovement(elapsedTime);
     }
+
+//    List<Entity> destroyedEntities = new ArrayList<>();
+//    for (Entity e : currentLevel.getEntities()) {
+//      for (String input : myActiveKeys) {
+//        e.reactToControls(input);
+//      }
+//      e.updateSelf(elapsedTime, collisions.get(e));
+//      if (e.isDestroyed()) {
+//        destroyedEntities.add(e);
+//      }
+//    }
+//    for (Entity destroyed : destroyedEntities) {
+//      if (destroyed.isDestroyed()) {
+//        currentLevel.removeEntity(destroyed);
+//      }
+//    }
   }
 
   @Override

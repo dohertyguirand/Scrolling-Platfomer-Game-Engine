@@ -6,8 +6,6 @@ import ooga.MovementBehavior;
 
 public class MoveInputBehavior implements ControlsBehavior {
 
-
-  private Entity myEntity;
   private double xMovePerFrame;
   private double yMovePerFrame;
 

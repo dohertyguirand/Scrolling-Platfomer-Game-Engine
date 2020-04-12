@@ -12,6 +12,16 @@ public class OogaCollisionDetector implements CollisionDetector {
     return (makeShapeFromEntity(a).getBoundsInParent().intersects(makeShapeFromEntity(b).getBoundsInParent()));
   }
 
+  @Override
+  public boolean isCollidingVertically(Entity a, Entity b) {
+    return false;
+  }
+
+  @Override
+  public boolean isCollidingHorizontally(Entity a, Entity b) {
+    return false;
+  }
+
   private Shape makeShapeFromEntity(Entity e) {
     Shape s = new Rectangle(e.getPosition().get(0), e.getPosition().get(1),
             e.getWidth(), e.getHeight());

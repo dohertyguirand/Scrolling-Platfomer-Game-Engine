@@ -47,6 +47,13 @@ public interface Entity {
   void updateSelf(double elapsedTime, List<Entity> collisions);
 
   /**
+   * Actually moves the entity in space by its velocity. Should happen after all movement and
+   * collision logic.
+   * @param elapsedTime Time in milliseconds since last step.
+   */
+  void executeMovement(double elapsedTime);
+
+  /**
    * Sets the mappings of behaviors that will be carried out when the entity collides with
    * another entity, based on what type of entity is being collided into.
    * @param behaviorMap A Map that connects the name of the entity that is being collided with

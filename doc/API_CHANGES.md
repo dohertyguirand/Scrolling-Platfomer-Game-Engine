@@ -46,6 +46,8 @@ and the rest.
 - Added ``getVelocity`` so that the Entity knows it 
 - 4/10/2020: Removed ``moveByVelocity`` since it's better to assume that velocity is
 applied internally each frame.
+- 4/12/2020: Added ``executeMovement`` to serve as ``moveByVelocity`` since it's
+better when actual movement happens after all logic.
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require
@@ -66,3 +68,6 @@ is updating
 - 4/9/2020: Modified ``handleCollision`` to take an entity as a paramter, so that
 it can have an effect on whatever entity calls it. Possibly could change to EntityInternal.
 Also could change to take two entities, since two are involved in a collision.
+
+### CollisionDetector
+- 4/12/2020: Added detection for sideways and vertical collisions.
