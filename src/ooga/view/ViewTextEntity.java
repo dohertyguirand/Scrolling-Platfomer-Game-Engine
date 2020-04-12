@@ -6,7 +6,7 @@ import javafx.scene.text.Text;
 import ooga.data.OogaEntity;
 import ooga.data.TextEntity;
 
-public class ViewTextEntity extends ViewEntity {
+public class ViewTextEntity implements ViewEntity {
 
   private Text text = new Text();
 

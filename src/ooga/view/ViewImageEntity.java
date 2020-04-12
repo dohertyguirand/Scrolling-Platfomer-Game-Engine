@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import ooga.data.OogaEntity;
 import ooga.data.ImageEntity;
 
-public class ViewImageEntity extends ViewEntity {
+public class ViewImageEntity implements ViewEntity {
 
   private ImageView imageView = new ImageView();
 

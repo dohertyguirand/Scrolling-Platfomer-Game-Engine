@@ -44,6 +44,8 @@ is abstract). The ultimate solution is to make a distinction between the 'front-
 and the rest.
 - Added ``getName`` so that collisions can use the name of the entity.
 - Added ``getVelocity`` so that the Entity knows it 
+- 4/10/2020: Removed ``moveByVelocity`` since it's better to assume that velocity is
+applied internally each frame.
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require

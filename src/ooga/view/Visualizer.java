@@ -21,7 +21,7 @@ public class Visualizer extends Application {
   }
 
   @Override
-  public void start(Stage primaryStage) throws IOException {
+  public void start(Stage primaryStage) {
     Scene display = setUpStartMenuDisplay();
     primaryStage.setScene(display);
     primaryStage.setTitle(START_MENU_TITLE);

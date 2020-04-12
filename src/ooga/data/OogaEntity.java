@@ -165,8 +165,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     isDestroyed = true;
   }
 
-  @Override
-  public void moveByVelocity(double elapsedTime) {
+  private void moveByVelocity(double elapsedTime) {
     move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
   }
 

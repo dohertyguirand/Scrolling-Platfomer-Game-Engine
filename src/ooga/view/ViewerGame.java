@@ -95,6 +95,7 @@ public class ViewerGame {
     pauseButton.setOnAction(e -> {
       myGameStage.setScene(pauseScene);
       myPauseMenu.setResumed(false);
+      myAnimation.stop();
     });
     pauseButton.setLayoutX(0);
     pauseButton.setLayoutY(0);
@@ -156,11 +157,14 @@ public class ViewerGame {
       if(newVal){
         myGameStage.setScene(myGameScene);
         userInputListener.reactToPauseButton(false);
+        myAnimation.play();
       }
     });
     myPauseMenu.quitProperty().addListener((o, oldVal, newVal) -> {
       userInputListener.reactToGameQuit();
       myGameStage.close();
+      myAnimation.stop();
+      myGame = null;
     });
     myPauseMenu.saveProperty().addListener((o, oldVal, newVal) -> userInputListener.reactToGameSave());
   }
