@@ -28,7 +28,7 @@
       <Name>Cactus</Name>
       <Width>100</Width>
       <Height>100</Height>
-      <Image>koopa.png</Image>
+      <Image>cactus.png</Image>
       <Movement>
         <MovementBehavior>MoveForward -.45</MovementBehavior>
       </Movement>
