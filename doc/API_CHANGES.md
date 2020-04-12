@@ -77,3 +77,5 @@ Also could change to take two entities, since two are involved in a collision.
     ``updateStats(String gameName, Integer highScore)``
     ``getGameStats(String gameName)``
     ``getProfileName()``
+    
+-4/12/20 added ``getProfilePhotoPath()`` that returns a string with the filePath to the photo
