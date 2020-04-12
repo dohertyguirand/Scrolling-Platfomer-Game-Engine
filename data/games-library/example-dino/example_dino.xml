@@ -22,17 +22,7 @@
           <With>Cactus</With>
           <Reaction>RemoveSelf</Reaction>
         </EntityCollision>
-        <EntityCollision>
-          <With>Floor</With>
-          <Reaction>StopDownwardVelocity</Reaction>
-        </EntityCollision>
       </Collisions>
-    </Entity>
-    <Entity>
-      <Name>Floor</Name>
-      <Width>1000</Width>
-      <Height>100</Height>
-      <Image>floor.png</Image>
     </Entity>
     <Entity>
       <Name>Cactus</Name>
@@ -47,7 +37,7 @@
   <Levels>
     <Level>
       <ID>1</ID>
-      <EndCondition>DestroyAll Koopa</EndCondition>
+      <EndCondition>DestroyAll Dino</EndCondition>
       <Instances>
         <Instance>
           <Type>Dino</Type>
