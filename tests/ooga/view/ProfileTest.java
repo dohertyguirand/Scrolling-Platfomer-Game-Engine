@@ -12,7 +12,7 @@ public class ProfileTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         ViewProfile profile = new ViewProfile();
-        profile.setProfileName("Dodo");
+        profile.setProfileName("Testing");
         profile.setStats(new HashMap<>(){{
             put("SuperMario", 100);
             put("Dino", 1000000);
