@@ -152,6 +152,7 @@ public class ViewerGame {
   }
 
   private void setUpPauseMenuListeners(UserInputListener userInputListener) {
+    // pause should pause the animation timeline, quit should set myGame = null
     myPauseMenu.resumedProperty().addListener((o, oldVal, newVal) -> {
       if(newVal){
         myGameStage.setScene(myGameScene);
