@@ -1,21 +1,20 @@
 <Game>
   <Name>Chrome Dino</Name>
-  <Thumbnail>mario_logo.jpg</Thumbnail>
+  <Thumbnail>dino_logo.jpg</Thumbnail>
   <Description>Back from the jurassic period to entertain you while your wifi is down.</Description>
   <Entities>
     <Entity>
       <Name>Dino</Name>
-      <Width>120</Width>
-      <Height>120</Height>
-      <Image>mario.png</Image>
+      <Width>100</Width>
+      <Height>100</Height>
+      <Image>googe_dino.png</Image>
       <Movement>
-        <MovementBehavior>Gravity</MovementBehavior>
-        <MovementBehavior>MoveForward</MovementBehavior>
+        <MovementBehavior>Gravity 0.1</MovementBehavior>
       </Movement>
       <Controls>
         <ControlInput>
           <Key>UpKey</Key>
-          <ControlBehavior>JumpBehavior</ControlBehavior>
+          <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
         </ControlInput>
       </Controls>
       <Collisions>
@@ -23,13 +22,26 @@
           <With>Cactus</With>
           <Reaction>RemoveSelf</Reaction>
         </EntityCollision>
+        <EntityCollision>
+          <With>Floor</With>
+          <Reaction>StopDownwardVelocity</Reaction>
+        </EntityCollision>
       </Collisions>
     </Entity>
     <Entity>
+      <Name>Floor</Name>
+      <Width>1000</Width>
+      <Height>100</Height>
+      <Image>floor.png</Image>
+    </Entity>
+    <Entity>
       <Name>Cactus</Name>
-      <Width>50</Width>
-      <Height>120</Height>
+      <Width>100</Width>
+      <Height>100</Height>
       <Image>koopa.png</Image>
+      <Movement>
+        <MovementBehavior>MoveForward -.45</MovementBehavior>
+      </Movement>
     </Entity>
   </Entities>
   <Levels>
@@ -39,23 +51,33 @@
       <Instances>
         <Instance>
           <Type>Dino</Type>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
-        </Instance>
-        <Instance>
-          <Type>Cactus</Type>
           <XPos>100</XPos>
-          <YPos>0</YPos>
+          <YPos>400</YPos>
         </Instance>
         <Instance>
           <Type>Cactus</Type>
-          <XPos>200</XPos>
-          <YPos>0</YPos>
+          <XPos>1200</XPos>
+          <YPos>400</YPos>
         </Instance>
         <Instance>
           <Type>Cactus</Type>
-          <XPos>300</XPos>
-          <YPos>0</YPos>
+          <XPos>1600</XPos>
+          <YPos>400</YPos>
+        </Instance>
+        <Instance>
+          <Type>Cactus</Type>
+          <XPos>2000</XPos>
+          <YPos>400</YPos>
+        </Instance>
+        <Instance>
+          <Type>Cactus</Type>
+          <XPos>2400</XPos>
+          <YPos>400</YPos>
+        </Instance>
+        <Instance>
+          <Type>Cactus</Type>
+          <XPos>2800</XPos>
+          <YPos>400</YPos>
         </Instance>
       </Instances>
     </Level>

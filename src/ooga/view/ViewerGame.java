@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class ViewerGame {
 
-  private static final double MILLISECOND_DELAY = 1000;
+  private static final double MILLISECOND_DELAY = 33.33;
   private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final double PAUSE_BUTTON_SIZE = Double.parseDouble(myResources.getString("pauseButtonSize"));
@@ -39,6 +39,8 @@ public class ViewerGame {
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
     myGame = new OogaGame();
+    //SAM added this as the way to make a Game once file loading works.
+//    myGame = new OogaGame(gameName, new OogaDataReader());
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();

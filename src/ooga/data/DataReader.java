@@ -19,16 +19,16 @@ public interface DataReader {
    * Returns an empty list if there are no files containing thumbnails.
    * @return The list of thumbnails of games.
    */
-  List<Thumbnail> getThumbnails() throws OogaDataException;
+  List<Thumbnail> getThumbnails();
 
   /**
-   * Returns the filepaths to every game file detected in the folder. Doesn't guarantee
+   * Returns the filepaths to every game file in the library folder. Doesn't guarantee
    * that it will scan for full validity of every file, but makes basic checks.
-   * @param folderPath The folder to check for game data files.
+   * Returns an empty list if library has no game files. Filepaths start in the data folder and
+   * begin with "data/games-library/"
    * @return A list of filepaths of game data files in the given folder.
-   * @throws OogaDataException if the given filepath isn't a directory.
    */
-  List<String> getGameFilePaths(String folderPath) throws OogaDataException;
+  List<String> getGameFilePaths();
 
   /**
    * Give a Game a list of level ID's in the order that they're listed in the .xml files
@@ -43,16 +43,16 @@ public interface DataReader {
    * @param levelID  The ID of the level the game is asking for
    * @return A fully loaded Level that is runnable by the game and represents the level in the
    * data file.
-   * @throws OogaDataException If the file given is not correctly formatted.
+   * @throws OogaDataException If the given name isn't in the library or the ID is not in the game.
    */
   Level loadLevel(String gameName, String levelID) throws OogaDataException;
 
   /**
-   * Gives a game a map of its usable entities from their names to their definitions.
-   * @param gameName: the name of a game
-   * @return
+   * @param gameName: the name of the game for which a map is being requested
+   * @return A map of all the entities described in a game file of the given name.
+   * It maps from the entities' names to their definitions.
    */
-  Map<String, EntityDefinition> getEntityMap(String gameName);
+  Map<String, ImageEntityDefinition> getEntityMap(String gameName) throws OogaDataException;
 
   /**
    * Saves the current state of the game so it can easily be loaded from where the player

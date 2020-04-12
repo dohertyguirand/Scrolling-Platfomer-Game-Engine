@@ -86,14 +86,14 @@ public interface Entity {
   void move(double xDistance, double yDistance);
 
   /**
-   * Moves the entity by its internally stored velocity
-   */
-  void moveByVelocity();
-
-  /**
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();
+
+  /**
+   * @return The X and Y velocity of the Entity, in that order.
+   */
+  List<Double> getVelocity();
 
   /**
    * @return The width of the entity.
@@ -133,5 +133,7 @@ public interface Entity {
    * @param yVelocity The y-value of the new velocity.
    */
   void setVelocity(double xVelocity, double yVelocity);
+
+
 
 }
