@@ -7,12 +7,14 @@ import javafx.stage.Stage;
 import ooga.OogaDataException;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Visualizer extends Application {
 
   private static final String GAME_NOT_FOUND_MESSAGE = "Error: Game not found";
   private static final String START_MENU_TITLE = "Choose a Game";
-  private Stage stage;
+
+
 
   public static void main(String[] args) {
     launch(args);
@@ -20,7 +22,6 @@ public class Visualizer extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
-    stage = primaryStage;
     Scene display = setUpStartMenuDisplay();
     primaryStage.setScene(display);
     primaryStage.setTitle(START_MENU_TITLE);
@@ -29,12 +30,9 @@ public class Visualizer extends Application {
   }
 
   private Scene setUpStartMenuDisplay() {
-    ProfileMenu profileMenu = new ProfileMenu();
-    profileMenu.addImages(); // to be removed when getting profile thumbnails from backend is implemented
     StartMenu startMenu = new StartMenu();
-    profileMenu.selectedProperty().addListener((o, oldVal, newVal) -> { stage.setScene(startMenu.getScene()); });
     startMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal));
-    return profileMenu.getScene();
+    return startMenu.getScene();
   }
 
   private void startGame(String gameName) {
