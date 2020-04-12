@@ -22,31 +22,34 @@ public class ViewProfile extends OggaProfile {
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
     private BorderPane myPane = new BorderPane();
+    private ImageView myProfilePhoto;
 
-
+    public ViewProfile(String name){
+        this();
+        myName = name;
+    }
     public ViewProfile(){
         myHighestScores = new HashMap<>();
         myName = "testing";
+        try{
+            myProfilePhoto = new ImageView(myProfilePhotoPath);
+        }
+        catch (IllegalArgumentException | NullPointerException e){
+            myProfilePhoto = new ImageView(DEFAULT_PROFILE_PHOTO);
+        }
     }
 
-    public void showProfile(){
+    public Pane getPane(){
         myPane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
         myPane.setTop(setNameAndPhoto());
         myPane.setCenter(setStatsBox());
         myPane.getStylesheets().add(STYLESHEET);
+        return myPane;
     }
+
     private VBox setNameAndPhoto(){
         VBox nameAndPhoto = new VBox();
-        if(myProfilePhotoPath == null) {
-            myProfilePhotoPath = DEFAULT_PROFILE_PHOTO;}
-        ImageView photoImage;
-        try{
-            photoImage = new ImageView(myProfilePhotoPath);
-        }
-        catch (IllegalArgumentException e){
-            photoImage = new ImageView(DEFAULT_PROFILE_PHOTO);
-        }
-        nameAndPhoto.getChildren().add(photoImage);
+        nameAndPhoto.getChildren().add(myProfilePhoto);
         nameAndPhoto.getChildren().add(setNameText());
         nameAndPhoto.setOnDragEntered(e-> handleDroppedPhoto(e));
         nameAndPhoto.setOnDragDropped(e-> handleDroppedPhoto(e));
@@ -78,7 +81,7 @@ public class ViewProfile extends OggaProfile {
             ImageIO.write(bufferedImage,"png",newFile);
             myProfilePhotoPath = "ooga/view/Resources/profilephotos/" + myName+ "profilephoto.jpg" ;
             myPane.setTop(setNameAndPhoto());
-            } catch (IOException ex) {
+            } catch (IOException | NullPointerException | IllegalArgumentException ex) {
             }
     }
     private void handleExitPressed(TextArea textArea, HBox hBox, KeyEvent e){
@@ -109,7 +112,7 @@ public class ViewProfile extends OggaProfile {
         textArea.setPrefWidth(200);
         hBox.setOnMouseClicked(e->replaceWithTextArea(hBox,textArea));
         textArea.setOnKeyPressed(e->handleExitPressed(textArea,hBox,e));
-        myPane.setOnMouseClicked(m->handleMouseClicked(m, textArea,hBox));
+        //myPane.setOnMouseClicked(m->handleMouseClicked(m, textArea,hBox));
         hBox.getChildren().add(name);
         gridPane.setStyle(".grid-pane");
         gridPane.add(nameHeader,0,0);
@@ -117,11 +120,6 @@ public class ViewProfile extends OggaProfile {
         return gridPane;
     }
 
-    private void handleMouseClicked(MouseEvent m,TextArea textArea,HBox hBox) {
-//        if(hBox.getChildren().contains(textArea) && !textArea.getBoundsInParent().contains(m.getX(),m.getY())){
-//            hideTextArea(textArea,hBox);
-//        }
-    }
 
     private GridPane setStatsBox(){
         GridPane gridPane = new GridPane();
@@ -140,8 +138,5 @@ public class ViewProfile extends OggaProfile {
     }
 
 
-
-    public Pane getPane(){
-        return myPane;
-    }
+    public ImageView getProfilePhoto(){return myProfilePhoto;}
 }

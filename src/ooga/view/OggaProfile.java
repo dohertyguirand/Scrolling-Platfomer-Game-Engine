@@ -2,12 +2,16 @@ package ooga.view;
 
 import ooga.Profile;
 
+import javax.swing.text.html.ImageView;
 import java.util.Map;
 
 public abstract class OggaProfile implements Profile {
     protected String myProfilePhotoPath;
     protected String myName;
     protected Map<String, Integer> myHighestScores;
+
+    public OggaProfile(){
+    }
 
     @Override
     public void setProfilePhoto(String photoPath){
@@ -41,6 +45,11 @@ public abstract class OggaProfile implements Profile {
     @Override
     public String getProfileName() {
         return myName;
+    }
+
+    @Override
+    public  String getProfilePhotoPath(){
+        return myProfilePhotoPath;
     }
 
 

@@ -51,6 +51,11 @@ public interface Profile {
      * @return A String
      */
     String getProfileName();
-    
+
+    /**
+     *
+     * @return the path to the profile photo
+     */
+    String getProfilePhotoPath();
 
 }

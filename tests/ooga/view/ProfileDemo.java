@@ -1,13 +1,12 @@
 package ooga.view;
 
 import javafx.application.Application;
-import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
 
-public class ProfileTest extends Application {
+public class ProfileDemo extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -18,7 +17,6 @@ public class ProfileTest extends Application {
             put("Dino", 1000000);
             put("Doodle Jump", 3000);
         }});
-        profile.showProfile();
         Scene scene = new Scene(profile.getPane());
         stage.setScene(scene);
         stage.show();

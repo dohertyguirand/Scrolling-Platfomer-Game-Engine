@@ -23,6 +23,8 @@ public abstract class ScrollMenu {
     protected HBox myHBox;
     protected ScrollPane myScrollPane;
     protected Scene myScene;
+    protected Pane myPane;
+    protected Group myRoot;
     protected ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     protected final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     protected final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
@@ -39,9 +41,9 @@ public abstract class ScrollMenu {
     protected ScrollMenu(){
         myDataReader = new OogaDataReader();
 
-        Group root = new Group();
-        Pane pane = new Pane();
-        pane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+        myRoot = new Group();
+        myPane = new Pane();
+        myPane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 
         ImageView imgView = new ImageView(myResources.getString("menuBackgroundLocation"));
         imgView.setFitWidth(WINDOW_WIDTH);
@@ -50,17 +52,15 @@ public abstract class ScrollMenu {
         horizontalScroller();
 
 
-        pane.getChildren().addAll(imgView);
-        root.getChildren().addAll(pane, myScrollPane);
+        myPane.getChildren().addAll(imgView);
+        myRoot.getChildren().addAll(myPane, myScrollPane);
 
-        myScene = new Scene(root);
+        myScene = new Scene(myRoot);
         String SCROLLBAR_CSS_LOCATION = myResources.getString("scrollBarCSSLocation");
         myScene.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
     }
 
-
-    protected void addImages() {
-        List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+    protected void addImages(List<Thumbnail> thumbnails){
         for (Thumbnail thumbnail : thumbnails) {
             ImageView optionImage = new ImageView(thumbnail.getImageFile());
             resizeImage(optionImage, 1);
@@ -71,6 +71,12 @@ public abstract class ScrollMenu {
             gameButton.setTooltip(new Tooltip(thumbnail.getDescription()));
             myHBox.getChildren().add(gameButton);
         }
+    }
+
+
+    protected void addImages() {
+        List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+        addImages(thumbnails);
     }
 
     public void setOptionSelected(String optionSelected) {
