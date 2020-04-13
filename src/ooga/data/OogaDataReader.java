@@ -35,13 +35,6 @@ public class OogaDataReader implements DataReader{
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static String DEFAULT_LIBRARY_FILE = "data/games-library";
 
-    //TODO: we as a team need to make an EntityDefinition interface
-    // That is what should be in this map, not a full interface
-    //TODO: If DataReader stores no game specific information, then Braeden needs to decide how this EntityMap will be
-    // stored and distributed; shouldn't be too hard
-    // create
-    // private Map<String, EntityDefinition> myEntityMap;
-
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
     }
