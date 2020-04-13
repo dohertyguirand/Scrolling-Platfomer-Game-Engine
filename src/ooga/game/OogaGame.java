@@ -34,10 +34,13 @@ public class OogaGame implements Game, UserInputListener {
     //TODO: Remove dependency between OogaGame and ImageEntity
     List<Entity> entities = new ArrayList<>();
     /*Entity testEntity = new TextEntity("testing this out", "Times New Roman");
-    testEntity.setPosition(List.of(300.0, 300.0));
+    testEntity.setPosition(List.of(300.0, 0.0));
     testEntity.setWidth(300);
     testEntity.setHeight(300);
-    entities.add(testEntity);*/
+    entities.add(testEntity);
+    Entity test = new ImageEntity("dino", "file:data/games-library/example-dino/googe_dino.bmp");
+    test.setPosition(List.of(200.0, 0.0));
+    entities.add(test);*/
     Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/googe_dino.bmp");
 //    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(100/1000.0,0),
 //                                              new GravityBehavior(0,100.0/1000)));
