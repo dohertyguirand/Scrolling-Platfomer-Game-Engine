@@ -31,6 +31,10 @@ public interface Entity {
 
   DoubleProperty widthProperty();
 
+  void setWidth(double width);
+
+  void setHeight(double height);
+
   /**
    * @return The width of the entity.
    */

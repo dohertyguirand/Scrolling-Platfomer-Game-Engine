@@ -7,11 +7,8 @@ import java.util.Map;
 import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.data.DataReader;
+import ooga.data.*;
 import ooga.UserInputListener;
-import ooga.data.ImageEntity;
-import ooga.data.OogaEntity;
-import ooga.data.OogaDataReader;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.framebehavior.GravityBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
@@ -36,6 +33,11 @@ public class OogaGame implements Game, UserInputListener {
     myCollisionDetector = new OogaCollisionDetector();
     //TODO: Remove dependency between OogaGame and ImageEntity
     List<Entity> entities = new ArrayList<>();
+    /*Entity testEntity = new TextEntity("testing this out", "Times New Roman");
+    testEntity.setPosition(List.of(300.0, 300.0));
+    testEntity.setWidth(300);
+    testEntity.setHeight(300);
+    entities.add(testEntity);*/
     Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/googe_dino.bmp");
 //    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(100/1000.0,0),
 //                                              new GravityBehavior(0,100.0/1000)));

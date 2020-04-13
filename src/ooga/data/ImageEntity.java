@@ -9,8 +9,8 @@ public class ImageEntity extends OogaEntity {
 
   public ImageEntity(String name, String imageFilePath) {
     super(name);
-    myWidth.setValue(100.0);
-    myHeight.setValue(100.0);
+    width.setValue(100.0);
+    height.setValue(100.0);
     if (imageFilePath != null) {
       imageLocation = new SimpleStringProperty(imageFilePath);
     }
@@ -22,8 +22,8 @@ public class ImageEntity extends OogaEntity {
 
   public ImageEntity() {
     super("Unnamed");
-    myWidth.setValue(10.0);
-    myHeight.setValue(10.0);
+    width.setValue(10.0);
+    height.setValue(10.0);
   }
 
   public String getImageLocation() {
