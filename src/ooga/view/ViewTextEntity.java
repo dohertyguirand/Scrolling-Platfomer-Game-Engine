@@ -18,6 +18,8 @@ public class ViewTextEntity implements ViewEntity {
   public void bindGenericProperties(OogaEntity entity) {
     text.xProperty().bind(entity.xProperty());
     text.yProperty().bind(entity.yProperty());
+    text.scaleYProperty().bind(entity.heightProperty());
+    text.wrappingWidthProperty().bind(entity.widthProperty());
     // add more properties here if needed
   }
 

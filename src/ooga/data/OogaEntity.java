@@ -14,10 +14,10 @@ import ooga.game.EntityInternal;
 public abstract class OogaEntity implements Entity, EntityInternal {
 
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
-  private DoubleProperty myXPos = new SimpleDoubleProperty();
-  private DoubleProperty myYPos = new SimpleDoubleProperty();
-  private DoubleProperty myWidth;
-  private DoubleProperty myHeight;
+  protected DoubleProperty myXPos = new SimpleDoubleProperty();
+  protected DoubleProperty myYPos = new SimpleDoubleProperty();
+  protected DoubleProperty myWidth = new SimpleDoubleProperty();
+  protected DoubleProperty myHeight = new SimpleDoubleProperty();
 
   private List<Double> myVelocity;
 
@@ -31,8 +31,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myVelocity = List.of(0.,0.);
     myXPos.set(0);
     myYPos.set(0);
-    myWidth = new SimpleDoubleProperty(100);
-    myHeight = new SimpleDoubleProperty(100);
+    myWidth.set(100);
+    myHeight.set(100);
     myCollisionBehaviors = new HashMap<>();
     myMovementBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
@@ -79,8 +79,53 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void setActiveInView(boolean activeInView) {
-    this.activeInView.set(activeInView);
+  public void setActiveInView(boolean activeInView) { this.activeInView.set(activeInView); }
+
+  @Override
+  public DoubleProperty widthProperty(){ return myWidth; }
+
+  @Override
+  public DoubleProperty heightProperty(){ return myHeight; }
+
+  @Override
+  public double getWidth() { return myWidth.get(); }
+
+  @Override
+  public double getHeight() { return myHeight.get(); }
+
+  @Override
+  public boolean isDestroyed() {
+    return isDestroyed;
+  }
+
+  @Override
+  public void setPosition(List<Double> newPosition) {
+    myXPos.set(newPosition.get(0));
+    myYPos.set(newPosition.get(1));
+  }
+
+  @Override
+  public void destroySelf() {
+    isDestroyed = true;
+  }
+
+  private void moveByVelocity(double elapsedTime) {
+    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
+  }
+
+  @Override
+  public void changeVelocity(double xChange, double yChange) {
+    myVelocity = List.of(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
+  }
+
+  @Override
+  public void setVelocity(double xVelocity, double yVelocity) {
+    myVelocity = List.of(xVelocity, yVelocity);
+  }
+
+  @Override
+  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
+    myMovementBehaviors = behaviors;
   }
 
   @Override
@@ -132,55 +177,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-
   public List<Double> getVelocity() {
     return new ArrayList<>(myVelocity);
-  }
-
-  @Override
-  public double getWidth() {
-    //TODO: Make this reflect the entity's width.
-    return myWidth.getValue();
-  }
-
-  @Override
-  public double getHeight() {
-    //TODO: Make this reflect the entity's height.
-    return myHeight.getValue();
-  }
-
-  @Override
-  public boolean isDestroyed() {
-    return isDestroyed;
-  }
-
-  @Override
-  public void setPosition(List<Double> newPosition) {
-    myXPos.set(newPosition.get(0));
-    myYPos.set(newPosition.get(1));
-  }
-
-  @Override
-  public void destroySelf() {
-    isDestroyed = true;
-  }
-
-  private void moveByVelocity(double elapsedTime) {
-    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
-  }
-
-  @Override
-  public void changeVelocity(double xChange, double yChange) {
-    myVelocity = List.of(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
-  }
-
-  @Override
-  public void setVelocity(double xVelocity, double yVelocity) {
-    myVelocity = List.of(xVelocity, yVelocity);
-  }
-
-  @Override
-  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
-    myMovementBehaviors = behaviors;
   }
 }
