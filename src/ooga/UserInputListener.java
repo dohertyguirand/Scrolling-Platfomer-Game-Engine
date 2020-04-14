@@ -20,6 +20,12 @@ public interface UserInputListener {
   void reactToKeyPress(String keyName);
 
   /**
+   * React to a key being released. Use data files to determine appropriate reaction.
+   * @param keyName String name of key.
+   */
+  void reactToKeyRelease(String keyName);
+
+  /**
    * Handles when the command is given to save the game to a file.
    */
   void reactToGameSave();
