@@ -35,7 +35,7 @@ import static java.lang.Class.forName;
 
 public class OogaDataReader implements DataReader{
 
-    private static final Object PATH_TO_CLASSES = "ooga/game/behaviors/";
+    private static final Object PATH_TO_CLASSES = "ooga.game.behaviors.";
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static final String DEFAULT_LIBRARY_FILE = "data/games-library";
     private static final String DEFAULT_USERS_FILE = "data/users";
@@ -288,8 +288,9 @@ public class OogaDataReader implements DataReader{
         try {
             Class cls = forName(PATH_TO_CLASSES + behaviorClassName);
             Constructor cons = cls.getConstructor(List.class);
-            return cons.newInstance(Arrays.asList(behavior));
+            return cons.newInstance(Arrays.asList(behavior).subList(1, behavior.length));
         } catch(Exception e){
+            e.printStackTrace();
             throw new OogaDataException(behaviorType + " Behavior listed in game file is not recognized");
         }
     }

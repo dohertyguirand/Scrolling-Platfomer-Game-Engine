@@ -42,7 +42,7 @@ public class ControlsTestGameCreation {
     sampleEntity.setPosition(List.of(600.0,500.0-sampleEntity.getHeight()-1));
     entities.add(sampleEntity);
 
-    Entity destructibleEntity = new ImageEntity("block","file:data/games-library/example-dino/cactus.jpeg");
+    Entity destructibleEntity = new ImageEntity("block","file:data/games-library/example-dino/cactus.jpeg", 0.0, 0.0, 100.0, 100.0);
     destructibleEntity.setCollisionBehaviors(Map.of("dino",List.of(new CreateEntity(new ArrayList<>()))));
     destructibleEntity.setPosition(List.of(300.0,300.0));
     entities.add(destructibleEntity);

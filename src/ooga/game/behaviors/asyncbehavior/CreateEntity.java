@@ -17,7 +17,7 @@ public class CreateEntity extends DirectionlessCollision {
 
   @Override
   public void doCollision(Entity subject, Entity collidingEntity) {
-    Entity created = new ImageEntity("Mushroom","file:data/games-library/example-dino/googe_dino.bmp");
+    Entity created = new ImageEntity("Mushroom","file:data/games-library/example-dino/googe_dino.bmp", 0.0, 0.0, 100.0, 100.0);
     double xPos = subject.getPosition().get(0);
     double yPos = subject.getPosition().get(1) - subject.getHeight();
     created.setPosition(List.of(xPos,yPos));

@@ -9,7 +9,7 @@
             <Height>100</Height>
             <Image>fireboy.png</Image>
             <Movement>
-                <MovementBehavior>Gravity 0.1</MovementBehavior>
+                <MovementBehavior>Gravity 0 0.1</MovementBehavior>
             </Movement>
             <Controls>
                 <ControlInput>
@@ -18,11 +18,11 @@
                 </ControlInput>
                 <ControlInput>
                     <Key>LeftKey</Key>
-                    <ControlBehavior>MoveBehavior -1.2</ControlBehavior>
+                    <ControlBehavior>MoveBehavior -1.2 0</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
                     <Key>RightKey</Key>
-                    <ControlBehavior>MoveBehavior 1.2</ControlBehavior>
+                    <ControlBehavior>MoveBehavior 1.2 0</ControlBehavior>
                 </ControlInput>
             </Controls>
             <Collisions>
@@ -42,7 +42,7 @@
             <Height>100</Height>
             <Image>watergirl.png</Image>
             <Movement>
-                <MovementBehavior>Gravity 0.1</MovementBehavior>
+                <MovementBehavior>Gravity 0 0.1</MovementBehavior>
             </Movement>
             <Controls>
                 <ControlInput>
@@ -51,11 +51,11 @@
                 </ControlInput>
                 <ControlInput>
                     <Key>LeftKey2</Key>
-                    <ControlBehavior>MoveBehavior -1.2</ControlBehavior>
+                    <ControlBehavior>MoveBehavior -1.2 0</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
                     <Key>RightKey2</Key>
-                    <ControlBehavior>MoveBehavior 1.2</ControlBehavior>
+                    <ControlBehavior>MoveBehavior 1.2 0</ControlBehavior>
                 </ControlInput>
             </Controls>
             <Collisions>
