@@ -103,7 +103,7 @@ public class MakeProfileDemo extends Application {
         myFileChooser.setTitle("View Pictures");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
         myFileChooser.getExtensionFilters().add(extFilter);
-        
+
 
     }
 

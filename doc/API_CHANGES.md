@@ -23,7 +23,13 @@ since the game will always know what game it is running and is not responsible f
 - UserInputListener method probably shouldn't take a String input, as the Game should be
 responsible for determining where to save
 - now has a doGameStep method that view calls during its step method
-
+- 4/12/2020: Added time as a param to collision loop (but will probably removed 
+collision loop from public side of GAME).
+- 4/14/2020: Removed ``doUpdateLoop`` from external game interface, since from the outside
+one need only call ``doGameStep``.
+- 4/14/2020: Removed ``doCollisionLoop`` from external game interface for the same reason
+- 4/14/2020: Removed ``handleUserInput``, since that's part of the UserInputListener interface of
+the game.
 
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.
@@ -46,6 +52,11 @@ and the rest.
 - Added ``getVelocity`` so that the Entity knows it 
 - 4/10/2020: Removed ``moveByVelocity`` since it's better to assume that velocity is
 applied internally each frame.
+- 4/12/2020: Added ``executeMovement`` to serve as ``moveByVelocity`` since it's
+better when actual movement happens after all logic.
+- 4/14/2020: Added ``reactToControlsPressed`` to have different types of control reactions
+to inputs (reacting to a press is better for jumping).
+
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require
@@ -79,3 +90,5 @@ Also could change to take two entities, since two are involved in a collision.
     ``getProfileName()``
     
 -4/12/20 added ``getProfilePhotoPath()`` that returns a string with the filePath to the photo
+### CollisionDetector
+- 4/12/2020: Added detection for sideways and vertical collisions.

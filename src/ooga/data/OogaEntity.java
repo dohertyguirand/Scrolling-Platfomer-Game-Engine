@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
+import java.util.function.Consumer;
 import javafx.beans.property.*;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
@@ -13,6 +15,8 @@ import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
 
+  public static double FRICTION_ACCELERATION = 30.0 / 1000.0;
+
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
   private DoubleProperty myXPos = new SimpleDoubleProperty();
   private DoubleProperty myYPos = new SimpleDoubleProperty();
@@ -20,6 +24,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private DoubleProperty myHeight;
 
   private List<Double> myVelocity;
+  private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
   private List<MovementBehavior> myMovementBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
@@ -36,6 +41,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myCollisionBehaviors = new HashMap<>();
     myMovementBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
+    myVelocityVectors = new Stack<>();
   }
 
   public OogaEntity(String name) {
@@ -94,10 +100,35 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime) {
+  public void reactToControlsPressed(String controls) {
+    //TODO: Smarten this up, so that it doesn't just change the String
+    String keyPressedCode = controls + "Pressed";
+    System.out.println(keyPressedCode);
+    reactToControls(keyPressedCode);
+  }
+
+  @Override
+  public void updateSelf(double elapsedTime, List<Entity> collisions) {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);
     }
+    for (Entity collidingWith : collisions) {
+      handleCollision(collidingWith, elapsedTime);
+    }
+    applyFrictionHorizontal();
+  }
+
+  private void applyFrictionHorizontal() {
+    if (Math.abs(myVelocity.get(0)) < FRICTION_ACCELERATION) {
+      setVelocity(0,getVelocity().get(1));
+    }
+    else {
+      changeVelocity(FRICTION_ACCELERATION * -1 * Math.signum(myVelocity.get(0)),0);
+    }
+  }
+
+  @Override
+  public void executeMovement(double elapsedTime) {
     moveByVelocity(elapsedTime);
   }
 
@@ -112,18 +143,42 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void handleCollision(String collidingEntity) {
-    if (myCollisionBehaviors.containsKey(collidingEntity)) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity)) {
-        behavior.doCollision(this, collidingEntity);
+  public void handleCollision(Entity collidingEntity, double elapsedTime) {
+    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
+        behavior.doVerticalCollision(this, collidingEntity,elapsedTime);
+      }
+    }
+  }
+
+  @Override
+  public void handleVerticalCollision(Entity collidingEntity, double elapsedTime) {
+    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
+        behavior.doVerticalCollision(this, collidingEntity,elapsedTime );
+      }
+    }
+  }
+
+  //TODO: Implement the lambda (after testing) to vertical collisions
+  @Override
+  public void handleHorizontalCollision(Entity collidingEntity, double elapsedTime) {
+    doAllCollisions(collidingEntity, behavior -> behavior.doHorizontalCollision(this,collidingEntity, elapsedTime));
+  }
+
+  private void doAllCollisions(Entity collidingEntity, Consumer<CollisionBehavior> collisionType) {
+    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
+        collisionType.accept(behavior);
       }
     }
   }
 
   @Override
   public void move(double xDistance, double yDistance) {
-    myXPos.set(myXPos.get() + xDistance);
-    myYPos.set(myYPos.get() + yDistance);
+//    myXPos.set(myXPos.get() + xDistance);
+//    myYPos.set(myYPos.get() + yDistance);
+    myVelocityVectors.add(List.of(xDistance,yDistance));
   }
 
   @Override
@@ -132,9 +187,13 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-
   public List<Double> getVelocity() {
-    return new ArrayList<>(myVelocity);
+    List<Double> ret = new ArrayList<>(myVelocity);
+    for (List<Double> vector : myVelocityVectors) {
+      ret.set(0,ret.get(0)+vector.get(0));
+      ret.set(1,ret.get(1)+vector.get(1));
+    }
+    return ret;
   }
 
   @Override
@@ -166,7 +225,17 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   private void moveByVelocity(double elapsedTime) {
-    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
+//    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
+    changePosition(myVelocity,elapsedTime);
+    while (!myVelocityVectors.isEmpty()) {
+      changePosition(myVelocityVectors.pop(),elapsedTime);
+//      myVelocityVectors.pop();
+    }
+  }
+
+  private void changePosition(List<Double> velocity, double elapsedTime) {
+    myXPos.set(myXPos.get() + (velocity.get(0) * elapsedTime));
+    myYPos.set(myYPos.get() + (velocity.get(1) * elapsedTime));
   }
 
   @Override

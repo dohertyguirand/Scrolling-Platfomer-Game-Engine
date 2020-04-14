@@ -40,27 +40,5 @@ public interface Game {
    */
   void doGameStep(double elapsedTime);
 
-  /**
-   * Detects all collisions between entities in the current level and has them resolve their
-   * collisions. Can cause entities to be created or removed. The rate at which this is called
-   * depends on how often this and doUpdateLoop are called.
-   */
-  void doCollisionLoop();
-
-  /**
-   * Handles any functionality that happens per frame regardless of collisions or input.
-   * Examples include: Entities moving forward by themselves, gravity.
-   * @param elapsedTime The real time elapsed between this frame and the last.
-   */
-  void doUpdateLoop(double elapsedTime);
-
-  /**
-   * Handles anything that happens inside the game, globally or by an entity, based on the
-   * action (method or class) that is mapped to the given String (probably in a resource file).
-   * Happens asynchronously to operations that happen every frame.
-   * @param input A String identifying the type of input, like "Forward" or "ActionButton".
-   */
-  void handleUserInput(String input);
-
   UserInputListener makeUserInputListener();
 }
