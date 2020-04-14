@@ -14,6 +14,7 @@ DataReader loads and reports information. Changed its description and return typ
 - 4/9/20 Added ``getEntityMap`` so that the Game can ask for the map of entity definitions needed to
 create new Entity instances.
 - 4/14/20 Added ``getProfiles`` so View can ask for a list of the existing users
+- 4/14/20 Changed the return type of ``getProfiles`` to use the same class as View
 
 ## Game API
 - getEntities now returns an observable list instead of list

@@ -171,6 +171,11 @@
                     <XPos>800</XPos>
                     <YPos>200</YPos>
                 </Instance>
+                <Instance>
+                    <Type>Floor</Type>
+                    <XPos>0</XPos>
+                    <YPos>600</YPos>
+                </Instance>
             </Instances>
         </Level>
     </Levels>

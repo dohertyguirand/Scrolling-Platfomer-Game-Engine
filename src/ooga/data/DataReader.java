@@ -6,6 +6,7 @@ import java.util.Map;
 import ooga.OogaDataException;
 import ooga.game.Game;
 import ooga.game.Level;
+import ooga.view.OggaProfile;
 
 /**
  * Handles the interaction with game data files, including interpretation and writing.
@@ -84,5 +85,5 @@ public interface DataReader {
    * @return A list of Profiles according to the data stored in the Users folder. Returns an empty list if there are no
    * existing profiles
    */
-  List<Profile_Temporary> getProfiles();
+  List<OggaProfile> getProfiles();
 }

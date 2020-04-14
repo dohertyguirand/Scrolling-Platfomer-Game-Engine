@@ -2,6 +2,7 @@ package ooga.data;
 
 import ooga.Entity;
 import ooga.OogaDataException;
+import ooga.view.OggaProfile;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,8 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class DataReaderTest {
     private OogaDataReader testDataReader = new OogaDataReader();
-    private String GAME_NAME = "Chrome Dino";
+    //private String GAME_NAME = "Chrome Dino";
     //private String GAME_NAME = "Super Mario Bros";
+    private String GAME_NAME = "Fireboy and Watergirl";
+
     private ArrayList<String> ID_LIST  = new ArrayList<>(List.of("1"));
 
     @Test
@@ -82,10 +85,10 @@ public class DataReaderTest {
 
     @Test
     public void testGetProfiles(){
-        List<Profile_Temporary>  profiles = testDataReader.getProfiles();
+        List<OggaProfile>  profiles = testDataReader.getProfiles();
         System.out.println("Profiles:");
-        for (Profile_Temporary profile : profiles){
-            System.out.println(String.format("Name %s  Image: %s", profile.getMyName(), profile.getMyImagePath()));
+        for (OggaProfile profile : profiles){
+            System.out.println(String.format("Name %s  Image: %s", profile.getProfileName(), profile.getProfilePhotoPath()));
         }
     }
 

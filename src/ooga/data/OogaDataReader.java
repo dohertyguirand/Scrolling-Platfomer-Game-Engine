@@ -15,6 +15,7 @@ import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
 import ooga.game.behaviors.framebehavior.GravityBehavior;
 import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
 import ooga.game.behaviors.inputbehavior.JumpBehavior;
+import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -235,7 +236,7 @@ public class OogaDataReader implements DataReader{
                 if (behavior.length == 2) {
                     yGrav = Double.parseDouble(behavior[1]);
                 }
-                if (behavior.length >= 3) {
+                else if (behavior.length >= 3) {
                     xGrav = Double.parseDouble(behavior[1]);
                     yGrav = Double.parseDouble(behavior[2]);
                 }
@@ -246,7 +247,7 @@ public class OogaDataReader implements DataReader{
                 if (behavior.length == 2) {
                     xVel = Double.parseDouble(behavior[1]);
                 }
-                if (behavior.length >= 3) {
+                else if (behavior.length >= 3) {
                     xVel = Double.parseDouble(behavior[1]);
                     yVel = Double.parseDouble(behavior[2]);
                 }
@@ -299,7 +300,14 @@ public class OogaDataReader implements DataReader{
                     if(reaction.length>=2) yVel = Double.parseDouble(reaction[1]);
                     System.out.print("Control Behavior: " + keyPressed + " Jump ");
                     reactions.add(new JumpBehavior(yVel));
-                } else {
+                }
+                else if (reaction[0].equals("MoveBehavior")) {
+                    double Vel = -1.2;
+                    if(reaction.length>=2) Vel = Double.parseDouble(reaction[1]);
+                    System.out.print("Control Behavior: " + keyPressed + " Move ");
+                    reactions.add(new JumpBehavior(Vel));
+                }
+                else {
                     throw new OogaDataException("Control Behavior listed in game file is not recognized");
                 }
             }
@@ -315,9 +323,9 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public List<Profile_Temporary> getProfiles() {
+    public List<OggaProfile> getProfiles() {
         // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
-        ArrayList<Profile_Temporary> profileList = new ArrayList<>();
+        ArrayList<OggaProfile> profileList = new ArrayList<>();
         for (File userFile : getAllXMLFiles(DEFAULT_USERS_FILE)){
             try {
                 // create a new document to parse
@@ -329,7 +337,8 @@ public class OogaDataReader implements DataReader{
                 String userImage = doc.getElementsByTagName("Image").item(0).getTextContent();
 
                 String fullImagePath = "file:" + userFile.getParentFile() + "/" + userImage;
-                Profile_Temporary newProfile = new Profile_Temporary(userName, fullImagePath);
+                OggaProfile newProfile = new OggaProfile();
+
                 profileList.add(newProfile);
             } catch (SAXException | ParserConfigurationException | IOException e) {
                 // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)

@@ -5,7 +5,7 @@ import ooga.Profile;
 import javax.swing.text.html.ImageView;
 import java.util.Map;
 
-public abstract class OggaProfile implements Profile {
+public class OggaProfile implements Profile {
     protected String myProfilePhotoPath;
     protected String myName;
     protected Map<String, Integer> myHighestScores;
