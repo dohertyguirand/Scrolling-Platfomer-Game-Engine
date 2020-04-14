@@ -9,8 +9,6 @@ import java.util.Map;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.ImageEntity;
-import ooga.data.OogaDataReader;
-import ooga.data.OogaEntity;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
 import ooga.game.inputbehavior.JumpBehavior;
@@ -50,7 +48,7 @@ public class GameTest {
     Entity obstacleEntity = new ImageEntity("entity2");
     Level level = new OogaLevel(List.of(destructibleEntity,obstacleEntity));
     OogaGame game = new OogaGame(level);
-    game.doCollisionLoop();
+    game.doCollisionLoop(1.0);
     assertTrue(destructibleEntity.isDestroyed());
   }
 

@@ -21,6 +21,5 @@ public class MoveInputBehavior implements ControlsBehavior {
   @Override
   public void reactToControls(Entity subject) {
     subject.move(xMovePerFrame,yMovePerFrame);
-
   }
 }

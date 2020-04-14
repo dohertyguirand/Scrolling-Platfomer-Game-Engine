@@ -23,6 +23,8 @@ since the game will always know what game it is running and is not responsible f
 - UserInputListener method probably shouldn't take a String input, as the Game should be
 responsible for determining where to save
 - now has a doGameStep method that view calls during its step method
+- 4/12/2020: Added time as a param to collision loop (but will probably removed 
+collision loop from public side of GAME).
 
 
 ### Entity

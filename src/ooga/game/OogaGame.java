@@ -38,7 +38,7 @@ public class OogaGame implements Game, UserInputListener {
     myCollisionDetector = new OogaCollisionDetector();
     //TODO: Remove dependency between OogaGame and ImageEntity
     List<Entity> entities = new ArrayList<>();
-    Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/googe_dino.bmp");
+    Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/blue_square.jpg");
 //    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(100/1000.0,0),
 //                                              new GravityBehavior(0,100.0/1000)));
     sampleEntity.setMovementBehaviors(List.of(new GravityBehavior(0,100.0/1000)));
@@ -48,7 +48,7 @@ public class OogaGame implements Game, UserInputListener {
     entities.add(sampleEntity);
 
     for (int i = 0; i < 10; i ++) {
-      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/cactus.jpeg");
+      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png");
       otherEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(-450.0/1000,0)));
       otherEntity.setPosition(List.of(1200.0 + 800 * i,400.0));
       entities.add(otherEntity);
@@ -124,12 +124,12 @@ public class OogaGame implements Game, UserInputListener {
   }
 
   @Override
-  public void doCollisionLoop() {
+  public void doCollisionLoop(double elapsedTime) {
     List<Entity> destroyedEntities = new ArrayList<>();
     for (Entity target : currentLevel.getEntities()) {
       for (Entity collidingWith : currentLevel.getEntities()) {
-        if (collidingWith != target && myCollisionDetector.isColliding(target,collidingWith)) {
-          target.handleCollision(collidingWith);
+        if (collidingWith != target && myCollisionDetector.isColliding(target,collidingWith, elapsedTime)) {
+          target.handleCollision(collidingWith, elapsedTime);
           if (target.isDestroyed()) {
             destroyedEntities.add(target);
           }
@@ -143,13 +143,27 @@ public class OogaGame implements Game, UserInputListener {
     }
   }
 
-  private Map<Entity,List<Entity>> findCollisions() {
+  private Map<Entity,List<Entity>> findVerticalCollisions(double elapsedTime) {
+    CollisionType<Entity> collisionType = (a,b,t) -> myCollisionDetector.isCollidingVertically(a,b,t);
+    return findCollisions(collisionType,elapsedTime);
+  }
+
+  private Map<Entity,List<Entity>> findHorizontalCollisions(double elapsedTime) {
+    //TODO: Modify this so that elapsedTime isn't a parameter to findCollisions.
+    CollisionType<Entity> collisionType = (a,b,t) -> myCollisionDetector.isCollidingHorizontally(a,b,t);
+    return findCollisions(collisionType,elapsedTime);
+  }
+
+  private Map<Entity,List<Entity>> findCollisions(CollisionType<Entity> collisionType, double elapsedTime) {
     Map<Entity,List<Entity>> ret = new HashMap<>();
     for (Entity target : currentLevel.getEntities()) {
       List<Entity> entityCollisions = new ArrayList<>();
       for (Entity collidingWith : currentLevel.getEntities()) {
-        if (collidingWith != target && myCollisionDetector.isColliding(target,collidingWith)) {
-          entityCollisions.add(collidingWith);
+        if (collidingWith != target) {
+          if (collisionType.isColliding(target,collidingWith,elapsedTime)) {
+            entityCollisions.add(collidingWith);
+            break;
+          }
         }
       }
       ret.put(target,entityCollisions);
@@ -188,10 +202,14 @@ public class OogaGame implements Game, UserInputListener {
       }
       e.updateSelf(elapsedTime, new ArrayList<>());
     }
-    Map<Entity,List<Entity>> currentCollisions = findCollisions();
+    Map<Entity,List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
+    Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
     for (Entity e : currentLevel.getEntities()) {
-      for (Entity collidingWith : currentCollisions.get(e)) {
-        e.handleCollision(collidingWith);
+      for (Entity collidingWith : verticalCollisions.get(e)) {
+        e.handleVerticalCollision(collidingWith, elapsedTime);
+      }
+      for (Entity collidingWith : horizontalCollisions.get(e)) {
+        e.handleHorizontalCollision(collidingWith, elapsedTime);
       }
       e.executeMovement(elapsedTime);
     }
@@ -249,9 +267,6 @@ public class OogaGame implements Game, UserInputListener {
       myActiveKeys.add(inputType);
     }
     handleUserInput(keyName);
-//    for (Entity e : currentLevel.getEntities()) {
-//      e.reactToControls(keyName);
-//    }
   }
 
   @Override

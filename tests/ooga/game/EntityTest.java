@@ -48,15 +48,16 @@ class EntityTest {
 
   @Test
   public void testDinosaur() {
+    double elapsedTime = 1.0;
     Entity dino = new ImageEntity();
     Entity cactus = new ImageEntity("cactus");
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
-    collisionMap.put("Cactus", List.of(new MoveUpCollision(dino, 20.01), new DestroySelfBehavior()));
+    collisionMap.put("Cactus", List.of(new MoveUpCollision(20.01), new DestroySelfBehavior()));
     dino.setCollisionBehaviors(collisionMap);
     dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
 
     dino.updateSelf(1.0, new ArrayList<>());
-    dino.handleCollision(cactus);
+    dino.handleCollision(cactus, elapsedTime);
     assertTrue(dino.isDestroyed());
   }
 

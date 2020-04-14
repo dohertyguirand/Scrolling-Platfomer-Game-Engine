@@ -44,8 +44,9 @@ public interface Game {
    * Detects all collisions between entities in the current level and has them resolve their
    * collisions. Can cause entities to be created or removed. The rate at which this is called
    * depends on how often this and doUpdateLoop are called.
+   * @param elapsedTime The real time elapsed between this frame and the last, in milliseconds.
    */
-  void doCollisionLoop();
+  void doCollisionLoop(double elapsedTime);
 
   /**
    * Handles any functionality that happens per frame regardless of collisions or input.

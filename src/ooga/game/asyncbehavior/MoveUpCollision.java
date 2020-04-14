@@ -1,17 +1,13 @@
 package ooga.game.asyncbehavior;
 
-import ooga.CollisionBehavior;
 import ooga.Entity;
+import ooga.game.DirectionlessCollision;
 
-public class MoveUpCollision implements CollisionBehavior {
+public class MoveUpCollision extends DirectionlessCollision {
 
-  private Entity mySubject;
   private double myMoveDistance;
 
-  public MoveUpCollision(Entity subject, double moveDistance) {
-    //TODO: Change this constructor, since behaviors no longer need to be
-    // initialized with subjects.
-    mySubject = subject;
+  public MoveUpCollision(double moveDistance) {
     myMoveDistance = moveDistance;
   }
 

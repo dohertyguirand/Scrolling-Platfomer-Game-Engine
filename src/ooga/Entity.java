@@ -81,8 +81,13 @@ public interface Entity {
    * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
    * dies when hit by a fireball.
    * @param collidingEntity The String identifier of the enemy being collided with.
+   * @param elapsedTime
    */
-  void handleCollision(Entity collidingEntity);
+  void handleCollision(Entity collidingEntity, double elapsedTime);
+
+  void handleVerticalCollision(Entity collidingEntity, double elapsedTime);
+
+  void handleHorizontalCollision(Entity collidingEntity, double elapsedTime);
 
   /**
    * Moves the entity by the specified amount in the x and y direction.

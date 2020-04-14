@@ -5,9 +5,10 @@ import ooga.Entity;
 
 import java.util.List;
 import ooga.game.CollisionDetector;
+import ooga.game.DirectionlessCollision;
 import ooga.game.OogaCollisionDetector;
 
-public class StopDownwardVelocity implements CollisionBehavior {
+public class StopDownwardVelocity extends DirectionlessCollision {
 
     @Override
     public void doCollision(Entity subject, Entity collidingEntity) {
@@ -17,7 +18,7 @@ public class StopDownwardVelocity implements CollisionBehavior {
         //TODO: Remove reliance here on collision detector implementation
         CollisionDetector detector = new OogaCollisionDetector();
         subject.setPosition(List.of(newXPos,newYPos));
-        while (detector.isColliding(subject,collidingEntity)) {
+        while (detector.isColliding(subject,collidingEntity, 1.0)) {
             newYPos -= 1;
             subject.setPosition(List.of(newXPos,newYPos));
         }

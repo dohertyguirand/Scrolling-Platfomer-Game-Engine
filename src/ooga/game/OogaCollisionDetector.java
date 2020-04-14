@@ -3,22 +3,21 @@ package ooga.game;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import ooga.Entity;
-import ooga.UserInputListener;
 
 public class OogaCollisionDetector implements CollisionDetector {
 
   @Override
-  public boolean isColliding(Entity a, Entity b) {
+  public boolean isColliding(Entity a, Entity b, double elapsedTime) {
     return (makeShapeFromEntity(a).getBoundsInParent().intersects(makeShapeFromEntity(b).getBoundsInParent()));
   }
 
   @Override
-  public boolean isCollidingVertically(Entity a, Entity b) {
+  public boolean isCollidingVertically(Entity a, Entity b, double elapsedTime) {
     return false;
   }
 
   @Override
-  public boolean isCollidingHorizontally(Entity a, Entity b) {
+  public boolean isCollidingHorizontally(Entity a, Entity b, double elapsedTime) {
     return false;
   }
 

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.function.Consumer;
 import javafx.beans.property.*;
 import ooga.CollisionBehavior;
 import ooga.ControlsBehavior;
@@ -102,7 +103,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       behavior.doMovementUpdate(elapsedTime,this);
     }
     for (Entity collidingWith : collisions) {
-      handleCollision(collidingWith);
+      handleCollision(collidingWith, elapsedTime);
     }
 //    moveByVelocity(elapsedTime);
   }
@@ -123,10 +124,33 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void handleCollision(Entity collidingEntity) {
+  public void handleCollision(Entity collidingEntity, double elapsedTime) {
     if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
       for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doCollision(this, collidingEntity);
+        behavior.doVerticalCollision(this, collidingEntity,elapsedTime);
+      }
+    }
+  }
+
+  @Override
+  public void handleVerticalCollision(Entity collidingEntity, double elapsedTime) {
+    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
+        behavior.doVerticalCollision(this, collidingEntity,elapsedTime );
+      }
+    }
+  }
+
+  //TODO: Implement the lambda (after testing) to vertical collisions
+  @Override
+  public void handleHorizontalCollision(Entity collidingEntity, double elapsedTime) {
+    doAllCollisions(collidingEntity, behavior -> behavior.doHorizontalCollision(this,collidingEntity, elapsedTime));
+  }
+
+  private void doAllCollisions(Entity collidingEntity, Consumer<CollisionBehavior> collisionType) {
+    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
+        collisionType.accept(behavior);
       }
     }
   }
@@ -148,7 +172,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     List<Double> ret = new ArrayList<>(myVelocity);
     for (List<Double> vector : myVelocityVectors) {
       ret.set(0,ret.get(0)+vector.get(0));
-      ret.set(0,ret.get(0)+vector.get(0));
+      ret.set(1,ret.get(1)+vector.get(1));
     }
     return ret;
   }
@@ -185,8 +209,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 //    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
     changePosition(myVelocity,elapsedTime);
     while (!myVelocityVectors.isEmpty()) {
-//      changePosition(myVelocityVectors.pop(),elapsedTime);
-      myVelocityVectors.pop();
+      changePosition(myVelocityVectors.pop(),elapsedTime);
+//      myVelocityVectors.pop();
     }
   }
 
