@@ -10,11 +10,7 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.*;
 import ooga.UserInputListener;
-import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.collisiondetection.OogaCollisionDetector;
-import ooga.game.framebehavior.GravityBehavior;
-import ooga.game.framebehavior.MoveForwardBehavior;
-import ooga.game.inputbehavior.JumpBehavior;
 
 public class OogaGame implements Game, UserInputListener {
 
@@ -33,9 +29,7 @@ public class OogaGame implements Game, UserInputListener {
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myLevel = 0;
-    myLevelIds = myDataReader.getBasicGameInfo(gameName);
     myName = gameName;
-    myDataReader = dataReader;
     myLevelIds = myDataReader.getBasicGameInfo(gameName);
     //TODO: Make the type of collision detector configurable.
     myCollisionDetector = new OogaCollisionDetector();

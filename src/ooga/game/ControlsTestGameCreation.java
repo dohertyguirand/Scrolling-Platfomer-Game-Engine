@@ -7,12 +7,11 @@ import java.util.Map;
 import ooga.ControlsBehavior;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.asyncbehavior.RunIntoTerrain;
+import ooga.game.behaviors.asyncbehavior.RunIntoTerrain;
 import ooga.game.collisiondetection.VelocityCollisionDetector;
-import ooga.game.framebehavior.GravityBehavior;
-import ooga.game.inputbehavior.JumpBehavior;
-import ooga.game.inputbehavior.MoveInputBehavior;
-import ooga.game.inputbehavior.VelocityInputBehavior;
+import ooga.game.behaviors.framebehavior.GravityBehavior;
+import ooga.game.behaviors.inputbehavior.JumpBehavior;
+import ooga.game.behaviors.inputbehavior.VelocityInputBehavior;
 
 public class ControlsTestGameCreation {
   //TODO: Remove, or transform into a reasonable test
@@ -37,7 +36,7 @@ public class ControlsTestGameCreation {
     controls.put("RightKey",List.of(new VelocityInputBehavior(speed,0,maxSpeed)));
 
     sampleEntity.setControlsBehaviors(controls);
-    sampleEntity.setCollisionBehaviors(Map.of("cactus",List.of(new RunIntoTerrain())));
+    sampleEntity.setCollisionBehaviors(Map.of("cactus",List.of(new RunIntoTerrain(new ArrayList<>()))));
 //    sampleEntity.setPosition(List.of(600.0-100-1,400.0));
     sampleEntity.setPosition(List.of(600.0,500.0-sampleEntity.getHeight()-1));
     entities.add(sampleEntity);

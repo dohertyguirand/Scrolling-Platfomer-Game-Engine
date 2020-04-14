@@ -1,4 +1,4 @@
-package ooga.game.asyncbehavior;
+package ooga.game.behaviors.asyncbehavior;
 
 import ooga.Entity;
 
@@ -8,6 +8,10 @@ import ooga.game.DirectionlessCollision;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 
 public class StopDownwardVelocity extends DirectionlessCollision {
+
+    public StopDownwardVelocity(List<String> args) {
+        //arguments have no effect on this behavior
+    }
 
     @Override
     public void doCollision(Entity subject, Entity collidingEntity) {

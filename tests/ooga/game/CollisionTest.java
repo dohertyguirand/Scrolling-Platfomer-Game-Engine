@@ -1,11 +1,12 @@
 package ooga.game;
 
+import java.util.ArrayList;
 import ooga.CollisionBehavior;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.asyncbehavior.MoveUpCollision;
-import ooga.game.asyncbehavior.DestroySelfBehavior;
-import ooga.game.asyncbehavior.StopDownwardVelocity;
+import ooga.game.behaviors.asyncbehavior.MoveUpCollision;
+import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
+import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +60,7 @@ public class CollisionTest {
   public void testDestroySelfCollision() {
     double elapsedTime = 1.0;
     Entity removable = new ImageEntity();
-    removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior())));
+    removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior(new ArrayList<>()))));
     removable.handleCollision(new ImageEntity("entity2"), elapsedTime);
     assertTrue(removable.isDestroyed());
   }
@@ -68,7 +69,7 @@ public class CollisionTest {
   public void testStopDownwardVelocity(){
     double elapsedTime = 1.0;
     Entity fallingEnity = new ImageEntity();
-    fallingEnity.setCollisionBehaviors(Map.of("Floor", List.of(new StopDownwardVelocity())));
+    fallingEnity.setCollisionBehaviors(Map.of("Floor", List.of(new StopDownwardVelocity(new ArrayList<>()))));
     fallingEnity.setVelocity(100.0,100.0);
     fallingEnity.handleCollision(new ImageEntity("Floor"), elapsedTime);
     List<Double> velocity = fallingEnity.getVelocity();
