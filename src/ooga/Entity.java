@@ -13,19 +13,37 @@ import javafx.beans.property.DoubleProperty;
  */
 public interface Entity {
 
-  public double getX();
+  double getX();
 
-  public DoubleProperty xProperty();
+  DoubleProperty xProperty();
 
-  public double getY();
+  double getY();
 
-  public DoubleProperty yProperty();
+  DoubleProperty yProperty();
 
-  public boolean isActiveInView();
+  boolean isActiveInView();
 
-  public BooleanProperty activeInViewProperty();
+  BooleanProperty activeInViewProperty();
 
-  public void setActiveInView(boolean activeInView);
+  void setActiveInView(boolean activeInView);
+
+  DoubleProperty heightProperty();
+
+  DoubleProperty widthProperty();
+
+  void setWidth(double width);
+
+  void setHeight(double height);
+
+  /**
+   * @return The width of the entity.
+   */
+  double getWidth();
+
+  /**
+   * @return The height of the entity.
+   */
+  double getHeight();
 
   /**
    * @return The name identifying what type of entity this is, as defined in the game file.
@@ -96,16 +114,6 @@ public interface Entity {
   List<Double> getVelocity();
 
   /**
-   * @return The width of the entity.
-   */
-  double getWidth();
-
-  /**
-   * @return The height of the entity.
-   */
-  double getHeight();
-
-  /**
    * @param newPosition The new position for the entity to have in the level.
    */
   void setPosition(List<Double> newPosition);
@@ -133,7 +141,4 @@ public interface Entity {
    * @param yVelocity The y-value of the new velocity.
    */
   void setVelocity(double xVelocity, double yVelocity);
-
-
-
 }
