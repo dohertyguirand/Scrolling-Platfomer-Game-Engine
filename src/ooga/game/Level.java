@@ -37,4 +37,9 @@ public interface Level {
    * @return True if the level should end, which should cause the game to progress.
    */
   boolean checkEndCondition();
+
+  /**
+   * @return The ID in the game file of the level that comes after this one.
+   */
+  String nextLevelID();
 }

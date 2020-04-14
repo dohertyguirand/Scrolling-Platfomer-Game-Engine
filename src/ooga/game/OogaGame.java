@@ -121,6 +121,18 @@ public class OogaGame implements Game, UserInputListener {
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
+    checkLevelEnd();
+  }
+
+  private void checkLevelEnd() {
+    if (currentLevel.checkEndCondition()) {
+      try {
+        Level next = myDataReader.loadLevel(myName,currentLevel.nextLevelID());
+        currentLevel = next;
+      } catch (OogaDataException e) {
+        //if the next level fails to load, continue this level.
+      }
+    }
   }
 
   private void executeEntityMovement(double elapsedTime) {
