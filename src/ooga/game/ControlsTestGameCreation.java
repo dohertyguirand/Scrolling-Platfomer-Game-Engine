@@ -20,18 +20,18 @@ public class ControlsTestGameCreation {
     List<Entity> entities = new ArrayList<>();
     Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/blue_square.jpg");
     sampleEntity.setMovementBehaviors(List.of(new GravityBehavior(0,20.0/1000)));
-    double speed = 120.0;
+    double speed = 160.0;
     speed = speed / 1000.0;
     double maxSpeed = speed * 2;
     Map<String, List<ControlsBehavior>> controls = new HashMap<>();
-//    controls.put("UpKeyPressed",List.of(new JumpBehavior(-1 * .525 * speed)));
+    controls.put("UpKeyPressed",List.of(new JumpBehavior(-1 * 3.2 * speed)));
 //    controls.put("UpKey",List.of(new MoveInputBehavior(0,-1 * speed)));
 //    controls.put("DownKey",List.of(new MoveInputBehavior(0,speed)));
 //    controls.put("LeftKey",List.of(new MoveInputBehavior(-1 * speed,0)));
 //    controls.put("RightKey",List.of(new MoveInputBehavior(speed,0)));
 
 
-    controls.put("UpKey",List.of(new VelocityInputBehavior(0,-1 * speed,maxSpeed)));
+//    controls.put("UpKey",List.of(new VelocityInputBehavior(0,-1 * speed,maxSpeed)));
     controls.put("DownKey",List.of(new VelocityInputBehavior(0,speed,maxSpeed)));
     controls.put("LeftKey",List.of(new VelocityInputBehavior(-1 * speed,0,maxSpeed)));
     controls.put("RightKey",List.of(new VelocityInputBehavior(speed,0,maxSpeed)));

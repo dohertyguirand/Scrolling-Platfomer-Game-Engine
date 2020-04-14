@@ -20,12 +20,12 @@ public class RunIntoTerrain implements CollisionBehavior {
 
   @Override
   public void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime) {
-//    subject.setVelocity(0,subject.getVelocity().get(1));
+    subject.setVelocity(0,subject.getVelocity().get(1));
     double direction = Math.signum(subject.getVelocity().get(0));
     double targetX = calcTargetX(subject,collidingEntity);
     double subjectX = subject.getPosition().get(0) + (subject.getVelocity().get(0) * elapsedTime);
     double deltaX = targetX - subjectX;
-    subject.move((deltaX - (margin* direction)) / elapsedTime,0);
+//    subject.move((deltaX - (margin* direction)) / elapsedTime,0);
   }
 
   private double calcTargetX(Entity subject, Entity collidingEntity) {
