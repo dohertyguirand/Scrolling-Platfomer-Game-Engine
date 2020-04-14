@@ -10,11 +10,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
 import ooga.game.OogaLevel;
-import ooga.game.asyncbehavior.DestroySelfBehavior;
-import ooga.game.asyncbehavior.StopDownwardVelocity;
-import ooga.game.framebehavior.GravityBehavior;
-import ooga.game.framebehavior.MoveForwardBehavior;
-import ooga.game.inputbehavior.JumpBehavior;
+import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
+import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
+import ooga.game.behaviors.framebehavior.GravityBehavior;
+import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
+import ooga.game.behaviors.inputbehavior.JumpBehavior;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -269,10 +269,10 @@ public class OogaDataReader implements DataReader{
                 // determine what type of behavior it is
                 if (reaction.equals("RemoveSelf")) {
                     System.out.print("Collision Behavior: " + collisionObject + " RemoveSelf ");
-                    reactions.add(new DestroySelfBehavior());
+                    reactions.add(new DestroySelfBehavior(new ArrayList<>()));
                 } else if (reaction.equals("StopDownwardVelocity")) {
                     System.out.print("Collision Behavior: " + collisionObject + " StopDownwardVel ");
-                    reactions.add(new StopDownwardVelocity());
+                    reactions.add(new StopDownwardVelocity(new ArrayList<>()));
                 } else if(reaction.equals("MoveUp")){
                     //TODO: verify this useage, I can't find it used anywhere so I'm not sure what this does
                 } else {

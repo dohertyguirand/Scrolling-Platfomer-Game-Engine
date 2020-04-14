@@ -1,5 +1,6 @@
-package ooga.game.inputbehavior;
+package ooga.game.behaviors.inputbehavior;
 
+import java.util.List;
 import ooga.ControlsBehavior;
 import ooga.Entity;
 
@@ -7,6 +8,10 @@ public class JumpBehavior implements ControlsBehavior {
 
   public static final int GROUND_LEVEL = 400;
   double myYVelocity;
+
+  public JumpBehavior(List<String> args) {
+    myYVelocity = Double.parseDouble(args.get(0));
+  }
 
   public JumpBehavior(double yVelocity) {
     myYVelocity = yVelocity;

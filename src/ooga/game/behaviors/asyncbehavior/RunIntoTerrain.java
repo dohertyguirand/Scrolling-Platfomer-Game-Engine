@@ -1,11 +1,16 @@
-package ooga.game.asyncbehavior;
+package ooga.game.behaviors.asyncbehavior;
 
+import java.util.List;
 import ooga.CollisionBehavior;
 import ooga.Entity;
 
 public class RunIntoTerrain implements CollisionBehavior {
 
   double margin = 0.0;
+
+  public RunIntoTerrain(List<String> args) {
+    //arguments have no effect on this behavior
+  }
 
   @Override
   public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime) {

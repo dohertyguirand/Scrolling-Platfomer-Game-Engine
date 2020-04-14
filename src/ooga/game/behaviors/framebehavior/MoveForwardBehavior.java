@@ -1,5 +1,6 @@
-package ooga.game.framebehavior;
+package ooga.game.behaviors.framebehavior;
 
+import java.util.List;
 import ooga.Entity;
 import ooga.MovementBehavior;
 
@@ -9,6 +10,11 @@ public class MoveForwardBehavior implements MovementBehavior {
   private Entity myEntity;
   private double xMovePerFrame;
   private double yMovePerFrame;
+
+  public MoveForwardBehavior(List<String> args) {
+    xMovePerFrame = Double.parseDouble(args.get(0));
+    yMovePerFrame = Double.parseDouble(args.get(1));
+  }
 
   public MoveForwardBehavior(double xmove, double ymove) {
     xMovePerFrame = xmove;
