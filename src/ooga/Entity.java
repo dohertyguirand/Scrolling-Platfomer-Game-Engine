@@ -13,19 +13,37 @@ import javafx.beans.property.DoubleProperty;
  */
 public interface Entity {
 
-  public double getX();
+  double getX();
 
-  public DoubleProperty xProperty();
+  DoubleProperty xProperty();
 
-  public double getY();
+  double getY();
 
-  public DoubleProperty yProperty();
+  DoubleProperty yProperty();
 
-  public boolean isActiveInView();
+  boolean isActiveInView();
 
-  public BooleanProperty activeInViewProperty();
+  BooleanProperty activeInViewProperty();
 
-  public void setActiveInView(boolean activeInView);
+  void setActiveInView(boolean activeInView);
+
+  DoubleProperty heightProperty();
+
+  DoubleProperty widthProperty();
+
+  void setWidth(double width);
+
+  void setHeight(double height);
+
+  /**
+   * @return The width of the entity.
+   */
+  double getWidth();
+
+  /**
+   * @return The height of the entity.
+   */
+  double getHeight();
 
   /**
    * @return The name identifying what type of entity this is, as defined in the game file.
@@ -39,11 +57,27 @@ public interface Entity {
   void reactToControls(String controls);
 
   /**
+   * @see Entity#reactToControls(String)
+   * Reacts to the event of the key being pressed, i.e. the first frame that the key is active,
+   * so that button presses can be reacted to just once.
+   * @param controls The String identifier of the type of control input that must be handled.
+   */
+  void reactToControlsPressed(String controls);
+
+  /**
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
+   * @param collisions The list of entities that is being collided with.
    */
-  void updateSelf(double elapsedTime);
+  void updateSelf(double elapsedTime, List<Entity> collisions);
+
+  /**
+   * Actually moves the entity in space by its velocity. Should happen after all movement and
+   * collision logic.
+   * @param elapsedTime Time in milliseconds since last step.
+   */
+  void executeMovement(double elapsedTime);
 
   /**
    * Sets the mappings of behaviors that will be carried out when the entity collides with
@@ -73,8 +107,13 @@ public interface Entity {
    * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
    * dies when hit by a fireball.
    * @param collidingEntity The String identifier of the enemy being collided with.
+   * @param elapsedTime
    */
-  void handleCollision(String collidingEntity);
+  void handleCollision(Entity collidingEntity, double elapsedTime);
+
+  void handleVerticalCollision(Entity collidingEntity, double elapsedTime);
+
+  void handleHorizontalCollision(Entity collidingEntity, double elapsedTime);
 
   /**
    * Moves the entity by the specified amount in the x and y direction.
@@ -86,12 +125,6 @@ public interface Entity {
   void move(double xDistance, double yDistance);
 
   /**
-   * Moves the entity by its internally stored velocity
-   * @param elapsedTime
-   */
-  void moveByVelocity(double elapsedTime);
-
-  /**
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();
@@ -100,16 +133,6 @@ public interface Entity {
    * @return The X and Y velocity of the Entity, in that order.
    */
   List<Double> getVelocity();
-
-  /**
-   * @return The width of the entity.
-   */
-  double getWidth();
-
-  /**
-   * @return The height of the entity.
-   */
-  double getHeight();
 
   /**
    * @param newPosition The new position for the entity to have in the level.
@@ -139,7 +162,4 @@ public interface Entity {
    * @param yVelocity The y-value of the new velocity.
    */
   void setVelocity(double xVelocity, double yVelocity);
-
-
-
 }

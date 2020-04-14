@@ -20,11 +20,6 @@ public interface EntityInternal {
   void move(double xDistance, double yDistance);
 
   /**
-   * Moves the entity by its internally stored velocity
-   */
-  void moveByVelocity(double elapsedTime);
-
-  /**
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();

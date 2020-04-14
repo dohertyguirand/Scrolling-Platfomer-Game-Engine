@@ -1,4 +1,4 @@
-/*package ooga.view;
+package ooga.view;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -21,8 +21,8 @@ public class StartMenuOptions {
     private BooleanProperty Display = new SimpleBooleanProperty(false);
     private BooleanProperty Audio = new SimpleBooleanProperty(false);
     private BooleanProperty Reset = new SimpleBooleanProperty(false);
-    private BooleanProperty GoBack  = new SimpleBooleanProperty(false);
-    Map<BooleanProperty, String> buttonPropertiesAndNames = new HashMap<>(){{
+    private BooleanProperty GoBack = new SimpleBooleanProperty(false);
+    Map<BooleanProperty, String> buttonPropertiesAndNames = new HashMap<>() {{
         put(Display, "Display");
         put(Audio, "Audio");
         put(Reset, "Reset");
@@ -30,29 +30,29 @@ public class StartMenuOptions {
     }};
     private Slider myVolumeSlider;
     private static final int SLIDERMINNUM = 0;
-    private static final int SLIDERMAXNUM = 10;
-    private static final int SLIDERUNIT = 5;
+    private static final int SLIDERMAXNUM = 100;
+    private static final int SLIDERUNIT = 10;
 
     private Button myButton;
 
 
-    private Button makeButton(BooleanProperty statusProperty, String text){
+    private Button makeButton(BooleanProperty statusProperty, String text) {
         myButton = new Button(text);
         myButton.setTextFill(COLORBUTTON);
         myButton.setOnAction(e -> statusProperty.setValue(!statusProperty.getValue()));
         return myButton;
     }
 
-    private Button getButton () {
+    private Button getButton() {
         return myButton;
     }
 
-    public StartMenuOptions(){
+    public StartMenuOptions() {
         VBox buttonVBox = new VBox(Button_Space);
-        for(Map.Entry<BooleanProperty, String> buttonPropertyAndName : buttonPropertiesAndNames.entrySet()){
+        for (Map.Entry<BooleanProperty, String> buttonPropertyAndName : buttonPropertiesAndNames.entrySet()) {
             buttonVBox.getChildren().add(makeButton(buttonPropertyAndName.getKey(), buttonPropertyAndName.getValue()));
-            myButton.setOnMouseEntered(e -> myButton.resize(myButton.getWidth()*1.25, myButton.getHeight()*1.25));
-            myButton.setOnMouseExited(e -> myButton.resize(myButton.getWidth()*1.5, myButton.getHeight()*1.5));
+            myButton.setOnMouseEntered(e -> myButton.resize(myButton.getWidth() * 1.25, myButton.getHeight() * 1.25));
+            myButton.setOnMouseExited(e -> myButton.resize(myButton.getWidth() * 1.5, myButton.getHeight() * 1.5));
         }
     }
 
@@ -69,7 +69,7 @@ public class StartMenuOptions {
         myVolumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                animation.setRate((Double) new_val);
+//                animation.setRate((Double) new_val);
             }
         });
         return myVolumeSlider;
@@ -82,9 +82,8 @@ public class StartMenuOptions {
     public BooleanProperty DisplayProperty() {
         return Display;
     }
+
     public BooleanProperty AudioProperty() {
         return Audio;
     }
-
-
-}*/
+}

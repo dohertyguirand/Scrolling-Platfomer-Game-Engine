@@ -10,12 +10,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
+import ooga.game.ControlsTestGameCreation;
+import ooga.game.Game;
 import ooga.game.OogaGame;
 
 import java.util.ResourceBundle;
@@ -26,25 +30,35 @@ public class ViewerGame {
   private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final double PAUSE_BUTTON_SIZE = Double.parseDouble(myResources.getString("pauseButtonSize"));
+  private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
+  private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
+  private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
   private Group myEntityGroup;
   private Group myRoot;
   private String myGameName;
   private Scene myGameScene;
   private Stage myGameStage;
   private PauseMenu myPauseMenu;
-  private OogaGame myGame;
+  private Game myGame;
   private Timeline myAnimation;
+  private String myProfileName;
 
 
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
-    myGame = new OogaGame();
+    OogaGame targetGame =  ControlsTestGameCreation.getGame();
+    myGame = targetGame;
     //SAM added this as the way to make a Game once file loading works.
 //    myGame = new OogaGame(gameName, new OogaDataReader());
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();
-    setUpInputListeners(myGame);
+    setUpInputListeners(targetGame);
+  }
+  public ViewerGame(String gameName, String profileName) throws OogaDataException {
+    this(gameName);
+    myProfileName = profileName;
+    System.out.println(myProfileName);
   }
 
   private void setUpGameEntities(){
@@ -95,6 +109,7 @@ public class ViewerGame {
     pauseButton.setOnAction(e -> {
       myGameStage.setScene(pauseScene);
       myPauseMenu.setResumed(false);
+      myAnimation.stop();
     });
     pauseButton.setLayoutX(0);
     pauseButton.setLayoutY(0);
@@ -103,8 +118,8 @@ public class ViewerGame {
 
   private ImageView getPauseButtonImage(){
     ImageView imageView = new ImageView(PAUSE_BUTTON_LOCATION);
-    imageView.setFitHeight(PAUSE_BUTTON_SIZE);
-    imageView.setFitWidth(PAUSE_BUTTON_SIZE);
+    imageView.setFitHeight(PAUSE_BUTTON_IMAGE_SIZE);
+    imageView.setFitWidth(PAUSE_BUTTON_IMAGE_SIZE);
     return imageView;
   }
 
@@ -126,8 +141,8 @@ public class ViewerGame {
 
     myRoot = new Group();
     myRoot.getChildren().add(myEntityGroup);
-    myGameScene = new Scene(myRoot, Double.parseDouble(myResources.getString("windowWidth")),
-            Double.parseDouble(myResources.getString("windowHeight")));
+    myRoot.getChildren().add(new Line(0, PAUSE_BUTTON_SIZE, WINDOW_WIDTH, PAUSE_BUTTON_SIZE));
+    myGameScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
     myGameStage.setScene(myGameScene);
     myGameStage.setTitle(myGameName);
     myGameStage.show();
@@ -147,7 +162,8 @@ public class ViewerGame {
   private void setUpInputListeners(UserInputListener userInputListener) {
     setUpPauseMenuListeners(userInputListener);
     myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getText()));
-    myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()));
+    myGameScene.setOnKeyReleased(e -> userInputListener.reactToKeyRelease(e.getText()));
+    myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()-PAUSE_BUTTON_SIZE));
     // add more input types here as needed, like mouse drag events
   }
 
@@ -156,11 +172,14 @@ public class ViewerGame {
       if(newVal){
         myGameStage.setScene(myGameScene);
         userInputListener.reactToPauseButton(false);
+        myAnimation.play();
       }
     });
     myPauseMenu.quitProperty().addListener((o, oldVal, newVal) -> {
       userInputListener.reactToGameQuit();
       myGameStage.close();
+      myAnimation.stop();
+      myGame = null;
     });
     myPauseMenu.saveProperty().addListener((o, oldVal, newVal) -> userInputListener.reactToGameSave());
   }

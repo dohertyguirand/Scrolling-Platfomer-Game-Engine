@@ -7,18 +7,21 @@ import javafx.stage.Stage;
 import ooga.OogaDataException;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Visualizer extends Application {
 
   private static final String GAME_NOT_FOUND_MESSAGE = "Error: Game not found";
   private static final String START_MENU_TITLE = "Choose a Game";
 
+
+
   public static void main(String[] args) {
     launch(args);
   }
 
   @Override
-  public void start(Stage primaryStage) throws IOException {
+  public void start(Stage primaryStage) {
     Scene display = setUpStartMenuDisplay();
     primaryStage.setScene(display);
     primaryStage.setTitle(START_MENU_TITLE);
@@ -28,7 +31,7 @@ public class Visualizer extends Application {
 
   private Scene setUpStartMenuDisplay() {
     StartMenu startMenu = new StartMenu();
-    startMenu.gameSelectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal));
+    startMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal));
     return startMenu.getScene();
   }
 

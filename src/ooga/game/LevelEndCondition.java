@@ -1,4 +1,4 @@
-package ooga;
+package ooga.game;
 
 /**
  * Represents a behavior for a level to tell whether it is over.

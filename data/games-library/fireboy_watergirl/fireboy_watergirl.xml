@@ -1,0 +1,126 @@
+<Game>
+    <Name>Fireboy and Watergirl</Name>
+    <Thumbnail>fireboy_watergirl_preview.jpg</Thumbnail>
+    <Description>A cooperative two-player game featuring elemental royalty.</Description>
+    <Entities>
+        <Entity>
+            <Name>Fireboy</Name>
+            <Width>50</Width>
+            <Height>100</Height>
+            <Image>fireboy.png</Image>
+            <Movement>
+                <MovementBehavior>Gravity 0.1</MovementBehavior>
+            </Movement>
+            <Controls>
+                <ControlInput>
+                    <Key>UpKey</Key>
+                    <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
+                </ControlInput>
+                <ControlInput>
+                    <Key>LeftKey</Key>
+                    <ControlBehavior>MoveBehavior -1.2</ControlBehavior>
+                </ControlInput>
+                <ControlInput>
+                    <Key>RightKey</Key>
+                    <ControlBehavior>MoveBehavior 1.2</ControlBehavior>
+                </ControlInput>
+            </Controls>
+            <Collisions>
+                <EntityCollision>
+                    <With>WaterTerrain</With>
+                    <Reaction>RemoveSelf</Reaction>
+                </EntityCollision>
+                <EntityCollision>
+                    <With>Floor</With>
+                    <Reaction>StopDownwardVelocity</Reaction>
+                </EntityCollision>
+            </Collisions>
+        </Entity>
+        <Entity>
+            <Name>Fireboy</Name>
+            <Width>50</Width>
+            <Height>100</Height>
+            <Image>fireboy.png</Image>
+            <Movement>
+                <MovementBehavior>Gravity 0.1</MovementBehavior>
+            </Movement>
+            <Controls>
+                <ControlInput>
+                    <Key>UpKey</Key>
+                    <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
+                </ControlInput>
+                <ControlInput>
+                    <Key>LeftKey</Key>
+                    <ControlBehavior>MoveBehavior -1.2</ControlBehavior>
+                </ControlInput>
+                <ControlInput>
+                    <Key>RightKey</Key>
+                    <ControlBehavior>MoveBehavior 1.2</ControlBehavior>
+                </ControlInput>
+            </Controls>
+            <Collisions>
+                <EntityCollision>
+                    <With>WaterTerrain</With>
+                    <Reaction>RemoveSelf</Reaction>
+                </EntityCollision>
+                <EntityCollision>
+                    <With>Floor</With>
+                    <Reaction>StopDownwardVelocity</Reaction>
+                </EntityCollision>
+            </Collisions>
+        </Entity>
+        <Entity>
+            <Name>Floor</Name>
+            <Width>1000</Width>
+            <Height>100</Height>
+            <Image>floorBrick.png</Image>
+        </Entity>
+        <Entity>
+            <Name>Cactus</Name>
+            <Width>100</Width>
+            <Height>100</Height>
+            <Image>koopa.png</Image>
+            <Movement>
+                <MovementBehavior>MoveForward -.45</MovementBehavior>
+            </Movement>
+        </Entity>
+    </Entities>
+    <Levels>
+        <Level>
+            <ID>1</ID>
+            <EndCondition>DestroyAll Koopa</EndCondition>
+            <Instances>
+                <Instance>
+                    <Type>Fireboy</Type>
+                    <XPos>100</XPos>
+                    <YPos>400</YPos>
+                </Instance>
+                <Instance>
+                    <Type>Cactus</Type>
+                    <XPos>1200</XPos>
+                    <YPos>400</YPos>
+                </Instance>
+                <Instance>
+                    <Type>Cactus</Type>
+                    <XPos>1600</XPos>
+                    <YPos>400</YPos>
+                </Instance>
+                <Instance>
+                    <Type>Cactus</Type>
+                    <XPos>2000</XPos>
+                    <YPos>400</YPos>
+                </Instance>
+                <Instance>
+                    <Type>Cactus</Type>
+                    <XPos>2400</XPos>
+                    <YPos>400</YPos>
+                </Instance>
+                <Instance>
+                    <Type>Cactus</Type>
+                    <XPos>2800</XPos>
+                    <YPos>400</YPos>
+                </Instance>
+            </Instances>
+        </Level>
+    </Levels>
+</Game>

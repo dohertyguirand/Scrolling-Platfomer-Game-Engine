@@ -31,11 +31,10 @@ public class PauseMenu extends BorderPane {
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
 
   private static final String STYLESHEET = "ooga/view/Resources/PauseMenu.css";
-  private static final String SCROLL_PANE_STYLE = ".scroll-pane";
-  private static final String TITLE_STYLE = ".title";
-  private static final String ICON_STYLE = ".icon";
+  private  String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
+  private  String TITLE_STYLE = myResources.getString("titlecss");
+  private  String ICON_STYLE = myResources.getString("iconcss");
   private static final String PAUSE_MENU_TITLE_KEY = "pauseMenuTitle";
-  private static final Color BACKGROUND_COLOR = Color.NAVY;
   private static final double SPACING = 30;
   private static final double ICON_SIZE = 50;
   private static final double TITLE_FONT_SIZE = 70;
@@ -57,7 +56,7 @@ public class PauseMenu extends BorderPane {
     this.setTop(makeMenuTitle());
     this.setLeft(setMenuItems());
     this.setCenterShape(true);
-    this.setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
+   // this.setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
   }
 
   public BooleanProperty resumedProperty() {

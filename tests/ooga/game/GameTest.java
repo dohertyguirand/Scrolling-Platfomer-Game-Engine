@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.OogaDataException;
+import ooga.UserInputListener;
 import ooga.data.ImageEntity;
-import ooga.data.OogaDataReader;
-import ooga.data.OogaEntity;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
 import ooga.game.inputbehavior.JumpBehavior;
@@ -20,7 +20,7 @@ public class GameTest {
 
   @Test
   void testGameInitialize() throws OogaDataException {
-    Game loadTest = new OogaGame();
+    Game loadTest = ControlsTestGameCreation.getGame();
     assertTrue(loadTest.getEntities().size() > 0);
 
   }
@@ -37,7 +37,7 @@ public class GameTest {
       double elapsedTime = (0.1 * (i));
       expectedX += elapsedTime * 10.0;
       expectedY += elapsedTime * 20.0;
-      game.doUpdateLoop(elapsedTime);
+      game.doGameStep(elapsedTime);
       Entity targetEntity = game.getEntities().get(0);
       assertEquals(List.of(expectedX,expectedY),targetEntity.getPosition());
     }
@@ -50,7 +50,7 @@ public class GameTest {
     Entity obstacleEntity = new ImageEntity("entity2");
     Level level = new OogaLevel(List.of(destructibleEntity,obstacleEntity));
     OogaGame game = new OogaGame(level);
-    game.doCollisionLoop();
+    game.doGameStep(1.0);
     assertTrue(destructibleEntity.isDestroyed());
   }
 
@@ -70,8 +70,9 @@ public class GameTest {
     double elapsedTime = 1.0;
     Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity));
     Game testGame = new OogaGame(testLevel);
-    testGame.handleUserInput("W");
-    testGame.doUpdateLoop(elapsedTime);
+    UserInputListener listener = testGame.makeUserInputListener();
+    listener.reactToKeyPress("W");
+    testGame.doGameStep(elapsedTime);
     double expectedHighHeight = elapsedTime * highJumpHeight;
     double expectedLowHeight = elapsedTime * lowJumpHeight;
     assertEquals(List.of(0.0,startingHeight+expectedHighHeight),highJumpEntity.getPosition());
