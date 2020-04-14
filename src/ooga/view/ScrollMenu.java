@@ -23,7 +23,6 @@ public abstract class ScrollMenu {
     protected HBox myHBox;
     protected Pane myPane;
 
-    private ScrollPane myScrollPane;
     private Scene myScene;
     private Group myRoot;
     private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
@@ -50,11 +49,11 @@ public abstract class ScrollMenu {
         imgView.setFitWidth(WINDOW_WIDTH);
         imgView.setFitHeight(WINDOW_HEIGHT);
 
-        horizontalScroller();
+       // horizontalScroller();
 
 
         myPane.getChildren().addAll(imgView);
-        myRoot.getChildren().addAll(myPane, myScrollPane);
+        myRoot.getChildren().addAll(myPane, horizontalScroller());
 
         myScene = new Scene(myRoot);
         String SCROLLBAR_CSS_LOCATION = myResources.getString("scrollBarCSSLocation");
@@ -74,18 +73,19 @@ public abstract class ScrollMenu {
         image.setFitHeight(IMAGE_HEIGHT *resizeFactor);
     }
 
-    protected void horizontalScroller() {
+    protected ScrollPane horizontalScroller() {
         myHBox = new HBox();
         myHBox.setStyle(HBOX_STYLE);
         myHBox.setLayoutY(HBOX_Y_LAYOUT);
         myHBox.setSpacing(HBOX_SPACING);
-        myScrollPane = new ScrollPane();
-        myScrollPane.setStyle(SCROLL_PANE_STYLE);
-        myScrollPane.setLayoutY(SCROLLBAR_Y);
-        myScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        myScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        myScrollPane.setPrefWidth(WINDOW_WIDTH);
-        myScrollPane.setContent(myHBox);
+       ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setStyle(SCROLL_PANE_STYLE);
+        scrollPane.setLayoutY(SCROLLBAR_Y);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setPrefWidth(WINDOW_WIDTH);
+        scrollPane.setContent(myHBox);
+        return scrollPane;
     }
 
     protected Button makeButton(ImageView image, String description){
