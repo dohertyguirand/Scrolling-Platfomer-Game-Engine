@@ -21,22 +21,23 @@ public abstract class ScrollMenu {
 
     protected DataReader myDataReader;
     protected HBox myHBox;
-    protected ScrollPane myScrollPane;
-    protected Scene myScene;
     protected Pane myPane;
-    protected Group myRoot;
-    protected ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
-    protected final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
-    protected final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
-    protected final double IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
-    protected final double IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
-    protected final double IMAGE_RESIZE_FACTOR = Double.parseDouble(myResources.getString("gameImageResizeFactor"));
-    protected String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
-    protected String HBOX_STYLE = myResources.getString("hboxcss");
+
+    private ScrollPane myScrollPane;
+    private Scene myScene;
+    private Group myRoot;
+    private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+    private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
+    private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
+    private final double IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
+    private final double IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
+    private final double IMAGE_RESIZE_FACTOR = Double.parseDouble(myResources.getString("gameImageResizeFactor"));
+    private String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
+    private String HBOX_STYLE = myResources.getString("hboxcss");
     private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
     private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
     private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
-    protected StringProperty optionSelected = new SimpleStringProperty();
+
 
     protected ScrollMenu(){
         myDataReader = new OogaDataReader();
@@ -60,37 +61,13 @@ public abstract class ScrollMenu {
         myScene.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
     }
 
-    protected void addImages(List<Thumbnail> thumbnails){
-        for (Thumbnail thumbnail : thumbnails) {
-            ImageView optionImage = new ImageView(thumbnail.getImageFile());
-            resizeImage(optionImage, 1);
-            Button gameButton = new Button(null, optionImage);
-            gameButton.setOnAction(e -> setOptionSelected(thumbnail.getTitle()));
-            gameButton.setOnMouseEntered(e -> resizeImage(optionImage, IMAGE_RESIZE_FACTOR));
-            gameButton.setOnMouseExited(e -> resizeImage(optionImage, 1));
-            gameButton.setTooltip(new Tooltip(thumbnail.getDescription()));
-            myHBox.getChildren().add(gameButton);
-        }
-    }
 
 
-    protected void addImages() {
-        List<Thumbnail> thumbnails = myDataReader.getThumbnails();
-        addImages(thumbnails);
-    }
-
-    public void setOptionSelected(String optionSelected) {
-        this.optionSelected.set(null);
-        this.optionSelected.set(optionSelected);
-    }
 
     public Scene getScene() {
         return myScene;
     }
 
-    public StringProperty selectedProperty() {
-        return optionSelected;
-    }
 
     protected void resizeImage(ImageView image, double resizeFactor) {
         image.setFitWidth(IMAGE_WIDTH *resizeFactor);
@@ -109,5 +86,14 @@ public abstract class ScrollMenu {
         myScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         myScrollPane.setPrefWidth(WINDOW_WIDTH);
         myScrollPane.setContent(myHBox);
+    }
+
+    protected Button makeButton(ImageView image, String description){
+        resizeImage(image,1);
+        Button button = new Button(null,image);
+        button.setOnMouseEntered(e -> resizeImage(image, IMAGE_RESIZE_FACTOR));
+        button.setOnMouseExited(e -> resizeImage(image, 1));
+        button.setTooltip(new Tooltip(description));
+        return button;
     }
 }

@@ -38,7 +38,6 @@ public class ProfileMenu extends ScrollMenu {
             for (ViewProfile profile : myProfiles) {
                 Button button = makeButton(profile.getProfilePhoto(),profile.getProfileName());
                 button.setOnAction(e -> {
-                    setOptionSelected(profile.getProfileName());
                     setProfileSelected(profile);
                 });
                 myHBox.getChildren().add(button);
@@ -50,14 +49,7 @@ public class ProfileMenu extends ScrollMenu {
 //         myHBox.getChildren().add(button);
 }
 
-     private Button makeButton(ImageView image, String name){
-        resizeImage(image,1);
-        Button button = new Button(null,image);
-        button.setOnMouseEntered(e -> resizeImage(image, IMAGE_RESIZE_FACTOR));
-        button.setOnMouseExited(e -> resizeImage(image, 1));
-        button.setTooltip(new Tooltip(name));
-        return button;
-     }
+
 
      private void setProfileSelected(ViewProfile profile){
         this.profileSelected.set(null);

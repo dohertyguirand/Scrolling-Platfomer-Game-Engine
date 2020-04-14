@@ -36,7 +36,7 @@ public class ProfileMenuDemo extends Application {
         profileMenu.setMyProfiles(profiles);
         profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> {
             ViewProfile profile = (ViewProfile) pnewVal;
-            ScrollMenu startMenu = new StartMenu(profile);
+            StartMenu startMenu = new StartMenu(profile);
             profileNameSelected = profile.getProfileName();
             startMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal, profileNameSelected));
             stage.setScene(startMenu.getScene());
