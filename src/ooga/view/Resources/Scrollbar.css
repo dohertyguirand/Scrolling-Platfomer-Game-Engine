@@ -1,4 +1,20 @@
+<<<<<<< HEAD
 .scroll-bar:horizontal.track{
+=======
+
+.hbox{
+    -fx-background-color: transparent;
+}
+.scroll-pane > .viewport  {
+    -fx-background-color: transparent;
+}
+.scroll-pane{
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+>>>>>>> game_dg211
     -fx-background-color :transparent;
     -fx-border-color : transparent;
     -fx-background-radius : 0.0em;
@@ -47,5 +63,8 @@
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 2.0em;
 }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> game_dg211

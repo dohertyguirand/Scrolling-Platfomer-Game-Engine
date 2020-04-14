@@ -95,6 +95,7 @@ public class ViewerGame {
     pauseButton.setOnAction(e -> {
       myGameStage.setScene(pauseScene);
       myPauseMenu.setResumed(false);
+      myAnimation.stop();
     });
     pauseButton.setLayoutX(0);
     pauseButton.setLayoutY(0);
@@ -152,16 +153,18 @@ public class ViewerGame {
   }
 
   private void setUpPauseMenuListeners(UserInputListener userInputListener) {
-    // pause should pause the animation timeline, quit should set myGame = null
     myPauseMenu.resumedProperty().addListener((o, oldVal, newVal) -> {
       if(newVal){
         myGameStage.setScene(myGameScene);
         userInputListener.reactToPauseButton(false);
+        myAnimation.play();
       }
     });
     myPauseMenu.quitProperty().addListener((o, oldVal, newVal) -> {
       userInputListener.reactToGameQuit();
       myGameStage.close();
+      myAnimation.stop();
+      myGame = null;
     });
     myPauseMenu.saveProperty().addListener((o, oldVal, newVal) -> userInputListener.reactToGameSave());
   }
