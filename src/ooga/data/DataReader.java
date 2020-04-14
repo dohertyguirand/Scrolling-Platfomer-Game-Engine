@@ -79,4 +79,10 @@ public interface DataReader {
    * or the given entity has no associated image.
    */
   String getEntityImage(String entityName, String gameFile) throws OogaDataException;
+
+  /**
+   * @return A list of Profiles according to the data stored in the Users folder. Returns an empty list if there are no
+   * existing profiles
+   */
+  List<Profile_Temporary> getProfiles();
 }
