@@ -221,7 +221,7 @@ public class OogaDataReader implements DataReader{
         String name = entityElement.getElementsByTagName("Name").item(0).getTextContent();
         Double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
         Double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
-        String imagePath = "file:"+myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
+        String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
         System.out.print(String.format("Name: %s ", name));
 
         List<MovementBehavior> movementBehaviors = new ArrayList<>();
