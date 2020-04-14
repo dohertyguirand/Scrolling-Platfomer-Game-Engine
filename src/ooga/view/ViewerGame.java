@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -27,6 +28,9 @@ public class ViewerGame {
   private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final double PAUSE_BUTTON_SIZE = Double.parseDouble(myResources.getString("pauseButtonSize"));
+  private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
+  private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
+  private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
   private Group myEntityGroup;
   private Group myRoot;
   private String myGameName;
@@ -105,8 +109,8 @@ public class ViewerGame {
 
   private ImageView getPauseButtonImage(){
     ImageView imageView = new ImageView(PAUSE_BUTTON_LOCATION);
-    imageView.setFitHeight(PAUSE_BUTTON_SIZE);
-    imageView.setFitWidth(PAUSE_BUTTON_SIZE);
+    imageView.setFitHeight(PAUSE_BUTTON_IMAGE_SIZE);
+    imageView.setFitWidth(PAUSE_BUTTON_IMAGE_SIZE);
     return imageView;
   }
 
@@ -128,8 +132,8 @@ public class ViewerGame {
 
     myRoot = new Group();
     myRoot.getChildren().add(myEntityGroup);
-    myGameScene = new Scene(myRoot, Double.parseDouble(myResources.getString("windowWidth")),
-            Double.parseDouble(myResources.getString("windowHeight")));
+    myRoot.getChildren().add(new Line(0, PAUSE_BUTTON_SIZE, WINDOW_WIDTH, PAUSE_BUTTON_SIZE));
+    myGameScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
     myGameStage.setScene(myGameScene);
     myGameStage.setTitle(myGameName);
     myGameStage.show();
