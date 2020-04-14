@@ -28,7 +28,8 @@ collision loop from public side of GAME).
 - 4/14/2020: Removed ``doUpdateLoop`` from external game interface, since from the outside
 one need only call ``doGameStep``.
 - 4/14/2020: Removed ``doCollisionLoop`` from external game interface for the same reason
-
+- 4/14/2020: Removed ``handleUserInput``, since that's part of the UserInputListener interface of
+the game.
 
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.
@@ -53,6 +54,9 @@ and the rest.
 applied internally each frame.
 - 4/12/2020: Added ``executeMovement`` to serve as ``moveByVelocity`` since it's
 better when actual movement happens after all logic.
+- 4/14/2020: Added ``reactToControlsPressed`` to have different types of control reactions
+to inputs (reacting to a press is better for jumping).
+
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require

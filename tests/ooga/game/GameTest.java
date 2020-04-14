@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.OogaDataException;
+import ooga.UserInputListener;
 import ooga.data.ImageEntity;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
@@ -19,7 +20,7 @@ public class GameTest {
 
   @Test
   void testGameInitialize() throws OogaDataException {
-    Game loadTest = new OogaGame();
+    Game loadTest = ControlsTestGameCreation.getGame();
     assertTrue(loadTest.getEntities().size() > 0);
 
   }
@@ -69,7 +70,8 @@ public class GameTest {
     double elapsedTime = 1.0;
     Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity));
     Game testGame = new OogaGame(testLevel);
-    testGame.handleUserInput("W");
+    UserInputListener listener = testGame.makeUserInputListener();
+    listener.reactToKeyPress("W");
     testGame.doGameStep(elapsedTime);
     double expectedHighHeight = elapsedTime * highJumpHeight;
     double expectedLowHeight = elapsedTime * lowJumpHeight;

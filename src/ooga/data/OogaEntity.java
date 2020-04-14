@@ -98,6 +98,14 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
+  public void reactToControlsPressed(String controls) {
+    //TODO: Smarten this up, so that it doesn't just change the String
+    String keyPressedCode = controls + "Pressed";
+    System.out.println(keyPressedCode);
+    reactToControls(keyPressedCode);
+  }
+
+  @Override
   public void updateSelf(double elapsedTime, List<Entity> collisions) {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);

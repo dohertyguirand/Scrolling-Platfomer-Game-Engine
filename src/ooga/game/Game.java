@@ -40,13 +40,5 @@ public interface Game {
    */
   void doGameStep(double elapsedTime);
 
-  /**
-   * Handles anything that happens inside the game, globally or by an entity, based on the
-   * action (method or class) that is mapped to the given String (probably in a resource file).
-   * Happens asynchronously to operations that happen every frame.
-   * @param input A String identifying the type of input, like "Forward" or "ActionButton".
-   */
-  void handleUserInput(String input);
-
   UserInputListener makeUserInputListener();
 }

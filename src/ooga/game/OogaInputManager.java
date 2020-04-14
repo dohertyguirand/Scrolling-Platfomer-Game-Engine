@@ -17,9 +17,9 @@ public class OogaInputManager implements InputManager {
   public void keyPressed(String key) {
     if (!myActiveKeys.contains(key)) {
       myActiveKeys.add(key);
-    }
-    if (!myPressedKeys.contains(key)) {
-      myPressedKeys.add(key);
+      if (!myPressedKeys.contains(key)) {
+        myPressedKeys.add(key);
+      }
     }
   }
 

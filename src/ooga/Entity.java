@@ -39,6 +39,14 @@ public interface Entity {
   void reactToControls(String controls);
 
   /**
+   * @see Entity#reactToControls(String)
+   * Reacts to the event of the key being pressed, i.e. the first frame that the key is active,
+   * so that button presses can be reacted to just once.
+   * @param controls The String identifier of the type of control input that must be handled.
+   */
+  void reactToControlsPressed(String controls);
+
+  /**
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
@@ -146,7 +154,5 @@ public interface Entity {
    * @param yVelocity The y-value of the new velocity.
    */
   void setVelocity(double xVelocity, double yVelocity);
-
-
 
 }

@@ -31,36 +31,7 @@ public class OogaGame implements Game, UserInputListener {
   private DataReader myDataReader;
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
-  private List<String> myActiveKeys = new ArrayList<>();
   private InputManager myInputManager = new OogaInputManager();
-
-  public OogaGame() {
-    myInputManager = new OogaInputManager();
-    myName = "Unnamed";
-    myControlsInterpreter = new KeyboardControls();
-    myCollisionDetector = new OogaCollisionDetector();
-    //TODO: Remove dependency between OogaGame and ImageEntity
-    List<Entity> entities = new ArrayList<>();
-    Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/blue_square.jpg");
-//    sampleEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(100/1000.0,0),
-//                                              new GravityBehavior(0,100.0/1000)));
-    sampleEntity.setMovementBehaviors(List.of(new GravityBehavior(0,100.0/1000)));
-    sampleEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(-1200.0/1000))));
-    sampleEntity.setCollisionBehaviors(Map.of("cactus",List.of(new DestroySelfBehavior())));
-    sampleEntity.setPosition(List.of(400.0-300,400.0));
-    entities.add(sampleEntity);
-
-    for (int i = 0; i < 10; i ++) {
-      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png");
-      otherEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(-450.0/1000,0)));
-      otherEntity.setPosition(List.of(1200.0 + 800 * i,400.0));
-      entities.add(otherEntity);
-    }
-
-    currentLevel = new OogaLevel(entities);
-    myControlsInterpreter = new KeyboardControls();
-    myCollisionDetector = new OogaCollisionDetector();
-  }
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
@@ -75,11 +46,6 @@ public class OogaGame implements Game, UserInputListener {
     myControlsInterpreter = new KeyboardControls();
     myLevelIds = myDataReader.getBasicGameInfo(gameName);
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
-  }
-
-  public OogaGame(String gameName) throws OogaDataException {
-    //TODO: Remove dependency between OogaGame and OogaDataReader in constructor
-    this(gameName, new OogaDataReader(GAME_LIBRARY_PATH));
   }
 
   public OogaGame(Level startingLevel) {
@@ -120,8 +86,8 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void doGameStep(double elapsedTime) {
-    myInputManager.update();
     doUpdateLoop(elapsedTime);
+    myInputManager.update();
   }
 
   private Map<Entity,List<Entity>> findVerticalCollisions(double elapsedTime) {
@@ -130,7 +96,6 @@ public class OogaGame implements Game, UserInputListener {
   }
 
   private Map<Entity,List<Entity>> findHorizontalCollisions(double elapsedTime) {
-    //TODO: Modify this so that elapsedTime isn't a parameter to findCollisions.
     CollisionType<Entity> collisionType = (a,b) -> myCollisionDetector.isCollidingHorizontally(a,b,elapsedTime);
     return findCollisions(collisionType);
   }
@@ -160,13 +125,34 @@ public class OogaGame implements Game, UserInputListener {
     //3. find collisions
     //4. calculate effect of collisions.
     //5. execute movement.
+    doEntityUpdates(elapsedTime);
+    doEntityCollisions(elapsedTime);
+    doEntityCleanup();
+    executeEntityMovement(elapsedTime);
+  }
+
+  private void executeEntityMovement(double elapsedTime) {
     for (Entity e : currentLevel.getEntities()) {
-      for (String input : myInputManager.getActiveKeys()) {
-        e.reactToControls(input);
-      }
-      e.updateSelf(elapsedTime, new ArrayList<>());
+      e.executeMovement(elapsedTime);
     }
-    Map<Entity,List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
+  }
+
+  private void doEntityCleanup() {
+    List<Entity> destroyedEntities = new ArrayList<>();
+    for (Entity e : currentLevel.getEntities()) {
+      if (e.isDestroyed()) {
+        destroyedEntities.add(e);
+      }
+    }
+    for (Entity destroyed : destroyedEntities) {
+      if (destroyed.isDestroyed()) {
+        currentLevel.removeEntity(destroyed);
+      }
+    }
+  }
+
+  private void doEntityCollisions(double elapsedTime) {
+    Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
     Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
     for (Entity e : currentLevel.getEntities()) {
       for (Entity collidingWith : verticalCollisions.get(e)) {
@@ -175,37 +161,24 @@ public class OogaGame implements Game, UserInputListener {
       for (Entity collidingWith : horizontalCollisions.get(e)) {
         e.handleHorizontalCollision(collidingWith, elapsedTime);
       }
-      e.executeMovement(elapsedTime);
     }
-
-//    List<Entity> destroyedEntities = new ArrayList<>();
-//    for (Entity e : currentLevel.getEntities()) {
-//      for (String input : myActiveKeys) {
-//        e.reactToControls(input);
-//      }
-//      e.updateSelf(elapsedTime, collisions.get(e));
-//      if (e.isDestroyed()) {
-//        destroyedEntities.add(e);
-//      }
-//    }
-//    for (Entity destroyed : destroyedEntities) {
-//      if (destroyed.isDestroyed()) {
-//        currentLevel.removeEntity(destroyed);
-//      }
-//    }
   }
 
-  @Override
-  public void handleUserInput(String input) {
-    String inputType = myControlsInterpreter.translateInput(input);
+  private void doEntityUpdates(double elapsedTime) {
     for (Entity e : currentLevel.getEntities()) {
-//      e.reactToControls(inputType);
+      for (String input : myInputManager.getActiveKeys()) {
+        e.reactToControls(input);
+      }
+      for (String input : myInputManager.getPressedKeys()) {
+        e.reactToControlsPressed(input);
+      }
+      e.updateSelf(elapsedTime, new ArrayList<>());
     }
   }
 
   @Override
   public UserInputListener makeUserInputListener() {
-    return null;
+    return this;
   }
 
   /**
@@ -228,7 +201,6 @@ public class OogaGame implements Game, UserInputListener {
     String inputType = myControlsInterpreter.translateInput(keyName);
     System.out.println(keyName + " pressed.");
     myInputManager.keyPressed(inputType);
-    handleUserInput(keyName);
   }
 
   @Override
