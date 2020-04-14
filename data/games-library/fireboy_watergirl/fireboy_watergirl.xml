@@ -37,10 +37,10 @@
             </Collisions>
         </Entity>
         <Entity>
-            <Name>Fireboy</Name>
+            <Name>Watergirl</Name>
             <Width>50</Width>
             <Height>100</Height>
-            <Image>fireboy.png</Image>
+            <Image>watergirl.png</Image>
             <Movement>
                 <MovementBehavior>Gravity 0.1</MovementBehavior>
             </Movement>
@@ -60,7 +60,7 @@
             </Controls>
             <Collisions>
                 <EntityCollision>
-                    <With>WaterTerrain</With>
+                    <With>LavaTerrain</With>
                     <Reaction>RemoveSelf</Reaction>
                 </EntityCollision>
                 <EntityCollision>
@@ -76,13 +76,64 @@
             <Image>floorBrick.png</Image>
         </Entity>
         <Entity>
-            <Name>Cactus</Name>
+            <Name>LavaTerrain</Name>
             <Width>100</Width>
-            <Height>100</Height>
-            <Image>koopa.png</Image>
-            <Movement>
-                <MovementBehavior>MoveForward -.45</MovementBehavior>
-            </Movement>
+            <Height>50</Height>
+            <Image>lavaTerrain.jpg</Image>
+        </Entity>
+        <Entity>
+            <Name>WaterTerrain</Name>
+            <Width>100</Width>
+            <Height>50</Height>
+            <Image>waterTerrain.jpg</Image>
+        </Entity>
+        <Entity>
+            <Name>RedDiamond</Name>
+            <Width>40</Width>
+            <Height>40</Height>
+            <Image>redDiamond.png</Image>
+            <Collisions>
+                <EntityCollision>
+                    <With>Fireboy</With>
+                    <Reaction>RemoveSelf</Reaction>
+                </EntityCollision>
+            </Collisions>
+        </Entity>
+        <Entity>
+            <Name>BlueDiamond</Name>
+            <Width>40</Width>
+            <Height>40</Height>
+            <Image>blueDiamond.png</Image>
+            <Collisions>
+                <EntityCollision>
+                    <With>Watergirl</With>
+                    <Reaction>RemoveSelf</Reaction>
+                </EntityCollision>
+            </Collisions>
+        </Entity>
+        <Entity>
+            <Name>RedDoor</Name>
+            <Width>50</Width>
+            <Height>70</Height>
+            <Image>redDoor.png</Image>
+            <Collisions>
+                <EntityCollision>
+                    <With>Fireboy</With>
+                    <Reaction>RemoveSelf</Reaction>
+                </EntityCollision>
+            </Collisions>
+        </Entity>
+        <Entity>
+            <Name>BlueDoor</Name>
+            <Width>50</Width>
+            <Height>70</Height>
+            <Image>blueDoor.png</Image>
+            <Collisions>
+                <EntityCollision>
+                    <With>Watergirl</With>
+                    <Reaction>RemoveSelf</Reaction>
+                </EntityCollision>
+            </Collisions>
         </Entity>
     </Entities>
     <Levels>
@@ -96,29 +147,29 @@
                     <YPos>400</YPos>
                 </Instance>
                 <Instance>
-                    <Type>Cactus</Type>
-                    <XPos>1200</XPos>
+                    <Type>Watergirl</Type>
+                    <XPos>300</XPos>
                     <YPos>400</YPos>
                 </Instance>
                 <Instance>
-                    <Type>Cactus</Type>
-                    <XPos>1600</XPos>
+                    <Type>RedDiamond</Type>
+                    <XPos>700</XPos>
                     <YPos>400</YPos>
                 </Instance>
                 <Instance>
-                    <Type>Cactus</Type>
-                    <XPos>2000</XPos>
+                    <Type>BlueDiamond</Type>
+                    <XPos>800</XPos>
                     <YPos>400</YPos>
                 </Instance>
                 <Instance>
-                    <Type>Cactus</Type>
-                    <XPos>2400</XPos>
-                    <YPos>400</YPos>
+                    <Type>RedDoor</Type>
+                    <XPos>600</XPos>
+                    <YPos>200</YPos>
                 </Instance>
                 <Instance>
-                    <Type>Cactus</Type>
-                    <XPos>2800</XPos>
-                    <YPos>400</YPos>
+                    <Type>BlueDoor</Type>
+                    <XPos>800</XPos>
+                    <YPos>200</YPos>
                 </Instance>
             </Instances>
         </Level>
