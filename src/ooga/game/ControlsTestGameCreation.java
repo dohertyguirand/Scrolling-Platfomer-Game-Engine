@@ -17,7 +17,7 @@ public class ControlsTestGameCreation {
   //TODO: Remove, or transform into a reasonable test
   public static OogaGame getGame() {
     List<Entity> entities = new ArrayList<>();
-    Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/blue_square.jpg");
+    Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/blue_square.jpg", 0.0, 0.0, 100.0, 100.0);
     sampleEntity.setMovementBehaviors(List.of(new GravityBehavior(0,20.0/1000)));
     double speed = 160.0;
     speed = speed / 1000.0;
@@ -44,11 +44,11 @@ public class ControlsTestGameCreation {
 
 
     for (int i = 0; i < 10; i ++) {
-      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png");
+      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png", 0.0, 0.0, 100.0, 100.0);
       otherEntity.setPosition(List.of(100 + 100.0 * i,600.0));
       entities.add(otherEntity);
     }
-    Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png");
+    Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png", 0.0, 0.0, 100.0, 100.0);
 //      otherEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(-450.0/1000,0)));
     otherEntity.setPosition(List.of(600.0,500.0));
     entities.add(otherEntity);

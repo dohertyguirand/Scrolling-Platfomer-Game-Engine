@@ -91,7 +91,7 @@
             <Name>RedDiamond</Name>
             <Width>40</Width>
             <Height>40</Height>
-            <Image>redDiamond.png</Image>
+            <Image>redDiamond.jpg</Image>
             <Collisions>
                 <EntityCollision>
                     <With>Fireboy</With>
@@ -115,7 +115,7 @@
             <Name>RedDoor</Name>
             <Width>50</Width>
             <Height>70</Height>
-            <Image>redDoor.png</Image>
+            <Image>redDoor.jpg</Image>
             <Collisions>
                 <EntityCollision>
                     <With>Fireboy</With>
@@ -127,7 +127,7 @@
             <Name>BlueDoor</Name>
             <Width>50</Width>
             <Height>70</Height>
-            <Image>blueDoor.png</Image>
+            <Image>blueDoor.jpg</Image>
             <Collisions>
                 <EntityCollision>
                     <With>Watergirl</With>
