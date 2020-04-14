@@ -282,12 +282,12 @@ public class OogaDataReader implements DataReader{
             String keyPressed = behaviorElement.getElementsByTagName("Key").item(0).getTextContent();
             ArrayList<ControlsBehavior> reactions = new ArrayList<>();
             //loop through all reactions and add them to the list
-            for (int j=0; j<behaviorElement.getElementsByTagName("Reaction").getLength(); j++) {
+            for (int j=0; j<behaviorElement.getElementsByTagName("ControlBehavior").getLength(); j++) {
                 // create an array of the behavior name and its space-separated parameters
-                String[] reaction = behaviorElement.getElementsByTagName("Reaction").item(j).getTextContent().split(" ");
+                String[] reaction = behaviorElement.getElementsByTagName("ControlBehavior").item(j).getTextContent().split(" ");
                 // TODO: improve the way this determines the type of Behavior
                 // determine what type of behavior it is
-                if (reaction[0].equals("JumpBehavior -1.2")) {
+                if (reaction[0].equals("JumpBehavior")) {
                     double yVel = -1.2;
                     if(reaction.length>=2) yVel = Double.parseDouble(reaction[1]);
                     System.out.print("Control Behavior: " + keyPressed + " Jump ");
