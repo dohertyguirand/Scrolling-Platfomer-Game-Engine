@@ -1,13 +1,14 @@
 package ooga.data;
 
+import ooga.Entity;
 import ooga.OogaDataException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This is a class that just tests DataReader and makes sure it is working correctly.
@@ -15,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class DataReaderTest {
     private OogaDataReader testDataReader = new OogaDataReader();
-    private String GAME_NAME = "Super Mario Bros";
+    private String GAME_NAME = "Chrome Dino";
+    //private String GAME_NAME = "Super Mario Bros";
     private ArrayList<String> ID_LIST  = new ArrayList<>(List.of("1"));
 
     @Test
@@ -59,4 +61,32 @@ public class DataReaderTest {
         List<String> pathList = testDataReader.getGameFilePaths();
         System.out.println(pathList);
     }
+
+    @Test
+    public void testGetEntityMap(){
+        Map<String, ImageEntityDefinition> retMap = null;
+        try {
+            retMap = testDataReader.getEntityMap(GAME_NAME);
+        } catch (OogaDataException e) {
+            e.printStackTrace();
+            fail();
+        }
+        for(String key : retMap.keySet()){
+            Entity e = retMap.get(key).makeInstanceAt(0.0,0.0);
+            System.out.print("Name: "+ key + "   ");
+            System.out.print("Height: " + e.getHeight()+"   ");
+            System.out.println("Width: " + e.getWidth());
+        }
+        System.out.println(retMap);
+    }
+
+    @Test
+    public void testGetProfiles(){
+        List<Profile_Temporary>  profiles = testDataReader.getProfiles();
+        System.out.println("Profiles:");
+        for (Profile_Temporary profile : profiles){
+            System.out.println(String.format("Name %s  Image: %s", profile.getMyName(), profile.getMyImagePath()));
+        }
+    }
+
 }

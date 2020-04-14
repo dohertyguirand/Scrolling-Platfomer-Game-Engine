@@ -13,6 +13,7 @@ DataReader loads and reports information. Changed its description and return typ
 - 4/8/20 Changed ``loadLevel`` so that it takes a Game name and a level ID instead of a file path.
 - 4/9/20 Added ``getEntityMap`` so that the Game can ask for the map of entity definitions needed to
 create new Entity instances.
+- 4/14/20 Added ``getProfiles`` so View can ask for a list of the existing users
 
 ## Game API
 - getEntities now returns an observable list instead of list
@@ -78,5 +79,20 @@ is updating
 it can have an effect on whatever entity calls it. Possibly could change to EntityInternal.
 Also could change to take two entities, since two are involved in a collision.
 
+### Profile
+- 4/10/20 added Profile API to start implementing player profiles
+- 4/10/20 added  the following methods
+    ``setProfilePhoto(String photoPath)``
+    ``setProfileName(String name)``
+    ``setStats(Map<String,Integer> stats)``
+    ``getStats()``
+    ``updateStats(String gameName, Integer highScore)``
+    ``getGameStats(String gameName)``
+    ``getProfileName()``
+    
+-4/12/20 added ``getProfilePhotoPath()`` that returns a string with the filePath to the photo
+
 ### CollisionDetector
 - 4/12/2020: Added detection for sideways and vertical collisions.
+
+
