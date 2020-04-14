@@ -5,14 +5,12 @@ import ooga.game.Game;
 
 import java.io.IOException;
 import java.util.*;
-import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
 import ooga.game.OogaLevel;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
-import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.asyncbehavior.StopDownwardVelocity;
 import ooga.game.framebehavior.GravityBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
@@ -34,6 +32,7 @@ public class OogaDataReader implements DataReader{
 
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static String DEFAULT_LIBRARY_FILE = "data/games-library";
+    private static String DEFAULT_USERS_FILE = "data/games-library";
 
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
@@ -46,7 +45,7 @@ public class OogaDataReader implements DataReader{
     public List<Thumbnail> getThumbnails() {
         // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
         ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
-        for (File gameFile : getAllGameFiles()){
+        for (File gameFile : getAllXMLFiles(myLibraryFilePath)){
             try {
                 // create a new document to parse
                 File fXmlFile = new File(String.valueOf(gameFile));
@@ -93,15 +92,22 @@ public class OogaDataReader implements DataReader{
     @Override
     public List<String> getGameFilePaths() {
         ArrayList<String> FilePaths = new ArrayList<>();
-        for(File f : getAllGameFiles()){
+        for(File f : getAllXMLFiles(myLibraryFilePath)){
             FilePaths.add(f.getPath());
         }
         return FilePaths;
     }
 
-    private List<File> getAllGameFiles(){
+    /**
+     * For Users and for Library, there is one directory holding several smaller directories, each
+     * of which represents a game or user with its stored images and .xml files. This method returns a list
+     * of those .xml files.
+     * @return a list of xml files stored in subdirectories of the given file.
+     * @param rootDirectory
+     */
+    private List<File> getAllXMLFiles(String rootDirectory){
         ArrayList<File> fileList = new ArrayList<>();
-        File libraryFile = new File(myLibraryFilePath);
+        File libraryFile = new File(rootDirectory);
         // loop through the library and find each game
         for (File gameDirectory : Objects.requireNonNull(libraryFile.listFiles())){
             if(!gameDirectory.isDirectory()) continue;
@@ -117,7 +123,7 @@ public class OogaDataReader implements DataReader{
     }
 
     private File findGame(String givenGameName) throws OogaDataException {
-        List<File> gameFiles = getAllGameFiles();
+        List<File> gameFiles = getAllXMLFiles(myLibraryFilePath);
         for(File f : gameFiles) {
             // check if this game file is the correct game file
             try {
@@ -319,6 +325,11 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public String getEntityImage(String entityName, String gameFile) throws OogaDataException {
+        return null;
+    }
+
+    @Override
+    public List<Profile_Temporary> getProfiles() {
         return null;
     }
 }
