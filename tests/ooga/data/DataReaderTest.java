@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class DataReaderTest {
     private OogaDataReader testDataReader = new OogaDataReader();
-    private String GAME_NAME = "Chrome Dino";
+    //private String GAME_NAME = "Chrome Dino";
     //private String GAME_NAME = "Super Mario Bros";
+    private String GAME_NAME = "Fireboy and Watergirl";
+
     private ArrayList<String> ID_LIST  = new ArrayList<>(List.of("1"));
 
     @Test

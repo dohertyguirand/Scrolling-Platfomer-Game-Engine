@@ -235,7 +235,7 @@ public class OogaDataReader implements DataReader{
                 if (behavior.length == 2) {
                     yGrav = Double.parseDouble(behavior[1]);
                 }
-                if (behavior.length >= 3) {
+                else if (behavior.length >= 3) {
                     xGrav = Double.parseDouble(behavior[1]);
                     yGrav = Double.parseDouble(behavior[2]);
                 }
@@ -246,7 +246,7 @@ public class OogaDataReader implements DataReader{
                 if (behavior.length == 2) {
                     xVel = Double.parseDouble(behavior[1]);
                 }
-                if (behavior.length >= 3) {
+                else if (behavior.length >= 3) {
                     xVel = Double.parseDouble(behavior[1]);
                     yVel = Double.parseDouble(behavior[2]);
                 }
@@ -299,7 +299,14 @@ public class OogaDataReader implements DataReader{
                     if(reaction.length>=2) yVel = Double.parseDouble(reaction[1]);
                     System.out.print("Control Behavior: " + keyPressed + " Jump ");
                     reactions.add(new JumpBehavior(yVel));
-                } else {
+                }
+                else if (reaction[0].equals("MoveBehavior")) {
+                    double Vel = -1.2;
+                    if(reaction.length>=2) Vel = Double.parseDouble(reaction[1]);
+                    System.out.print("Control Behavior: " + keyPressed + " Move ");
+                    reactions.add(new JumpBehavior(Vel));
+                }
+                else {
                     throw new OogaDataException("Control Behavior listed in game file is not recognized");
                 }
             }
