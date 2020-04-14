@@ -1,4 +1,5 @@
 package ooga.game;
+import java.util.Collection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -33,6 +34,20 @@ public class OogaLevel implements Level{
     @Override
     public void removeEntity(Entity e) {
         myEntities.removeAll(List.of(e));
+    }
+
+    @Override
+    public void addEntity(Entity e) {
+        if (!myEntities.contains(e)) {
+            myEntities.add(e);
+        }
+    }
+
+    @Override
+    public void addEntities(Collection<Entity> e) {
+        for (Entity entity : e) {
+            addEntity(entity);
+        }
     }
 
     @Override

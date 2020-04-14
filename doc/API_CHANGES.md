@@ -58,11 +58,14 @@ applied internally each frame.
 better when actual movement happens after all logic.
 - 4/14/2020: Added ``reactToControlsPressed`` to have different types of control reactions
 to inputs (reacting to a press is better for jumping).
+- 4/14/2020: Added ``createEntity`` and ``popCreatedEntities`` so that new
+entities can be created by behaviors.
 
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require
 at least one new method.
+- Added ``addEntity`` so that the main game loop can involve entities being instantiated.
 
 ### ControlsBehavior
 - Modified ``reactToControls()`` to take in the subject entity as a parameter.

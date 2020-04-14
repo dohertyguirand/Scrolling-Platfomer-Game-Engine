@@ -120,12 +120,21 @@ public class OogaGame implements Game, UserInputListener {
     doEntityCollisions(elapsedTime);
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
+    doEntityCreation();
   }
 
   private void executeEntityMovement(double elapsedTime) {
     for (Entity e : currentLevel.getEntities()) {
       e.executeMovement(elapsedTime);
     }
+  }
+
+  private void doEntityCreation() {
+    List<Entity> createdEntities = new ArrayList<>();
+    for (Entity e : currentLevel.getEntities()) {
+        createdEntities.addAll(e.popCreatedEntities());
+    }
+    currentLevel.addEntities(createdEntities);
   }
 
   private void doEntityCleanup() {

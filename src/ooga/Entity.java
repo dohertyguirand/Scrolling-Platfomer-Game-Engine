@@ -162,4 +162,16 @@ public interface Entity {
    * @param yVelocity The y-value of the new velocity.
    */
   void setVelocity(double xVelocity, double yVelocity);
+
+  /**
+   * Adds an entity to the buffer of entities that will be created next frame. May be removed
+   * in favor of the game making the new entity immediately.
+   * @param e
+   */
+  void createEntity(Entity e);
+
+  /**
+   * @return Any entities that were created by this one this frame. This is emptied by the call.
+   */
+  List<Entity> popCreatedEntities();
 }
