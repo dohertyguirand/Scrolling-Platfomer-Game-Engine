@@ -58,4 +58,6 @@ public interface Profile {
      */
     String getProfilePhotoPath();
 
+    String getDefaultImagePath();
+
 }

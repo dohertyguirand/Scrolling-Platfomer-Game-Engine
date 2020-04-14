@@ -16,26 +16,36 @@ import java.util.ResourceBundle;
 
 
 public class ViewProfile extends OggaProfile {
-    private static final String DEFAULT_PROFILE_PHOTO = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
     private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
-    private BorderPane myPane = new BorderPane();
+    private BorderPane myPane;
     private ImageView myProfilePhoto;
 
-    public ViewProfile(String name){
-        this();
+    public ViewProfile(String name, String imagePath){
+        myPane = new BorderPane();
         myName = name;
+        myDefaultImagePath = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
+        setImageView(imagePath);
+        myHighestScores = new HashMap<>();
+    }
+    public ViewProfile(OggaProfile profile){
+        setImageView(profile.getProfilePhotoPath());
+        myName = profile.getProfileName();
+        myHighestScores = profile.getStats();
+        myPane = new BorderPane();
     }
     public ViewProfile(){
-        myHighestScores = new HashMap<>();
-        myName = "testing";
+      this("Testing","ooga/view/Resources/profilephotos/defaultphoto.jpg");
+    }
+
+    public void setImageView(String photoPath){
         try{
-            myProfilePhoto = new ImageView(myProfilePhotoPath);
+            myProfilePhoto = new ImageView(photoPath);
         }
         catch (IllegalArgumentException | NullPointerException e){
-            myProfilePhoto = new ImageView(DEFAULT_PROFILE_PHOTO);
+            myProfilePhoto = new ImageView(myDefaultImagePath);
         }
     }
 
@@ -139,4 +149,5 @@ public class ViewProfile extends OggaProfile {
 
 
     public ImageView getProfilePhoto(){return myProfilePhoto;}
+
 }

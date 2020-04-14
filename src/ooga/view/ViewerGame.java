@@ -34,6 +34,7 @@ public class ViewerGame {
   private PauseMenu myPauseMenu;
   private OogaGame myGame;
   private Timeline myAnimation;
+  private String myProfileName;
 
 
   public ViewerGame(String gameName) throws OogaDataException {
@@ -45,6 +46,11 @@ public class ViewerGame {
     setUpGameStage();
     setUpPauseButton();
     setUpInputListeners(myGame);
+  }
+  public ViewerGame(String gameName, String profileName) throws OogaDataException {
+    this(gameName);
+    myProfileName = profileName;
+    System.out.println(myProfileName);
   }
 
   private void setUpGameEntities(){

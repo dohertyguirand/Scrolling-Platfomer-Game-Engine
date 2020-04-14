@@ -9,6 +9,7 @@ public abstract class OggaProfile implements Profile {
     protected String myProfilePhotoPath;
     protected String myName;
     protected Map<String, Integer> myHighestScores;
+    protected String myDefaultImagePath;
 
     public OggaProfile(){
     }
@@ -51,6 +52,9 @@ public abstract class OggaProfile implements Profile {
     public  String getProfilePhotoPath(){
         return myProfilePhotoPath;
     }
+
+    @Override
+    public String getDefaultImagePath(){return myDefaultImagePath;}
 
 
 }
