@@ -10,10 +10,27 @@ public interface CollisionBehavior {
 
   /**
    * Performs the specific collision behavior implementation.
-   * @param thisEntity The entity that is reacting to a collision with the colliding entity, which
+   * @param subject The entity that is reacting to a collision with the colliding entity, which
    *                   should own this behavior.
    * @param collidingEntity The String identifying the type of entity that the calling entity
-   *                        is colliding with.
    */
-  void doCollision(Entity thisEntity, String collidingEntity);
+//  void doCollision(Entity subject, Entity collidingEntity);
+
+  /**
+   * Performs the specific collision behavior implementation, with a vertical collision.
+   * @param subject The entity that is reacting to a collision with the colliding entity, which
+   *                   should own this behavior.
+   * @param collidingEntity The String identifying the type of entity that the calling entity
+   * @param elapsedTime
+   */
+  void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime);
+
+  /**
+   * Performs the specific collision behavior implementation, with a horizontal collision.
+   * @param subject The entity that is reacting to a collision with the colliding entity, which
+   *                   should own this behavior.
+   * @param collidingEntity The String identifying the type of entity that the calling entity
+   * @param elapsedTime
+   */
+  void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime);
 }
