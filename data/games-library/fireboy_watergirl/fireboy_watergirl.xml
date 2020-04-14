@@ -46,15 +46,15 @@
             </Movement>
             <Controls>
                 <ControlInput>
-                    <Key>UpKey</Key>
+                    <Key>UpKey2</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
-                    <Key>LeftKey</Key>
+                    <Key>LeftKey2</Key>
                     <ControlBehavior>MoveBehavior -1.2</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
-                    <Key>RightKey</Key>
+                    <Key>RightKey2</Key>
                     <ControlBehavior>MoveBehavior 1.2</ControlBehavior>
                 </ControlInput>
             </Controls>
