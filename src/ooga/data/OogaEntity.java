@@ -31,6 +31,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
   private boolean isDestroyed;
+  private List<Entity> myCreatedEntities = new ArrayList<>();
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
     myVelocity = List.of(0.,0.);
@@ -250,5 +251,17 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setVelocity(double xVelocity, double yVelocity) {
     myVelocity = List.of(xVelocity, yVelocity);
+  }
+
+  @Override
+  public void createEntity(Entity e) {
+    myCreatedEntities.add(e);
+  }
+
+  @Override
+  public List<Entity> popCreatedEntities() {
+    List<Entity> ret = myCreatedEntities;
+    myCreatedEntities = new ArrayList<>();
+    return ret;
   }
 }

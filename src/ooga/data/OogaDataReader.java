@@ -17,6 +17,7 @@ import ooga.game.behaviors.framebehavior.GravityBehavior;
 import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
 import ooga.game.behaviors.inputbehavior.JumpBehavior;
 import ooga.game.behaviors.inputbehavior.MoveInputBehavior;
+import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -294,9 +295,9 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public List<Profile_Temporary> getProfiles() {
+    public List<OggaProfile> getProfiles() {
         // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
-        ArrayList<Profile_Temporary> profileList = new ArrayList<>();
+        ArrayList<OggaProfile> profileList = new ArrayList<>();
         for (File userFile : getAllXMLFiles(DEFAULT_USERS_FILE)){
             try {
                 // create a new document to parse
@@ -308,7 +309,11 @@ public class OogaDataReader implements DataReader{
                 String userImage = doc.getElementsByTagName("Image").item(0).getTextContent();
 
                 String fullImagePath = "file:" + userFile.getParentFile() + "/" + userImage;
-                Profile_Temporary newProfile = new Profile_Temporary(userName, fullImagePath);
+                OggaProfile newProfile = new OggaProfile();
+                newProfile.setProfileName(userName);
+                newProfile.setProfilePhoto(fullImagePath);
+
+
                 profileList.add(newProfile);
             } catch (SAXException | ParserConfigurationException | IOException e) {
                 // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)

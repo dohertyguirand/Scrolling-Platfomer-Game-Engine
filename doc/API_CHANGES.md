@@ -14,6 +14,7 @@ DataReader loads and reports information. Changed its description and return typ
 - 4/9/20 Added ``getEntityMap`` so that the Game can ask for the map of entity definitions needed to
 create new Entity instances.
 - 4/14/20 Added ``getProfiles`` so View can ask for a list of the existing users
+- 4/14/20 Changed the return type of ``getProfiles`` to use the same class as View
 
 ## Game API
 - getEntities now returns an observable list instead of list
@@ -57,11 +58,14 @@ applied internally each frame.
 better when actual movement happens after all logic.
 - 4/14/2020: Added ``reactToControlsPressed`` to have different types of control reactions
 to inputs (reacting to a press is better for jumping).
+- 4/14/2020: Added ``createEntity`` and ``popCreatedEntities`` so that new
+entities can be created by behaviors.
 
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require
 at least one new method.
+- Added ``addEntity`` so that the main game loop can involve entities being instantiated.
 
 ### ControlsBehavior
 - Modified ``reactToControls()`` to take in the subject entity as a parameter.
