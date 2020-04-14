@@ -10,11 +10,11 @@ import java.util.Map;
 import ooga.CollisionBehavior;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.asyncbehavior.DestroySelfBehavior;
-import ooga.game.asyncbehavior.MoveUpCollision;
-import ooga.game.framebehavior.GravityBehavior;
-import ooga.game.framebehavior.MoveForwardBehavior;
-import ooga.game.inputbehavior.JumpBehavior;
+import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
+import ooga.game.behaviors.asyncbehavior.MoveUpCollision;
+import ooga.game.behaviors.framebehavior.GravityBehavior;
+import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
+import ooga.game.behaviors.inputbehavior.JumpBehavior;
 import org.junit.jupiter.api.Test;
 
 
@@ -52,7 +52,7 @@ class EntityTest {
     Entity dino = new ImageEntity();
     Entity cactus = new ImageEntity("cactus");
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
-    collisionMap.put("Cactus", List.of(new MoveUpCollision(20.01), new DestroySelfBehavior()));
+    collisionMap.put("Cactus", List.of(new MoveUpCollision(20.01), new DestroySelfBehavior(new ArrayList<>())));
     dino.setCollisionBehaviors(collisionMap);
     dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
 

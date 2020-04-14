@@ -1,6 +1,7 @@
-package ooga.game.framebehavior;
+package ooga.game.behaviors.framebehavior;
 
 import java.util.List;
+import javafx.beans.property.DoubleProperty;
 import ooga.Entity;
 import ooga.MovementBehavior;
 
@@ -13,6 +14,12 @@ public class GravityBehavior implements MovementBehavior {
     public static final int GROUND_LEVEL = 12000;
 
     private List<Double> myGravityVector;
+
+    public GravityBehavior(List<String> args) {
+        double xGrav = Double.parseDouble(args.get(0));
+        double yGrav = Double.parseDouble(args.get(1));
+        myGravityVector = List.of(xGrav,yGrav);
+    }
 
     public GravityBehavior(double xGrav, double yGrav) {
         myGravityVector = List.of(xGrav,yGrav);
