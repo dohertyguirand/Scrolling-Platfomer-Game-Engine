@@ -33,6 +33,7 @@ public class ViewImageEntity implements ViewEntity {
   }
 
   private void bindImageProperty(StringProperty location){
+    System.out.println(location.getValue());
     imageView.setImage(new Image(location.getValue()));
     location.addListener((o, oldVal, newVal) -> imageView.setImage(new Image(newVal)));
     // might need to rebind other ImageView properties here

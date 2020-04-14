@@ -197,7 +197,7 @@ public class OogaDataReader implements DataReader{
                 if(entityElement.getElementsByTagName("Image").getLength() > 0) {
                     // add the ImageEntity to the map
                     String newName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
-                    ImageEntityDefinition newIED = createImageEntityDefinition(entityElement);
+                    ImageEntityDefinition newIED = createImageEntityDefinition(entityElement, gameFile.getParentFile().getName());
                     retMap.put(newName, newIED);
                 }
                 else{
@@ -214,13 +214,14 @@ public class OogaDataReader implements DataReader{
     /**
      * Read the .xml file and create a new EntityDefinition as it describes
      * @param entityElement the Node describing the requested Entity
+     * @param gameDirectory
      * @return
      */
-    private ImageEntityDefinition createImageEntityDefinition(Element entityElement) throws OogaDataException {
+    private ImageEntityDefinition createImageEntityDefinition(Element entityElement, String gameDirectory) throws OogaDataException {
         String name = entityElement.getElementsByTagName("Name").item(0).getTextContent();
         Double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
         Double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
-        String imagePath = myLibraryFilePath + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
+        String imagePath = "file:"+myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
         System.out.print(String.format("Name: %s ", name));
 
         List<MovementBehavior> movementBehaviors = new ArrayList<>();

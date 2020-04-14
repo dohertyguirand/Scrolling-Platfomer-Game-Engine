@@ -46,10 +46,9 @@ public class ViewerGame {
 
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
-    OogaGame targetGame =  ControlsTestGameCreation.getGame();
+    OogaGame targetGame =  new OogaGame(gameName, new OogaDataReader());
     myGame = targetGame;
     //SAM added this as the way to make a Game once file loading works.
-//    myGame = new OogaGame(gameName, new OogaDataReader());
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();
