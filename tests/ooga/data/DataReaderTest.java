@@ -80,4 +80,13 @@ public class DataReaderTest {
         System.out.println(retMap);
     }
 
+    @Test
+    public void testGetProfiles(){
+        List<Profile_Temporary>  profiles = testDataReader.getProfiles();
+        System.out.println("Profiles:");
+        for (Profile_Temporary profile : profiles){
+            System.out.println(String.format("Name %s  Image: %s", profile.getMyName(), profile.getMyImagePath()));
+        }
+    }
+
 }
