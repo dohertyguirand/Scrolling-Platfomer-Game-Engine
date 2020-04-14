@@ -338,6 +338,9 @@ public class OogaDataReader implements DataReader{
 
                 String fullImagePath = "file:" + userFile.getParentFile() + "/" + userImage;
                 OggaProfile newProfile = new OggaProfile();
+                newProfile.setProfileName(userName);
+                newProfile.setProfilePhoto(fullImagePath);
+
 
                 profileList.add(newProfile);
             } catch (SAXException | ParserConfigurationException | IOException e) {

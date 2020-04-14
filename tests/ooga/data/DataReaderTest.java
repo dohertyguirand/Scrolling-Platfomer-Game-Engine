@@ -86,8 +86,10 @@ public class DataReaderTest {
     @Test
     public void testGetProfiles(){
         List<OggaProfile>  profiles = testDataReader.getProfiles();
-        System.out.println("Profiles:");
+        System.out.println(profiles.size() + " Profiles:");
         for (OggaProfile profile : profiles){
+            assertNotNull(profile.getProfileName(), "Profile name is null");
+            assertNotNull(profile.getProfilePhotoPath(), "Profile photo is null");
             System.out.println(String.format("Name %s  Image: %s", profile.getProfileName(), profile.getProfilePhotoPath()));
         }
     }
