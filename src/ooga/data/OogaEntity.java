@@ -15,6 +15,8 @@ import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
 
+  public static double FRICTION_ACCELERATION = 30.0 / 1000.0;
+
   private BooleanProperty activeInView = new SimpleBooleanProperty(true);
   private DoubleProperty myXPos = new SimpleDoubleProperty();
   private DoubleProperty myYPos = new SimpleDoubleProperty();
@@ -113,7 +115,16 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     for (Entity collidingWith : collisions) {
       handleCollision(collidingWith, elapsedTime);
     }
-//    moveByVelocity(elapsedTime);
+    applyFrictionHorizontal();
+  }
+
+  private void applyFrictionHorizontal() {
+    if (Math.abs(myVelocity.get(0)) < FRICTION_ACCELERATION) {
+      setVelocity(0,getVelocity().get(1));
+    }
+    else {
+      changeVelocity(FRICTION_ACCELERATION * -1 * Math.signum(myVelocity.get(0)),0);
+    }
   }
 
   @Override

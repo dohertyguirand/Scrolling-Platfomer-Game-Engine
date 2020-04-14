@@ -5,19 +5,22 @@ import ooga.Entity;
 
 public class RunIntoTerrain implements CollisionBehavior {
 
-  double margin = 1.0;
+  double margin = 0.0;
 
   @Override
   public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime) {
+    subject.setVelocity(subject.getVelocity().get(0),0);
+//    subject.changeVelocity(0,-1 * subject.getVelocity().get(1));
     double direction = Math.signum(subject.getVelocity().get(1));
     double targetY = calcTargetY(subject,collidingEntity);
     double subjectY = subject.getPosition().get(1) + (subject.getVelocity().get(1) * elapsedTime);
     double deltaY = targetY - subjectY;
-    subject.move(0.0,(deltaY - (margin * direction)) / elapsedTime);
+//    subject.move(0.0,(deltaY - (margin * direction)) / elapsedTime);
   }
 
   @Override
   public void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime) {
+//    subject.setVelocity(0,subject.getVelocity().get(1));
     double direction = Math.signum(subject.getVelocity().get(0));
     double targetX = calcTargetX(subject,collidingEntity);
     double subjectX = subject.getPosition().get(0) + (subject.getVelocity().get(0) * elapsedTime);
