@@ -78,7 +78,6 @@ is updating
 it can have an effect on whatever entity calls it. Possibly could change to EntityInternal.
 Also could change to take two entities, since two are involved in a collision.
 
-<<<<<<< HEAD
 ### Profile
 - 4/10/20 added Profile API to start implementing player profiles
 - 4/10/20 added  the following methods
@@ -94,4 +93,5 @@ Also could change to take two entities, since two are involved in a collision.
 
 ### CollisionDetector
 - 4/12/2020: Added detection for sideways and vertical collisions.
+
 

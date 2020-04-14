@@ -40,7 +40,6 @@ public abstract class ScrollMenu {
 
     protected ScrollMenu(){
         myDataReader = new OogaDataReader();
-
         myRoot = new Group();
         myPane = new Pane();
         myPane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);

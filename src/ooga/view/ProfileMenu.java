@@ -24,32 +24,29 @@ public class ProfileMenu extends ScrollMenu {
     }
 
 
-    private void makeViewProfiles(){
+    private void makeViewProfiles() {
         List<OggaProfile> oggaProfiles = new ArrayList<>();
         //List<OggaProfile> oggaProfiles = myDataReader.getProfiles();
-        for(OggaProfile oggaProfile : oggaProfiles){
+        for (OggaProfile oggaProfile : oggaProfiles) {
             ViewProfile viewProfile = new ViewProfile(oggaProfile);
             myProfiles.add(viewProfile);
         }
     }
-
-     private void addProfileImages(){
-        if(myProfiles != null) {
-            for (ViewProfile profile : myProfiles) {
-                Button button = makeButton(profile.getProfilePhoto(),profile.getProfileName());
-                button.setOnAction(e -> {
-                    setProfileSelected(profile);
-                });
-                myHBox.getChildren().add(button);
+     private void addProfileImages() {
+            if (myProfiles != null) {
+                for (ViewProfile profile : myProfiles) {
+                    Button button = makeButton(profile.getProfilePhoto(), profile.getProfileName());
+                    button.setOnAction(e -> {
+                        setProfileSelected(profile);
+                    });
+                    myHBox.getChildren().add(button);
+                }
             }
-        }
 //         ImageView defaultImage = new ImageView(addNewProfilePhoto);
 //         Button button = makeButton(defaultImage,"Add a New Profile");
 //         button.setOnAction(e->);
 //         myHBox.getChildren().add(button);
-}
-
-
+        }
 
      private void setProfileSelected(ViewProfile profile){
         this.profileSelected.set(null);
