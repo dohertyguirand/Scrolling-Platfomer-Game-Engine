@@ -1,12 +1,11 @@
 package ooga.game.asyncbehavior;
 
-import ooga.CollisionBehavior;
 import ooga.Entity;
 
 import java.util.List;
 import ooga.game.CollisionDetector;
 import ooga.game.DirectionlessCollision;
-import ooga.game.OogaCollisionDetector;
+import ooga.game.collisiondetection.OogaCollisionDetector;
 
 public class StopDownwardVelocity extends DirectionlessCollision {
 

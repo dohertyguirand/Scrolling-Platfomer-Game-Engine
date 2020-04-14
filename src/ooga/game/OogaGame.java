@@ -14,6 +14,7 @@ import ooga.data.ImageEntity;
 import ooga.data.OogaEntity;
 import ooga.data.OogaDataReader;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
+import ooga.game.collisiondetection.OogaCollisionDetector;
 import ooga.game.framebehavior.GravityBehavior;
 import ooga.game.framebehavior.MoveForwardBehavior;
 import ooga.game.inputbehavior.JumpBehavior;
@@ -31,8 +32,10 @@ public class OogaGame implements Game, UserInputListener {
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
   private List<String> myActiveKeys = new ArrayList<>();
+  private InputManager myInputManager = new OogaInputManager();
 
   public OogaGame() {
+    myInputManager = new OogaInputManager();
     myName = "Unnamed";
     myControlsInterpreter = new KeyboardControls();
     myCollisionDetector = new OogaCollisionDetector();
@@ -111,93 +114,54 @@ public class OogaGame implements Game, UserInputListener {
   }
 
   /**
-   * Updates things in the gaem according to how much time has passed
+   * Updates things in the game according to how much time has passed
    *
    * @param elapsedTime time passed in milliseconds
    */
   @Override
   public void doGameStep(double elapsedTime) {
-
-
-    doUpdateLoopNew(elapsedTime, new HashMap<>());
-//    doCollisionLoop();
-  }
-
-  @Override
-  public void doCollisionLoop(double elapsedTime) {
-    List<Entity> destroyedEntities = new ArrayList<>();
-    for (Entity target : currentLevel.getEntities()) {
-      for (Entity collidingWith : currentLevel.getEntities()) {
-        if (collidingWith != target && myCollisionDetector.isColliding(target,collidingWith, elapsedTime)) {
-          target.handleCollision(collidingWith, elapsedTime);
-          if (target.isDestroyed()) {
-            destroyedEntities.add(target);
-          }
-        }
-      }
-    }
-    for (Entity destroyed : destroyedEntities) {
-      if (destroyed.isDestroyed()) {
-        currentLevel.removeEntity(destroyed);
-      }
-    }
+    myInputManager.update();
+    doUpdateLoop(elapsedTime);
   }
 
   private Map<Entity,List<Entity>> findVerticalCollisions(double elapsedTime) {
-    CollisionType<Entity> collisionType = (a,b,t) -> myCollisionDetector.isCollidingVertically(a,b,t);
-    return findCollisions(collisionType,elapsedTime);
+    CollisionType<Entity> collisionType = (a,b) -> myCollisionDetector.isCollidingVertically(a,b,elapsedTime);
+    return findCollisions(collisionType);
   }
 
   private Map<Entity,List<Entity>> findHorizontalCollisions(double elapsedTime) {
     //TODO: Modify this so that elapsedTime isn't a parameter to findCollisions.
-    CollisionType<Entity> collisionType = (a,b,t) -> myCollisionDetector.isCollidingHorizontally(a,b,t);
-    return findCollisions(collisionType,elapsedTime);
+    CollisionType<Entity> collisionType = (a,b) -> myCollisionDetector.isCollidingHorizontally(a,b,elapsedTime);
+    return findCollisions(collisionType);
   }
 
-  private Map<Entity,List<Entity>> findCollisions(CollisionType<Entity> collisionType, double elapsedTime) {
+  private Map<Entity,List<Entity>> findCollisions(CollisionType<Entity> collisionType) {
     Map<Entity,List<Entity>> ret = new HashMap<>();
     for (Entity target : currentLevel.getEntities()) {
-      List<Entity> entityCollisions = new ArrayList<>();
-      for (Entity collidingWith : currentLevel.getEntities()) {
-        if (collidingWith != target) {
-          if (collisionType.isColliding(target,collidingWith,elapsedTime)) {
-            entityCollisions.add(collidingWith);
-            break;
-          }
-        }
-      }
-      ret.put(target,entityCollisions);
+      ret.put(target,collidingEntities(collisionType, target));
     }
     return ret;
   }
 
-  @Override
-  public void doUpdateLoop(double elapsedTime) {
-    List<Entity> destroyedEntities = new ArrayList<>();
-    for (Entity e : currentLevel.getEntities()) {
-      for (String input : myActiveKeys) {
-        e.reactToControls(input);
-      }
-      e.updateSelf(elapsedTime, new ArrayList<>());
-      if (e.isDestroyed()) {
-        destroyedEntities.add(e);
+  private List<Entity> collidingEntities(CollisionType<Entity> collisionType, Entity target) {
+    List<Entity> entityCollisions = new ArrayList<>();
+    for (Entity collidingWith : currentLevel.getEntities()) {
+      if (collidingWith != target && collisionType.isColliding(target,collidingWith)) {
+        entityCollisions.add(collidingWith);
+        break;
       }
     }
-    for (Entity destroyed : destroyedEntities) {
-      if (destroyed.isDestroyed()) {
-        currentLevel.removeEntity(destroyed);
-      }
-    }
+    return entityCollisions;
   }
 
-  public void doUpdateLoopNew(double elapsedTime, Map<Entity,List<Entity>> collisions) {
+  private void doUpdateLoop(double elapsedTime) {
     //1. calculate all automatic movement
     //2. calculate all controls-based movement
     //3. find collisions
     //4. calculate effect of collisions.
     //5. execute movement.
     for (Entity e : currentLevel.getEntities()) {
-      for (String input : myActiveKeys) {
+      for (String input : myInputManager.getActiveKeys()) {
         e.reactToControls(input);
       }
       e.updateSelf(elapsedTime, new ArrayList<>());
@@ -262,18 +226,16 @@ public class OogaGame implements Game, UserInputListener {
   @Override
   public void reactToKeyPress(String keyName) {
     String inputType = myControlsInterpreter.translateInput(keyName);
-    System.out.println(keyName + "pressed.");
-    if (!myActiveKeys.contains(inputType)) {
-      myActiveKeys.add(inputType);
-    }
+    System.out.println(keyName + " pressed.");
+    myInputManager.keyPressed(inputType);
     handleUserInput(keyName);
   }
 
   @Override
   public void reactToKeyRelease(String keyName) {
     String inputType = myControlsInterpreter.translateInput(keyName);
-    System.out.println(keyName + "released.");
-    myActiveKeys.remove(inputType);
+    System.out.println(keyName + " released.");
+    myInputManager.keyReleased(inputType);
   }
 
   /**

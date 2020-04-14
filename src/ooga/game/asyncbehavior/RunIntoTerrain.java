@@ -1,11 +1,7 @@
 package ooga.game.asyncbehavior;
 
-import java.util.List;
 import ooga.CollisionBehavior;
 import ooga.Entity;
-import ooga.game.CollisionDetector;
-import ooga.game.OogaCollisionDetector;
-import ooga.game.VelocityCollisionDetector;
 
 public class RunIntoTerrain implements CollisionBehavior {
 

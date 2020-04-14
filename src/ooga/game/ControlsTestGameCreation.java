@@ -7,11 +7,9 @@ import java.util.Map;
 import ooga.ControlsBehavior;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.asyncbehavior.RunIntoTerrain;
-import ooga.game.asyncbehavior.StopDownwardVelocity;
+import ooga.game.collisiondetection.VelocityCollisionDetector;
 import ooga.game.framebehavior.GravityBehavior;
-import ooga.game.framebehavior.MoveForwardBehavior;
 import ooga.game.inputbehavior.JumpBehavior;
 import ooga.game.inputbehavior.MoveInputBehavior;
 

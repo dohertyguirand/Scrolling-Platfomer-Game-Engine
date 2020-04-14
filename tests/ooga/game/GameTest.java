@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
@@ -35,7 +36,7 @@ public class GameTest {
       double elapsedTime = (0.1 * (i));
       expectedX += elapsedTime * 10.0;
       expectedY += elapsedTime * 20.0;
-      game.doUpdateLoop(elapsedTime);
+      game.doGameStep(elapsedTime);
       Entity targetEntity = game.getEntities().get(0);
       assertEquals(List.of(expectedX,expectedY),targetEntity.getPosition());
     }
@@ -48,7 +49,7 @@ public class GameTest {
     Entity obstacleEntity = new ImageEntity("entity2");
     Level level = new OogaLevel(List.of(destructibleEntity,obstacleEntity));
     OogaGame game = new OogaGame(level);
-    game.doCollisionLoop(1.0);
+    game.doGameStep(1.0);
     assertTrue(destructibleEntity.isDestroyed());
   }
 
@@ -69,7 +70,7 @@ public class GameTest {
     Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity));
     Game testGame = new OogaGame(testLevel);
     testGame.handleUserInput("W");
-    testGame.doUpdateLoop(elapsedTime);
+    testGame.doGameStep(elapsedTime);
     double expectedHighHeight = elapsedTime * highJumpHeight;
     double expectedLowHeight = elapsedTime * lowJumpHeight;
     assertEquals(List.of(0.0,startingHeight+expectedHighHeight),highJumpEntity.getPosition());

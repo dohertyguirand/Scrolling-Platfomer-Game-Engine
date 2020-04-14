@@ -25,6 +25,9 @@ responsible for determining where to save
 - now has a doGameStep method that view calls during its step method
 - 4/12/2020: Added time as a param to collision loop (but will probably removed 
 collision loop from public side of GAME).
+- 4/14/2020: Removed ``doUpdateLoop`` from external game interface, since from the outside
+one need only call ``doGameStep``.
+- 4/14/2020: Removed ``doCollisionLoop`` from external game interface for the same reason
 
 
 ### Entity

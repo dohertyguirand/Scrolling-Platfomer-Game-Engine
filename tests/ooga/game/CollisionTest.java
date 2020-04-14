@@ -6,6 +6,7 @@ import ooga.data.ImageEntity;
 import ooga.game.asyncbehavior.MoveUpCollision;
 import ooga.game.asyncbehavior.DestroySelfBehavior;
 import ooga.game.asyncbehavior.StopDownwardVelocity;
+import ooga.game.collisiondetection.OogaCollisionDetector;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
