@@ -32,7 +32,7 @@ public class OogaDataReader implements DataReader{
 
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static String DEFAULT_LIBRARY_FILE = "data/games-library";
-    private static String DEFAULT_USERS_FILE = "data/games-library";
+    private static String DEFAULT_USERS_FILE = "data/users";
 
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
@@ -314,6 +314,31 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
+    public List<Profile_Temporary> getProfiles() {
+        // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
+        ArrayList<Profile_Temporary> profileList = new ArrayList<>();
+        for (File userFile : getAllXMLFiles(DEFAULT_USERS_FILE)){
+            try {
+                // create a new document to parse
+                File fXmlFile = new File(String.valueOf(userFile));
+                Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
+
+                // find the required information in the document
+                String userName = doc.getElementsByTagName("Name").item(0).getTextContent();
+                String userImage = doc.getElementsByTagName("Image").item(0).getTextContent();
+
+                String fullImagePath = "file:" + userFile.getParentFile() + "/" + userImage;
+                Profile_Temporary newProfile = new Profile_Temporary(userName, fullImagePath);
+                profileList.add(newProfile);
+            } catch (SAXException | ParserConfigurationException | IOException e) {
+                // TODO: This ^v is gross get rid of it :) (written by Braeden to Braeden)
+                e.printStackTrace();
+            }
+        }
+        return profileList;
+    }
+
+    @Override
     public void saveGameState(String filePath) throws OogaDataException {
 
     }
@@ -325,11 +350,9 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public String getEntityImage(String entityName, String gameFile) throws OogaDataException {
+
         return null;
     }
 
-    @Override
-    public List<Profile_Temporary> getProfiles() {
-        return null;
-    }
+
 }

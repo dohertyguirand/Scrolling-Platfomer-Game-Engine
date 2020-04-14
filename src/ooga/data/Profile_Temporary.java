@@ -9,6 +9,10 @@ public class Profile_Temporary {
     private String myName;
     private String myImagePath;
 
+    /**
+     * @param profileName the name at the top of the userFile
+     * @param imagePath the parth to the users image starting with "data/users"
+     */
     public Profile_Temporary(String profileName, String imagePath){
         myImagePath = imagePath;
         myName = profileName;
