@@ -242,10 +242,10 @@ public class OogaDataReader implements DataReader{
             ArrayList<CollisionBehavior> reactions = new ArrayList<>();
             //loop through all reactions and add them to the list
             for (int j=0; j<behaviorElement.getElementsByTagName("Reaction").getLength(); j++) {
-                String reaction = behaviorElement.getElementsByTagName("Reaction").item(j).getTextContent();
+                String[] reaction = behaviorElement.getElementsByTagName("Reaction").item(j).getTextContent().split(" ");
                 // TODO: improve the way this determines the type of Behavior
                 // determine what type of behavior it is
-                Object obj = makeBehavior(new String[] {reaction}, "Collision");
+                Object obj = makeBehavior(reaction, "Collision");
                 reactions.add((CollisionBehavior) obj);
             }
             collisionBehaviors.put(collisionObject, reactions);
@@ -282,10 +282,11 @@ public class OogaDataReader implements DataReader{
         try {
             Class cls = forName(PATH_TO_CLASSES + behaviorClassName);
             Constructor cons = cls.getConstructor(List.class);
+            List<String> list = Arrays.asList(behavior).subList(1, behavior.length);
             return cons.newInstance(Arrays.asList(behavior).subList(1, behavior.length));
         } catch(Exception e){
-            e.printStackTrace();
-            throw new OogaDataException(behaviorType + " Behavior listed in game file is not recognized");
+//            e.printStackTrace();
+            throw new OogaDataException(behaviorType + " Behavior listed in game file is not recognized.\n Behavior name: " + behaviorName);
         }
     }
 
