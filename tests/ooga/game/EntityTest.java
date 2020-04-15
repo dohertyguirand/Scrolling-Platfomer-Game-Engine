@@ -33,7 +33,7 @@ class EntityTest {
     List<Double> expectedPosition = List.of(0.0,100.0);
 
     for (int i = 0 ; i < numTests; i ++) {
-      subject.updateSelf(testElapsedTime, new ArrayList<>());
+      subject.updateSelf(testElapsedTime);
       expectedVelocity = List.of(expectedVelocity.get(0) + xGrav, expectedVelocity.get(1) + yGrav);
       System.out.println("exp = " + expectedVelocity);
       if (expectedPosition.get(1) >= 400) {
@@ -56,7 +56,7 @@ class EntityTest {
     dino.setCollisionBehaviors(collisionMap);
     dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
 
-    dino.updateSelf(1.0, new ArrayList<>());
+    dino.updateSelf(1.0);
     dino.handleCollision(cactus, elapsedTime);
     assertTrue(dino.isDestroyed());
   }
@@ -70,7 +70,7 @@ class EntityTest {
     testEntity.reactToControls("UpKey");
     double elapsedTime = 1.0;
     System.out.println("testEntity.getVelocity() = " + testEntity.getVelocity());
-    testEntity.updateSelf(elapsedTime, new ArrayList<>());
+    testEntity.updateSelf(elapsedTime);
     double expectedY = elapsedTime * jumpSpeedY;
     assertEquals(List.of(0.0,expectedY + 500),testEntity.getPosition());
   }
