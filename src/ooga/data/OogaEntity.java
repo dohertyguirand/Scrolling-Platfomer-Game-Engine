@@ -1,7 +1,5 @@
 package ooga.data;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +23,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   protected DoubleProperty width = new SimpleDoubleProperty();
   protected DoubleProperty height = new SimpleDoubleProperty();
   protected String myName;
+  protected Map<String, Object> propertyVariableDependencies = new HashMap<>();
+  protected Map<Object, Consumer<Double>> propertyUpdaters = new HashMap<>();
 
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
@@ -34,11 +34,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private Map<String,List<ControlsBehavior>> myControls;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
-
-
-  protected Map<String, String> propertyVariableDependencies;
-
-  protected Map<String, Consumer<Double>> propertyUpdaters;
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
     myVelocity = List.of(0.,0.);
@@ -278,12 +273,12 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     //for each variable,
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
-        String propertyName = propertyVariableDependencies.get(varName);
-        if (propertyUpdaters.containsKey(propertyName)) {
-          propertyUpdaters.get(propertyName).accept(variables.get(varName));
+        Object entityProperty = propertyVariableDependencies.get(varName);
+        if (propertyUpdaters.containsKey(entityProperty)) {
+          propertyUpdaters.get(entityProperty).accept(variables.get(varName));
         }
         else {
-          //set the property to the value directly
+          //TODO: set the property to the value directly
         }
       }
     }

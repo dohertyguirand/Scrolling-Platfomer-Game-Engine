@@ -92,10 +92,11 @@ public class ViewerGame {
   }
 
   private Node makeViewEntity(Entity entity){
-    if(entity.getClass().equals(ImageEntity.class)){
+    // TODO: use reflection here or something
+    if(entity instanceof ImageEntity){
       return (new ViewImageEntity((ImageEntity)entity)).getNode();
     }
-    else if(entity.getClass().equals(TextEntity.class)){
+    else if(entity instanceof TextEntity){
       return (new ViewTextEntity((TextEntity)entity)).getNode();
     }
     return null;

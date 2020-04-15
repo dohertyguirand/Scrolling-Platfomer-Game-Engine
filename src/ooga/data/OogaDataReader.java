@@ -11,12 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
 import ooga.game.OogaLevel;
-import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
-import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
-import ooga.game.behaviors.framebehavior.GravityBehavior;
-import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
-import ooga.game.behaviors.inputbehavior.JumpBehavior;
-import ooga.game.behaviors.inputbehavior.MoveInputBehavior;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -340,6 +334,4 @@ public class OogaDataReader implements DataReader{
 
         return null;
     }
-
-
 }
