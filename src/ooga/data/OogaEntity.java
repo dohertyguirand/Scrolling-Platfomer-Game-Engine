@@ -23,8 +23,13 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   protected DoubleProperty width = new SimpleDoubleProperty();
   protected DoubleProperty height = new SimpleDoubleProperty();
   protected String myName;
-  protected Map<String, Object> propertyVariableDependencies = new HashMap<>();
-  protected Map<Object, Consumer<Double>> propertyUpdaters = new HashMap<>();
+  protected Map<String, String> propertyVariableDependencies = new HashMap<>();
+  protected Map<String, Consumer<Double>> propertyUpdaters = new HashMap<>(){{
+    put("xPos", variableValue -> xPos.set(variableValue));
+    put("yPos", variableValue -> yPos.set(variableValue));
+    put("width", variableValue -> width.set(variableValue));
+    put("height", variableValue -> height.set(variableValue));
+  }};
 
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
@@ -273,7 +278,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     //for each variable,
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
-        Object entityProperty = propertyVariableDependencies.get(varName);
+        String propertyName = propertyVariableDependencies.get(varName);
         propertyUpdaters.get(entityProperty).accept(variables.get(varName));
       }
     }
