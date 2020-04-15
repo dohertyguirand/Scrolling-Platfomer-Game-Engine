@@ -4,6 +4,7 @@ import ooga.game.Game;
 
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,6 +16,7 @@ import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
 import ooga.game.behaviors.framebehavior.GravityBehavior;
 import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
 import ooga.game.behaviors.inputbehavior.JumpBehavior;
+import ooga.game.behaviors.inputbehavior.MoveInputBehavior;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -24,6 +26,8 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 
+import static java.lang.Class.forName;
+
 /**
  * info @ https://mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
  * TODO: create a better header
@@ -31,9 +35,12 @@ import java.io.File;
 
 public class OogaDataReader implements DataReader{
 
+    private static final Object PATH_TO_CLASSES = "ooga.game.behaviors.";
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
-    private static String DEFAULT_LIBRARY_FILE = "data/games-library";
-    private static String DEFAULT_USERS_FILE = "data/users";
+    private static final String DEFAULT_LIBRARY_FILE = "data/games-library";
+    private static final String DEFAULT_USERS_FILE = "data/users";
+    private static final String BEHAVIORS_PROPERTIES_LOCATION = "ooga/data/resources/behaviors";
+    private final ResourceBundle myBehaviorsResources = ResourceBundle.getBundle(BEHAVIORS_PROPERTIES_LOCATION);
 
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
@@ -220,8 +227,8 @@ public class OogaDataReader implements DataReader{
      */
     private ImageEntityDefinition createImageEntityDefinition(Element entityElement, String gameDirectory) throws OogaDataException {
         String name = entityElement.getElementsByTagName("Name").item(0).getTextContent();
-        Double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
-        Double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
+        double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
+        double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
         String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
         System.out.print(String.format("Name: %s ", name));
 
@@ -229,33 +236,9 @@ public class OogaDataReader implements DataReader{
         for (int i=0; i<entityElement.getElementsByTagName("MovementBehavior").getLength(); i++){
             // create an array of the behavior name and its space-separated parameters
             String[] behavior = entityElement.getElementsByTagName("MovementBehavior").item(i).getTextContent().split(" ");
-            // TODO: improve the way this determines the type of Behavior
             // determine what type of behavior it is
-            if(behavior[0].equals("Gravity")){
-                double xGrav = 0.0, yGrav = 0.1;
-                if (behavior.length == 2) {
-                    yGrav = Double.parseDouble(behavior[1]);
-                }
-                else if (behavior.length >= 3) {
-                    xGrav = Double.parseDouble(behavior[1]);
-                    yGrav = Double.parseDouble(behavior[2]);
-                }
-                System.out.print(String.format("Movement Behavior: Gravity %f, %f ", xGrav,yGrav));
-                movementBehaviors.add(new GravityBehavior(xGrav, yGrav));
-            }else if(behavior[0].equals("MoveForward")){
-                double xVel = 0.0, yVel = 0.0;
-                if (behavior.length == 2) {
-                    xVel = Double.parseDouble(behavior[1]);
-                }
-                else if (behavior.length >= 3) {
-                    xVel = Double.parseDouble(behavior[1]);
-                    yVel = Double.parseDouble(behavior[2]);
-                }
-                System.out.print(String.format("Movement Behavior: MoveForward %f, %f ", xVel,yVel));
-                movementBehaviors.add(new MoveForwardBehavior(xVel, yVel));
-            }else{
-                throw new OogaDataException("Movement Behavior listed in game file is not recognized");
-            }
+            Object obj = makeBehavior(behavior, "Movement");
+            movementBehaviors.add((MovementBehavior) obj);
         }
 
         Map<String,List<CollisionBehavior>> collisionBehaviors = new HashMap<>();
@@ -268,21 +251,11 @@ public class OogaDataReader implements DataReader{
                 String reaction = behaviorElement.getElementsByTagName("Reaction").item(j).getTextContent();
                 // TODO: improve the way this determines the type of Behavior
                 // determine what type of behavior it is
-                if (reaction.equals("RemoveSelf")) {
-                    System.out.print("Collision Behavior: " + collisionObject + " RemoveSelf ");
-                    reactions.add(new DestroySelfBehavior(new ArrayList<>()));
-                } else if (reaction.equals("StopDownwardVelocity")) {
-                    System.out.print("Collision Behavior: " + collisionObject + " StopDownwardVel ");
-                    reactions.add(new StopDownwardVelocity(new ArrayList<>()));
-                } else if(reaction.equals("MoveUp")){
-                    //TODO: verify this useage, I can't find it used anywhere so I'm not sure what this does
-                } else {
-                    throw new OogaDataException("Collision Behavior listed in game file is not recognized");
-                }
+                Object obj = makeBehavior(new String[] {reaction}, "Collision");
+                reactions.add((CollisionBehavior) obj);
             }
             collisionBehaviors.put(collisionObject, reactions);
         }
-
 
         Map<String, List<ControlsBehavior>> controlBehaviors = new HashMap<>();
         for (int i=0; i<entityElement.getElementsByTagName("ControlInput").getLength(); i++){
@@ -295,21 +268,8 @@ public class OogaDataReader implements DataReader{
                 String[] reaction = behaviorElement.getElementsByTagName("ControlBehavior").item(j).getTextContent().split(" ");
                 // TODO: improve the way this determines the type of Behavior
                 // determine what type of behavior it is
-                if (reaction[0].equals("JumpBehavior")) {
-                    double yVel = -1.2;
-                    if(reaction.length>=2) yVel = Double.parseDouble(reaction[1]);
-                    System.out.print("Control Behavior: " + keyPressed + " Jump ");
-                    reactions.add(new JumpBehavior(yVel));
-                }
-                else if (reaction[0].equals("MoveBehavior")) {
-                    double Vel = -1.2;
-                    if(reaction.length>=2) Vel = Double.parseDouble(reaction[1]);
-                    System.out.print("Control Behavior: " + keyPressed + " Move ");
-                    reactions.add(new JumpBehavior(Vel));
-                }
-                else {
-                    throw new OogaDataException("Control Behavior listed in game file is not recognized");
-                }
+                Object obj = makeBehavior(reaction, "Control");
+                reactions.add((ControlsBehavior) obj);
             }
             controlBehaviors.put(keyPressed, reactions);
         }
@@ -320,6 +280,19 @@ public class OogaDataReader implements DataReader{
         System.out.println();
 
         return newIED;
+    }
+
+    private Object makeBehavior(String[] behavior, String behaviorType) throws OogaDataException {
+        String behaviorName = behavior[0];
+        String behaviorClassName = myBehaviorsResources.getString(behaviorName);
+        try {
+            Class cls = forName(PATH_TO_CLASSES + behaviorClassName);
+            Constructor cons = cls.getConstructor(List.class);
+            return cons.newInstance(Arrays.asList(behavior).subList(1, behavior.length));
+        } catch(Exception e){
+            e.printStackTrace();
+            throw new OogaDataException(behaviorType + " Behavior listed in game file is not recognized");
+        }
     }
 
     @Override

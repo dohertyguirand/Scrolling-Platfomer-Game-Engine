@@ -11,8 +11,8 @@ public class TextEntity extends OogaEntity {
 
   private StringProperty fontName = new SimpleStringProperty();
 
-  public TextEntity(String contents, String fontName){
-    super();
+  public TextEntity(String contents, String fontName, double xPos, double yPos, double width, double height){
+    super(xPos, yPos, width, height);
     text.set(contents);
     this.fontName.set(fontName);
   }
