@@ -1,5 +1,8 @@
 package ooga.data;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,7 +19,7 @@ public class TextEntity extends OogaEntity {
     text.set(contents);
     this.fontName.set(fontName);
     baseText = contents;
-    propertyUpdaters.put("Text", this::updateTextProperty);
+    propertyUpdaters.put(text, this::updateTextProperty);
   }
 
   private void updateTextProperty(Double variableValue) {
@@ -34,4 +37,7 @@ public class TextEntity extends OogaEntity {
   public String getFontName() { return fontName.get(); }
 
   public StringProperty fontNameProperty() { return fontName; }
+
+  public void updateTextProperty(double value) {
+  }
 }

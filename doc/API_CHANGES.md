@@ -60,6 +60,7 @@ better when actual movement happens after all logic.
 to inputs (reacting to a press is better for jumping).
 - 4/14/2020: Added ``createEntity`` and ``popCreatedEntities`` so that new
 entities can be created by behaviors.
+- 4/15/2020: Added ``reactToVariables`` so that entities can react to variable values each frame.
 
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.

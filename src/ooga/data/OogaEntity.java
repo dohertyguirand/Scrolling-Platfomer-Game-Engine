@@ -1,6 +1,5 @@
 package ooga.data;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -134,12 +133,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime, List<Entity> collisions) {
+  public void updateSelf(double elapsedTime) {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);
-    }
-    for (Entity collidingWith : collisions) {
-      handleCollision(collidingWith, elapsedTime);
     }
     applyFrictionHorizontal();
   }
@@ -170,26 +166,30 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void handleCollision(Entity collidingEntity, double elapsedTime) {
+    //TODO: REMOVE THIS LEGACY METHOD
     if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
       for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doVerticalCollision(this, collidingEntity,elapsedTime);
-      }
-    }
-  }
-
-  @Override
-  public void handleVerticalCollision(Entity collidingEntity, double elapsedTime) {
-    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doVerticalCollision(this, collidingEntity,elapsedTime );
+        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, new HashMap<>());
       }
     }
   }
 
   //TODO: Implement the lambda (after testing) to vertical collisions
   @Override
-  public void handleHorizontalCollision(Entity collidingEntity, double elapsedTime) {
-    doAllCollisions(collidingEntity, behavior -> behavior.doHorizontalCollision(this,collidingEntity, elapsedTime));
+  public void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables) {
+    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
+      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
+        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, variables);
+      }
+    }
+  }
+
+  @Override
+  public void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables) {
+    doAllCollisions(collidingEntity, behavior -> behavior.doHorizontalCollision(this,collidingEntity, elapsedTime,
+        variables));
   }
 
   private void doAllCollisions(Entity collidingEntity, Consumer<CollisionBehavior> collisionType) {
@@ -266,5 +266,16 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     List<Entity> ret = myCreatedEntities;
     myCreatedEntities = new ArrayList<>();
     return ret;
+  }
+
+  @Override
+  public void reactToVariables(Map<String, Double> variables) {
+    //for each variable,
+    for (String varName : variables.keySet()) {
+      if (propertyVariableDependencies.containsKey(varName)) {
+        Object entityProperty = propertyVariableDependencies.get(varName);
+        propertyUpdaters.get(entityProperty).accept(variables.get(varName));
+      }
+    }
   }
 }

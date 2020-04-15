@@ -25,6 +25,7 @@ public class OogaGame implements Game, UserInputListener {
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
   private InputManager myInputManager = new OogaInputManager();
+  private Map<String, Double> myVariables = new HashMap<>();
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
@@ -118,6 +119,7 @@ public class OogaGame implements Game, UserInputListener {
     //5. execute movement.
     doEntityUpdates(elapsedTime);
     doEntityCollisions(elapsedTime);
+//    doVariableUpdates();
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
@@ -168,10 +170,10 @@ public class OogaGame implements Game, UserInputListener {
     Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
     for (Entity e : currentLevel.getEntities()) {
       for (Entity collidingWith : verticalCollisions.get(e)) {
-        e.handleVerticalCollision(collidingWith, elapsedTime);
+        e.handleVerticalCollision(collidingWith, elapsedTime, myVariables);
       }
       for (Entity collidingWith : horizontalCollisions.get(e)) {
-        e.handleHorizontalCollision(collidingWith, elapsedTime);
+        e.handleHorizontalCollision(collidingWith, elapsedTime, myVariables);
       }
     }
   }
@@ -184,7 +186,8 @@ public class OogaGame implements Game, UserInputListener {
       for (String input : myInputManager.getPressedKeys()) {
         e.reactToControlsPressed(input);
       }
-      e.updateSelf(elapsedTime, new ArrayList<>());
+      e.updateSelf(elapsedTime);
+      e.reactToVariables(myVariables);
     }
   }
 
