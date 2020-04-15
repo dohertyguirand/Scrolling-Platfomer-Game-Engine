@@ -15,6 +15,7 @@ public class ProfileMenuDemo extends Application {
     private static final String START_MENU_TITLE = "Choose a Game";
     private Stage stage;
     private String profileNameSelected;
+    private ViewProfile defaultViewProfile = new ViewProfile();
 
     public static void main(String[] args) {
         launch(args);
@@ -35,13 +36,16 @@ public class ProfileMenuDemo extends Application {
         List<ViewProfile> profiles = List.of(new ViewProfile("Tree", "ooga/view/Resources/profilephotos/tree.jpg"));
         profileMenu.setMyProfiles(profiles);
         profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> {
-            ViewProfile profile = (ViewProfile) pnewVal;
-            StartMenu startMenu = new StartMenu(profile);
-            profileNameSelected = profile.getProfileName();
-            startMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal, profileNameSelected));
-            stage.setScene(startMenu.getScene());
+          showStartMenu(pnewVal);
         });
         return profileMenu.getScene();
+    }
+
+    private void showStartMenu(ViewProfile profile){
+        StartMenu startMenu = new StartMenu(profile);
+        profileNameSelected = profile.getProfileName();
+        startMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal, profileNameSelected));
+        stage.setScene(startMenu.getScene());
     }
 
     private void startGame(String gameName, String profileName) {

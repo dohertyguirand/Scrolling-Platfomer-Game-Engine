@@ -53,7 +53,7 @@ public class ProfileMenu extends ScrollMenu {
         this.profileSelected.set(profile);
      }
 
-     public ObjectProperty profileSelected(){ return profileSelected; }
+     public ObjectProperty<ViewProfile> profileSelected(){ return profileSelected; }
 
      public void setMyProfiles(List<ViewProfile> viewProfiles){
         myProfiles = viewProfiles;
