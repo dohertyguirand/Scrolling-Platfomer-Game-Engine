@@ -8,13 +8,19 @@ import javafx.beans.property.StringProperty;
 public class TextEntity extends OogaEntity {
 
   private StringProperty text = new SimpleStringProperty();
-
   private StringProperty fontName = new SimpleStringProperty();
+  private String baseText; // without any variables inserted
 
   public TextEntity(String contents, String fontName, double xPos, double yPos, double width, double height){
     super(xPos, yPos, width, height);
     text.set(contents);
     this.fontName.set(fontName);
+    baseText = contents;
+    propertyUpdaters.put("Text", this::updateTextProperty);
+  }
+
+  private void updateTextProperty(Double variableValue) {
+    text.set(String.format(baseText, variableValue));
   }
 
   public String getText() {

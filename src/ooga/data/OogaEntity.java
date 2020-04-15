@@ -1,5 +1,6 @@
 package ooga.data;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   protected DoubleProperty width = new SimpleDoubleProperty();
   protected DoubleProperty height = new SimpleDoubleProperty();
   protected String myName;
+  protected Map<String, Object> propertyVariableDependencies = new HashMap<>();
+  protected Map<Object, Consumer<Double>> propertyUpdaters = new HashMap<>();
 
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
