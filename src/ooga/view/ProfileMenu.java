@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ProfileMenu extends ScrollMenu {
     private ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
-    private List<ViewProfile> myProfiles;
+    private List<ViewProfile> myProfiles = new ArrayList<ViewProfile>();
     private String addNewProfilePhoto = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
 
 
@@ -25,8 +25,8 @@ public class ProfileMenu extends ScrollMenu {
 
 
     private void makeViewProfiles() {
-        List<OggaProfile> oggaProfiles = new ArrayList<>();
-        //List<OggaProfile> oggaProfiles = myDataReader.getProfiles();
+        //List<OggaProfile> oggaProfiles = new ArrayList<>();
+        List<OggaProfile> oggaProfiles = myDataReader.getProfiles();
         for (OggaProfile oggaProfile : oggaProfiles) {
             ViewProfile viewProfile = new ViewProfile(oggaProfile);
             myProfiles.add(viewProfile);

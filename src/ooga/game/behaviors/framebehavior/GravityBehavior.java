@@ -16,6 +16,7 @@ public class GravityBehavior implements MovementBehavior {
     private List<Double> myGravityVector;
 
     public GravityBehavior(List<String> args) {
+        System.out.println(args.toString());
         double xGrav = Double.parseDouble(args.get(0));
         double yGrav = Double.parseDouble(args.get(1));
         myGravityVector = List.of(xGrav,yGrav);

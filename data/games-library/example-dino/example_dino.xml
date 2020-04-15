@@ -9,7 +9,7 @@
       <Height>100</Height>
       <Image>googe_dino.png</Image>
       <Movement>
-        <MovementBehavior>Gravity 0.1</MovementBehavior>
+        <MovementBehavior>Gravity 0 0.1</MovementBehavior>
       </Movement>
       <Controls>
         <ControlInput>
@@ -31,7 +31,7 @@
       <Height>100</Height>
       <Image>cactus.png</Image>
       <Movement>
-        <MovementBehavior>MoveForward -.45</MovementBehavior>
+        <MovementBehavior>MoveForward -.45 0</MovementBehavior>
       </Movement>
     </Entity>
   </Entities>

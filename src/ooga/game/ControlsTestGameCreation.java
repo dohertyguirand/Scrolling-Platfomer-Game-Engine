@@ -19,7 +19,7 @@ public class ControlsTestGameCreation {
   //TODO: Remove, or transform into a reasonable test
   public static OogaGame getGame() {
     List<Entity> entities = new ArrayList<>();
-    Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/blue_square.jpg");
+    Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/blue_square.jpg", 0.0, 0.0, 100.0, 100.0);
     sampleEntity.setMovementBehaviors(List.of(new GravityBehavior(0,20.0/1000)));
     double speed = 160.0;
     speed = speed / 1000.0;
@@ -42,18 +42,18 @@ public class ControlsTestGameCreation {
     sampleEntity.setPosition(List.of(600.0,500.0-sampleEntity.getHeight()-1));
     entities.add(sampleEntity);
 
-    Entity destructibleEntity = new ImageEntity("block","file:data/games-library/example-dino/cactus.jpeg");
+    Entity destructibleEntity = new ImageEntity("block","file:data/games-library/example-dino/cactus.jpeg", 0.0, 0.0, 100.0, 100.0);
     destructibleEntity.setCollisionBehaviors(Map.of("dino",List.of(new CreateEntity(new ArrayList<>()))));
     destructibleEntity.setPosition(List.of(300.0,300.0));
     entities.add(destructibleEntity);
 
 
     for (int i = 0; i < 10; i ++) {
-      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png");
+      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png", 0.0, 0.0, 100.0, 100.0);
       otherEntity.setPosition(List.of(100 + 100.0 * i,600.0));
       entities.add(otherEntity);
     }
-    Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png");
+    Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png", 0.0, 0.0, 100.0, 100.0);
 //      otherEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(-450.0/1000,0)));
     otherEntity.setPosition(List.of(600.0,500.0));
     entities.add(otherEntity);

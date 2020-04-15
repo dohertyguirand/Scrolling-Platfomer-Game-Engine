@@ -24,6 +24,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   protected DoubleProperty yPos = new SimpleDoubleProperty();
   protected DoubleProperty width = new SimpleDoubleProperty();
   protected DoubleProperty height = new SimpleDoubleProperty();
+  protected String myName;
 
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
@@ -32,7 +33,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
   private boolean isDestroyed;
-  private String myName;
   private List<Entity> myCreatedEntities = new ArrayList<>();
 
 
@@ -40,21 +40,16 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   protected Map<String, Consumer<Double>> propertyUpdaters;
 
-  public OogaEntity() {
+  public OogaEntity(double xPos, double yPos, double width, double height) {
     myVelocity = List.of(0.,0.);
-    xPos.set(0);
-    yPos.set(0);
-    width.set(100);
-    height.set(100);
+    this.xPos.set(xPos);
+    this.yPos.set(yPos);
+    this.width.set(width);
+    this.height.set(height);
     myCollisionBehaviors = new HashMap<>();
     myMovementBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
     myVelocityVectors = new Stack<>();
-  }
-
-  public OogaEntity(String name) {
-    this();
-    myName = name;
   }
 
   @Override

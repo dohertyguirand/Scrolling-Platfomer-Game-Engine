@@ -9,7 +9,7 @@
             <Height>100</Height>
             <Image>fireboy.png</Image>
             <Movement>
-                <MovementBehavior>Gravity 0.1</MovementBehavior>
+                <MovementBehavior>Gravity 0 0.1</MovementBehavior>
             </Movement>
             <Controls>
                 <ControlInput>
@@ -18,11 +18,11 @@
                 </ControlInput>
                 <ControlInput>
                     <Key>LeftKey</Key>
-                    <ControlBehavior>MoveBehavior -1.2</ControlBehavior>
+                    <ControlBehavior>MoveBehavior -1.2 0</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
                     <Key>RightKey</Key>
-                    <ControlBehavior>MoveBehavior 1.2</ControlBehavior>
+                    <ControlBehavior>MoveBehavior 1.2 0</ControlBehavior>
                 </ControlInput>
             </Controls>
             <Collisions>
@@ -42,7 +42,7 @@
             <Height>100</Height>
             <Image>watergirl.png</Image>
             <Movement>
-                <MovementBehavior>Gravity 0.1</MovementBehavior>
+                <MovementBehavior>Gravity 0 0.1</MovementBehavior>
             </Movement>
             <Controls>
                 <ControlInput>
@@ -51,11 +51,11 @@
                 </ControlInput>
                 <ControlInput>
                     <Key>LeftKey2</Key>
-                    <ControlBehavior>MoveBehavior -1.2</ControlBehavior>
+                    <ControlBehavior>MoveBehavior -1.2 0</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
                     <Key>RightKey2</Key>
-                    <ControlBehavior>MoveBehavior 1.2</ControlBehavior>
+                    <ControlBehavior>MoveBehavior 1.2 0</ControlBehavior>
                 </ControlInput>
             </Controls>
             <Collisions>
@@ -91,7 +91,7 @@
             <Name>RedDiamond</Name>
             <Width>40</Width>
             <Height>40</Height>
-            <Image>redDiamond.png</Image>
+            <Image>redDiamond.jpg</Image>
             <Collisions>
                 <EntityCollision>
                     <With>Fireboy</With>
@@ -115,7 +115,7 @@
             <Name>RedDoor</Name>
             <Width>50</Width>
             <Height>70</Height>
-            <Image>redDoor.png</Image>
+            <Image>redDoor.jpg</Image>
             <Collisions>
                 <EntityCollision>
                     <With>Fireboy</With>
@@ -127,7 +127,7 @@
             <Name>BlueDoor</Name>
             <Width>50</Width>
             <Height>70</Height>
-            <Image>blueDoor.png</Image>
+            <Image>blueDoor.jpg</Image>
             <Collisions>
                 <EntityCollision>
                     <With>Watergirl</With>

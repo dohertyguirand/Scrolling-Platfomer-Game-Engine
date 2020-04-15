@@ -32,8 +32,8 @@ public class ProfileMenuDemo extends Application {
 
     private Scene setUpStartMenuDisplay() {
         ProfileMenu profileMenu = new ProfileMenu();
-        List<ViewProfile> profiles = List.of(new ViewProfile("Tree", "ooga/view/Resources/profilephotos/tree.jpg"));
-        profileMenu.setMyProfiles(profiles);
+//        List<ViewProfile> profiles = List.of(new ViewProfile("Tree", "ooga/view/Resources/profilephotos/tree.jpg"));
+//        profileMenu.setMyProfiles(profiles);
         profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> {
             ViewProfile profile = (ViewProfile) pnewVal;
             StartMenu startMenu = new StartMenu(profile);
