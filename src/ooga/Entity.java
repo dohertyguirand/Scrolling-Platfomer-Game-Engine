@@ -184,8 +184,7 @@ public interface Entity {
 
   /**
    * Add a dependency to the map so that when the variable with the given name changes, the property with the given name is updated
-   * @param variableName name of the game variable
-   * @param propertyName name of the entity property
+   * @param propertyVariableDependencies
    */
-  void putPropertyVariableDependency(String variableName, String propertyName);
+  void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies);
 }

@@ -34,10 +34,11 @@ public interface DataReader {
   /**
    * Give a Game a list of level ID's in the order that they're listed in the .xml files
    * @param gameName the name of the Game at the start of the .xml file
-   * @return A list of Integers, the ID's of the Level written in the game file
+   * @return Three lists: A list of Integers, the ID's of the Level written in the game file; a list of strings, the names
+   *  of the variables; a list of strings/doubles, the variable values in order
    * @throws OogaDataException if the String given isn't a directory or the cooresponding file is not properly formatted
    */
-  List<String> getBasicGameInfo(String gameName) throws OogaDataException;
+  List<List<String>> getBasicGameInfo(String gameName) throws OogaDataException;
 
   /**
    * @param gameName The name of the game

@@ -31,13 +31,16 @@ public class OogaGame implements Game, UserInputListener {
     myDataReader = dataReader;
     myLevel = 0;
     myName = gameName;
-    myLevelIds = myDataReader.getBasicGameInfo(gameName);
+    List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
+    myLevelIds = basicGameInfo.get(0);
     //TODO: Make the type of collision detector configurable.
     myCollisionDetector = new OogaCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
-    myLevelIds = myDataReader.getBasicGameInfo(gameName);
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
+    for(int i=0; i<basicGameInfo.get(1).size(); i++){
+      myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
+    }
   }
 
   public OogaGame(Level startingLevel) {

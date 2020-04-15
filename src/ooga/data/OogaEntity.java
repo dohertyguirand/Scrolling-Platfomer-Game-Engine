@@ -25,10 +25,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   protected String myName;
   protected Map<String, String> propertyVariableDependencies = new HashMap<>();
   protected Map<String, Consumer<Double>> propertyUpdaters = new HashMap<>(){{
-    put("xPos", variableValue -> xPos.set(variableValue));
-    put("yPos", variableValue -> yPos.set(variableValue));
-    put("width", variableValue -> width.set(variableValue));
-    put("height", variableValue -> height.set(variableValue));
+    put("XPos", variableValue -> xPos.set(variableValue));
+    put("YPos", variableValue -> yPos.set(variableValue));
+    put("Width", variableValue -> width.set(variableValue));
+    put("Height", variableValue -> height.set(variableValue));
   }};
 
   private List<Double> myVelocity;
@@ -289,7 +289,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void putPropertyVariableDependency(String variableName, String propertyName){
-    propertyVariableDependencies.put(variableName, propertyName);
+  public void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies){
+    this.propertyVariableDependencies = propertyVariableDependencies;
   }
 }

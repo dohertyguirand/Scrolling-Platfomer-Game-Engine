@@ -136,6 +136,12 @@
             </Collisions>
         </ImageEntity>
     </Entities>
+    <Variables>
+        <Variable>
+            <Name>Lives</Name>
+            <StartValue>3</StartValue>
+        </Variable>
+    </Variables>
     <Levels>
         <Level>
             <ID>1</ID>
@@ -179,12 +185,16 @@
             </ImageEntityInstances>
             <TextEntityInstances>
                 <TextEntityInstance>
-                    <Text>Lives: %d</Text>
+                    <Text>Lives: %.0f</Text>
                     <Font>Times New Roman</Font>
                     <XPos>850</XPos>
                     <YPos>0</YPos>
                     <Width>150</Width>
                     <Height>50</Height>
+                    <PropertyVariableDependency>
+                        <VariableName>Lives</VariableName>
+                        <PropertyName>Text</PropertyName>
+                    </PropertyVariableDependency>
                 </TextEntityInstance>
             </TextEntityInstances>
         </Level>

@@ -70,25 +70,28 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public List<String> getBasicGameInfo(String givenGameName) throws OogaDataException {
-        ArrayList<String> IDList = new ArrayList<>();
+    public List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
+        List<List<String>> basicGameInfo = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         File gameFile = findGame(givenGameName);
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
-            // in the xml create a list of all 'Level' nodes
-            NodeList levelList = doc.getElementsByTagName("Level");
-            // add all IDs to the list
-            for (int i = 0; i < levelList.getLength(); i++) {
-                Node currentLevel = levelList.item(i);
-                Element levelAsElement = (Element) currentLevel;
-                String newID = levelAsElement.getElementsByTagName("ID").item(0).getTextContent();
-                IDList.add(newID);
+            String[] outerTagNames = new String[] {"Level", "Variables", "Variables"};
+            String[] innerTagNames = new String[] {"ID", "Name", "StartValue"};
+            for(int j=0; j<outerTagNames.length; j++){
+                NodeList outerList = doc.getElementsByTagName(outerTagNames[j]);
+                // add all elements to the corresponding list
+                for (int i = 0; i < outerList.getLength(); i++) {
+                    Node currentNode = outerList.item(i);
+                    Element nodeAsElement = (Element) currentNode;
+                    String newItem = nodeAsElement.getElementsByTagName(innerTagNames[j]).item(0).getTextContent();
+                    basicGameInfo.get(j).add(newItem);
+                }
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
             // this error will never happen because it would have happened in findGame()
             throw new OogaDataException("This error should not ever occur");
         }
-        return IDList;
+        return basicGameInfo;
     }
 
     @Override
@@ -158,7 +161,7 @@ public class OogaDataReader implements DataReader{
                 Element level = (Element) levelNodes.item(i);
                 String levelID = level.getElementsByTagName("ID").item(0).getTextContent();
                 if(levelID.equals(givenLevelID)){
-                    // in the xml create a list of all 'ImageEntityInstance' nodes
+                    //TODO: refactor the below loops into a single loop
                     NodeList imageEntityNodes = doc.getElementsByTagName("ImageEntityInstance");
                     // for each, save a copy of the specified instance at the specified place
                     for (int j = 0; j < imageEntityNodes.getLength(); j++) {
@@ -166,12 +169,10 @@ public class OogaDataReader implements DataReader{
                         Element entityElement = (Element) currentEntity;
                         String entityName = entityElement.getElementsByTagName("Type").item(0).getTextContent();
                         String[] parameterNames = new String[] {"XPos", "YPos"};
-                        List<Double> parameterValues = new ArrayList<>();
-                        for(String parameterName : parameterNames){
-                            parameterValues.add(Double.parseDouble(entityElement.getElementsByTagName(parameterName).item(0).getTextContent()));
-                        }
-                        System.out.println(String.format("%s @ %f,%f", entityName, parameterValues.get(0), parameterValues.get(1)));
-                        initialEntities.add(entityMap.get(entityName).makeInstanceAt(parameterValues.get(0),parameterValues.get(1)));
+                        List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
+                        OogaEntity entity = entityMap.get(entityName).makeInstanceAt(parameterValues.get(0),parameterValues.get(1));
+                        entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
+                        initialEntities.add(entity);
                     }
                     NodeList textEntityNodes = doc.getElementsByTagName("TextEntityInstance");
                     for (int j = 0; j < textEntityNodes.getLength(); j++) {
@@ -180,14 +181,12 @@ public class OogaDataReader implements DataReader{
                         String text = entityElement.getElementsByTagName("Text").item(0).getTextContent();
                         String font = entityElement.getElementsByTagName("Font").item(0).getTextContent();
                         String[] parameterNames = new String[] {"XPos", "YPos", "Width", "Height"};
-                        List<Double> parameterValues = new ArrayList<>();
-                        for(String parameterName : parameterNames){
-                            parameterValues.add(Double.parseDouble(entityElement.getElementsByTagName(parameterName).item(0).getTextContent()));
-                        }
-                        System.out.println(String.format("%s @ %f,%f", text, parameterValues.get(0), parameterValues.get(1)));
+                        List<Double> parameterValues = constructEntity(entityElement, text, parameterNames);
                         int index = 0;
-                        initialEntities.add(new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
-                                parameterValues.get(index++),  parameterValues.get(index)));
+                        OogaEntity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
+                                parameterValues.get(index++),  parameterValues.get(index));
+                        entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
+                        initialEntities.add(entity);
                     }
                 }
             }
@@ -197,6 +196,27 @@ public class OogaDataReader implements DataReader{
         }
 
         return new OogaLevel(initialEntities);
+    }
+
+    private List<Double> constructEntity(Element entityElement, String entityName, String[] parameterNames) {
+        List<Double> parameterValues = new ArrayList<>();
+        for(String parameterName : parameterNames){
+            parameterValues.add(Double.parseDouble(entityElement.getElementsByTagName(parameterName).item(0).getTextContent()));
+        }
+        System.out.println(String.format("%s @ %f,%f", entityName, parameterValues.get(0), parameterValues.get(1)));
+        return parameterValues;
+    }
+
+    private Map<String, String> getEntityVariableDependencies(Element entityElement){
+        Map<String, String> dependencyMap = new HashMap<>();
+        NodeList dependencyList = entityElement.getElementsByTagName("PropertyVariableDependency");
+        for(int i=0; i<dependencyList.getLength(); i++){
+            Element dependencyElement = (Element)dependencyList.item(i);
+            String variableName = dependencyElement.getElementsByTagName("VariableName").item(0).getTextContent();
+            String propertyName = dependencyElement.getElementsByTagName("PropertyName").item(0).getTextContent();
+            dependencyMap.put(variableName, propertyName);
+        }
+        return dependencyMap;
     }
 
     @Override
