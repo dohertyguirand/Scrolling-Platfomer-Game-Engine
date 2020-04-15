@@ -21,7 +21,8 @@
         <EntityCollision>
           <With>Cactus</With>
           <Reaction>RemoveSelf</Reaction>
-          <!--><Reaction>ChangeVariable</Reaction><!-->
+          <!--><Reaction>ChangeVariable Lives -1.0</Reaction><!-->
+          <Reaction>ChangeVariable Lives -1.0</Reaction>
         </EntityCollision>
       </Collisions>
     </Entity>

@@ -278,8 +278,13 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     //for each variable,
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
-        String type = propertyVariableDependencies.get(varName);
-        propertyUpdaters.get(type).accept(variables.get(varName));
+        String propertyName = propertyVariableDependencies.get(varName);
+        if (propertyUpdaters.containsKey(propertyName)) {
+          propertyUpdaters.get(propertyName).accept(variables.get(varName));
+        }
+        else {
+          //set the property to the value directly
+        }
       }
     }
   }
