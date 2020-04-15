@@ -19,7 +19,7 @@ public class TextEntity extends OogaEntity {
     text.set(contents);
     this.fontName.set(fontName);
     baseText = contents;
-    propertyUpdaters.put(text, this::updateTextProperty);
+    propertyUpdaters.put("text", this::updateTextProperty);
   }
 
   private void updateTextProperty(Double variableValue) {

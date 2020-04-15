@@ -14,6 +14,7 @@ public class ImageEntity extends OogaEntity {
       imageLocation = new SimpleStringProperty(imageFilePath);
     }
     myName = name;
+    propertyUpdaters.put("imageLocation", null); //TODO: figure out how image location should react to variable change
   }
 
   public ImageEntity(String name) {
