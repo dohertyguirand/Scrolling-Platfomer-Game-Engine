@@ -8,11 +8,25 @@
       <Width>100</Width>
       <Height>120</Height>
       <Image>mario.png</Image>
-      <MovementBehavior>Player</MovementBehavior>
+      <Movement>
+        <MovementBehavior>Gravity 0 0.0</MovementBehavior>
+      </Movement>
       <Controls>
         <ControlInput>
-          <Key>UpKey</Key>
-          <ControlBehavior>JumpBehavior</ControlBehavior>
+          <Key>UpKey2Pressed</Key>
+          <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
+        </ControlInput>
+        <ControlInput>
+          <Key>DownKey2</Key>
+          <ControlBehavior>VelocityInput 0 .1600 .3200</ControlBehavior>
+        </ControlInput>
+        <ControlInput>
+          <Key>LeftKey2</Key>
+          <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
+        </ControlInput>
+        <ControlInput>
+          <Key>RightKey2</Key>
+          <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
         </ControlInput>
       </Controls>
       <Collisions>
@@ -31,7 +45,9 @@
       <Width>100</Width>
       <Height>120</Height>
       <Image>koopa.png</Image>
-      <MovementBehavior>WalkForward</MovementBehavior>
+      <Movement>
+        <MovementBehavior>MoveForward -.45 0</MovementBehavior>
+      </Movement>
       <Collsions>
         <EntityCollision>
           <With>Brick</With>
@@ -49,7 +65,6 @@
   <Levels>
     <Level>
       <ID>1</ID>
-      <EndCondition>DestroyAll Koopa</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
@@ -58,24 +73,24 @@
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Brick</Type>
-          <XPos>0</XPos>
-          <YPos>1</YPos>
+          <XPos>300</XPos>
+          <YPos>600</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Brick</Type>
-          <XPos>1</XPos>
-          <YPos>1</YPos>
+          <XPos>400</XPos>
+          <YPos>600</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Brick</Type>
-          <XPos>2</XPos>
-          <YPos>1</YPos>
+          <XPos>500</XPos>
+          <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Koopa</Type>
-          <XPos>2</XPos>
-          <YPos>0</YPos>
+          <XPos>800</XPos>
+          <YPos>500</YPos>
         </ImageEntityInstance>
       </ImageEntityInstances>
     </Level>
