@@ -3,7 +3,7 @@
   <Thumbnail>dino_logo.jpg</Thumbnail>
   <Description>Back from the jurassic period to entertain you while your wifi is down.</Description>
   <Entities>
-    <Entity>
+    <ImageEntity>
       <Name>Dino</Name>
       <Width>100</Width>
       <Height>100</Height>
@@ -25,8 +25,8 @@
           <Reaction>ChangeVariable Lives -1.0</Reaction>
         </EntityCollision>
       </Collisions>
-    </Entity>
-    <Entity>
+    </ImageEntity>
+    <ImageEntity>
       <Name>Cactus</Name>
       <Width>100</Width>
       <Height>100</Height>
@@ -34,7 +34,7 @@
       <Movement>
         <MovementBehavior>MoveForward -.45 0</MovementBehavior>
       </Movement>
-    </Entity>
+    </ImageEntity>
   </Entities>
   <Variables>
     <Variable>
@@ -46,38 +46,38 @@
     <Level>
       <ID>1</ID>
       <EndCondition>DestroyAll Dino</EndCondition>
-      <Instances>
-        <Instance>
+      <ImageEntityInstances>
+        <ImageEntityInstance>
           <Type>Dino</Type>
           <XPos>100</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>1200</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>1600</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>2000</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>2400</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>2800</XPos>
           <YPos>400</YPos>
-        </Instance>
-      </Instances>
+        </ImageEntityInstance>
+      </ImageEntityInstances>
     </Level>
   </Levels>
 </Game>

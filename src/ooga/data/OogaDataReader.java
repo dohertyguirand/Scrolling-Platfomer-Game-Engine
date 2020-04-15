@@ -148,7 +148,7 @@ public class OogaDataReader implements DataReader{
     public Level loadLevel(String givenGameName, String givenLevelID) throws OogaDataException {
         ArrayList<Entity> initialEntities = new ArrayList<>();
         File gameFile = findGame(givenGameName);
-        Map<String, ImageEntityDefinition> entityMap = getEntityMap(givenGameName);
+        Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
             // in the xml create a list of all 'Level' nodes
@@ -158,17 +158,36 @@ public class OogaDataReader implements DataReader{
                 Element level = (Element) levelNodes.item(i);
                 String levelID = level.getElementsByTagName("ID").item(0).getTextContent();
                 if(levelID.equals(givenLevelID)){
-                    // in the xml create a list of all 'Instance' nodes
-                    NodeList entityNodes = doc.getElementsByTagName("Instance");
+                    // in the xml create a list of all 'ImageEntityInstance' nodes
+                    NodeList imageEntityNodes = doc.getElementsByTagName("ImageEntityInstance");
                     // for each, save a copy of the specified instance at the specified place
-                    for (int j = 0; j < entityNodes.getLength(); j++) {
-                        Node currentEntity = entityNodes.item(j);
+                    for (int j = 0; j < imageEntityNodes.getLength(); j++) {
+                        Node currentEntity = imageEntityNodes.item(j);
                         Element entityElement = (Element) currentEntity;
                         String entityName = entityElement.getElementsByTagName("Type").item(0).getTextContent();
-                        double xPosition = Double.parseDouble(entityElement.getElementsByTagName("XPos").item(0).getTextContent());
-                        double yPosition = Double.parseDouble(entityElement.getElementsByTagName("YPos").item(0).getTextContent());
-                        System.out.println(String.format("%s @ %f,%f", entityName, xPosition, yPosition));
-                        initialEntities.add(entityMap.get(entityName).makeInstanceAt(xPosition,yPosition));
+                        String[] parameterNames = new String[] {"XPos", "YPos"};
+                        List<Double> parameterValues = new ArrayList<>();
+                        for(String parameterName : parameterNames){
+                            parameterValues.add(Double.parseDouble(entityElement.getElementsByTagName(parameterName).item(0).getTextContent()));
+                        }
+                        System.out.println(String.format("%s @ %f,%f", entityName, parameterValues.get(0), parameterValues.get(1)));
+                        initialEntities.add(entityMap.get(entityName).makeInstanceAt(parameterValues.get(0),parameterValues.get(1)));
+                    }
+                    NodeList textEntityNodes = doc.getElementsByTagName("TextEntityInstance");
+                    for (int j = 0; j < textEntityNodes.getLength(); j++) {
+                        Node currentEntity = textEntityNodes.item(j);
+                        Element entityElement = (Element) currentEntity;
+                        String text = entityElement.getElementsByTagName("Text").item(0).getTextContent();
+                        String font = entityElement.getElementsByTagName("Font").item(0).getTextContent();
+                        String[] parameterNames = new String[] {"XPos", "YPos", "Width", "Height"};
+                        List<Double> parameterValues = new ArrayList<>();
+                        for(String parameterName : parameterNames){
+                            parameterValues.add(Double.parseDouble(entityElement.getElementsByTagName(parameterName).item(0).getTextContent()));
+                        }
+                        System.out.println(String.format("%s @ %f,%f", text, parameterValues.get(0), parameterValues.get(1)));
+                        int index = 0;
+                        initialEntities.add(new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
+                                parameterValues.get(index++),  parameterValues.get(index)));
                     }
                 }
             }
@@ -177,34 +196,27 @@ public class OogaDataReader implements DataReader{
             throw new OogaDataException("This error should not ever occur");
         }
 
-        OogaLevel newLevel = new OogaLevel(initialEntities);
-
-        return newLevel;
+        return new OogaLevel(initialEntities);
     }
 
     @Override
-    public Map<String, ImageEntityDefinition> getEntityMap(String gameName) throws OogaDataException {
+    public Map<String, ImageEntityDefinition> getImageEntityMap(String gameName) throws OogaDataException {
         Map<String, ImageEntityDefinition> retMap = new HashMap<>();
         File gameFile = findGame(gameName);
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
             // in the xml create a list of all 'Level' nodes
-            NodeList entityNodes = doc.getElementsByTagName("Entity");
+            NodeList entityNodes = doc.getElementsByTagName("ImageEntity");
             // add all entities to the map
             for (int i = 0; i < entityNodes.getLength(); i++) {
                 // create a new entity
                 Node currentEntity = entityNodes.item(i);
                 // if the entity has an image, it is an imageEntity
                 Element entityElement = (Element) currentEntity;
-                if(entityElement.getElementsByTagName("Image").getLength() > 0) {
-                    // add the ImageEntity to the map
-                    String newName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
-                    ImageEntityDefinition newIED = createImageEntityDefinition(entityElement, gameFile.getParentFile().getName());
-                    retMap.put(newName, newIED);
-                }
-                else{
-                    //TODO: add case for text Entity (figure out how you can add both to the same map and still distinguish them on the game side)
-                }
+                // add the ImageEntity to the map
+                String newName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+                ImageEntityDefinition newIED = createImageEntityDefinition(entityElement, gameFile.getParentFile().getName());
+                retMap.put(newName, newIED);
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
             // this error will never happen because it would have happened in findGame()

@@ -53,7 +53,7 @@ public interface DataReader {
    * @return A map of all the entities described in a game file of the given name.
    * It maps from the entities' names to their definitions.
    */
-  Map<String, ImageEntityDefinition> getEntityMap(String gameName) throws OogaDataException;
+  Map<String, ImageEntityDefinition> getImageEntityMap(String gameName) throws OogaDataException;
 
   /**
    * Saves the current state of the game so it can easily be loaded from where the player

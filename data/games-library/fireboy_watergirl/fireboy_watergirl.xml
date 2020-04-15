@@ -3,7 +3,7 @@
     <Thumbnail>fireboy_watergirl_preview.jpg</Thumbnail>
     <Description>A cooperative two-player game featuring elemental royalty.</Description>
     <Entities>
-        <Entity>
+        <ImageEntity>
             <Name>Fireboy</Name>
             <Width>50</Width>
             <Height>100</Height>
@@ -35,8 +35,8 @@
                     <Reaction>StopDownwardVelocity</Reaction>
                 </EntityCollision>
             </Collisions>
-        </Entity>
-        <Entity>
+        </ImageEntity>
+        <ImageEntity>
             <Name>Watergirl</Name>
             <Width>50</Width>
             <Height>100</Height>
@@ -68,26 +68,26 @@
                     <Reaction>StopDownwardVelocity</Reaction>
                 </EntityCollision>
             </Collisions>
-        </Entity>
-        <Entity>
+        </ImageEntity>
+        <ImageEntity>
             <Name>Floor</Name>
             <Width>1000</Width>
             <Height>100</Height>
             <Image>floorBrick.png</Image>
-        </Entity>
-        <Entity>
+        </ImageEntity>
+        <ImageEntity>
             <Name>LavaTerrain</Name>
             <Width>100</Width>
             <Height>50</Height>
             <Image>lavaTerrain.jpg</Image>
-        </Entity>
-        <Entity>
+        </ImageEntity>
+        <ImageEntity>
             <Name>WaterTerrain</Name>
             <Width>100</Width>
             <Height>50</Height>
             <Image>waterTerrain.jpg</Image>
-        </Entity>
-        <Entity>
+        </ImageEntity>
+        <ImageEntity>
             <Name>RedDiamond</Name>
             <Width>40</Width>
             <Height>40</Height>
@@ -98,8 +98,8 @@
                     <Reaction>RemoveSelf</Reaction>
                 </EntityCollision>
             </Collisions>
-        </Entity>
-        <Entity>
+        </ImageEntity>
+        <ImageEntity>
             <Name>BlueDiamond</Name>
             <Width>40</Width>
             <Height>40</Height>
@@ -110,8 +110,8 @@
                     <Reaction>RemoveSelf</Reaction>
                 </EntityCollision>
             </Collisions>
-        </Entity>
-        <Entity>
+        </ImageEntity>
+        <ImageEntity>
             <Name>RedDoor</Name>
             <Width>50</Width>
             <Height>70</Height>
@@ -122,8 +122,8 @@
                     <Reaction>RemoveSelf</Reaction>
                 </EntityCollision>
             </Collisions>
-        </Entity>
-        <Entity>
+        </ImageEntity>
+        <ImageEntity>
             <Name>BlueDoor</Name>
             <Width>50</Width>
             <Height>70</Height>
@@ -134,49 +134,59 @@
                     <Reaction>RemoveSelf</Reaction>
                 </EntityCollision>
             </Collisions>
-        </Entity>
+        </ImageEntity>
     </Entities>
     <Levels>
         <Level>
             <ID>1</ID>
             <EndCondition>DestroyAll Koopa</EndCondition>
-            <Instances>
-                <Instance>
+            <ImageEntityInstances>
+                <ImageEntityInstance>
                     <Type>Fireboy</Type>
                     <XPos>100</XPos>
                     <YPos>400</YPos>
-                </Instance>
-                <Instance>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Type>Watergirl</Type>
                     <XPos>300</XPos>
                     <YPos>400</YPos>
-                </Instance>
-                <Instance>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Type>RedDiamond</Type>
                     <XPos>700</XPos>
                     <YPos>400</YPos>
-                </Instance>
-                <Instance>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Type>BlueDiamond</Type>
                     <XPos>800</XPos>
                     <YPos>400</YPos>
-                </Instance>
-                <Instance>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Type>RedDoor</Type>
                     <XPos>600</XPos>
                     <YPos>200</YPos>
-                </Instance>
-                <Instance>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Type>BlueDoor</Type>
                     <XPos>800</XPos>
                     <YPos>200</YPos>
-                </Instance>
-                <Instance>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Type>Floor</Type>
                     <XPos>0</XPos>
                     <YPos>600</YPos>
-                </Instance>
-            </Instances>
+                </ImageEntityInstance>
+            </ImageEntityInstances>
+            <TextEntityInstances>
+                <TextEntityInstance>
+                    <Text>Lives: %d</Text>
+                    <Font>Times New Roman</Font>
+                    <XPos>850</XPos>
+                    <YPos>0</YPos>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                </TextEntityInstance>
+            </TextEntityInstances>
         </Level>
     </Levels>
 </Game>

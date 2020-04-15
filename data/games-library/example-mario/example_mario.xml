@@ -3,7 +3,7 @@
   <Thumbnail>mario_logo.jpg</Thumbnail>
   <Description>Straight from the mind of Shigeru Miyamoto.</Description>
   <Entities>
-    <Entity>
+    <ImageEntity>
       <Name>SmallMario</Name>
       <Width>100</Width>
       <Height>120</Height>
@@ -25,8 +25,8 @@
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
       </Collisions>
-    </Entity>
-    <Entity>
+    </ImageEntity>
+    <ImageEntity>
       <Name>Koopa</Name>
       <Width>100</Width>
       <Height>120</Height>
@@ -38,46 +38,46 @@
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
       </Collsions>
-    </Entity>
-    <Entity>
+    </ImageEntity>
+    <ImageEntity>
       <Name>Brick</Name>
       <Width>100</Width>
       <Height>100</Height>
       <Image>brick.png</Image>
-    </Entity>
+    </ImageEntity>
   </Entities>
   <Levels>
     <Level>
       <ID>1</ID>
       <EndCondition>DestroyAll Koopa</EndCondition>
-      <Instances>
-        <Instance>
+      <ImageEntityInstances>
+        <ImageEntityInstance>
           <Type>SmallMario</Type>
           <XPos>0</XPos>
           <YPos>0</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Brick</Type>
           <XPos>0</XPos>
           <YPos>1</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Brick</Type>
           <XPos>1</XPos>
           <YPos>1</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Brick</Type>
           <XPos>2</XPos>
           <YPos>1</YPos>
           <Size>2.0</Size>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Koopa</Type>
           <XPos>2</XPos>
           <YPos>0</YPos>
-        </Instance>
-      </Instances>
+        </ImageEntityInstance>
+      </ImageEntityInstances>
     </Level>
   </Levels>
 </Game>

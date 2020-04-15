@@ -181,4 +181,11 @@ public interface Entity {
    * Handles any behavior that depends on the values of variables.
    */
   void reactToVariables(Map<String,Double> variables);
+
+  /**
+   * Add a dependency to the map so that when the variable with the given name changes, the property with the given name is updated
+   * @param variableName name of the game variable
+   * @param propertyName name of the entity property
+   */
+  void putPropertyVariableDependency(String variableName, String propertyName);
 }

@@ -287,4 +287,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       }
     }
   }
+
+  @Override
+  public void putPropertyVariableDependency(String variableName, String propertyName){
+    propertyVariableDependencies.put(variableName, propertyName);
+  }
 }
