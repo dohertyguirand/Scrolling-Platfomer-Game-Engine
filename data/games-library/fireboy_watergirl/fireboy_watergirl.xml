@@ -13,16 +13,16 @@
             </Movement>
             <Controls>
                 <ControlInput>
-                    <Key>UpKey</Key>
+                    <Key>UpKeyPressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
                     <Key>LeftKey</Key>
-                    <ControlBehavior>MoveBehavior -1.2 0</ControlBehavior>
+                    <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
                     <Key>RightKey</Key>
-                    <ControlBehavior>MoveBehavior 1.2 0</ControlBehavior>
+                    <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
                 </ControlInput>
             </Controls>
             <Collisions>
@@ -46,16 +46,16 @@
             </Movement>
             <Controls>
                 <ControlInput>
-                    <Key>UpKey2</Key>
+                    <Key>UpKey2Pressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
                     <Key>LeftKey2</Key>
-                    <ControlBehavior>MoveBehavior -1.2 0</ControlBehavior>
+                    <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
                 </ControlInput>
                 <ControlInput>
                     <Key>RightKey2</Key>
-                    <ControlBehavior>MoveBehavior 1.2 0</ControlBehavior>
+                    <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
                 </ControlInput>
             </Controls>
             <Collisions>

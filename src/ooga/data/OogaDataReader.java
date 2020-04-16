@@ -155,6 +155,7 @@ public class OogaDataReader implements DataReader{
         ArrayList<Entity> initialEntities = new ArrayList<>();
         File gameFile = findGame(givenGameName);
         Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
+        String nextLevelID = null;
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
             // in the xml create a list of all 'Level' nodes
@@ -164,8 +165,9 @@ public class OogaDataReader implements DataReader{
                 Element level = (Element) levelNodes.item(i);
                 String levelID = level.getElementsByTagName("ID").item(0).getTextContent();
                 if(levelID.equals(givenLevelID)){
+                    nextLevelID = level.getElementsByTagName("NextLevel").item(0).getTextContent();
                     //TODO: refactor the below loops into a single loop
-                    NodeList imageEntityNodes = doc.getElementsByTagName("ImageEntityInstance");
+                    NodeList imageEntityNodes = level.getElementsByTagName("ImageEntityInstance");
                     // for each, save a copy of the specified instance at the specified place
                     for (int j = 0; j < imageEntityNodes.getLength(); j++) {
                         Node currentEntity = imageEntityNodes.item(j);
@@ -191,6 +193,7 @@ public class OogaDataReader implements DataReader{
                         entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                         initialEntities.add(entity);
                     }
+                    break;
                 }
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
@@ -198,7 +201,8 @@ public class OogaDataReader implements DataReader{
             throw new OogaDataException("This error should not ever occur");
         }
 
-        return new OogaLevel(initialEntities);
+        OogaLevel oogaLevel = new OogaLevel(initialEntities);
+        return oogaLevel;
     }
 
     private List<Double> constructEntity(Element entityElement, String entityName, String[] parameterNames) {
