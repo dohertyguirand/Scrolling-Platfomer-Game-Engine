@@ -35,4 +35,8 @@ public class ImageEntityDefinition {
         return newEntity;
     }
 
+    @Override
+    public String toString() {
+        return myName + ": (" + myHeight + " x " + myWidth + ")";
+    }
 }

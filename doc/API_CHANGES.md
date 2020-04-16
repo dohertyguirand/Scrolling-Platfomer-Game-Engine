@@ -69,6 +69,7 @@ entities can be created by behaviors.
 The alternative would be internal 'garbage collection' inside level, but that would also require
 at least one new method.
 - Added ``addEntity`` so that the main game loop can involve entities being instantiated.
+- Added ``setNextLevelID`` so that they can point to a next level.
 
 ### ControlsBehavior
 - Modified ``reactToControls()`` to take in the subject entity as a parameter.

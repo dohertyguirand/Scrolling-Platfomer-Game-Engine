@@ -42,4 +42,10 @@ public interface Level {
    * @return The ID in the game file of the level that comes after this one.
    */
   String nextLevelID();
+
+  /**
+   * @return The String ID of the level that this level will go to when it ends.
+   * @param nextID
+   */
+  void setNextLevelID(String nextID);
 }

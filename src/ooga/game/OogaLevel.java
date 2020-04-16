@@ -66,4 +66,9 @@ public class OogaLevel implements Level{
     public String nextLevelID() {
         return myNextLevelId;
     }
+
+    @Override
+    public void setNextLevelID(String nextID) {
+        myNextLevelId = nextID;
+    }
 }
