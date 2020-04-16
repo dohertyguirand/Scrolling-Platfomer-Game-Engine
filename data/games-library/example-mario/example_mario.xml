@@ -16,10 +16,10 @@
           <Key>UpKey2Pressed</Key>
           <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
         </ControlInput>
-        <ControlInput>
-          <Key>DownKey2</Key>
-          <ControlBehavior>VelocityInput 0 .1600 .3200</ControlBehavior>
-        </ControlInput>
+<!--        <ControlInput>-->
+<!--          <Key>DownKey2</Key>-->
+<!--          <ControlBehavior>VelocityInput 0 .1600 .3200</ControlBehavior>-->
+<!--        </ControlInput>-->
         <ControlInput>
           <Key>LeftKey2</Key>
           <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
@@ -78,6 +78,7 @@
   <Levels>
     <Level>
       <ID>1</ID>
+      <NextLevel>2</NextLevel>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
@@ -152,6 +153,7 @@
     </Level>
     <Level>
       <ID>2</ID>
+      <NextLevel>1</NextLevel>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
