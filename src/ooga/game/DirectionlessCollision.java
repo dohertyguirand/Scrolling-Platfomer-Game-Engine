@@ -10,13 +10,13 @@ public abstract class DirectionlessCollision implements CollisionBehavior {
   @Override
   public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables) {
-    doCollision(subject,collidingEntity, elapsedTime, new HashMap<>());
+    doCollision(subject,collidingEntity, elapsedTime, variables);
   }
 
   @Override
   public void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables) {
-    doCollision(subject,collidingEntity, elapsedTime, new HashMap<>());
+    doCollision(subject,collidingEntity, elapsedTime, variables);
   }
 
   public abstract void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,

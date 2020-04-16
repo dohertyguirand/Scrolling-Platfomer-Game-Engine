@@ -29,6 +29,7 @@ public class ChangeVariable extends DirectionlessCollision {
   public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables) {
     //in the variable map, increment variableName by variableValue
+    System.out.println("variables = " + variables);
     System.out.println("variableName = " + variableName);
     System.out.println("incrementValue = " + incrementValue);
     if (variables.containsKey(variableName)) {

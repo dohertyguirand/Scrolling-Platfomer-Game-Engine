@@ -23,7 +23,7 @@ public class OogaGame implements Game, UserInputListener {
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
   private InputManager myInputManager = new OogaInputManager();
-  private Map<String, Double> myVariables = new HashMap<>();
+  private Map<String, Double> myVariables;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
@@ -36,9 +36,11 @@ public class OogaGame implements Game, UserInputListener {
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
+    myVariables = new HashMap<>();
     for(int i=0; i<basicGameInfo.get(1).size(); i++){
       myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
     }
+    System.out.println("myVariables = " + myVariables);
   }
 
   public OogaGame(Level startingLevel) {

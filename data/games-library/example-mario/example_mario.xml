@@ -34,6 +34,7 @@
           <With>Koopa</With>
           <Reaction>VerticalBounce -.50 </Reaction>
           <Reaction>RunIntoStompable</Reaction>
+          <Reaction>ChangeVariable Lives -1.0</Reaction>
         </EntityCollision>
         <EntityCollision>
           <With>Brick</With>
@@ -68,6 +69,12 @@
 <!--      <Image>brick.png</Image>-->
     </ImageEntity>
   </Entities>
+  <Variables>
+    <Variable>
+      <Name>Lives</Name>
+      <StartValue>3</StartValue>
+    </Variable>
+  </Variables>
   <Levels>
     <Level>
       <ID>1</ID>
@@ -128,6 +135,20 @@
           <YPos>500</YPos>
         </ImageEntityInstance>
       </ImageEntityInstances>
+      <TextEntityInstances>
+        <TextEntityInstance>
+          <Text>Lives: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>850</XPos>
+          <YPos>0</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Lives</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+      </TextEntityInstances>
     </Level>
 <!--    <Level>-->
 <!--      <ID>2</ID>-->
