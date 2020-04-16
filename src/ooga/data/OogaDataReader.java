@@ -202,6 +202,7 @@ public class OogaDataReader implements DataReader{
         }
 
         OogaLevel oogaLevel = new OogaLevel(initialEntities);
+        oogaLevel.setNextLevelID(nextLevelID);
         return oogaLevel;
     }
 
