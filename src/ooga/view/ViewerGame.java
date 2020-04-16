@@ -71,11 +71,12 @@ public class ViewerGame {
       while (c.next()) {
         if(c.wasAdded() || c.wasRemoved()){
           for (Entity removedItem : c.getRemoved()) {
+            System.out.println(removedItem.isActiveInView());
             removedItem.setActiveInView(false);
           }
           for (Entity addedItem : c.getAddedSubList()) {
             addedItem.setActiveInView(true);
-            myEntityGroup.getChildren().add(makeViewEntity(addedItem));
+            addToEntityGroup(addedItem);
           }
         }
       }
@@ -83,13 +84,17 @@ public class ViewerGame {
 
     myEntityGroup = new Group();
     for(Entity entity : gameEntities){
-      Node viewEntity = makeViewEntity(entity);
-      myEntityGroup.getChildren().add(viewEntity);
-      entity.activeInViewProperty().addListener((o, oldVal, newVal) -> {
-        if(newVal) myEntityGroup.getChildren().add(viewEntity);
-        else myEntityGroup.getChildren().remove(viewEntity);
-      });
+      addToEntityGroup(entity);
     }
+  }
+
+  private void addToEntityGroup(Entity entity) {
+    Node viewEntity = makeViewEntity(entity);
+    myEntityGroup.getChildren().add(viewEntity);
+    entity.activeInViewProperty().addListener((o, oldVal, newVal) -> {
+      if(newVal) myEntityGroup.getChildren().add(viewEntity);
+      else myEntityGroup.getChildren().remove(viewEntity);
+    });
   }
 
   private Node makeViewEntity(Entity entity){

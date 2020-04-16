@@ -153,6 +153,7 @@
     </Level>
     <Level>
       <ID>2</ID>
+      <NextLevel>1</NextLevel>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
