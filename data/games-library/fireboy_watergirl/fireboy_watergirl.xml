@@ -71,7 +71,7 @@
         </ImageEntity>
         <ImageEntity>
             <Name>Floor</Name>
-            <Width>1000</Width>
+            <Width>200</Width>
             <Height>100</Height>
             <Image>floorBrick.png</Image>
         </ImageEntity>
@@ -180,6 +180,26 @@
                 <ImageEntityInstance>
                     <Type>Floor</Type>
                     <XPos>0</XPos>
+                    <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>200</XPos>
+                    <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>400</XPos>
+                    <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>600</XPos>
+                    <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>800</XPos>
                     <YPos>600</YPos>
                 </ImageEntityInstance>
             </ImageEntityInstances>
