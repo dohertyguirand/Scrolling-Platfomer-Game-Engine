@@ -120,6 +120,10 @@ public class ViewerGame {
     });
     pauseButton.setLayoutX(0);
     pauseButton.setLayoutY(0);
+    // note: need the below because buttons consume certain key press events (like arrow keys)
+    pauseButton.setOnKeyPressed(e -> {
+      pauseButton.getParent().fireEvent(e);
+    });
     myRoot.getChildren().add(pauseButton);
   }
 

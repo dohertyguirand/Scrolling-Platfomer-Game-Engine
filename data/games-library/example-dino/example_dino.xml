@@ -45,6 +45,7 @@
   <Levels>
     <Level>
       <ID>1</ID>
+      <NextLevel>1</NextLevel>
       <EndCondition>DestroyAll Dino</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>

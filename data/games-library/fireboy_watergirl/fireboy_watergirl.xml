@@ -145,6 +145,7 @@
     <Levels>
         <Level>
             <ID>1</ID>
+            <NextLevel>1</NextLevel>
             <EndCondition>DestroyAll Koopa</EndCondition>
             <ImageEntityInstances>
                 <ImageEntityInstance>
