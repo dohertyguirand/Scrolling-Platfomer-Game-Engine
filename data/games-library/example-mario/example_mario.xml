@@ -132,7 +132,7 @@
         <ImageEntityInstance>
           <Type>Koopa</Type>
           <XPos>800</XPos>
-          <YPos>500</YPos>
+          <YPos>400</YPos>
         </ImageEntityInstance>
       </ImageEntityInstances>
       <TextEntityInstances>

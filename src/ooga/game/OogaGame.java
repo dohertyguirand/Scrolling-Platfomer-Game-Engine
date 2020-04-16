@@ -39,7 +39,7 @@ public class OogaGame implements Game, UserInputListener {
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
-    currentLevel = loadGameLevel(gameName, myLevelIds.get(1));
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
 //    currentLevel = loadLevel(gameName,userName)
     myVariables = new HashMap<>();
     for(int i=0; i<basicGameInfo.get(1).size(); i++){
@@ -174,8 +174,14 @@ public class OogaGame implements Game, UserInputListener {
     for (Entity destroyed : destroyedEntities) {
       if (destroyed.isDestroyed()) {
         currentLevel.removeEntity(destroyed);
+        for (Entity e : myEntities) {
+          System.out.println(e.getName());
+        }
         System.out.println("destroyed.getName() = " + destroyed.getName());
         myEntities.remove(destroyed);
+        for (Entity e : myEntities) {
+          System.out.println(e.getName());
+        }
       }
     }
   }
