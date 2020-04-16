@@ -1,19 +1,24 @@
 package ooga.game;
 
-import ooga.CollisionBehavior;
+import java.util.HashMap;
+import java.util.Map;
+import ooga.game.behaviors.CollisionBehavior;
 import ooga.Entity;
 
 public abstract class DirectionlessCollision implements CollisionBehavior {
 
   @Override
-  public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime) {
-    doCollision(subject,collidingEntity);
+  public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables) {
+    doCollision(subject,collidingEntity, elapsedTime, variables);
   }
 
   @Override
-  public void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime) {
-    doCollision(subject,collidingEntity);
+  public void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables) {
+    doCollision(subject,collidingEntity, elapsedTime, variables);
   }
 
-  public abstract void doCollision(Entity subject, Entity collidingEntity);
+  public abstract void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables);
 }

@@ -11,11 +11,9 @@ import ooga.OogaDataException;
 import ooga.data.*;
 import ooga.UserInputListener;
 import ooga.game.collisiondetection.OogaCollisionDetector;
+import ooga.game.collisiondetection.VelocityCollisionDetector;
 
 public class OogaGame implements Game, UserInputListener {
-
-  //TODO: Remove hard-coded filepath
-  public static final String GAME_LIBRARY_PATH = "data/games-library/";
 
   private List<String> myLevelIds;
   private int myLevel;
@@ -25,18 +23,26 @@ public class OogaGame implements Game, UserInputListener {
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
   private InputManager myInputManager = new OogaInputManager();
+  private Map<String, Double> myVariables;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
+//  public OogaGame(String gameName, String userName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myLevel = 0;
     myName = gameName;
-    myLevelIds = myDataReader.getBasicGameInfo(gameName);
+    List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
+    myLevelIds = basicGameInfo.get(0);
     //TODO: Make the type of collision detector configurable.
-    myCollisionDetector = new OogaCollisionDetector();
+    myCollisionDetector = new VelocityCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
-    myLevelIds = myDataReader.getBasicGameInfo(gameName);
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
+//    currentLevel = loadLevel(gameName,userName)
+    myVariables = new HashMap<>();
+    for(int i=0; i<basicGameInfo.get(1).size(); i++){
+      myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
+    }
+    System.out.println("myVariables = " + myVariables);
   }
 
   public OogaGame(Level startingLevel) {
@@ -118,6 +124,7 @@ public class OogaGame implements Game, UserInputListener {
     //5. execute movement.
     doEntityUpdates(elapsedTime);
     doEntityCollisions(elapsedTime);
+//    doVariableUpdates();
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
@@ -168,10 +175,10 @@ public class OogaGame implements Game, UserInputListener {
     Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
     for (Entity e : currentLevel.getEntities()) {
       for (Entity collidingWith : verticalCollisions.get(e)) {
-        e.handleVerticalCollision(collidingWith, elapsedTime);
+        e.handleVerticalCollision(collidingWith, elapsedTime, myVariables);
       }
       for (Entity collidingWith : horizontalCollisions.get(e)) {
-        e.handleHorizontalCollision(collidingWith, elapsedTime);
+        e.handleHorizontalCollision(collidingWith, elapsedTime, myVariables);
       }
     }
   }
@@ -184,7 +191,8 @@ public class OogaGame implements Game, UserInputListener {
       for (String input : myInputManager.getPressedKeys()) {
         e.reactToControlsPressed(input);
       }
-      e.updateSelf(elapsedTime, new ArrayList<>());
+      e.updateSelf(elapsedTime);
+      e.reactToVariables(myVariables);
     }
   }
 
@@ -227,7 +235,7 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void reactToGameSave() {
-
+//    myDataReader.saveGameState(String userName, myName);
   }
 
   /**

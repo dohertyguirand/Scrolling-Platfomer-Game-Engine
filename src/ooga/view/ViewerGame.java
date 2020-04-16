@@ -92,10 +92,11 @@ public class ViewerGame {
   }
 
   private Node makeViewEntity(Entity entity){
-    if(entity.getClass().equals(ImageEntity.class)){
+    // TODO: use reflection here or something
+    if(entity instanceof ImageEntity){
       return (new ViewImageEntity((ImageEntity)entity)).getNode();
     }
-    else if(entity.getClass().equals(TextEntity.class)){
+    else if(entity instanceof TextEntity){
       return (new ViewTextEntity((TextEntity)entity)).getNode();
     }
     return null;
@@ -130,8 +131,9 @@ public class ViewerGame {
         step();
       } catch (Exception ex) {
         // note that this should ideally never be thrown
-        showError("Animation Error");
-        //myErrorMessage.setText(myLanguageResources.getString("IOError"));
+        //ex.printStackTrace();
+        System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is" +
+                "not allowed during animation processing");
       }
     });
     myAnimation = new Timeline();
@@ -154,6 +156,7 @@ public class ViewerGame {
   }
 
   private void showError(String message) {
+    System.out.println(message);
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setContentText(message);
     alert.showAndWait();

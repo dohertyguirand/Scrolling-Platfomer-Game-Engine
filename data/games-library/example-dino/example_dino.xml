@@ -3,7 +3,7 @@
   <Thumbnail>dino_logo.jpg</Thumbnail>
   <Description>Back from the jurassic period to entertain you while your wifi is down.</Description>
   <Entities>
-    <Entity>
+    <ImageEntity>
       <Name>Dino</Name>
       <Width>100</Width>
       <Height>100</Height>
@@ -21,10 +21,12 @@
         <EntityCollision>
           <With>Cactus</With>
           <Reaction>RemoveSelf</Reaction>
+          <!--><Reaction>ChangeVariable Lives -1.0</Reaction><!-->
+          <Reaction>ChangeVariable Lives -1.0</Reaction>
         </EntityCollision>
       </Collisions>
-    </Entity>
-    <Entity>
+    </ImageEntity>
+    <ImageEntity>
       <Name>Cactus</Name>
       <Width>100</Width>
       <Height>100</Height>
@@ -32,44 +34,64 @@
       <Movement>
         <MovementBehavior>MoveForward -.45 0</MovementBehavior>
       </Movement>
-    </Entity>
+    </ImageEntity>
   </Entities>
+  <Variables>
+    <Variable>
+      <Name>Lives</Name>
+      <StartValue>3</StartValue>
+    </Variable>
+  </Variables>
   <Levels>
     <Level>
       <ID>1</ID>
       <EndCondition>DestroyAll Dino</EndCondition>
-      <Instances>
-        <Instance>
+      <ImageEntityInstances>
+        <ImageEntityInstance>
           <Type>Dino</Type>
           <XPos>100</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>1200</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>1600</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>2000</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>2400</XPos>
           <YPos>400</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Cactus</Type>
           <XPos>2800</XPos>
           <YPos>400</YPos>
-        </Instance>
-      </Instances>
+        </ImageEntityInstance>
+      </ImageEntityInstances>
+      <TextEntityInstances>
+        <TextEntityInstance>
+          <Text>Lives: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>850</XPos>
+          <YPos>0</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Lives</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+      </TextEntityInstances>
     </Level>
   </Levels>
 </Game>

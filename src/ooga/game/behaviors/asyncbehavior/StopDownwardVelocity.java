@@ -1,5 +1,6 @@
 package ooga.game.behaviors.asyncbehavior;
 
+import java.util.Map;
 import ooga.Entity;
 
 import java.util.List;
@@ -14,7 +15,8 @@ public class StopDownwardVelocity extends DirectionlessCollision {
     }
 
     @Override
-    public void doCollision(Entity subject, Entity collidingEntity) {
+    public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+        Map<String, Double> variables) {
         List<Double> currentVelocity = subject.getVelocity();
         double newXPos = subject.getPosition().get(0);
         double newYPos = collidingEntity.getPosition().get(1) - subject.getHeight();

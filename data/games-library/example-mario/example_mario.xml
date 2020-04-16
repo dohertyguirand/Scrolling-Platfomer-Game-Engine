@@ -3,81 +3,212 @@
   <Thumbnail>mario_logo.jpg</Thumbnail>
   <Description>Straight from the mind of Shigeru Miyamoto.</Description>
   <Entities>
-    <Entity>
+    <ImageEntity>
       <Name>SmallMario</Name>
-      <Width>100</Width>
+      <Width>80</Width>
       <Height>120</Height>
       <Image>mario.png</Image>
-      <MovementBehavior>Player</MovementBehavior>
+      <Movement>
+        <MovementBehavior>Gravity 0 0.1</MovementBehavior>
+      </Movement>
       <Controls>
         <ControlInput>
-          <Key>UpKey</Key>
-          <ControlBehavior>JumpBehavior</ControlBehavior>
+          <Key>UpKey2Pressed</Key>
+          <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
+        </ControlInput>
+        <ControlInput>
+          <Key>DownKey2</Key>
+          <ControlBehavior>VelocityInput 0 .1600 .3200</ControlBehavior>
+        </ControlInput>
+        <ControlInput>
+          <Key>LeftKey2</Key>
+          <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
+        </ControlInput>
+        <ControlInput>
+          <Key>RightKey2</Key>
+          <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
         </ControlInput>
       </Controls>
       <Collisions>
         <EntityCollision>
           <With>Koopa</With>
-          <Reaction>RemoveSelf</Reaction>
+          <Reaction>VerticalBounce -.50 </Reaction>
+          <Reaction>RunIntoStompable</Reaction>
+          <Reaction>ChangeVariable Lives -1.0</Reaction>
         </EntityCollision>
         <EntityCollision>
           <With>Brick</With>
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
       </Collisions>
-    </Entity>
-    <Entity>
+    </ImageEntity>
+    <ImageEntity>
       <Name>Koopa</Name>
       <Width>100</Width>
       <Height>120</Height>
       <Image>koopa.png</Image>
-      <MovementBehavior>WalkForward</MovementBehavior>
+      <Movement>
+        <MovementBehavior>Gravity 0.0 0.10</MovementBehavior>
+      </Movement>
       <Collsions>
         <EntityCollision>
           <With>Brick</With>
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
+        <EntityCollision>
+          <With>SmallMario</With>
+          <Reaction>Stompable</Reaction>
+        </EntityCollision>
       </Collsions>
-    </Entity>
-    <Entity>
+    </ImageEntity>
+    <ImageEntity>
       <Name>Brick</Name>
       <Width>100</Width>
       <Height>100</Height>
-      <Image>brick.png</Image>
-    </Entity>
+      <Image>mario_brick.png</Image>
+<!--      <Image>brick.png</Image>-->
+    </ImageEntity>
   </Entities>
+  <Variables>
+    <Variable>
+      <Name>Lives</Name>
+      <StartValue>3</StartValue>
+    </Variable>
+  </Variables>
   <Levels>
     <Level>
       <ID>1</ID>
-      <EndCondition>DestroyAll Koopa</EndCondition>
-      <Instances>
-        <Instance>
+      <ImageEntityInstances>
+        <ImageEntityInstance>
           <Type>SmallMario</Type>
           <XPos>0</XPos>
           <YPos>0</YPos>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Brick</Type>
           <XPos>0</XPos>
-          <YPos>1</YPos>
-        </Instance>
-        <Instance>
+          <YPos>600</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Brick</Type>
-          <XPos>1</XPos>
-          <YPos>1</YPos>
-        </Instance>
-        <Instance>
+          <XPos>300</XPos>
+          <YPos>600</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Brick</Type>
-          <XPos>2</XPos>
-          <YPos>1</YPos>
+          <XPos>400</XPos>
+          <YPos>600</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>500</XPos>
+          <YPos>500</YPos>
           <Size>2.0</Size>
-        </Instance>
-        <Instance>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>500</XPos>
+          <YPos>600</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>600</XPos>
+          <YPos>600</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>700</XPos>
+          <YPos>600</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>800</XPos>
+          <YPos>600</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Koopa</Type>
-          <XPos>2</XPos>
+          <XPos>800</XPos>
+          <YPos>500</YPos>
+        </ImageEntityInstance>
+      </ImageEntityInstances>
+      <TextEntityInstances>
+        <TextEntityInstance>
+          <Text>Lives: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>850</XPos>
           <YPos>0</YPos>
-        </Instance>
-      </Instances>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Lives</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+      </TextEntityInstances>
     </Level>
+<!--    <Level>-->
+<!--      <ID>2</ID>-->
+<!--      <ImageEntityInstances>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>SmallMario</Type>-->
+<!--          <XPos>0</XPos>-->
+<!--          <YPos>0</YPos>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Brick</Type>-->
+<!--          <XPos>0</XPos>-->
+<!--          <YPos>500</YPos>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Brick</Type>-->
+<!--          <XPos>300</XPos>-->
+<!--          <YPos>500</YPos>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Brick</Type>-->
+<!--          <XPos>400</XPos>-->
+<!--          <YPos>500</YPos>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Brick</Type>-->
+<!--          <XPos>500</XPos>-->
+<!--          <YPos>500</YPos>-->
+<!--          <Size>2.0</Size>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Brick</Type>-->
+<!--          <XPos>500</XPos>-->
+<!--          <YPos>600</YPos>-->
+<!--          <Size>2.0</Size>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Brick</Type>-->
+<!--          <XPos>600</XPos>-->
+<!--          <YPos>600</YPos>-->
+<!--          <Size>2.0</Size>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Brick</Type>-->
+<!--          <XPos>700</XPos>-->
+<!--          <YPos>600</YPos>-->
+<!--          <Size>2.0</Size>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Brick</Type>-->
+<!--          <XPos>800</XPos>-->
+<!--          <YPos>600</YPos>-->
+<!--          <Size>2.0</Size>-->
+<!--        </ImageEntityInstance>-->
+<!--        <ImageEntityInstance>-->
+<!--          <Type>Koopa</Type>-->
+<!--          <XPos>800</XPos>-->
+<!--          <YPos>500</YPos>-->
+<!--        </ImageEntityInstance>-->
+<!--      </ImageEntityInstances>-->
+<!--    </Level>-->
   </Levels>
 </Game>

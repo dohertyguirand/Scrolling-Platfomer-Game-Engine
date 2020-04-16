@@ -1,4 +1,6 @@
-package ooga;
+package ooga.game.behaviors;
+
+import ooga.Entity;
 
 /**
  * Handles per-frame actions that an entity does regardless of triggers like collisions

@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DataReaderTest {
     private OogaDataReader testDataReader = new OogaDataReader();
     //private String GAME_NAME = "Chrome Dino";
-    //private String GAME_NAME = "Super Mario Bros";
-    private String GAME_NAME = "Fireboy and Watergirl";
+    private String GAME_NAME = "Super Mario Bros";
+//    private String GAME_NAME = "Fireboy and Watergirl";
 
     private ArrayList<String> ID_LIST  = new ArrayList<>(List.of("1"));
 
@@ -32,7 +32,7 @@ public class DataReaderTest {
     }
     @Test
     public void testGetBasicGameInfo(){
-        List<String> stringList = null;
+        List<List<String>> stringList = null;
         try {
             stringList = testDataReader.getBasicGameInfo(GAME_NAME);
         } catch (OogaDataException e) {
@@ -69,7 +69,9 @@ public class DataReaderTest {
     public void testGetEntityMap(){
         Map<String, ImageEntityDefinition> retMap = null;
         try {
-            retMap = testDataReader.getEntityMap(GAME_NAME);
+            //TODO: Add getEntityMap
+            retMap = testDataReader.getImageEntityMap(GAME_NAME);
+//            retMap = null;
         } catch (OogaDataException e) {
             e.printStackTrace();
             fail();

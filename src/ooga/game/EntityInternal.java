@@ -1,9 +1,6 @@
 package ooga.game;
 
 import java.util.List;
-import java.util.Map;
-import ooga.CollisionBehavior;
-import ooga.MovementBehavior;
 
 /**
  * (PROPOSED) The side of an entity that can be accessed by behaviors.

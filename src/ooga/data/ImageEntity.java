@@ -1,5 +1,6 @@
 package ooga.data;
 
+import java.util.Map;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,6 +14,7 @@ public class ImageEntity extends OogaEntity {
       imageLocation = new SimpleStringProperty(imageFilePath);
     }
     myName = name;
+    propertyUpdaters.put("imageLocation", null); //TODO: figure out how image location should react to variable change
   }
 
   public ImageEntity(String name) {
@@ -31,5 +33,10 @@ public class ImageEntity extends OogaEntity {
 
   public StringProperty imageLocationProperty() {
     return imageLocation;
+  }
+
+  @Override
+  public void reactToVariables(Map<String, Double> variables) {
+    //does nothing for now?
   }
 }

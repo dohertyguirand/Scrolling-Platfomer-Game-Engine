@@ -1,7 +1,7 @@
 package ooga.game;
 
 import java.util.ArrayList;
-import ooga.CollisionBehavior;
+import ooga.game.behaviors.CollisionBehavior;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.MoveUpCollision;

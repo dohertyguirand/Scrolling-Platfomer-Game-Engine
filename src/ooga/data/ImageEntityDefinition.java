@@ -1,10 +1,8 @@
 package ooga.data;
 
-import javafx.beans.property.*;
-import ooga.CollisionBehavior;
-import ooga.ControlsBehavior;
-import ooga.Entity;
-import ooga.MovementBehavior;
+import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.MovementBehavior;
 
 import java.util.List;
 import java.util.Map;

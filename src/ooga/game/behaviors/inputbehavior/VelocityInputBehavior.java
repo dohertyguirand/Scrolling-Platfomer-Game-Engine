@@ -1,7 +1,7 @@
 package ooga.game.behaviors.inputbehavior;
 
 import java.util.List;
-import ooga.ControlsBehavior;
+import ooga.game.behaviors.ControlsBehavior;
 import ooga.Entity;
 
 public class VelocityInputBehavior implements ControlsBehavior {

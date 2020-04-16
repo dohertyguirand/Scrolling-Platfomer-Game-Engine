@@ -15,6 +15,8 @@ DataReader loads and reports information. Changed its description and return typ
 create new Entity instances.
 - 4/14/20 Added ``getProfiles`` so View can ask for a list of the existing users
 - 4/14/20 Changed the return type of ``getProfiles`` to use the same class as View
+- 4/15/20 Changed return type of ``getBasicGameInfo`` to be list of list of strings, to allow
+it to return variables in addition to level IDs
 
 ## Game API
 - getEntities now returns an observable list instead of list
@@ -60,6 +62,7 @@ better when actual movement happens after all logic.
 to inputs (reacting to a press is better for jumping).
 - 4/14/2020: Added ``createEntity`` and ``popCreatedEntities`` so that new
 entities can be created by behaviors.
+- 4/15/2020: Added ``reactToVariables`` so that entities can react to variable values each frame.
 
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
