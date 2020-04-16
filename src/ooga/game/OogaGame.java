@@ -11,13 +11,14 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.*;
 import ooga.UserInputListener;
+import ooga.game.behaviors.framebehavior.GravityBehavior;
+import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 import ooga.game.collisiondetection.VelocityCollisionDetector;
 
-public class OogaGame implements Game, UserInputListener {
+public class OogaGame implements Game, UserInputListener, GameInternal {
 
   private List<String> myLevelIds;
-  private int myLevel;
   private Level currentLevel;
   private String myName;
   private DataReader myDataReader;
@@ -30,7 +31,6 @@ public class OogaGame implements Game, UserInputListener {
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
 //  public OogaGame(String gameName, String userName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
-    myLevel = 0;
     myName = gameName;
     List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
     myLevelIds = basicGameInfo.get(0);
@@ -117,6 +117,7 @@ public class OogaGame implements Game, UserInputListener {
     List<Entity> entityCollisions = new ArrayList<>();
     for (Entity collidingWith : currentLevel.getEntities()) {
       if (collidingWith != target && collisionType.isColliding(target,collidingWith)) {
+        currentLevel.registerCollision(target.getName(),collidingWith.getName());
         entityCollisions.add(collidingWith);
         break;
       }
@@ -142,8 +143,8 @@ public class OogaGame implements Game, UserInputListener {
   private void checkLevelEnd() {
     if (currentLevel.checkEndCondition()) {
       try {
-        Level next = myDataReader.loadLevel(myName,currentLevel.nextLevelID());
-        currentLevel = next;
+        currentLevel = loadGameLevel(myName,currentLevel.nextLevelID());
+        System.out.println("LOADED LEVEL");
       } catch (OogaDataException e) {
         //if the next level fails to load, continue this level.
       }
@@ -191,10 +192,10 @@ public class OogaGame implements Game, UserInputListener {
     Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
     for (Entity e : currentLevel.getEntities()) {
       for (Entity collidingWith : verticalCollisions.get(e)) {
-        e.handleVerticalCollision(collidingWith, elapsedTime, myVariables);
+        e.handleVerticalCollision(collidingWith, elapsedTime, myVariables, this);
       }
       for (Entity collidingWith : horizontalCollisions.get(e)) {
-        e.handleHorizontalCollision(collidingWith, elapsedTime, myVariables);
+        e.handleHorizontalCollision(collidingWith, elapsedTime, myVariables,this);
       }
     }
   }
@@ -278,5 +279,16 @@ public class OogaGame implements Game, UserInputListener {
   @Override
   public void reactToPauseButton(boolean paused) {
 
+  }
+
+  @Override
+  public void createEntity(String type, List<Double> position) {
+    //TODO: Change this from the default
+    Entity created = new ImageEntity("Mushroom","file:data/games-library/example-dino/googe_dino.bmp", 0.0, 0.0, 100.0, 100.0);
+    created.setPosition(position);
+    created.setMovementBehaviors(List.of(new MoveForwardBehavior(25.0/1000.0,0.0),
+        new GravityBehavior(0.0,75.0/1000.0)));
+    myEntities.add(created);
+    currentLevel.addEntity(created);
   }
 }

@@ -57,7 +57,7 @@ class EntityTest {
     dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
 
     dino.updateSelf(1.0);
-    dino.handleCollision(cactus, elapsedTime);
+//    dino.handleCollision(cactus, elapsedTime);
     assertTrue(dino.isDestroyed());
   }
 

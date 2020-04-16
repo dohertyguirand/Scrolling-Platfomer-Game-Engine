@@ -2,6 +2,7 @@ package ooga.game.behaviors.asyncbehavior;
 
 import java.util.List;
 import java.util.Map;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.Entity;
 
@@ -16,7 +17,7 @@ public class RunIntoTerrain implements CollisionBehavior {
   //TODO: Consider making collisions even richer, by having four methods (one for each direction)
   @Override
   public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables) {
+      Map<String, Double> variables, GameInternal game) {
     subject.setVelocity(subject.getVelocity().get(0),0);
     double direction = Math.signum(subject.getVelocity().get(1));
     if (direction < 0) {
@@ -41,7 +42,7 @@ public class RunIntoTerrain implements CollisionBehavior {
 
   @Override
   public void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables) {
+      Map<String, Double> variables, GameInternal game) {
     double direction = Math.signum(subject.getVelocity().get(0));
     subject.setVelocity(0,subject.getVelocity().get(1));
     System.out.println("direction = " + direction);

@@ -68,6 +68,12 @@
       <Image>mario_brick.png</Image>
 <!--      <Image>brick.png</Image>-->
     </ImageEntity>
+    <ImageEntity>
+      <Name>Flagpole</Name>
+      <Width>100</Width>
+      <Height>400</Height>
+      <Image>mario_flagpole.png</Image>
+    </ImageEntity>
   </Entities>
   <Variables>
     <Variable>
@@ -79,6 +85,7 @@
     <Level>
       <ID>1</ID>
       <NextLevel>2</NextLevel>
+      <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
@@ -132,8 +139,13 @@
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Koopa</Type>
-          <XPos>800</XPos>
+          <XPos>600</XPos>
           <YPos>400</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Flagpole</Type>
+          <XPos>800</XPos>
+          <YPos>200</YPos>
         </ImageEntityInstance>
       </ImageEntityInstances>
       <TextEntityInstances>
@@ -154,6 +166,7 @@
     <Level>
       <ID>2</ID>
       <NextLevel>1</NextLevel>
+      <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>

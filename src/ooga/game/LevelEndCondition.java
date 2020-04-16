@@ -12,4 +12,11 @@ public interface LevelEndCondition {
    */
   boolean isLevelDone();
 
+  /**
+   * Notifies the level of a collision taking place, so that the level can tell whether it has ended
+   * @param firstEntity The Name of one entity in a collision.
+   * @param secondEntity The Name of another entity in a collision.
+   */
+  void registerCollision(String firstEntity, String secondEntity);
+
 }

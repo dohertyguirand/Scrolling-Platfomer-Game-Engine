@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.game.behaviors.ControlsBehavior;
 import ooga.game.behaviors.MovementBehavior;
@@ -112,13 +113,11 @@ public interface Entity {
    * @param collidingEntity The String identifier of the enemy being collided with.
    * @param elapsedTime
    */
-  void handleCollision(Entity collidingEntity, double elapsedTime);
-
   void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables);
+      Map<String, Double> variables, GameInternal game);
 
   void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables);
+      Map<String, Double> variables, GameInternal game);
 
   /**
    * Moves the entity by the specified amount in the x and y direction.

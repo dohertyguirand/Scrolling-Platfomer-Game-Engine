@@ -17,20 +17,24 @@ import java.util.ArrayList;
 public class OogaLevel implements Level{
     private ObservableList<Entity> myEntities;
     private String myNextLevelId;
-
-    public OogaLevel(List<Entity> entities, String nextLevel) {
-        this(entities);
-        myNextLevelId = nextLevel;
-    }
+    private LevelEndCondition myEndCondition;
 
     public OogaLevel(List<Entity> entities){
 //        myEntities = (ObservableList<EntityAPI>) Entities;
         myEntities = FXCollections.observableArrayList(entities);
         myNextLevelId = "UNDEFINED_NEXT_LEVEL";
+        myNextLevelId = "1"; //TODO: REMOVE BECAUSE THIS IS A DEBUG LEVEL ID
+        //TODO: Allow assigning of an end condition
+        myEndCondition = new CollisionEndCondition(List.of("SmallMario","Flagpole"));
     }
 
-    public OogaLevel() {
-        this(new ArrayList<>());
+    public OogaLevel(List<Entity> entities, LevelEndCondition condition){
+//        myEntities = (ObservableList<EntityAPI>) Entities;
+        myEntities = FXCollections.observableArrayList(entities);
+        myNextLevelId = "UNDEFINED_NEXT_LEVEL";
+        myNextLevelId = "1"; //TODO: REMOVE BECAUSE THIS IS A DEBUG LEVEL ID
+        //TODO: Allow assigning of an end condition
+        myEndCondition = new CollisionEndCondition(List.of("SmallMario","Flagpole"));
     }
 
     @Override
@@ -59,7 +63,7 @@ public class OogaLevel implements Level{
 
     @Override
     public boolean checkEndCondition() {
-        return false;
+        return myEndCondition.isLevelDone();
     }
 
     @Override
@@ -70,5 +74,10 @@ public class OogaLevel implements Level{
     @Override
     public void setNextLevelID(String nextID) {
         myNextLevelId = nextID;
+    }
+
+    @Override
+    public void registerCollision(String firstEntity, String secondEntity) {
+        myEndCondition.registerCollision(firstEntity,secondEntity);
     }
 }

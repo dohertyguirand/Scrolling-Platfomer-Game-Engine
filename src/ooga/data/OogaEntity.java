@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.function.Consumer;
 import javafx.beans.property.*;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.game.behaviors.ControlsBehavior;
 import ooga.Entity;
@@ -50,6 +51,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myMovementBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
     myVelocityVectors = new Stack<>();
+    myName = "";
   }
 
   @Override
@@ -169,32 +171,22 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myControls = new HashMap<>(behaviors);
   }
 
-  @Override
-  public void handleCollision(Entity collidingEntity, double elapsedTime) {
-    //TODO: REMOVE THIS LEGACY METHOD
-    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, new HashMap<>());
-      }
-    }
-  }
-
   //TODO: Implement the lambda (after testing) to vertical collisions
   @Override
   public void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables) {
+      Map<String, Double> variables, GameInternal game) {
     if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
       for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, variables);
+        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, variables, game);
       }
     }
   }
 
   @Override
   public void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables) {
+      Map<String, Double> variables, GameInternal game) {
     doAllCollisions(collidingEntity, behavior -> behavior.doHorizontalCollision(this,collidingEntity, elapsedTime,
-        variables));
+        variables, game));
   }
 
   private void doAllCollisions(Entity collidingEntity, Consumer<CollisionBehavior> collisionType) {
