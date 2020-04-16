@@ -26,6 +26,7 @@ public class OogaGame implements Game, UserInputListener {
   private Map<String, Double> myVariables;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
+//  public OogaGame(String gameName, String userName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myLevel = 0;
     myName = gameName;
@@ -36,6 +37,7 @@ public class OogaGame implements Game, UserInputListener {
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
+//    currentLevel = loadLevel(gameName,userName)
     myVariables = new HashMap<>();
     for(int i=0; i<basicGameInfo.get(1).size(); i++){
       myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
@@ -233,7 +235,7 @@ public class OogaGame implements Game, UserInputListener {
    */
   @Override
   public void reactToGameSave() {
-
+//    myDataReader.saveGameState(String userName, myName);
   }
 
   /**

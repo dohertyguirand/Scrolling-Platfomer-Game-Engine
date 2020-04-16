@@ -13,7 +13,7 @@
             <Name>Super Mario Bros</Name>
             <Save>
                 <Date></Date>
-                <StateFilePath></StateFilePath>
+                <StateFilePath>saves/mario-save.xml</StateFilePath>
             </Save>
         </Game>
     </SavedGameStates>

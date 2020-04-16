@@ -48,6 +48,7 @@ public interface DataReader {
    * @throws OogaDataException If the given name isn't in the library or the ID is not in the game.
    */
   Level loadLevel(String gameName, String levelID) throws OogaDataException;
+  //Level loadLevel(String gameName, String saveFilePath) throws OogaDataException;
 
   /**
    * @param gameName: the name of the game for which a map is being requested
