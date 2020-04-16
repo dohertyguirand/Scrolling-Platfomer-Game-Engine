@@ -11,11 +11,9 @@ import ooga.OogaDataException;
 import ooga.data.*;
 import ooga.UserInputListener;
 import ooga.game.collisiondetection.OogaCollisionDetector;
+import ooga.game.collisiondetection.VelocityCollisionDetector;
 
 public class OogaGame implements Game, UserInputListener {
-
-  //TODO: Remove hard-coded filepath
-  public static final String GAME_LIBRARY_PATH = "data/games-library/";
 
   private List<String> myLevelIds;
   private int myLevel;
@@ -34,7 +32,7 @@ public class OogaGame implements Game, UserInputListener {
     List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
     myLevelIds = basicGameInfo.get(0);
     //TODO: Make the type of collision detector configurable.
-    myCollisionDetector = new OogaCollisionDetector();
+    myCollisionDetector = new VelocityCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
     currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));

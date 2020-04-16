@@ -2,55 +2,68 @@ package ooga.game.behaviors.asyncbehavior;
 
 import java.util.List;
 import java.util.Map;
-import ooga.CollisionBehavior;
+import ooga.game.behaviors.CollisionBehavior;
 import ooga.Entity;
 
 public class RunIntoTerrain implements CollisionBehavior {
 
-  double margin = 0.0;
+  public static final double MARGIN = 0.1;
 
   public RunIntoTerrain(List<String> args) {
     //arguments have no effect on this behavior
   }
 
+  //TODO: Consider making collisions even richer, by having four methods (one for each direction)
   @Override
   public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables) {
     subject.setVelocity(subject.getVelocity().get(0),0);
-//    subject.changeVelocity(0,-1 * subject.getVelocity().get(1));
     double direction = Math.signum(subject.getVelocity().get(1));
-    double targetY = calcTargetY(subject,collidingEntity);
-    double subjectY = subject.getPosition().get(1) + (subject.getVelocity().get(1) * elapsedTime);
-    double deltaY = targetY - subjectY;
-//    subject.move(0.0,(deltaY - (margin * direction)) / elapsedTime);
+    if (direction < 0) {
+      doUpwardCollision(subject,collidingEntity,elapsedTime,variables);
+    }
+    else {
+      doDownwardCollision(subject,collidingEntity,elapsedTime,variables);
+    }
+  }
+
+  private void doDownwardCollision(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
+    double targetX = subject.getPosition().get(0);
+    double targetY = collidingEntity.getPosition().get(1)-subject.getHeight()-MARGIN;
+    subject.setPosition(List.of(targetX,targetY));
+  }
+
+  private void doUpwardCollision(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
+    double targetX = subject.getPosition().get(0);
+    double targetY = collidingEntity.getPosition().get(1) + collidingEntity.getHeight() + MARGIN;
+    subject.setPosition(List.of(targetX,targetY));
   }
 
   @Override
   public void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables) {
-    subject.setVelocity(0,subject.getVelocity().get(1));
     double direction = Math.signum(subject.getVelocity().get(0));
-    double targetX = calcTargetX(subject,collidingEntity);
-    double subjectX = subject.getPosition().get(0) + (subject.getVelocity().get(0) * elapsedTime);
-    double deltaX = targetX - subjectX;
-//    subject.move((deltaX - (margin* direction)) / elapsedTime,0);
-  }
-
-  private double calcTargetX(Entity subject, Entity collidingEntity) {
-    if (subject.getPosition().get(0) < collidingEntity.getPosition().get(0)) {
-      return collidingEntity.getPosition().get(0) - subject.getWidth();
+    subject.setVelocity(0,subject.getVelocity().get(1));
+    System.out.println("direction = " + direction);
+    if (direction < 0) {
+      doCollisionTowardLeft(subject,collidingEntity,elapsedTime,variables);
     }
     else {
-      return collidingEntity.getPosition().get(0) + collidingEntity.getWidth();
+      doCollisionTowardRight(subject,collidingEntity,elapsedTime,variables);
     }
   }
 
-  private double calcTargetY(Entity subject, Entity collidingEntity) {
-    if (subject.getPosition().get(1) < collidingEntity.getPosition().get(1)) {
-      return collidingEntity.getPosition().get(1) - subject.getHeight();
-    }
-    else {
-      return collidingEntity.getPosition().get(1) + collidingEntity.getHeight();
-    }
+  private void doCollisionTowardRight(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
+    double targetX = collidingEntity.getPosition().get(0)- subject.getWidth() - MARGIN;
+    double targetY = subject.getPosition().get(1);
+    subject.setPosition(List.of(targetX,targetY));
   }
+
+  private void doCollisionTowardLeft(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
+    System.out.println("COLLIDING TOWARD LEFT");
+    double targetX = collidingEntity.getPosition().get(0) + collidingEntity.getWidth() + MARGIN;
+    double targetY = subject.getPosition().get(1);
+    subject.setPosition(List.of(targetX,targetY));
+  }
+
 }

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
-import ooga.CollisionBehavior;
+import ooga.game.behaviors.CollisionBehavior;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;

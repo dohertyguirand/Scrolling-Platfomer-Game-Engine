@@ -11,6 +11,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
 import ooga.game.OogaLevel;
+import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.MovementBehavior;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;

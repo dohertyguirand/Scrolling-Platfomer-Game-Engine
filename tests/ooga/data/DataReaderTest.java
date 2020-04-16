@@ -32,7 +32,7 @@ public class DataReaderTest {
     }
     @Test
     public void testGetBasicGameInfo(){
-        List<String> stringList = null;
+        List<List<String>> stringList = null;
         try {
             stringList = testDataReader.getBasicGameInfo(GAME_NAME);
         } catch (OogaDataException e) {
@@ -68,12 +68,14 @@ public class DataReaderTest {
     @Test
     public void testGetEntityMap(){
         Map<String, ImageEntityDefinition> retMap = null;
-        try {
-            retMap = testDataReader.getEntityMap(GAME_NAME);
-        } catch (OogaDataException e) {
-            e.printStackTrace();
-            fail();
-        }
+//        try {
+            //TODO: Add getEntityMap
+//            retMap = testDataReader.getEntityMap(GAME_NAME);
+            retMap = null;
+//        } catch (OogaDataException e) {
+//            e.printStackTrace();
+//            fail();
+//        }
         for(String key : retMap.keySet()){
             Entity e = retMap.get(key).makeInstanceAt(0.0,0.0);
             System.out.print("Name: "+ key + "   ");

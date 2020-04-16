@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.function.Consumer;
 import javafx.beans.property.*;
-import ooga.CollisionBehavior;
-import ooga.ControlsBehavior;
+import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ControlsBehavior;
 import ooga.Entity;
-import ooga.MovementBehavior;
+import ooga.game.behaviors.MovementBehavior;
 import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
@@ -209,7 +209,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public void move(double xDistance, double yDistance) {
 //    myXPos.set(myXPos.get() + xDistance);
 //    myYPos.set(myYPos.get() + yDistance);
-    myVelocityVectors.add(List.of(xDistance,yDistance));
+//    myVelocityVectors.add(List.of(xDistance,yDistance));
   }
 
   @Override
@@ -240,10 +240,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private void moveByVelocity(double elapsedTime) {
 //    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
     changePosition(myVelocity,elapsedTime);
-    while (!myVelocityVectors.isEmpty()) {
-      changePosition(myVelocityVectors.pop(),elapsedTime);
+//    while (!myVelocityVectors.isEmpty()) {
+//      changePosition(myVelocityVectors.pop(),elapsedTime);
 //      myVelocityVectors.pop();
-    }
   }
 
   private void changePosition(List<Double> velocity, double elapsedTime) {

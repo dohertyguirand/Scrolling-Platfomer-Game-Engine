@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.MovementBehavior;
 
 /**
  * Represents any in-game object that has a physical place in the level.
