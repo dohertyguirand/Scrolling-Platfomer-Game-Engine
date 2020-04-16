@@ -46,7 +46,7 @@
             </Movement>
             <Controls>
                 <ControlInput>
-                    <Key>UpKey2</Key>
+                    <Key>UpKey2Pressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
                 </ControlInput>
                 <ControlInput>

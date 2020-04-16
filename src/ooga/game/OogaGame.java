@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
@@ -24,6 +25,7 @@ public class OogaGame implements Game, UserInputListener {
   private ControlsInterpreter myControlsInterpreter;
   private InputManager myInputManager = new OogaInputManager();
   private Map<String, Double> myVariables;
+  private ObservableList<Entity> myEntities;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
 //  public OogaGame(String gameName, String userName, DataReader dataReader) throws OogaDataException {
@@ -36,13 +38,21 @@ public class OogaGame implements Game, UserInputListener {
     myCollisionDetector = new VelocityCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
-    currentLevel = myDataReader.loadLevel(gameName,myLevelIds.get(0));
+    myEntities = FXCollections.observableArrayList(new ArrayList<>());
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(1));
 //    currentLevel = loadLevel(gameName,userName)
     myVariables = new HashMap<>();
     for(int i=0; i<basicGameInfo.get(1).size(); i++){
       myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
     }
     System.out.println("myVariables = " + myVariables);
+  }
+
+  private Level loadGameLevel(String gameName, String id) throws OogaDataException {
+    Level level = myDataReader.loadLevel(gameName,id);
+    myEntities.clear();
+    myEntities.addAll(level.getEntities());
+    return level;
   }
 
   public OogaGame(Level startingLevel) {
@@ -61,9 +71,7 @@ public class OogaGame implements Game, UserInputListener {
 
   @Override
   public ObservableList<Entity> getEntities() {
-    System.out.println("currentLevel = " + currentLevel);
-    System.out.println("currentLevel.getEntities() = " + currentLevel.getEntities());
-    return currentLevel.getEntities();
+    return myEntities;
   }
 
   @Override
@@ -166,6 +174,8 @@ public class OogaGame implements Game, UserInputListener {
     for (Entity destroyed : destroyedEntities) {
       if (destroyed.isDestroyed()) {
         currentLevel.removeEntity(destroyed);
+        System.out.println("destroyed.getName() = " + destroyed.getName());
+        myEntities.remove(destroyed);
       }
     }
   }
@@ -236,6 +246,12 @@ public class OogaGame implements Game, UserInputListener {
   @Override
   public void reactToGameSave() {
 //    myDataReader.saveGameState(String userName, myName);
+    System.out.println("GAME SAVED");
+    try {
+      currentLevel = loadGameLevel(myName, myLevelIds.get(1));
+    } catch (OogaDataException e) {
+      System.out.println("FAILED TO LOAD LEVEL 1");
+    }
   }
 
   /**

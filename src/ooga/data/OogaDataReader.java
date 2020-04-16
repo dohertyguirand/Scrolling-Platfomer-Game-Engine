@@ -165,7 +165,7 @@ public class OogaDataReader implements DataReader{
                 String levelID = level.getElementsByTagName("ID").item(0).getTextContent();
                 if(levelID.equals(givenLevelID)){
                     //TODO: refactor the below loops into a single loop
-                    NodeList imageEntityNodes = doc.getElementsByTagName("ImageEntityInstance");
+                    NodeList imageEntityNodes = level.getElementsByTagName("ImageEntityInstance");
                     // for each, save a copy of the specified instance at the specified place
                     for (int j = 0; j < imageEntityNodes.getLength(); j++) {
                         Node currentEntity = imageEntityNodes.item(j);
