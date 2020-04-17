@@ -286,7 +286,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     //TODO: Change this from the default
     Entity created = new ImageEntity("Mushroom","file:data/games-library/example-dino/googe_dino.bmp", 0.0, 0.0, 100.0, 100.0);
     created.setPosition(position);
-    created.setMovementBehaviors(List.of(new MoveForwardBehavior(25.0/1000.0,0.0),
+    created.setMovementBehaviors(List.of(new MoveForwardBehavior(List.of("0.025","0.0","0.50")),
         new GravityBehavior(0.0,75.0/1000.0)));
     myEntities.add(created);
     currentLevel.addEntity(created);

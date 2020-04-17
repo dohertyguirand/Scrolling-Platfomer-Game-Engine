@@ -49,8 +49,9 @@
       <Image>koopa.png</Image>
       <Movement>
         <MovementBehavior>Gravity 0.0 0.10</MovementBehavior>
+        <MovementBehavior>Patrol 0.100 .10 500 485 700 485</MovementBehavior>
       </Movement>
-      <Collsions>
+      <Collisions>
         <EntityCollision>
           <With>Brick</With>
           <Reaction>TerrainCollision</Reaction>
@@ -59,14 +60,13 @@
           <With>SmallMario</With>
           <Reaction>Stompable</Reaction>
         </EntityCollision>
-      </Collsions>
+      </Collisions>
     </ImageEntity>
     <ImageEntity>
       <Name>Brick</Name>
       <Width>100</Width>
       <Height>100</Height>
       <Image>mario_brick.png</Image>
-<!--      <Image>brick.png</Image>-->
     </ImageEntity>
     <ImageEntity>
       <Name>Flagpole</Name>
@@ -86,6 +86,7 @@
       <ID>1</ID>
       <NextLevel>2</NextLevel>
       <EndCondition>Collision Flagpole SmallMario</EndCondition>
+<!--      <Background>mario_background.png</Background>-->
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
@@ -109,7 +110,7 @@
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Brick</Type>
-          <XPos>500</XPos>
+          <XPos>400</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
@@ -224,6 +225,16 @@
           <YPos>500</YPos>
         </ImageEntityInstance>
       </ImageEntityInstances>
+      <TextEntityInstances>
+        <TextEntityInstance>
+          <Text>Game Over.You Win.</Text>
+          <Font>Comic Sans MS</Font>
+          <XPos>400</XPos>
+          <YPos>400</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+        </TextEntityInstance>
+      </TextEntityInstances>
     </Level>
   </Levels>
 </Game>
