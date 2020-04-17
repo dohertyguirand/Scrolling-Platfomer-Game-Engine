@@ -41,6 +41,10 @@
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
         <EntityCollision>
+          <With>Flagpole</With>
+          <Reaction>TerrainCollision</Reaction>
+        </EntityCollision>
+        <EntityCollision>
           <With>QuestionBlock</With>
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
