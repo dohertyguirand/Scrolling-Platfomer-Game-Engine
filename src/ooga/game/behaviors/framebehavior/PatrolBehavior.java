@@ -35,31 +35,22 @@ public class PatrolBehavior implements MovementBehavior {
   public void doMovementUpdate(double elapsedTime, Entity subject) {
     List<Double> difference = targetDifference(subject);
     double distanceFromTarget = getMagnitude(difference);
-    System.out.println("distanceFromTarget = " + distanceFromTarget);
     if (distanceFromTarget < MARGIN) {
-      System.out.println("SWITCHING TARGETS");
       switchTargets();
     }
     for (int i = 0; i < difference.size(); i ++) {
       difference.set(i,accelPerFrame * (1.0 / distanceFromTarget) * difference.get(i));
     }
-    System.out.println("getMagnitude(difference) = " + getMagnitude(difference));
     if ((getDotProduct(subject.getVelocity(),difference)) < Math.pow(myMaxSpeed,2)) {
       subject.changeVelocity(difference);
-    }
-    else {
-      System.out.println("HIT MAX SPEED");
     }
   }
 
   private void switchTargets() {
-    System.out.println("SWITCHED TARGET POINTS");
     if (myTargetPoint.equals(myFirstPoint)) {
-      System.out.println("SWITCHED FIRST TO SECOND");
       myTargetPoint = mySecondPoint;
     }
     else {
-      System.out.println("SWITCHED SECOND TO FIRST");
       myTargetPoint = myFirstPoint;
     }
   }
