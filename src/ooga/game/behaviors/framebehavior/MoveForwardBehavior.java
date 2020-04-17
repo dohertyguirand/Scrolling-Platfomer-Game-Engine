@@ -1,10 +1,12 @@
 package ooga.game.behaviors.framebehavior;
 
 import java.util.List;
-import ooga.Entity;
-import ooga.game.behaviors.MovementBehavior;
+import java.util.Map;
 
-public class MoveForwardBehavior implements MovementBehavior {
+import ooga.Entity;
+import ooga.game.behaviors.FrameBehavior;
+
+public class MoveForwardBehavior implements FrameBehavior {
 
 
   private Entity myEntity;
@@ -26,7 +28,7 @@ public class MoveForwardBehavior implements MovementBehavior {
   }
 
   @Override
-  public void doMovementUpdate(double elapsedTime, Entity subject) {
+  public void doFrameUpdate(double elapsedTime, Entity subject, Map<String, Double> variables) {
     subject.move(xMovePerFrame * elapsedTime,yMovePerFrame * elapsedTime);
   }
 }

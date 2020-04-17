@@ -6,7 +6,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.game.behaviors.ControlsBehavior;
-import ooga.game.behaviors.MovementBehavior;
+import ooga.game.behaviors.FrameBehavior;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -71,9 +71,10 @@ public interface Entity {
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
+   * @param variables
    *
    */
-  void updateSelf(double elapsedTime);
+  void updateSelf(double elapsedTime, Map<String, Double> variables);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and
@@ -94,7 +95,7 @@ public interface Entity {
    * Sets the behaviors that will be carried out for every frame
    * @param behaviors A List of MovementBehaviors
    */
-  void setMovementBehaviors(List<MovementBehavior> behaviors);
+  void setMovementBehaviors(List<FrameBehavior> behaviors);
 
   /**
    * Sets the mappings of behaviors that will be carried out when controls are inputted,

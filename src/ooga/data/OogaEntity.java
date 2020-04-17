@@ -10,7 +10,7 @@ import javafx.beans.property.*;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.game.behaviors.ControlsBehavior;
 import ooga.Entity;
-import ooga.game.behaviors.MovementBehavior;
+import ooga.game.behaviors.FrameBehavior;
 import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
@@ -34,7 +34,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
-  private List<MovementBehavior> myMovementBehaviors;
+  private List<FrameBehavior> myFrameBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
   private boolean isDestroyed;
@@ -47,7 +47,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.width.set(width);
     this.height.set(height);
     myCollisionBehaviors = new HashMap<>();
-    myMovementBehaviors = new ArrayList<>();
+    myFrameBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
     myVelocityVectors = new Stack<>();
   }
@@ -115,8 +115,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
-    myMovementBehaviors = behaviors;
+  public void setMovementBehaviors(List<FrameBehavior> behaviors) {
+    myFrameBehaviors = behaviors;
   }
 
   @Override
@@ -138,9 +138,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime) {
-    for (MovementBehavior behavior : myMovementBehaviors) {
-      behavior.doMovementUpdate(elapsedTime,this);
+  public void updateSelf(double elapsedTime, Map<String, Double> variables) {
+    for (FrameBehavior behavior : myFrameBehaviors) {
+      behavior.doFrameUpdate(elapsedTime,this, variables);
     }
     applyFrictionHorizontal();
   }

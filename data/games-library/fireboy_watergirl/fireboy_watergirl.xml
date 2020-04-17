@@ -119,7 +119,7 @@
             <Collisions>
                 <EntityCollision>
                     <With>Fireboy</With>
-                    <Reaction>RemoveSelf</Reaction>
+                    <Reaction>SetVariableBehavior FireboyOnDoor 1</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -131,7 +131,7 @@
             <Collisions>
                 <EntityCollision>
                     <With>Watergirl</With>
-                    <Reaction>RemoveSelf</Reaction>
+                    <Reaction>SetVariableBehavior WatergirlOnDoor 1</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -140,6 +140,14 @@
         <Variable>
             <Name>Lives</Name>
             <StartValue>3</StartValue>
+        </Variable>
+        <Variable>
+            <Name>FireboyOnDoor</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>WatergirlOnDoor</Name>
+            <StartValue>0</StartValue>
         </Variable>
     </Variables>
     <Levels>

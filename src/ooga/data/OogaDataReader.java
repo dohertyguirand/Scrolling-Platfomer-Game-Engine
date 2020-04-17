@@ -13,7 +13,7 @@ import ooga.game.Level;
 import ooga.game.OogaLevel;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.game.behaviors.ControlsBehavior;
-import ooga.game.behaviors.MovementBehavior;
+import ooga.game.behaviors.FrameBehavior;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -266,13 +266,13 @@ public class OogaDataReader implements DataReader{
         String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
         System.out.print(String.format("Name: %s ", name));
 
-        List<MovementBehavior> movementBehaviors = new ArrayList<>();
+        List<FrameBehavior> frameBehaviors = new ArrayList<>();
         for (int i=0; i<entityElement.getElementsByTagName("MovementBehavior").getLength(); i++){
             // create an array of the behavior name and its space-separated parameters
             String[] behavior = entityElement.getElementsByTagName("MovementBehavior").item(i).getTextContent().split(" ");
             // determine what type of behavior it is
             Object obj = makeBehavior(behavior, "Movement");
-            movementBehaviors.add((MovementBehavior) obj);
+            frameBehaviors.add((FrameBehavior) obj);
         }
 
         Map<String,List<CollisionBehavior>> collisionBehaviors = new HashMap<>();
@@ -308,7 +308,7 @@ public class OogaDataReader implements DataReader{
             controlBehaviors.put(keyPressed, reactions);
         }
 
-        ImageEntityDefinition newIED = new ImageEntityDefinition(name, height, width, imagePath, movementBehaviors,
+        ImageEntityDefinition newIED = new ImageEntityDefinition(name, height, width, imagePath, frameBehaviors,
                  collisionBehaviors, controlBehaviors);
 
         System.out.println();

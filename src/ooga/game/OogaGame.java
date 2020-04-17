@@ -201,7 +201,7 @@ public class OogaGame implements Game, UserInputListener {
       for (String input : myInputManager.getPressedKeys()) {
         e.reactToControlsPressed(input);
       }
-      e.updateSelf(elapsedTime);
+      e.updateSelf(elapsedTime, myVariables);
       e.reactToVariables(myVariables);
     }
   }
