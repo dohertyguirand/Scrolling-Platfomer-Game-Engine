@@ -1,7 +1,7 @@
 package ooga.game.behaviors.inputbehavior;
 
 import java.util.List;
-import ooga.ControlsBehavior;
+import ooga.game.behaviors.ControlsBehavior;
 import ooga.Entity;
 
 public class VelocityInputBehavior implements ControlsBehavior {
@@ -24,6 +24,7 @@ public class VelocityInputBehavior implements ControlsBehavior {
 
   @Override
   public void reactToControls(Entity subject) {
+    System.out.println("running this");
     if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
       subject.changeVelocity(xAccelPerFrame,yAccelPerFrame);
     }

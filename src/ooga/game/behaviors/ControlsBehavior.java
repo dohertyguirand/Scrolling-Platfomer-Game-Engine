@@ -1,4 +1,6 @@
-package ooga;
+package ooga.game.behaviors;
+
+import ooga.Entity;
 
 /**
  * Determines how an entity reacts to in-game user input of any kind.

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ooga.ControlsBehavior;
+import ooga.game.behaviors.ControlsBehavior;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.CreateEntity;
-import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
 import ooga.game.behaviors.asyncbehavior.RunIntoTerrain;
 import ooga.game.collisiondetection.VelocityCollisionDetector;
 import ooga.game.behaviors.framebehavior.GravityBehavior;
@@ -49,11 +48,11 @@ public class ControlsTestGameCreation {
 
 
     for (int i = 0; i < 10; i ++) {
-      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png", 0.0, 0.0, 100.0, 100.0);
+      Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/mario_brick.png", 0.0, 0.0, 100.0, 100.0);
       otherEntity.setPosition(List.of(100 + 100.0 * i,600.0));
       entities.add(otherEntity);
     }
-    Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/black_square.png", 0.0, 0.0, 100.0, 100.0);
+    Entity otherEntity = new ImageEntity("cactus","file:data/games-library/example-dino/mario_brick.png", 0.0, 0.0, 100.0, 100.0);
 //      otherEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(-450.0/1000,0)));
     otherEntity.setPosition(List.of(600.0,500.0));
     entities.add(otherEntity);

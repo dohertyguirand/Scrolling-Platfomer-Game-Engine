@@ -34,10 +34,11 @@ public interface DataReader {
   /**
    * Give a Game a list of level ID's in the order that they're listed in the .xml files
    * @param gameName the name of the Game at the start of the .xml file
-   * @return A list of Integers, the ID's of the Level written in the game file
+   * @return Three lists: A list of Integers, the ID's of the Level written in the game file; a list of strings, the names
+   *  of the variables; a list of strings/doubles, the variable values in order
    * @throws OogaDataException if the String given isn't a directory or the cooresponding file is not properly formatted
    */
-  List<String> getBasicGameInfo(String gameName) throws OogaDataException;
+  List<List<String>> getBasicGameInfo(String gameName) throws OogaDataException;
 
   /**
    * @param gameName The name of the game
@@ -47,13 +48,14 @@ public interface DataReader {
    * @throws OogaDataException If the given name isn't in the library or the ID is not in the game.
    */
   Level loadLevel(String gameName, String levelID) throws OogaDataException;
+  //Level loadLevel(String gameName, String saveFilePath) throws OogaDataException;
 
   /**
    * @param gameName: the name of the game for which a map is being requested
    * @return A map of all the entities described in a game file of the given name.
    * It maps from the entities' names to their definitions.
    */
-  Map<String, ImageEntityDefinition> getEntityMap(String gameName) throws OogaDataException;
+  Map<String, ImageEntityDefinition> getImageEntityMap(String gameName) throws OogaDataException;
 
   /**
    * Saves the current state of the game so it can easily be loaded from where the player

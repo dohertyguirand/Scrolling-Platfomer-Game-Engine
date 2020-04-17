@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import ooga.game.GameInternal;
+import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.MovementBehavior;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -68,9 +72,9 @@ public interface Entity {
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
-   * @param collisions The list of entities that is being collided with.
+   *
    */
-  void updateSelf(double elapsedTime, List<Entity> collisions);
+  void updateSelf(double elapsedTime);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and
@@ -109,11 +113,11 @@ public interface Entity {
    * @param collidingEntity The String identifier of the enemy being collided with.
    * @param elapsedTime
    */
-  void handleCollision(Entity collidingEntity, double elapsedTime);
+  void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables, GameInternal game);
 
-  void handleVerticalCollision(Entity collidingEntity, double elapsedTime);
-
-  void handleHorizontalCollision(Entity collidingEntity, double elapsedTime);
+  void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables, GameInternal game);
 
   /**
    * Moves the entity by the specified amount in the x and y direction.
@@ -174,4 +178,15 @@ public interface Entity {
    * @return Any entities that were created by this one this frame. This is emptied by the call.
    */
   List<Entity> popCreatedEntities();
+
+  /**
+   * Handles any behavior that depends on the values of variables.
+   */
+  void reactToVariables(Map<String,Double> variables);
+
+  /**
+   * Add a dependency to the map so that when the variable with the given name changes, the property with the given name is updated
+   * @param propertyVariableDependencies
+   */
+  void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies);
 }

@@ -1,4 +1,8 @@
-package ooga;
+package ooga.game.behaviors;
+
+import java.util.Map;
+import ooga.Entity;
+import ooga.game.GameInternal;
 
 /**
  * Defines a behavior to perform upon colliding with another entity.
@@ -22,8 +26,13 @@ public interface CollisionBehavior {
    *                   should own this behavior.
    * @param collidingEntity The String identifying the type of entity that the calling entity
    * @param elapsedTime
+   * @param variables
+   * @param game
    */
-  void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime);
+  default void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables, GameInternal game) {
+    //do nothing by default.
+  }
 
   /**
    * Performs the specific collision behavior implementation, with a horizontal collision.
@@ -31,6 +40,11 @@ public interface CollisionBehavior {
    *                   should own this behavior.
    * @param collidingEntity The String identifying the type of entity that the calling entity
    * @param elapsedTime
+   * @param variables
+   * @param game
    */
-  void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime);
+  default void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables, GameInternal game) {
+    //do nothing by default.
+  }
 }

@@ -1,8 +1,9 @@
 package ooga.game.behaviors.asyncbehavior;
 
 import java.util.List;
+import java.util.Map;
 import ooga.Entity;
-import ooga.game.DirectionlessCollision;
+import ooga.game.GameInternal;
 
 public class MoveUpCollision extends DirectionlessCollision {
 
@@ -17,7 +18,8 @@ public class MoveUpCollision extends DirectionlessCollision {
   }
 
   @Override
-  public void doCollision(Entity subject, Entity collidingEntity) {
+  public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables, GameInternal game) {
     subject.move(0, myMoveDistance);
   }
 }

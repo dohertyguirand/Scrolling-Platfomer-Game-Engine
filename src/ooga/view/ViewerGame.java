@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -70,11 +71,12 @@ public class ViewerGame {
       while (c.next()) {
         if(c.wasAdded() || c.wasRemoved()){
           for (Entity removedItem : c.getRemoved()) {
+            System.out.println(removedItem.isActiveInView());
             removedItem.setActiveInView(false);
           }
           for (Entity addedItem : c.getAddedSubList()) {
             addedItem.setActiveInView(true);
-            myEntityGroup.getChildren().add(makeViewEntity(addedItem));
+            addToEntityGroup(addedItem);
           }
         }
       }
@@ -82,20 +84,25 @@ public class ViewerGame {
 
     myEntityGroup = new Group();
     for(Entity entity : gameEntities){
-      Node viewEntity = makeViewEntity(entity);
-      myEntityGroup.getChildren().add(viewEntity);
-      entity.activeInViewProperty().addListener((o, oldVal, newVal) -> {
-        if(newVal) myEntityGroup.getChildren().add(viewEntity);
-        else myEntityGroup.getChildren().remove(viewEntity);
-      });
+      addToEntityGroup(entity);
     }
   }
 
+  private void addToEntityGroup(Entity entity) {
+    Node viewEntity = makeViewEntity(entity);
+    myEntityGroup.getChildren().add(viewEntity);
+    entity.activeInViewProperty().addListener((o, oldVal, newVal) -> {
+      if(newVal) myEntityGroup.getChildren().add(viewEntity);
+      else myEntityGroup.getChildren().remove(viewEntity);
+    });
+  }
+
   private Node makeViewEntity(Entity entity){
-    if(entity.getClass().equals(ImageEntity.class)){
+    // TODO: use reflection here or something
+    if(entity instanceof ImageEntity){
       return (new ViewImageEntity((ImageEntity)entity)).getNode();
     }
-    else if(entity.getClass().equals(TextEntity.class)){
+    else if(entity instanceof TextEntity){
       return (new ViewTextEntity((TextEntity)entity)).getNode();
     }
     return null;
@@ -130,8 +137,9 @@ public class ViewerGame {
         step();
       } catch (Exception ex) {
         // note that this should ideally never be thrown
-        showError("Animation Error");
-        //myErrorMessage.setText(myLanguageResources.getString("IOError"));
+        //ex.printStackTrace();
+        System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is" +
+                "not allowed during animation processing");
       }
     });
     myAnimation = new Timeline();
@@ -154,6 +162,7 @@ public class ViewerGame {
   }
 
   private void showError(String message) {
+    System.out.println(message);
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setContentText(message);
     alert.showAndWait();
@@ -161,8 +170,8 @@ public class ViewerGame {
 
   private void setUpInputListeners(UserInputListener userInputListener) {
     setUpPauseMenuListeners(userInputListener);
-    myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getText()));
-    myGameScene.setOnKeyReleased(e -> userInputListener.reactToKeyRelease(e.getText()));
+    myGameScene.setOnKeyPressed(e -> userInputListener.reactToKeyPress(e.getCode().getName()));
+    myGameScene.setOnKeyReleased(e -> userInputListener.reactToKeyRelease(e.getCode().getName()));
     myGameScene.setOnMouseClicked(e -> userInputListener.reactToMouseClick(e.getX(), e.getY()-PAUSE_BUTTON_SIZE));
     // add more input types here as needed, like mouse drag events
   }

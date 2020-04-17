@@ -1,9 +1,8 @@
 package ooga.game.behaviors.framebehavior;
 
 import java.util.List;
-import javafx.beans.property.DoubleProperty;
 import ooga.Entity;
-import ooga.MovementBehavior;
+import ooga.game.behaviors.MovementBehavior;
 
 /**
  * Uses constant downward motion to simulate basic gravity.

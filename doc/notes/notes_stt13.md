@@ -29,3 +29,10 @@ their sideways velocity canceled.
 - Notes from meeting on 4/9/2020:
     - I can make one generic 'updateGameByOneFrame' method in Game so that the view only has to 
     call one thing.
+    
+- Notes 4/16/2020:
+    - I need to do the following things: 
+        - Get loading levels to not be buggy with binding
+        - Add level end condition support
+        - Modify Mario to show off what we have working
+        - Add new behaviors as necessary
