@@ -138,9 +138,19 @@ public class OogaGame implements Game, UserInputListener {
     }
     List<String> allInputs = new ArrayList<>(activeKeys);
     allInputs.addAll(pressedKeys);
-    Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
-    Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
 
+    doEntityInputReactions(elapsedTime, activeKeys, pressedKeys);
+
+    doEntityCollisionsAndConditionals(elapsedTime, allInputs);
+
+//    doVariableUpdates();
+    doEntityCleanup();
+    executeEntityMovement(elapsedTime);
+    doEntityCreation();
+    checkLevelEnd();
+  }
+
+  private void doEntityInputReactions(double elapsedTime, List<String> activeKeys, List<String> pressedKeys) {
     for (Entity entity : currentLevel.getEntities()) {
       for (String input : activeKeys) {
         entity.reactToControls(input);
@@ -150,7 +160,13 @@ public class OogaGame implements Game, UserInputListener {
       }
       entity.updateSelf(elapsedTime, myVariables);
       entity.reactToVariables(myVariables);
+    }
+  }
 
+  private void doEntityCollisionsAndConditionals(double elapsedTime, List<String> allInputs) {
+    Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
+    Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
+    for (Entity entity : currentLevel.getEntities()) {
       for (Entity collidingWith : verticalCollisions.get(entity)) {
         entity.handleVerticalCollision(collidingWith, elapsedTime, myVariables);
       }
@@ -159,12 +175,6 @@ public class OogaGame implements Game, UserInputListener {
       }
       entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, verticalCollisions.get(entity), horizontalCollisions.get(entity));
     }
-
-//    doVariableUpdates();
-    doEntityCleanup();
-    executeEntityMovement(elapsedTime);
-    doEntityCreation();
-    checkLevelEnd();
   }
 
   private void checkLevelEnd() {
@@ -205,32 +215,6 @@ public class OogaGame implements Game, UserInputListener {
         System.out.println("destroyed.getName() = " + destroyed.getName());
         myEntities.remove(destroyed);
       }
-    }
-  }
-
-  private void doEntityCollisions(double elapsedTime) {
-    Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
-    Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
-    for (Entity e : currentLevel.getEntities()) {
-      for (Entity collidingWith : verticalCollisions.get(e)) {
-        e.handleVerticalCollision(collidingWith, elapsedTime, myVariables);
-      }
-      for (Entity collidingWith : horizontalCollisions.get(e)) {
-        e.handleHorizontalCollision(collidingWith, elapsedTime, myVariables);
-      }
-    }
-  }
-
-  private void doEntityUpdates(double elapsedTime) {
-    for (Entity e : currentLevel.getEntities()) {
-      for (String input : myInputManager.getActiveKeys()) {
-        e.reactToControls(input);
-      }
-      for (String input : myInputManager.getPressedKeys()) {
-        e.reactToControlsPressed(input);
-      }
-      e.updateSelf(elapsedTime, myVariables);
-      e.reactToVariables(myVariables);
     }
   }
 
