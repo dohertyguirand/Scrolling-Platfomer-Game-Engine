@@ -54,10 +54,10 @@ class EntityTest {
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
     collisionMap.put("Cactus", List.of(new MoveUpCollision(20.01), new DestroySelfBehavior(new ArrayList<>())));
     dino.setCollisionBehaviors(collisionMap);
-    dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
+//    dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
 
     dino.updateSelf(1.0);
-    dino.handleCollision(cactus, elapsedTime);
+//    dino.handleCollision(cactus, elapsedTime);
     assertTrue(dino.isDestroyed());
   }
 

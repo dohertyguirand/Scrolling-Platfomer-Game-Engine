@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.function.Consumer;
 import javafx.beans.property.*;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
@@ -53,6 +54,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myControls = new HashMap<>();
     myConditionalBehaviors = new ArrayList<>();
     myVelocityVectors = new Stack<>();
+    myName = "";
   }
 
   @Override
@@ -145,6 +147,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       behavior.doFrameUpdate(elapsedTime,this, variables);
     }
     applyFrictionHorizontal();
+    applyFrictionVertical();
   }
 
   private void applyFrictionHorizontal() {
@@ -155,6 +158,17 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       changeVelocity(FRICTION_ACCELERATION * -1 * Math.signum(myVelocity.get(0)),0);
     }
   }
+
+  private void applyFrictionVertical() {
+
+    if (Math.abs(myVelocity.get(1)) < FRICTION_ACCELERATION) {
+      setVelocity(getVelocity().get(0),0);
+    }
+    else {
+      changeVelocity(0,FRICTION_ACCELERATION * -1 * Math.signum(myVelocity.get(1)));
+    }
+  }
+
 
   @Override
   public void executeMovement(double elapsedTime) {
@@ -181,32 +195,22 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myConditionalBehaviors = new ArrayList<>(conditionalBehaviors);
   }
 
-  @Override
-  public void handleCollision(Entity collidingEntity, double elapsedTime) {
-    //TODO: REMOVE THIS LEGACY METHOD
-    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, new HashMap<>());
-      }
-    }
-  }
-
   //TODO: Implement the lambda (after testing) to vertical collisions
   @Override
   public void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables) {
+      Map<String, Double> variables, GameInternal game) {
     if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
       for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, variables);
+        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, variables, game);
       }
     }
   }
 
   @Override
   public void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables) {
+      Map<String, Double> variables, GameInternal game) {
     doAllCollisions(collidingEntity, behavior -> behavior.doHorizontalCollision(this,collidingEntity, elapsedTime,
-        variables));
+        variables, game));
   }
 
   private void doAllCollisions(Entity collidingEntity, Consumer<CollisionBehavior> collisionType) {
@@ -268,6 +272,11 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
+  public void changeVelocity(List<Double> change) {
+    changeVelocity(change.get(0),change.get(1));
+  }
+
+  @Override
   public void setVelocity(double xVelocity, double yVelocity) {
     myVelocity = List.of(xVelocity, yVelocity);
   }
@@ -310,8 +319,13 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    */
   @Override
   public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions) {
-    for(ConditionalBehavior conditionalBehavior : myConditionalBehaviors){
+    for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
       conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, verticalCollisions, horizontalCollisions);
     }
+  }
+
+  @Override
+  public boolean hasCollisionWith(String entityType) {
+    return myCollisionBehaviors.containsKey(entityType);
   }
 }

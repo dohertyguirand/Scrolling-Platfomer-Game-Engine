@@ -40,6 +40,14 @@
           <With>Brick</With>
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
+        <EntityCollision>
+          <With>Flagpole</With>
+          <Reaction>TerrainCollision</Reaction>
+        </EntityCollision>
+        <EntityCollision>
+          <With>QuestionBlock</With>
+          <Reaction>TerrainCollision</Reaction>
+        </EntityCollision>
       </Collisions>
     </ImageEntity>
     <ImageEntity>
@@ -49,8 +57,9 @@
       <Image>koopa.png</Image>
       <Movement>
         <MovementBehavior>Gravity 0.0 0.10</MovementBehavior>
+        <MovementBehavior>Patrol 0.100 .10 500 485 700 485</MovementBehavior>
       </Movement>
-      <Collsions>
+      <Collisions>
         <EntityCollision>
           <With>Brick</With>
           <Reaction>TerrainCollision</Reaction>
@@ -59,14 +68,55 @@
           <With>SmallMario</With>
           <Reaction>Stompable</Reaction>
         </EntityCollision>
-      </Collsions>
+      </Collisions>
     </ImageEntity>
     <ImageEntity>
       <Name>Brick</Name>
       <Width>100</Width>
       <Height>100</Height>
       <Image>mario_brick.png</Image>
-<!--      <Image>brick.png</Image>-->
+    </ImageEntity>
+    <ImageEntity>
+      <Name>Mushroom</Name>
+      <Width>80</Width>
+      <Height>80</Height>
+      <Image>mario_mushroom.png</Image>
+      <Movement>
+        <MovementBehavior>MoveForward 0.10 0.0 0.20</MovementBehavior>
+        <MovementBehavior>Gravity 0.0 0.10</MovementBehavior>
+      </Movement>
+      <Collisions>
+        <EntityCollision>
+        <With>Brick</With>
+        <Reaction>TerrainCollision</Reaction>
+        </EntityCollision>
+        <EntityCollision>
+          <With>QuestionBlock</With>
+          <Reaction>TerrainCollision</Reaction>
+        </EntityCollision>
+        <EntityCollision>
+          <With>SmallMario</With>
+          <Reaction>RemoveSelf</Reaction>
+        </EntityCollision>
+      </Collisions>
+    </ImageEntity>
+    <ImageEntity>
+      <Name>Flagpole</Name>
+      <Width>100</Width>
+      <Height>400</Height>
+      <Image>mario_flagpole.png</Image>
+    </ImageEntity>
+    <ImageEntity>
+      <Name>QuestionBlock</Name>
+      <Width>100</Width>
+      <Height>100</Height>
+      <Image>mario_question_block.png</Image>
+      <Collisions>
+        <EntityCollision>
+          <With>SmallMario</With>
+          <Reaction>HeadHitItem Mushroom</Reaction>
+        </EntityCollision>
+      </Collisions>
     </ImageEntity>
   </Entities>
   <Variables>
@@ -79,6 +129,8 @@
     <Level>
       <ID>1</ID>
       <NextLevel>2</NextLevel>
+      <EndCondition>Collision Flagpole SmallMario</EndCondition>
+<!--      <Background>mario_background.png</Background>-->
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
@@ -96,13 +148,18 @@
           <YPos>600</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
+          <Type>QuestionBlock</Type>
+          <XPos>300</XPos>
+          <YPos>200</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Brick</Type>
           <XPos>400</XPos>
           <YPos>600</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Brick</Type>
-          <XPos>500</XPos>
+          <XPos>400</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
@@ -132,8 +189,13 @@
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Koopa</Type>
+          <XPos>600</XPos>
+          <YPos>400</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Flagpole</Type>
           <XPos>800</XPos>
-          <YPos>500</YPos>
+          <YPos>200</YPos>
         </ImageEntityInstance>
       </ImageEntityInstances>
       <TextEntityInstances>
@@ -153,7 +215,8 @@
     </Level>
     <Level>
       <ID>2</ID>
-      <NextLevel>1</NextLevel>
+      <NextLevel>3</NextLevel>
+      <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
@@ -169,6 +232,11 @@
           <Type>Brick</Type>
           <XPos>300</XPos>
           <YPos>500</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>300</XPos>
+          <YPos>200</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Brick</Type>
@@ -210,7 +278,110 @@
           <XPos>800</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Flagpole</Type>
+          <XPos>900</XPos>
+          <YPos>200</YPos>
+        </ImageEntityInstance>
       </ImageEntityInstances>
+      <TextEntityInstances>
+        <TextEntityInstance>
+          <Text>Lives: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>850</XPos>
+          <YPos>0</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Lives</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+      </TextEntityInstances>
+    </Level>
+    <Level>
+      <ID>3</ID>
+      <NextLevel>1</NextLevel>
+      <EndCondition>Collision Flagpole SmallMario</EndCondition>
+      <ImageEntityInstances>
+        <ImageEntityInstance>
+          <Type>SmallMario</Type>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>0</XPos>
+          <YPos>500</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>100</XPos>
+          <YPos>500</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>200</XPos>
+          <YPos>500</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>300</XPos>
+          <YPos>500</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>400</XPos>
+          <YPos>500</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>500</XPos>
+          <YPos>500</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>600</XPos>
+          <YPos>500</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>700</XPos>
+          <YPos>500</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Flagpole</Type>
+          <XPos>700</XPos>
+          <YPos>200</YPos>
+        </ImageEntityInstance>
+      </ImageEntityInstances>
+      <TextEntityInstances>
+        <TextEntityInstance>
+          <Text>Game Over.You Win.</Text>
+          <Font>Comic Sans MS</Font>
+          <XPos>400</XPos>
+          <YPos>400</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+        </TextEntityInstance>
+        <TextEntityInstance>
+          <Text>Lives: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>850</XPos>
+          <YPos>0</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Lives</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+      </TextEntityInstances>
     </Level>
   </Levels>
 </Game>

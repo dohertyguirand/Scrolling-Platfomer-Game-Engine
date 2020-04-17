@@ -179,7 +179,7 @@ public class OogaDataReader implements DataReader{
                         entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                         initialEntities.add(entity);
                     }
-                    NodeList textEntityNodes = doc.getElementsByTagName("TextEntityInstance");
+                    NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
                     for (int j = 0; j < textEntityNodes.getLength(); j++) {
                         Node currentEntity = textEntityNodes.item(j);
                         Element entityElement = (Element) currentEntity;

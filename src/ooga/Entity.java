@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
@@ -114,13 +115,11 @@ public interface Entity {
    * @param collidingEntity The String identifier of the enemy being collided with.
    * @param elapsedTime
    */
-  void handleCollision(Entity collidingEntity, double elapsedTime);
-
   void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables);
+      Map<String, Double> variables, GameInternal game);
 
   void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables);
+      Map<String, Double> variables, GameInternal game);
 
   /**
    * Moves the entity by the specified amount in the x and y direction.
@@ -164,6 +163,11 @@ public interface Entity {
   void changeVelocity(double xChange, double yChange);
 
   /**
+   * @param change A list with the coordinates of the change in velocity.
+   */
+  void changeVelocity(List<Double> change);
+
+  /**
    *
    * @param xVelocity The x-value of the new velocity.
    * @param yVelocity The y-value of the new velocity.
@@ -194,6 +198,7 @@ public interface Entity {
   void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies);
 
   /**
+<<<<<<< HEAD
    * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
    * assigned behavior if true
    */
@@ -204,4 +209,10 @@ public interface Entity {
    * @param conditionalBehaviors list of conditional behaviors
    */
   void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors);
+
+  /**
+   * @param entityType The type of entity to check for collision behavior with.
+   * @return True if the entity has a defined collision behavior with the type given.
+   */
+  boolean hasCollisionWith(String entityType);
 }

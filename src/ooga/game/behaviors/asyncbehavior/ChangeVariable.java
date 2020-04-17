@@ -3,7 +3,7 @@ package ooga.game.behaviors.asyncbehavior;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
-import ooga.game.DirectionlessCollision;
+import ooga.game.GameInternal;
 
 public class ChangeVariable extends DirectionlessCollision {
 
@@ -27,7 +27,7 @@ public class ChangeVariable extends DirectionlessCollision {
 
   @Override
   public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables) {
+      Map<String, Double> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     System.out.println("variables = " + variables);
     System.out.println("variableName = " + variableName);
