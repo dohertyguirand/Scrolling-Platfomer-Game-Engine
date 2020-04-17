@@ -51,6 +51,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myCollisionBehaviors = new HashMap<>();
     myFrameBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
+    myConditionalBehaviors = new ArrayList<>();
     myVelocityVectors = new Stack<>();
   }
 

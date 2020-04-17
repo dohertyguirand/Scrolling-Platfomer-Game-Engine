@@ -65,7 +65,7 @@ public abstract class ConditionalBehaviorInstance implements ConditionalBehavior
         return;
       }
     }
-    doUpdate(elapsedTime, subject, variables, , , );
+    doUpdate(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions);
   }
 
   private List<String> getEntityNames(List<Entity> entityList){

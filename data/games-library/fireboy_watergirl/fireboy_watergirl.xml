@@ -116,38 +116,18 @@
             <Width>50</Width>
             <Height>70</Height>
             <Image>redDoor.jpg</Image>
-            <Collisions>
-                <EntityCollision>
-                    <With>Fireboy</With>
-                    <Reaction>SetVariableBehavior FireboyOnDoor 1</Reaction>
-                </EntityCollision>
-            </Collisions>
         </ImageEntity>
         <ImageEntity>
             <Name>BlueDoor</Name>
             <Width>50</Width>
             <Height>70</Height>
             <Image>blueDoor.jpg</Image>
-            <Collisions>
-                <EntityCollision>
-                    <With>Watergirl</With>
-                    <Reaction>SetVariableBehavior WatergirlOnDoor 1</Reaction>
-                </EntityCollision>
-            </Collisions>
         </ImageEntity>
     </Entities>
     <Variables>
         <Variable>
             <Name>Lives</Name>
             <StartValue>3</StartValue>
-        </Variable>
-        <Variable>
-            <Name>FireboyOnDoor</Name>
-            <StartValue>0</StartValue>
-        </Variable>
-        <Variable>
-            <Name>WatergirlOnDoor</Name>
-            <StartValue>0</StartValue>
         </Variable>
     </Variables>
     <Levels>
