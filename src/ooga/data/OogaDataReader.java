@@ -82,7 +82,7 @@ public class OogaDataReader implements DataReader{
         File gameFile = findGame(givenGameName);
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
-            String[] outerTagNames = new String[] {"Level", "Variables", "Variables"};
+            String[] outerTagNames = new String[] {"Level", "Variable", "Variable"};
             String[] innerTagNames = new String[] {"ID", "Name", "StartValue"};
             for(int j=0; j<outerTagNames.length; j++){
                 NodeList outerList = doc.getElementsByTagName(outerTagNames[j]);

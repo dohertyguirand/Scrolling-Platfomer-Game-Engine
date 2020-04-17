@@ -22,14 +22,6 @@
         </ConditionalInputBehavior>
       </ConditionalBehaviors>
       <Controls>
-<!--        <ControlInput>-->
-<!--          <Key>UpKey2Pressed</Key>-->
-<!--          <ControlBehavior>JumpBehavior -1.2</ControlBehavior>-->
-<!--        </ControlInput>-->
-<!--        <ControlInput>-->
-<!--          <Key>DownKey2</Key>-->
-<!--          <ControlBehavior>VelocityInput 0 .1600 .3200</ControlBehavior>-->
-<!--        </ControlInput>-->
         <ControlInput>
           <Key>LeftKey2</Key>
           <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
@@ -77,6 +69,7 @@
         <EntityCollision>
           <With>SmallMario</With>
           <Reaction>Stompable</Reaction>
+          <Reaction>ChangeVariable Score 20.0</Reaction>
         </EntityCollision>
       </Collisions>
     </ImageEntity>
@@ -107,6 +100,7 @@
         <EntityCollision>
           <With>SmallMario</With>
           <Reaction>RemoveSelf</Reaction>
+          <Reaction>ChangeVariable Score 20.0</Reaction>
         </EntityCollision>
       </Collisions>
     </ImageEntity>
@@ -125,6 +119,7 @@
         <EntityCollision>
           <With>SmallMario</With>
           <Reaction>HeadHitItem Mushroom</Reaction>
+          <Reaction>ChangeVariable Score 20.0</Reaction>
         </EntityCollision>
       </Collisions>
     </ImageEntity>
@@ -133,6 +128,10 @@
     <Variable>
       <Name>Lives</Name>
       <StartValue>3</StartValue>
+    </Variable>
+    <Variable>
+      <Name>Score</Name>
+      <StartValue>0</StartValue>
     </Variable>
   </Variables>
   <Levels>
@@ -218,6 +217,18 @@
           <Height>50</Height>
           <PropertyVariableDependency>
             <VariableName>Lives</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+        <TextEntityInstance>
+          <Text>Score: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>650</XPos>
+          <YPos>0</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Score</VariableName>
             <PropertyName>Text</PropertyName>
           </PropertyVariableDependency>
         </TextEntityInstance>
@@ -307,6 +318,18 @@
             <PropertyName>Text</PropertyName>
           </PropertyVariableDependency>
         </TextEntityInstance>
+        <TextEntityInstance>
+          <Text>Score: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>650</XPos>
+          <YPos>0</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Score</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
       </TextEntityInstances>
     </Level>
     <Level>
@@ -388,6 +411,18 @@
           <Height>50</Height>
           <PropertyVariableDependency>
             <VariableName>Lives</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+        <TextEntityInstance>
+          <Text>Score: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>650</XPos>
+          <YPos>0</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Score</VariableName>
             <PropertyName>Text</PropertyName>
           </PropertyVariableDependency>
         </TextEntityInstance>
