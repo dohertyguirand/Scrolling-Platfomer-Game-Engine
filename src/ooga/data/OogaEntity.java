@@ -144,11 +144,11 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     for (MovementBehavior behavior : myMovementBehaviors) {
       behavior.doMovementUpdate(elapsedTime,this);
     }
-    applyFrictionHorizontal();
-    applyFrictionVertical();
+    applyFrictionHorizontal(elapsedTime);
+    applyFrictionVertical(elapsedTime);
   }
 
-  private void applyFrictionHorizontal() {
+  private void applyFrictionHorizontal(double elapsedTime) {
     if (Math.abs(myVelocity.get(0)) < FRICTION_ACCELERATION) {
       setVelocity(0,getVelocity().get(1));
     }
@@ -157,7 +157,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     }
   }
 
-  private void applyFrictionVertical() {
+  private void applyFrictionVertical(double elapsedTime) {
 
     if (Math.abs(myVelocity.get(1)) < FRICTION_ACCELERATION) {
       setVelocity(getVelocity().get(0),0);
