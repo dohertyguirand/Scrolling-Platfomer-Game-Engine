@@ -18,8 +18,8 @@ public class RunIntoTerrain implements CollisionBehavior {
   @Override
   public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables, GameInternal game) {
-    subject.setVelocity(subject.getVelocity().get(0),0);
     double direction = Math.signum(subject.getVelocity().get(1));
+    subject.setVelocity(subject.getVelocity().get(0),0);
     if (direction < 0) {
       doUpwardCollision(subject,collidingEntity,elapsedTime,variables);
     }
@@ -35,6 +35,7 @@ public class RunIntoTerrain implements CollisionBehavior {
   }
 
   private void doUpwardCollision(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
+    System.out.println("UPWARD COLLISION");
     double targetX = subject.getPosition().get(0);
     double targetY = collidingEntity.getPosition().get(1) + collidingEntity.getHeight() + MARGIN;
     subject.setPosition(List.of(targetX,targetY));
