@@ -108,6 +108,7 @@
                 <EntityCollision>
                     <With>Fireboy</With>
                     <Reaction>RemoveSelf</Reaction>
+                    <Reaction>ChangeVariable Score 1.0</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -120,6 +121,7 @@
                 <EntityCollision>
                     <With>Watergirl</With>
                     <Reaction>RemoveSelf</Reaction>
+                    <Reaction>ChangeVariable Score 1.0</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -140,6 +142,10 @@
         <Variable>
             <Name>Lives</Name>
             <StartValue>3</StartValue>
+        </Variable>
+        <Variable>
+            <Name>Score</Name>
+            <StartValue>0</StartValue>
         </Variable>
     </Variables>
     <Levels>
@@ -214,6 +220,18 @@
                     <Height>50</Height>
                     <PropertyVariableDependency>
                         <VariableName>Lives</VariableName>
+                        <PropertyName>Text</PropertyName>
+                    </PropertyVariableDependency>
+                </TextEntityInstance>
+                <TextEntityInstance>
+                    <Text>Score: %.0f</Text>
+                    <Font>Times New Roman</Font>
+                    <XPos>650</XPos>
+                    <YPos>0</YPos>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                    <PropertyVariableDependency>
+                        <VariableName>Score</VariableName>
                         <PropertyName>Text</PropertyName>
                     </PropertyVariableDependency>
                 </TextEntityInstance>
