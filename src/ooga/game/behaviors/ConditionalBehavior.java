@@ -2,7 +2,6 @@ package ooga.game.behaviors;
 
 import ooga.Entity;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,14 +34,19 @@ public interface ConditionalBehavior {
    * @param subject entity that owns this behavior
    * @param variables map of game/level variables
    * @param inputs all registered key inputs at this frame
-   * @param collisions names of all entities this entity is currently colliding with
+   * @param verticalCollisions names of all entities this entity is currently colliding with vertically
+   * @param horizontalCollisions names of all entities this entity is currently colliding with horizontally
    */
-  void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs, List<String> collisions);
+  void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs, List<Entity> verticalCollisions, List<Entity> horizontalCollisions);
 
   /**
    * executes the behavior owned by this behavior
    * @param elapsedTime time in ms
    * @param subject entity that owns this conditional behavior
+   * @param variables map of variables in the game/level
+   * @param inputs the input keys that are currently active in this frame
+   * @param horizontalCollisions the entities this entity is colliding with horizontally
+   * @param verticalCollisions the entities this entity is colliding with vertically
    */
-  void doUpdate(double elapsedTime, Entity subject);
+  void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs, List<Entity> horizontalCollisions, List<Entity> verticalCollisions);
 }

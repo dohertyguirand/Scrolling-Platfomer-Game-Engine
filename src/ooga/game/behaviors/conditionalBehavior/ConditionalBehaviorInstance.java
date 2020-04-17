@@ -3,22 +3,25 @@ package ooga.game.behaviors.conditionalBehavior;
 import ooga.Entity;
 import ooga.game.behaviors.ConditionalBehavior;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public abstract class ConditionalBehaviorInstance implements ConditionalBehavior {
 
   Map<String, Boolean> inputConditions;
-  Map<String, Boolean> collisionConditions;
+  Map<String, Boolean> verticalCollisionConditions;
+  Map<String, Boolean> horizontalCollisionConditions;
   Map<String, Double> variableConditions;
   Object behavior;
 
   public ConditionalBehaviorInstance(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
-                                     Map<String, Boolean> collisionConditions, Object behavior){
+                                     Map<String, Boolean> verticalCollisionConditions,
+                                     Map<String, Boolean> horizontalCollisionConditions, Object behavior){
     this.inputConditions = inputConditions;
     this.variableConditions = variableConditions;
-    this.collisionConditions = collisionConditions;
+    this.verticalCollisionConditions = verticalCollisionConditions;
+    this.horizontalCollisionConditions = horizontalCollisionConditions;
     this.behavior = behavior;
   }
 
@@ -30,15 +33,16 @@ public abstract class ConditionalBehaviorInstance implements ConditionalBehavior
    * and user is pressing up key
    * Method call for this example would look like: new ConditionalBehavior(inputs=(up:true), collisions=(door:true, ground:true),
    * variables=(red diamonds: 5), behaviors=(EndLevel))
-   *
    * @param elapsedTime time passed in ms
    * @param subject     entity that owns this behavior
    * @param variables   map of game/level variables
    * @param inputs      all registered key inputs at this frame
-   * @param collisions  names of all entities this entity is currently colliding with
+   * @param verticalCollisions  names of all entities this entity is currently colliding with vertically
+   * @param horizontalCollisions names of all entities this entity is currently colliding with horizontally
    */
   @Override
-  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs, List<String> collisions) {
+  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+                                  List<Entity> verticalCollisions, List<Entity> horizontalCollisions) {
     for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
       if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
         return;
@@ -49,11 +53,26 @@ public abstract class ConditionalBehaviorInstance implements ConditionalBehavior
         return;
       }
     }
-    for(Map.Entry<String, Boolean> collisionCondition : collisionConditions.entrySet()){
-      if(collisions.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
+    List<String> verticalCollisionNames = getEntityNames(verticalCollisions);
+    for(Map.Entry<String, Boolean> collisionCondition : verticalCollisionConditions.entrySet()){
+      if(verticalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
         return;
       }
     }
-    doUpdate(elapsedTime, subject);
+    List<String> horizontalCollisionNames = getEntityNames(horizontalCollisions);
+    for(Map.Entry<String, Boolean> collisionCondition : horizontalCollisionConditions.entrySet()){
+      if(horizontalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
+        return;
+      }
+    }
+    doUpdate(elapsedTime, subject, variables, , , );
+  }
+
+  private List<String> getEntityNames(List<Entity> entityList){
+    List<String> entityNames = new ArrayList<>();
+    for(Entity entity : entityList){
+      entityNames.add(entity.getName());
+    }
+    return entityNames;
   }
 }

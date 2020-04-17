@@ -34,6 +34,8 @@ one need only call ``doGameStep``.
 - 4/14/2020: Removed ``doCollisionLoop`` from external game interface for the same reason
 - 4/14/2020: Removed ``handleUserInput``, since that's part of the UserInputListener interface of
 the game.
+- 4/16/2020 added ``doConditionalBehaviors`` to entity (and some resulting changes related to
+conditional behaviors, mainly internal game API and new behavior interfaces and classes)
 
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.

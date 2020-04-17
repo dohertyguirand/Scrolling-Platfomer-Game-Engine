@@ -130,8 +130,36 @@ public class OogaGame implements Game, UserInputListener {
     //3. find collisions
     //4. calculate effect of collisions.
     //5. execute movement.
-    doEntityUpdates(elapsedTime);
-    doEntityCollisions(elapsedTime);
+    List<String> activeKeys = myInputManager.getActiveKeys();
+    List<String> pressedKeys = new ArrayList<>();
+    for(String keyPressed : myInputManager.getPressedKeys()){
+      //TODO: Smarten this up, so that it doesn't just change the String
+      pressedKeys.add(keyPressed + "Pressed");
+    }
+    List<String> allInputs = new ArrayList<>(activeKeys);
+    allInputs.addAll(pressedKeys);
+    Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
+    Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
+
+    for (Entity entity : currentLevel.getEntities()) {
+      for (String input : activeKeys) {
+        entity.reactToControls(input);
+      }
+      for (String input : pressedKeys) {
+        entity.reactToControlsPressed(input);
+      }
+      entity.updateSelf(elapsedTime, myVariables);
+      entity.reactToVariables(myVariables);
+
+      for (Entity collidingWith : verticalCollisions.get(entity)) {
+        entity.handleVerticalCollision(collidingWith, elapsedTime, myVariables);
+      }
+      for (Entity collidingWith : horizontalCollisions.get(entity)) {
+        entity.handleHorizontalCollision(collidingWith, elapsedTime, myVariables);
+      }
+      entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, verticalCollisions.get(entity), horizontalCollisions.get(entity));
+    }
+
 //    doVariableUpdates();
     doEntityCleanup();
     executeEntityMovement(elapsedTime);

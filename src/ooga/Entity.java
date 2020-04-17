@@ -5,6 +5,7 @@ import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
 import ooga.game.behaviors.FrameBehavior;
 
@@ -191,4 +192,16 @@ public interface Entity {
    * @param propertyVariableDependencies
    */
   void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies);
+
+  /**
+   * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
+   * assigned behavior if true
+   */
+  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions);
+
+  /**
+   * assigns the conditional behaviors of this entity
+   * @param conditionalBehaviors list of conditional behaviors
+   */
+  void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors);
 }

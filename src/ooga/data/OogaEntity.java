@@ -8,6 +8,7 @@ import java.util.Stack;
 import java.util.function.Consumer;
 import javafx.beans.property.*;
 import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
 import ooga.Entity;
 import ooga.game.behaviors.FrameBehavior;
@@ -37,6 +38,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<FrameBehavior> myFrameBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
+  private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
 
@@ -131,10 +133,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void reactToControlsPressed(String controls) {
-    //TODO: Smarten this up, so that it doesn't just change the String
-    String keyPressedCode = controls + "Pressed";
-    System.out.println(keyPressedCode);
-    reactToControls(keyPressedCode);
+    //TODO: remove this method?
+    System.out.println(controls);
+    reactToControls(controls);
   }
 
   @Override
@@ -167,6 +168,16 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setControlsBehaviors(Map<String, List<ControlsBehavior>> behaviors) {
     myControls = new HashMap<>(behaviors);
+  }
+
+  /**
+   * assigns the conditional behaviors of this entity
+   *
+   * @param conditionalBehaviors list of conditional behaviors
+   */
+  @Override
+  public void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors) {
+    myConditionalBehaviors = new ArrayList<>(conditionalBehaviors);
   }
 
   @Override
@@ -290,5 +301,16 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies){
     this.propertyVariableDependencies = propertyVariableDependencies;
+  }
+
+  /**
+   * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
+   * assigned behavior if true
+   */
+  @Override
+  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions) {
+    for(ConditionalBehavior conditionalBehavior : myConditionalBehaviors){
+      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, verticalCollisions, horizontalCollisions);
+    }
   }
 }
