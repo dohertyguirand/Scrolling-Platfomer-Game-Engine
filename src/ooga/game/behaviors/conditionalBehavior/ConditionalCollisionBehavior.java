@@ -1,6 +1,7 @@
 package ooga.game.behaviors.conditionalBehavior;
 
 import ooga.Entity;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.CollisionBehavior;
 
 import java.util.List;
@@ -26,18 +27,20 @@ public class ConditionalCollisionBehavior extends ConditionalBehaviorInstance{
    * @param inputs the input keys that are currently active in this frame
    * @param horizontalCollisions the entities this entity is colliding with horizontally
    * @param verticalCollisions the entities this entity is colliding with vertically
+   * @param gameInternal what game this is run from
    */
   @Override
-  public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs, List<Entity> horizontalCollisions, List<Entity> verticalCollisions) {
+  public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+                       List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
     CollisionBehavior collisionBehavior = (CollisionBehavior)behavior;
     for (Entity collidingWith : verticalCollisions) {
       if(collidingWith.getName().equals(collidingEntityName)) {
-        collisionBehavior.doVerticalCollision(subject, collidingWith, elapsedTime, variables);
+        collisionBehavior.doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
       }
     }
     for (Entity collidingWith : horizontalCollisions) {
       if(collidingWith.getName().equals(collidingEntityName)) {
-        collisionBehavior.doHorizontalCollision(subject, collidingWith, elapsedTime, variables);
+        collisionBehavior.doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
       }
     }
   }

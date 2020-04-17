@@ -202,7 +202,7 @@ public interface Entity {
    * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
    * assigned behavior if true
    */
-  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions);
+  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal);
 
   /**
    * assigns the conditional behaviors of this entity

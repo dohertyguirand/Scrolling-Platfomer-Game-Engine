@@ -2,10 +2,12 @@ package ooga.game.behaviors.framebehavior;
 
 import java.util.ArrayList;
 import java.util.List;
-import ooga.Entity;
-import ooga.game.behaviors.MovementBehavior;
+import java.util.Map;
 
-public class PatrolBehavior implements MovementBehavior {
+import ooga.Entity;
+import ooga.game.behaviors.FrameBehavior;
+
+public class PatrolBehavior implements FrameBehavior {
 
   public static double MARGIN = 20.0;
 
@@ -32,7 +34,7 @@ public class PatrolBehavior implements MovementBehavior {
   }
 
   @Override
-  public void doMovementUpdate(double elapsedTime, Entity subject) {
+  public void doFrameUpdate(double elapsedTime, Entity subject, Map<String, Double> variables) {
     List<Double> difference = targetDifference(subject);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {

@@ -1,6 +1,7 @@
 package ooga.game.behaviors.conditionalBehavior;
 
 import ooga.Entity;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.ConditionalBehavior;
 
 import java.util.ArrayList;
@@ -39,10 +40,11 @@ public abstract class ConditionalBehaviorInstance implements ConditionalBehavior
    * @param inputs      all registered key inputs at this frame
    * @param verticalCollisions  names of all entities this entity is currently colliding with vertically
    * @param horizontalCollisions names of all entities this entity is currently colliding with horizontally
+   * @param gameInternal what game this is run from
    */
   @Override
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
-                                  List<Entity> verticalCollisions, List<Entity> horizontalCollisions) {
+                                  List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
     for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
       if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
         return;
@@ -65,7 +67,7 @@ public abstract class ConditionalBehaviorInstance implements ConditionalBehavior
         return;
       }
     }
-    doUpdate(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions);
+    doUpdate(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
   }
 
   private List<String> getEntityNames(List<Entity> entityList){

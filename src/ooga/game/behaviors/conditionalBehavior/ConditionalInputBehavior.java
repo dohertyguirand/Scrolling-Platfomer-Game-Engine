@@ -1,6 +1,7 @@
 package ooga.game.behaviors.conditionalBehavior;
 
 import ooga.Entity;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.ControlsBehavior;
 
 import java.util.List;
@@ -26,9 +27,11 @@ public class ConditionalInputBehavior extends ConditionalBehaviorInstance {
    * @param inputs the input keys that are currently active in this frame
    * @param horizontalCollisions the entities this entity is colliding with horizontally
    * @param verticalCollisions the entities this entity is colliding with vertically
+   * @param gameInternal what game this is run from
    */
   @Override
-  public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs, List<Entity> horizontalCollisions, List<Entity> verticalCollisions) {
+  public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+                       List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
     ControlsBehavior controlsBehavior = (ControlsBehavior)behavior;
     for(String input : inputs) {
       if(input.equals(inputName)) {

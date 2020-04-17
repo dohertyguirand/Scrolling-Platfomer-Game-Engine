@@ -11,8 +11,6 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.*;
 import ooga.UserInputListener;
-import ooga.game.behaviors.framebehavior.GravityBehavior;
-import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 import ooga.game.collisiondetection.VelocityCollisionDetector;
 
@@ -176,7 +174,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
       for (Entity collidingWith : horizontalCollisions.get(entity)) {
         entity.handleHorizontalCollision(collidingWith, elapsedTime, myVariables, this);
       }
-      entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, verticalCollisions.get(entity), horizontalCollisions.get(entity));
+      entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, verticalCollisions.get(entity),
+              horizontalCollisions.get(entity), this);
     }
   }
 

@@ -318,9 +318,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    * assigned behavior if true
    */
   @Override
-  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions) {
+  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
+                                     List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
-      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, verticalCollisions, horizontalCollisions);
+      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, verticalCollisions, horizontalCollisions, gameInternal);
     }
   }
 
