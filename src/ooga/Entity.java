@@ -194,4 +194,10 @@ public interface Entity {
    * @param propertyVariableDependencies
    */
   void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies);
+
+  /**
+   * @param entityType The type of entity to check for collision behavior with.
+   * @return True if the entity has a defined collision behavior with the type given.
+   */
+  boolean hasCollisionWith(String entityType);
 }

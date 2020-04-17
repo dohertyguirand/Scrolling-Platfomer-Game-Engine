@@ -300,4 +300,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies){
     this.propertyVariableDependencies = propertyVariableDependencies;
   }
+
+  @Override
+  public boolean hasCollisionWith(String entityType) {
+    return myCollisionBehaviors.containsKey(entityType);
+  }
 }

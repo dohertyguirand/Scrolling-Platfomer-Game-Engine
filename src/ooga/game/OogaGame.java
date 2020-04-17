@@ -118,21 +118,17 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private List<Entity> collidingEntities(CollisionType<Entity> collisionType, Entity target) {
     List<Entity> entityCollisions = new ArrayList<>();
     for (Entity collidingWith : currentLevel.getEntities()) {
-      if (collidingWith != target && collisionType.isColliding(target,collidingWith)) {
+      if (collidingWith != target && target.hasCollisionWith(collidingWith.getName())
+          && collisionType.isColliding(target,collidingWith)) {
         currentLevel.registerCollision(target.getName(),collidingWith.getName());
         entityCollisions.add(collidingWith);
-        break;
+//        break;
       }
     }
     return entityCollisions;
   }
 
   private void doUpdateLoop(double elapsedTime) {
-    //1. calculate all automatic movement
-    //2. calculate all controls-based movement
-    //3. find collisions
-    //4. calculate effect of collisions.
-    //5. execute movement.
     doEntityUpdates(elapsedTime);
     doEntityCollisions(elapsedTime);
 //    doVariableUpdates();
