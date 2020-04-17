@@ -11,11 +11,21 @@
       <Movement>
         <MovementBehavior>Gravity 0 0.1</MovementBehavior>
       </Movement>
-      <Controls>
-        <ControlInput>
+      <ConditionalBehaviors>
+        <ConditionalInputBehavior>
+          <VerticalCollisionCondition>
+            <EntityName>Brick</EntityName>
+            <CollisionRequirement>true</CollisionRequirement>
+          </VerticalCollisionCondition>
           <Key>UpKey2Pressed</Key>
           <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
-        </ControlInput>
+        </ConditionalInputBehavior>
+      </ConditionalBehaviors>
+      <Controls>
+<!--        <ControlInput>-->
+<!--          <Key>UpKey2Pressed</Key>-->
+<!--          <ControlBehavior>JumpBehavior -1.2</ControlBehavior>-->
+<!--        </ControlInput>-->
 <!--        <ControlInput>-->
 <!--          <Key>DownKey2</Key>-->
 <!--          <ControlBehavior>VelocityInput 0 .1600 .3200</ControlBehavior>-->

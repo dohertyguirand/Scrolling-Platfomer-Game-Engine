@@ -1,6 +1,7 @@
 package ooga.data;
 
 import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
 import ooga.game.behaviors.FrameBehavior;
 
@@ -14,10 +15,12 @@ public class ImageEntityDefinition {
     private List<FrameBehavior> myFrameBehaviors;
     private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
     private Map<String,List<ControlsBehavior>> myControls;
+    private List<ConditionalBehavior> myConditionalBehaviors;
     private String myName;
 
     public ImageEntityDefinition(String name, double height, double width, String imageLocation, List<FrameBehavior> frameBehaviors,
-                                 Map<String,List<CollisionBehavior>> collisionBehaviors, Map<String,List<ControlsBehavior>> controls){
+                                 Map<String,List<CollisionBehavior>> collisionBehaviors,
+                                 Map<String,List<ControlsBehavior>> controls, List<ConditionalBehavior> conditionalBehaviors){
         myName = name;
         myHeight = height;
         myWidth = width;
@@ -25,6 +28,7 @@ public class ImageEntityDefinition {
         myFrameBehaviors = frameBehaviors;
         myCollisionBehaviors = collisionBehaviors;
         myControls = controls;
+        myConditionalBehaviors = conditionalBehaviors;
     }
 
     public ImageEntity makeInstanceAt(Double xpos, Double ypos){
@@ -32,6 +36,7 @@ public class ImageEntityDefinition {
         newEntity.setCollisionBehaviors(myCollisionBehaviors);
         newEntity.setMovementBehaviors(myFrameBehaviors);
         newEntity.setControlsBehaviors(myControls);
+        newEntity.setConditionalBehaviors(myConditionalBehaviors);
         return newEntity;
     }
 
