@@ -210,13 +210,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void move(double xDistance, double yDistance) {
-//    myXPos.set(myXPos.get() + xDistance);
-//    myYPos.set(myYPos.get() + yDistance);
-//    myVelocityVectors.add(List.of(xDistance,yDistance));
-  }
-
-  @Override
   public List<Double> getPosition() {
     return List.of(xPos.get(), yPos.get());
   }
