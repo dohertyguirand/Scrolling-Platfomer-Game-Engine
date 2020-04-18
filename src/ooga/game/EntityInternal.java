@@ -8,15 +8,6 @@ import java.util.List;
 public interface EntityInternal {
 
   /**
-   * Moves the entity by the specified amount in the x and y direction.
-   * Useful for behaviors that own entity references. Might be moved to an "internal" entity
-   * interface because it is meant for behavior classes rather than the main game loop.
-   * @param xDistance Distance to move in the x direction. Can be negative.
-   * @param yDistance Distance to move in the y direction. Can be negative.
-   */
-  void move(double xDistance, double yDistance);
-
-  /**
    * @return The X and Y position of the Entity, in that order.
    */
   List<Double> getPosition();

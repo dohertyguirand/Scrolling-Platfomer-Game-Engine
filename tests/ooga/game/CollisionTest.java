@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import ooga.game.behaviors.CollisionBehavior;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.asyncbehavior.MoveUpCollision;
 import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
 import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
 import ooga.game.collisiondetection.OogaCollisionDetector;
@@ -27,7 +26,7 @@ public class CollisionTest {
     double elapsedTime = 1.0;
     Entity e = new ImageEntity();
     Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
-    collisionMap.put("TestEntity2", List.of(new MoveUpCollision(20.01)));
+//    collisionMap.put("TestEntity2", List.of(new MoveUpCollision(20.01)));
     e.setCollisionBehaviors(collisionMap);
     for (int i = 0; i < NUM_MOVE_UP_ASSERTS; i++) {
       List<Double> expectedPos = List.of(0.0, i * 20.01);
@@ -46,10 +45,10 @@ public class CollisionTest {
     b.setPosition(List.of(0.,0.));
     assertTrue(new OogaCollisionDetector().isColliding(a,b, elapsedTime));
 
-    a.move(2.0 * a.getWidth(),0);
+    a.setVelocity(2.0 * a.getWidth(),0);
     assertFalse(new OogaCollisionDetector().isColliding(a,b, elapsedTime));
 
-    b.move(0,b.getHeight()*2.0);
+    b.setVelocity(0,b.getHeight()*2.0);
     assertFalse(new OogaCollisionDetector().isColliding(b,a, elapsedTime));
 
     a.setPosition(b.getPosition());
