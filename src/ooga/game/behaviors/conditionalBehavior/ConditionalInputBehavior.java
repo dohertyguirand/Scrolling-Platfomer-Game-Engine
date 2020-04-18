@@ -32,6 +32,8 @@ public class ConditionalInputBehavior extends ConditionalBehaviorInstance {
   @Override
   public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
+    System.out.println("DOING UPDATE AS A CONTROLS BEHAVIOR FOR INPUT " + inputName);
+    System.out.println("inputs = " + inputs);
     ControlsBehavior controlsBehavior = (ControlsBehavior)behavior;
     for(String input : inputs) {
       if(input.equals(inputName)) {

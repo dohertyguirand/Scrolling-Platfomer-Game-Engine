@@ -45,29 +45,52 @@ public abstract class ConditionalBehaviorInstance implements ConditionalBehavior
   @Override
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                                   List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
-    for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
-      if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
-        return;
+    if (variablesSatisfied(variables) && inputsSatisfied(inputs) &&
+        collisionsSatisfied(verticalCollisions, verticalCollisionConditions) &&
+        collisionsSatisfied(horizontalCollisions, horizontalCollisionConditions)) {
+      System.out.println("DOING UPDATE");
+      doUpdate(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
+    }
+    else {
+      System.out.println("NOT SATISFIED");
+      System.out.println(variablesSatisfied(variables));
+      System.out.println(inputsSatisfied(inputs));
+      System.out.println(collisionsSatisfied(verticalCollisions,verticalCollisionConditions));
+      System.out.println(collisionsSatisfied(horizontalCollisions,horizontalCollisionConditions));
+    }
+  }
+
+  private boolean collisionsSatisfied(List<Entity> horizontalCollisions,
+      Map<String, Boolean> horizontalCollisionConditions) {
+    List<String> horizontalCollisionNames = getEntityNames(horizontalCollisions);
+    for (Map.Entry<String, Boolean> collisionCondition : horizontalCollisionConditions.entrySet()) {
+      if (horizontalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition
+          .getValue()) {
+        System.out.println("COLLISIONS NOT SATISFIED, NEED " + collisionCondition);
+        return false;
       }
     }
+    return true;
+  }
+
+  private boolean inputsSatisfied(List<String> inputs) {
     for(Map.Entry<String, Boolean> inputCondition : inputConditions.entrySet()){
       if(inputs.contains(inputCondition.getKey()) != inputCondition.getValue()){
-        return;
+        System.out.println("INPUTS NOT SATISFIED, NEED " + inputCondition);
+        return false;
       }
     }
-    List<String> verticalCollisionNames = getEntityNames(verticalCollisions);
-    for(Map.Entry<String, Boolean> collisionCondition : verticalCollisionConditions.entrySet()){
-      if(verticalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
-        return;
+    return true;
+  }
+
+  private boolean variablesSatisfied(Map<String, Double> variables) {
+    for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
+      if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
+        System.out.println("VARIABLES NOT SATISFIED, NEED " + variableCondition);
+        return false;
       }
     }
-    List<String> horizontalCollisionNames = getEntityNames(horizontalCollisions);
-    for(Map.Entry<String, Boolean> collisionCondition : horizontalCollisionConditions.entrySet()){
-      if(horizontalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
-        return;
-      }
-    }
-    doUpdate(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
+    return true;
   }
 
   private List<String> getEntityNames(List<Entity> entityList){

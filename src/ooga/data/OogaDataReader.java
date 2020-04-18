@@ -18,6 +18,7 @@ import ooga.game.behaviors.FrameBehavior;
 import ooga.game.behaviors.conditionalBehavior.ConditionalCollisionBehavior;
 import ooga.game.behaviors.conditionalBehavior.ConditionalFrameBehavior;
 import ooga.game.behaviors.conditionalBehavior.ConditionalInputBehavior;
+import ooga.game.behaviors.inputbehavior.JumpBehavior;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -331,6 +332,8 @@ public class OogaDataReader implements DataReader{
             String keyPressed = behaviorElement.getElementsByTagName("Key").item(0).getTextContent();
             String[] resultBehavior = behaviorElement.getElementsByTagName("ControlBehavior").item(0).getTextContent().split(" ");
             ControlsBehavior controlsBehavior = (ControlsBehavior) makeBasicBehavior(resultBehavior, "Control");
+            System.out.println("behaviorElement.getTagName() = " + behaviorElement.getTagName());
+            System.out.println("inputConditions = " + inputConditions);
             conditionalBehaviors.add(new ConditionalInputBehavior(variableConditions, inputConditions, verticalCollisionConditions,
                     horizontalCollisionConditions, controlsBehavior, keyPressed));
         }
@@ -351,6 +354,8 @@ public class OogaDataReader implements DataReader{
             conditionalBehaviors.add(new ConditionalCollisionBehavior(variableConditions, inputConditions, verticalCollisionConditions,
                     horizontalCollisionConditions, collisionBehavior, otherEntityName));
         }
+        conditionalBehaviors.addAll(getConditionalInputBehaviors(entityElement));
+
         NodeList nodeList6 = entityElement.getElementsByTagName("ConditionalFrameBehavior");
         for (int i=0; i<nodeList6.getLength(); i++){
             Element behaviorElement = (Element) nodeList6.item(i);
@@ -370,6 +375,50 @@ public class OogaDataReader implements DataReader{
 
         return new ImageEntityDefinition(name, height, width, imagePath, frameBehaviors,
                  collisionBehaviors, controlBehaviors, conditionalBehaviors);
+    }
+
+    private List<ConditionalBehavior> getConditionalInputBehaviors(Element entityElement) {
+        NodeList conditionalInputBehaviors = entityElement.getElementsByTagName("ConditionalInputBehavior");
+        System.out.println("length: " + conditionalInputBehaviors.getLength());
+        List<ConditionalBehavior> conditionalInput = new ArrayList<>();
+        for (int i = 0; i < conditionalInputBehaviors.getLength(); i++) {
+            System.out.println("i = " + i);
+            Element inputBehaviorElement = (Element)conditionalInputBehaviors.item(i);
+            Map<String, Boolean> verticalCollisionConditions = getCollisionConditions(inputBehaviorElement,
+                "VerticalCollisionCondition");
+            Map<String, Boolean> horizontalCollisionConditions = getCollisionConditions(inputBehaviorElement,
+                "HorizontalCollisionCondition");
+            Map<String, Double> variableConditions = new HashMap<>();
+            addVariableConditions(variableConditions,inputBehaviorElement.getElementsByTagName("VariableCondition"));
+            Map<String, Boolean> inputConditions = getInputKeyMap(inputBehaviorElement);
+            conditionalInput.add(new ConditionalInputBehavior(variableConditions,inputConditions,horizontalCollisionConditions,verticalCollisionConditions,new JumpBehavior(List.of("-1.2")),"UpKey2Pressed"));
+        }
+        return conditionalInput;
+    }
+
+    private Map<String, Boolean> getCollisionConditions(Element inputBehaviorElement,
+        String collisionIdentifier) {
+        Map<String, Boolean> verticalCollisionConditions = new HashMap<>();
+        NodeList verticalConditions = inputBehaviorElement.getElementsByTagName(
+            collisionIdentifier);
+        for (int j = 0; j < verticalConditions.getLength(); j ++) {
+            Element condition = (Element)verticalConditions.item(j);
+            String withEntity = condition.getElementsByTagName("EntityName").item(0).getTextContent();
+            String requirement = condition.getElementsByTagName("CollisionRequirement").item(0).getTextContent();
+            boolean required = Boolean.parseBoolean(requirement);
+            verticalCollisionConditions.put(withEntity,required);
+        }
+        return verticalCollisionConditions;
+    }
+
+    private Map<String, Boolean> getInputKeyMap(Element inputBehaviorElement) {
+        Map<String, Boolean> inputConditions = new HashMap<>();
+        NodeList inputKeys = inputBehaviorElement.getElementsByTagName("Key");
+        for (int j = 0; j < inputKeys.getLength(); j ++) {
+            Element keyName = (Element)inputKeys.item(j);
+            inputConditions.put(keyName.getTextContent(),true);
+        }
+        return inputConditions;
     }
 
     private void addVariableConditions(Map<String, Double> conditionMap, NodeList variableConditionNodes) {

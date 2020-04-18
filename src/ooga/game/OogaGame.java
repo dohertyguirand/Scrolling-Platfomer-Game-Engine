@@ -157,6 +157,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
         entity.reactToControls(input);
       }
       for (String input : pressedKeys) {
+        System.out.println("input = " + input);
         entity.reactToControlsPressed(input);
       }
       entity.updateSelf(elapsedTime, myVariables);
@@ -175,7 +176,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
         entity.handleHorizontalCollision(collidingWith, elapsedTime, myVariables, this);
       }
       entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, verticalCollisions.get(entity),
-              horizontalCollisions.get(entity), this);
+          horizontalCollisions.get(entity), this);
     }
   }
 
