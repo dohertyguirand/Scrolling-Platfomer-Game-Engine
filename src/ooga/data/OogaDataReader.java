@@ -316,7 +316,7 @@ public class OogaDataReader implements DataReader{
 
         //TODO: refactor below loops into a single loop and use reflection
         List<ConditionalBehavior> conditionalBehaviors = new ArrayList<>();
-        NodeList nodeList5 = entityElement.getElementsByTagName("ConditionalCollisionBehavior");
+        NodeList nodeList5 = entityElement.getElementsByTagName("CollisionBehavior");
         for (int i=0; i<nodeList5.getLength(); i++){
             Element behaviorElement = (Element) nodeList5.item(i);
             Map<String, Double> variableConditions = new HashMap<>();
@@ -334,7 +334,7 @@ public class OogaDataReader implements DataReader{
             conditionalBehaviors.add(new ConditionalCollisionBehavior(variableConditions, inputConditions, verticalCollisionConditions,
                     horizontalCollisionConditions, collisionBehavior, otherEntityName));
         }
-        NodeList nodeList6 = entityElement.getElementsByTagName("ConditionalNonCollisionBehavior");
+        NodeList nodeList6 = entityElement.getElementsByTagName("NonCollisionBehavior");
         for (int i=0; i<nodeList6.getLength(); i++){
             Element behaviorElement = (Element) nodeList6.item(i);
             Map<String, Double> variableConditions = new HashMap<>();
