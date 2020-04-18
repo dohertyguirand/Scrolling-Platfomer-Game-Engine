@@ -273,6 +273,7 @@ public class OogaDataReader implements DataReader{
         for (int i=0; i<nodeList5.getLength(); i++){
             Element behaviorElement = (Element) nodeList5.item(i);
             Map<String, Double> variableConditions = new HashMap<>();
+            //TODO: Make a default for input conditions so that if no InputRequirement is specified, it assumes 'true' is required
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<String, Boolean> verticalCollisionConditions = new HashMap<>();
             Map<String, Boolean> horizontalCollisionConditions = new HashMap<>();

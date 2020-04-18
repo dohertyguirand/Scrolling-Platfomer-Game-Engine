@@ -8,85 +8,134 @@
       <Width>80</Width>
       <Height>120</Height>
       <Image>mario_facing_right.png</Image>
-      <ConditionalBehaviors>
-        <ConditionalNonCollisionBehavior>
+      <Behaviors>
+        <NonCollisionBehavior>
           <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
-        </ConditionalNonCollisionBehavior>
-        <ConditionalNonCollisionBehavior>
-          <VerticalCollisionCondition>
-            <EntityName>Brick</EntityName>
-            <CollisionRequirement>true</CollisionRequirement>
-          </VerticalCollisionCondition>
+        </NonCollisionBehavior>
+        <NonCollisionBehavior>
           <InputCondition>
             <Key>UpKey2Pressed</Key>
             <InputRequirement>true</InputRequirement>
           </InputCondition>
-          <NonCollisionEffect>JumpBehavior -1.2</NonCollisionEffect>
-        </ConditionalNonCollisionBehavior>
-<!--        <NonCollisionBehavior>-->
-<!--          <Key>LeftKey2</Key>-->
-<!--          <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>-->
-<!--          <ControlBehavior>SetImage file:data/games-library/example-mario/mario_facing_left.png</ControlBehavior>-->
-<!--        </NonCollisionBehavior>-->
-      </ConditionalBehaviors>
-      <Controls>
-        <ControlInput>
-          <Key>LeftKey2</Key>
-          <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
-          <ControlBehavior>SetImage file:data/games-library/example-mario/mario_facing_left.png</ControlBehavior>
-        </ControlInput>
-        <ControlInput>
-          <Key>RightKey2</Key>
-          <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
-          <ControlBehavior>SetImage file:data/games-library/example-mario/mario_facing_right.png</ControlBehavior>
-        </ControlInput>
-      </Controls>
-      <Collisions>
-        <EntityCollision>
-          <With>Koopa</With>
-          <Reaction>VerticalBounce -.50 </Reaction>
-          <Reaction>RunIntoStompable</Reaction>
-          <Reaction>ChangeVariable Lives -1.0</Reaction>
-        </EntityCollision>
-        <EntityCollision>
-          <With>Brick</With>
-          <Reaction>TerrainCollision</Reaction>
-        </EntityCollision>
-        <EntityCollision>
-          <With>Flagpole</With>
-          <Reaction>TerrainCollision</Reaction>
-        </EntityCollision>
-        <EntityCollision>
-          <With>QuestionBlock</With>
-          <Reaction>TerrainCollision</Reaction>
-        </EntityCollision>
-        <EntityCollision>
-          <With>Void</With>
-          <Reaction>ChangeVariable Lives -1.0</Reaction>
-          <Reaction>Respawn 0 0</Reaction>
-        </EntityCollision>
-      </Collisions>
+          <VerticalCollisionCondition>
+            <EntityName>Brick</EntityName>
+            <CollisionRequirement>true</CollisionRequirement>
+          </VerticalCollisionCondition>
+          <NonCollisionEffect>Jump -1.2</NonCollisionEffect>
+        </NonCollisionBehavior>
+        <NonCollisionBehavior>
+          <InputCondition>
+            <Key>LeftKey2</Key>
+            <InputRequirement>true</InputRequirement>
+          </InputCondition>
+          <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
+          <NonCollisionEffect>SetImage file:data/games-library/example-mario/mario_facing_left.png</NonCollisionEffect>
+        </NonCollisionBehavior>
+        <NonCollisionBehavior>
+          <InputCondition>
+            <Key>RightKey2</Key>
+            <InputRequirement>true</InputRequirement>
+          </InputCondition>
+          <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
+          <NonCollisionEffect>SetImage file:data/games-library/example-mario/mario_facing_right.png</NonCollisionEffect>
+        </NonCollisionBehavior>
+        <CollisionBehavior>
+          <EntityCollision>
+            <With>Koopa</With>
+            <Reaction>VerticalBounce -.50</Reaction>
+            <Reaction>RunIntoStompable</Reaction>
+            <Reaction>ChangeVariable Lives -1.0</Reaction>
+          </EntityCollision>
+        </CollisionBehavior>
+        <CollisionBehavior>
+          <VerticalCollisionCondition>
+            <EntityName>Brick</EntityName>
+            <CollisionRequirement>true</CollisionRequirement>
+          </VerticalCollisionCondition>
+          <CollisionEffect>
+            <With>Brick</With>
+            <Reaction>TerrainCollision</Reaction>
+          </CollisionEffect>
+        </CollisionBehavior>
+        <CollisionBehavior>
+          <HorizontalCollisionCondition>
+            <EntityName>Brick</EntityName>
+            <CollisionRequirement>true</CollisionRequirement>
+          </HorizontalCollisionCondition>
+          <EntityCollision>
+            <With>Brick</With>
+            <Reaction>TerrainCollision</Reaction>
+          </EntityCollision>
+        </CollisionBehavior>
+        <CollisionBehavior>
+          <EntityCollision>
+            <With>Flagpole</With>
+            <Reaction>TerrainCollision</Reaction>
+          </EntityCollision>
+        </CollisionBehavior>
+        <CollisionBehavior>
+          <EntityCollision>
+            <With>QuestionBlock</With>
+            <Reaction>TerrainCollision</Reaction>
+          </EntityCollision>
+        </CollisionBehavior>
+        <CollisionBehavior>
+          <EntityCollision>
+            <With>Void</With>
+            <Reaction>ChangeVariable Lives -1.0</Reaction>
+            <Reaction>Respawn 0 0</Reaction>
+          </EntityCollision>
+        </CollisionBehavior>
+      </Behaviors>
     </ImageEntity>
     <ImageEntity>
       <Name>Koopa</Name>
       <Width>100</Width>
       <Height>120</Height>
       <Image>koopa.png</Image>
-      <Movement>
-        <MovementBehavior>Gravity 0.0 0.10</MovementBehavior>
-        <MovementBehavior>Patrol 0.100 .12 500 485 700 485</MovementBehavior>
-      </Movement>
-      <Collisions>
+      <NonCollisionBehavior>
+        <NonCollisionEffect>Gravity 0.0 0.10</NonCollisionEffect>
+        <NonCollisionEffect>Patrol 0.100 .12 500 485 700 485</NonCollisionEffect>
+      </NonCollisionBehavior>
+      <CollisionBehavior>
+        <VerticalCollisionCondition>
+          <EntityName>Brick</EntityName>
+          <CollisionRequirement>true</CollisionRequirement>
+        </VerticalCollisionCondition>
+        <CollisionEffect>
+          <With>Brick</With>
+          <Reaction>TerrainCollision</Reaction>
+        </CollisionEffect>
+      </CollisionBehavior>
+      <CollisionBehavior>
+        <HorizontalCollisionCondition>
+          <EntityName>Brick</EntityName>
+          <CollisionRequirement>true</CollisionRequirement>
+        </HorizontalCollisionCondition>
         <EntityCollision>
           <With>Brick</With>
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
+      </CollisionBehavior>
+      <CollisionBehavior>
+        <EntityCollision>
+          <With>Flagpole</With>
+          <Reaction>TerrainCollision</Reaction>
+        </EntityCollision>
+      </CollisionBehavior>
+      <CollisionBehavior>
+        <EntityCollision>
+          <With>QuestionBlock</With>
+          <Reaction>TerrainCollision</Reaction>
+        </EntityCollision>
+      </CollisionBehavior>
+      <CollisionBehavior>
         <EntityCollision>
           <With>SmallMario</With>
           <Reaction>Stompable</Reaction>
           <Reaction>ChangeVariable Score 20.0</Reaction>
         </EntityCollision>
-      </Collisions>
+      </CollisionBehavior>
     </ImageEntity>
     <ImageEntity>
       <Name>Brick</Name>
@@ -99,26 +148,45 @@
       <Width>80</Width>
       <Height>80</Height>
       <Image>mario_mushroom.png</Image>
-      <Movement>
-        <MovementBehavior>MoveForward 0.10 0.0 0.20</MovementBehavior>
-        <MovementBehavior>Gravity 0.0 0.10</MovementBehavior>
-      </Movement>
-      <Collisions>
+      <NonCollisionBehavior>
+        <NonCollisionEffect>MoveForward 0.10 0.0 0.20</NonCollisionEffect>
+        <NonCollisionEffect>Gravity 0.0 0.10</NonCollisionEffect>
+      </NonCollisionBehavior>
+      <CollisionBehavior>
+        <VerticalCollisionCondition>
+          <EntityName>Brick</EntityName>
+          <CollisionRequirement>true</CollisionRequirement>
+        </VerticalCollisionCondition>
+        <CollisionEffect>
+          <With>Brick</With>
+          <Reaction>TerrainCollision</Reaction>
+        </CollisionEffect>
+      </CollisionBehavior>
+      <CollisionBehavior>
+        <HorizontalCollisionCondition>
+          <EntityName>Brick</EntityName>
+          <CollisionRequirement>true</CollisionRequirement>
+        </HorizontalCollisionCondition>
         <EntityCollision>
-        <With>Brick</With>
-        <Reaction>TerrainCollision</Reaction>
+          <With>Brick</With>
+          <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
+      </CollisionBehavior>
+      <CollisionBehavior>
         <EntityCollision>
           <With>QuestionBlock</With>
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
+      </CollisionBehavior>
+      <CollisionBehavior>
         <EntityCollision>
           <With>SmallMario</With>
           <Reaction>RemoveSelf</Reaction>
           <Reaction>ChangeVariable Score 20.0</Reaction>
         </EntityCollision>
-      </Collisions>
+      </CollisionBehavior>
     </ImageEntity>
+
     <ImageEntity>
       <Name>Void</Name>
       <Width>1500</Width>
@@ -131,18 +199,23 @@
       <Height>400</Height>
       <Image>mario_flagpole.png</Image>
     </ImageEntity>
+
     <ImageEntity>
       <Name>QuestionBlock</Name>
       <Width>100</Width>
       <Height>100</Height>
       <Image>mario_question_block.png</Image>
-      <Collisions>
-        <EntityCollision>
+      <CollisionBehavior>
+        <VerticalCollisionCondition>
+          <EntityName>SmallMario</EntityName>
+          <CollisionRequirement>true</CollisionRequirement>
+        </VerticalCollisionCondition>
+        <CollisionEffect>
           <With>SmallMario</With>
           <Reaction>HeadHitItem Mushroom</Reaction>
           <Reaction>ChangeVariable Score 20.0</Reaction>
-        </EntityCollision>
-      </Collisions>
+        </CollisionEffect>
+      </CollisionBehavior>
     </ImageEntity>
   </Entities>
   <Variables>

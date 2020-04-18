@@ -2,6 +2,7 @@ package ooga.game.behaviors;
 
 import java.util.Map;
 import ooga.Entity;
+import ooga.game.GameInternal;
 
 /**
  * Determines how an entity reacts to in-game user input of any kind.
@@ -17,8 +18,9 @@ public interface NonCollisionEffect {
    * @param subject The entity that owns this controls behavior. This is the entity that should
    *                be modified.
    * @param variables
+   * @param game
    */
   void doEffect(double elapsedTime, Entity subject,
-      Map<String, Double> variables);
+      Map<String, Double> variables, GameInternal game);
 
 }

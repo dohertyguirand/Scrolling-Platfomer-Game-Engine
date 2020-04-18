@@ -124,26 +124,27 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void reactToControls(String controls) {
+  public void reactToControls(String controls, GameInternal game) {
     if (!myControls.containsKey(controls)) {
       return;
     }
     for (NonCollisionEffect behavior : myControls.get(controls)) {
-      behavior.doEffect(1.0, this, new HashMap<>());
+      behavior.doEffect(1.0, this, new HashMap<>(), game);
     }
   }
 
   @Override
-  public void reactToControlsPressed(String controls) {
+  public void reactToControlsPressed(String controls, GameInternal game) {
     //TODO: remove this method?
     System.out.println(controls);
-    reactToControls(controls);
+    reactToControls(controls, game);
   }
 
   @Override
-  public void updateSelf(double elapsedTime, Map<String, Double> variables) {
+  public void updateSelf(double elapsedTime, Map<String, Double> variables,
+      GameInternal game) {
     for (NonCollisionEffect behavior : myFrameBehaviors) {
-      behavior.doEffect(elapsedTime, this, variables);
+      behavior.doEffect(elapsedTime, this, variables, game);
     }
     applyFrictionHorizontal();
     applyFrictionVertical();

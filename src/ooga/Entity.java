@@ -57,25 +57,28 @@ public interface Entity {
   /**
    * 'Controls' will be a String mapping to a controls type from a shared back end resource file.
    * @param controls The String identifier of the type of control input that must be handled.
+   * @param game
    */
-  void reactToControls(String controls);
+  void reactToControls(String controls, GameInternal game);
 
   /**
-   * @see Entity#reactToControls(String)
+   * @see Entity#reactToControls(String, GameInternal)
    * Reacts to the event of the key being pressed, i.e. the first frame that the key is active,
    * so that button presses can be reacted to just once.
    * @param controls The String identifier of the type of control input that must be handled.
+   * @param game
    */
-  void reactToControlsPressed(String controls);
+  void reactToControlsPressed(String controls, GameInternal game);
 
   /**
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
    * @param variables
+   * @param game
    *
    */
-  void updateSelf(double elapsedTime, Map<String, Double> variables);
+  void updateSelf(double elapsedTime, Map<String, Double> variables, GameInternal game);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and
