@@ -269,9 +269,9 @@ public class OogaDataReader implements DataReader{
 
         //TODO: refactor below loops into a single loop and use reflection
         List<ConditionalBehavior> behaviors = new ArrayList<>();
-        NodeList nodeList5 = entityElement.getElementsByTagName("Behavior");
-        for (int i=0; i<nodeList5.getLength(); i++){
-            Element behaviorElement = (Element) nodeList5.item(i);
+        NodeList nodeList = entityElement.getElementsByTagName("Behavior");
+        for (int i=0; i<nodeList.getLength(); i++){
+            Element behaviorElement = (Element) nodeList.item(i);
             Map<String, Double> variableConditions = new HashMap<>();
             //TODO: Make a default for input conditions so that if no InputRequirement is specified, it assumes 'true' is required
             Map<String, Boolean> inputConditions = new HashMap<>();
@@ -285,6 +285,8 @@ public class OogaDataReader implements DataReader{
             List<NonCollisionEffect> nonCollisionEffects = new ArrayList<>();
             for(int j=0; j<nonCollisionEffectNodes.getLength(); j++) {
                 String[] reactionEffect = nonCollisionEffectNodes.item(j).getTextContent().split(" ");
+                System.out.println("print the effect!!!!!");
+                System.out.println(reactionEffect[0]);
                 NonCollisionEffect nonCollisionEffect = (NonCollisionEffect) makeBasicEffect(reactionEffect, "NonCollision");
                 nonCollisionEffects.add(nonCollisionEffect);
             }
