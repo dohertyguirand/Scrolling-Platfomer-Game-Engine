@@ -60,10 +60,10 @@ public abstract class ConditionalBehaviorInstance implements ConditionalBehavior
     }
   }
 
-  private boolean collisionsSatisfied(List<Entity> horizontalCollisions,
-      Map<String, Boolean> horizontalCollisionConditions) {
-    List<String> horizontalCollisionNames = getEntityNames(horizontalCollisions);
-    for (Map.Entry<String, Boolean> collisionCondition : horizontalCollisionConditions.entrySet()) {
+  private boolean collisionsSatisfied(List<Entity> collisions,
+      Map<String, Boolean> requiredCollisions) {
+    List<String> horizontalCollisionNames = getEntityNames(collisions);
+    for (Map.Entry<String, Boolean> collisionCondition : requiredCollisions.entrySet()) {
       if (horizontalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition
           .getValue()) {
         System.out.println("COLLISIONS NOT SATISFIED, NEED " + collisionCondition);
