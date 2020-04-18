@@ -1,23 +1,18 @@
 package ooga.game.behaviors.conditionalBehavior;
 
-import java.util.HashMap;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
 
 import java.util.List;
 import java.util.Map;
+import ooga.game.behaviors.NonCollisionEffect;
 
-public class ConditionalInputBehavior extends ConditionalBehaviorInstance {
+public class ConditionalNonCollisionBehavior extends ConditionalBehaviorInstance {
 
-  private String inputName;
-
-  public ConditionalInputBehavior(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
-                                     Map<String, Boolean> verticalCollisionConditions,
-                                     Map<String, Boolean> horizontalCollisionConditions, Object behavior,
-                                  String inputName){
+  public ConditionalNonCollisionBehavior(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
+                                         Map<String, Boolean> verticalCollisionConditions,
+                                         Map<String, Boolean> horizontalCollisionConditions, Object behavior){
     super(variableConditions, inputConditions, verticalCollisionConditions, horizontalCollisionConditions, behavior);
-    this.inputName = inputName;
   }
 
   /**
@@ -33,12 +28,7 @@ public class ConditionalInputBehavior extends ConditionalBehaviorInstance {
   @Override
   public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
-    NonCollisionEffect nonCollisionEffect = (NonCollisionEffect)behavior;
-    for(String input : inputs) {
-      if(input.equals(inputName)) {
-        nonCollisionEffect.doEffect(1.0, subject, new HashMap<>());
-        break;
-      }
-    }
+    NonCollisionEffect frameBehavior = (NonCollisionEffect) behavior;
+    frameBehavior.doEffect(elapsedTime, subject, variables);
   }
 }
