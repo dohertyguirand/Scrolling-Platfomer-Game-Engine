@@ -61,6 +61,7 @@ public interface ConditionalBehavior {
    * @param elapsedTime time in ms
    * @param subject entity that owns this conditional behavior
    * @param variables map of variables in the game/level
+   * @param gameInternal instance of game internal
    */
-  void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables);
+  void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, GameInternal gameInternal);
 }
