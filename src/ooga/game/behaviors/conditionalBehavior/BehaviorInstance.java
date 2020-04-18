@@ -73,7 +73,7 @@ public class BehaviorInstance implements ConditionalBehavior {
       }
     }
     doCollisionEffects(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
-    doNonCollisionEffects(elapsedTime, subject, variables);
+    doNonCollisionEffects(elapsedTime, subject, variables, gameInternal);
   }
 
   /**
@@ -114,11 +114,12 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param elapsedTime time in ms
    * @param subject entity that owns this conditional behavior
    * @param variables map of variables in the game/level
+   * @param gameInternal instance of game internal
    */
   @Override
-  public void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables) {
+  public void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, GameInternal gameInternal) {
     for(NonCollisionEffect nonCollisionEffect : nonCollisionEffects) {
-      nonCollisionEffect.doEffect(elapsedTime, subject, variables);
+      nonCollisionEffect.doEffect(elapsedTime, subject, variables, gameInternal);
     }
   }
 
