@@ -10,15 +10,15 @@
             <Image>fireboy.png</Image>
             <Behaviors>
                 <Behavior>
-                    <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
-                </Behavior>
-                <Behavior>
+                    <InputCondition>
+                        <Key>UpKeyPressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
                     </VerticalCollisionCondition>
-                    <Key>UpKeyPressed</Key>
-                    <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
+                    <NonCollisionEffect>JumpBehavior -1.2</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <VerticalCollisionCondition>
@@ -73,6 +73,9 @@
                         <Reaction>TerrainCollision</Reaction>
                     </CollisionEffect>
                 </Behavior>
+                <Behavior>
+                    <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
+                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -81,9 +84,6 @@
             <Height>100</Height>
             <Image>watergirl.png</Image>
             <Behaviors>
-                <ConditionalBehavior>
-                    <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
-                </ConditionalBehavior>
                 <Behavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
@@ -153,6 +153,9 @@
                         <With>Floor</With>
                         <Reaction>TerrainCollision</Reaction>
                     </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
                 </Behavior>
             </Behaviors>
         </ImageEntity>

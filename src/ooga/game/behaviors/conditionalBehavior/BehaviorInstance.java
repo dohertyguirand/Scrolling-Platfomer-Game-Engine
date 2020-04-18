@@ -72,8 +72,8 @@ public class BehaviorInstance implements ConditionalBehavior {
         return;
       }
     }
-    doCollisionEffects(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
     doNonCollisionEffects(elapsedTime, subject, variables, gameInternal);
+    doCollisionEffects(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
   }
 
   /**
