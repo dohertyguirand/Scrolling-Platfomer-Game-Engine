@@ -266,10 +266,11 @@ public class OogaDataReader implements DataReader{
         double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
         String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
         System.out.print(String.format("Name: %s ", name));
-
+//        Element behaviorsElement = (Element)entityElement.getElementsByTagName("Behaviors").item(0);
         //TODO: refactor below loops into a single loop and use reflection
         List<ConditionalBehavior> behaviors = new ArrayList<>();
         NodeList nodeList5 = entityElement.getElementsByTagName("Behavior");
+        System.out.println("NUMBER OF BEHAVIORS: " + nodeList5.getLength());
         for (int i=0; i<nodeList5.getLength(); i++){
             Element behaviorElement = (Element) nodeList5.item(i);
             Map<String, Double> variableConditions = new HashMap<>();
@@ -300,6 +301,7 @@ public class OogaDataReader implements DataReader{
                     collisionEffectsMap.get(otherEntityName).add(collisionEffect);
                 }
             }
+            System.out.println("CREATING BEHAVIOR INSTANCE FOR " + name);
             behaviors.add(new BehaviorInstance(variableConditions, inputConditions, verticalCollisionConditions,
                     horizontalCollisionConditions, collisionEffectsMap, nonCollisionEffects));
         }
