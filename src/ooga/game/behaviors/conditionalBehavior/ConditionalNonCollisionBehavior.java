@@ -29,6 +29,6 @@ public class ConditionalNonCollisionBehavior extends ConditionalBehaviorInstance
   public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
     NonCollisionEffect frameBehavior = (NonCollisionEffect) behavior;
-    frameBehavior.doEffect(elapsedTime, subject, variables);
+    frameBehavior.doEffect(elapsedTime, subject, variables, gameInternal);
   }
 }

@@ -1,17 +1,18 @@
-package ooga.game.behaviors.inputbehavior;
+package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.Map;
 import ooga.Entity;
 import ooga.data.ImageEntity;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.NonCollisionEffect;
 
 import java.util.List;
 
-public class SetImageBehavior implements NonCollisionEffect {
+public class SetImageEffect implements NonCollisionEffect {
 
   String newImageLocation = "";
 
-  public SetImageBehavior(List<String> args){
+  public SetImageEffect(List<String> args){
     if(args.size() >= 1){
       newImageLocation = args.get(0);
     }
@@ -20,14 +21,15 @@ public class SetImageBehavior implements NonCollisionEffect {
   /**
    * Handles reaction to controls. Requires the ControlsBehavior to have a reference to the
    * instance that uses it in order to have an effect on that instance.
-   *  @param elapsedTime
+   * @param elapsedTime
    * @param subject The entity that owns this controls behavior. This is the entity that should
    *                be modified.
    * @param variables
+   * @param game
    */
   @Override
   public void doEffect(double elapsedTime, Entity subject,
-      Map<String, Double> variables) {
+      Map<String, Double> variables, GameInternal game) {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;

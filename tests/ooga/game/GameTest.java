@@ -12,7 +12,7 @@ import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
-import ooga.game.behaviors.inputbehavior.JumpBehavior;
+import ooga.game.behaviors.noncollisioneffects.JumpEffect;
 import org.junit.jupiter.api.Test;
 
 public class GameTest {
@@ -59,12 +59,12 @@ public class GameTest {
     double highJumpHeight = 50.0;
     Entity highJumpEntity = new ImageEntity("high");
     highJumpEntity.setPosition(List.of(0.0,startingHeight));
-    highJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(highJumpHeight))));
+    highJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpEffect(highJumpHeight))));
 //    highJumpEntity.setControlsBehaviors(Map.of("DownKey",List.of(new JumpBehavior(highJumpHeight))));
     double lowJumpHeight = 10.0;
     Entity lowJumpEntity = new ImageEntity("low");
     lowJumpEntity.setPosition(List.of(0.0,startingHeight));
-    lowJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpBehavior(lowJumpHeight))));
+    lowJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpEffect(lowJumpHeight))));
 
     double elapsedTime = 1.0;
     Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity));

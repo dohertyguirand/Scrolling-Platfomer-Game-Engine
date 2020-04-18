@@ -158,12 +158,12 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private void doEntityInputReactions(double elapsedTime, List<String> activeKeys, List<String> pressedKeys) {
     for (Entity entity : currentLevel.getEntities()) {
       for (String input : activeKeys) {
-        entity.reactToControls(input);
+        entity.reactToControls(input, this);
       }
       for (String input : pressedKeys) {
-        entity.reactToControlsPressed(input);
+        entity.reactToControlsPressed(input, this);
       }
-      entity.updateSelf(elapsedTime, myVariables);
+      entity.updateSelf(elapsedTime, myVariables, this);
       entity.reactToVariables(myVariables);
     }
   }
