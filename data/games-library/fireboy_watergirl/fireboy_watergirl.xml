@@ -20,6 +20,26 @@
                     <Key>UpKeyPressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
                 </ConditionalInputBehavior>
+                <ConditionalCollisionBehavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
+                    <InputCondition>
+                        <Key>DownKeyPressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <VariableCondition>
+                        <VariableName>RedDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <VariableCondition>
+                        <VariableName>BlueDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <With>RedDoor</With>
+                    <Reaction>ChangeVariable Score 1000</Reaction>
+                </ConditionalCollisionBehavior>
             </ConditionalBehaviors>
             <Controls>
                 <ControlInput>
@@ -63,6 +83,26 @@
                     <Key>UpKey2Pressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
                 </ConditionalInputBehavior>
+                <ConditionalCollisionBehavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
+                    <InputCondition>
+                        <Key>DownKey2Pressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <VariableCondition>
+                        <VariableName>RedDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <VariableCondition>
+                        <VariableName>BlueDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <With>BlueDoor</With>
+                    <Reaction>ChangeVariable Score 1000</Reaction>
+                </ConditionalCollisionBehavior>
             </ConditionalBehaviors>
             <Controls>
                 <ControlInput>
@@ -117,6 +157,7 @@
                     <With>Fireboy</With>
                     <Reaction>RemoveSelf</Reaction>
                     <Reaction>ChangeVariable Score 1.0</Reaction>
+                    <Reaction>ChangeVariable RedDiamonds 1.0</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -130,6 +171,7 @@
                     <With>Watergirl</With>
                     <Reaction>RemoveSelf</Reaction>
                     <Reaction>ChangeVariable Score 1.0</Reaction>
+                    <Reaction>ChangeVariable BlueDiamonds 1.0</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -153,6 +195,14 @@
         </Variable>
         <Variable>
             <Name>Score</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>RedDiamonds</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>BlueDiamonds</Name>
             <StartValue>0</StartValue>
         </Variable>
     </Variables>

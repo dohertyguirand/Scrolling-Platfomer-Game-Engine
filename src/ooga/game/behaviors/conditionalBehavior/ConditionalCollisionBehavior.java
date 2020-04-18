@@ -34,11 +34,17 @@ public class ConditionalCollisionBehavior extends ConditionalBehaviorInstance{
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
     CollisionBehavior collisionBehavior = (CollisionBehavior)behavior;
     for (Entity collidingWith : verticalCollisions) {
+      System.out.println("got here");
+      System.out.println(collidingWith.getName());
+      System.out.println(collidingEntityName);
       if(collidingWith.getName().equals(collidingEntityName)) {
         collisionBehavior.doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
       }
     }
     for (Entity collidingWith : horizontalCollisions) {
+      System.out.println("got here");
+      System.out.println(collidingWith.getName());
+      System.out.println(collidingEntityName);
       if(collidingWith.getName().equals(collidingEntityName)) {
         collisionBehavior.doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
       }

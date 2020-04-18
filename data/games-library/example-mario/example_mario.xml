@@ -59,7 +59,7 @@
       <Image>koopa.png</Image>
       <Movement>
         <MovementBehavior>Gravity 0.0 0.10</MovementBehavior>
-        <MovementBehavior>Patrol 0.100 .10 500 485 700 485</MovementBehavior>
+        <MovementBehavior>Patrol 0.100 .11 500 485 700 485</MovementBehavior>
       </Movement>
       <Collisions>
         <EntityCollision>

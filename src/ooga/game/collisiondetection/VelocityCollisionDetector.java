@@ -59,12 +59,12 @@ public class VelocityCollisionDetector implements CollisionDetector {
 
   private boolean isCollidingInDirection(Entity a, Entity b, double elapsedTime, boolean mustBeVertical) {
     // first check that someone actually has a nonzero velocity, otherwise a collision doesn't make sense
-    if(mustBeVertical && a.getVelocity().get(1) == 0 && b.getVelocity().get(1) == 0){
-      return false;
-    }
-    else if(!mustBeVertical && a.getVelocity().get(0) == 0 && b.getVelocity().get(0) == 0){
-      return false;
-    }
+//    if(mustBeVertical && a.getVelocity().get(1) == 0 && b.getVelocity().get(1) == 0){
+//      return false;
+//    }
+//    else if(!mustBeVertical && a.getVelocity().get(0) == 0 && b.getVelocity().get(0) == 0){
+//      return false;
+//    }
     Rectangle aShape = makeShapeFromEntity(a, a.getVelocity().get(0) * elapsedTime,a.getVelocity().get(1) * elapsedTime);
     Rectangle bShape = makeShapeFromEntity(b, b.getVelocity().get(0) * elapsedTime,b.getVelocity().get(1) * elapsedTime);
     if(aShape.getBoundsInParent().intersects(bShape.getBoundsInParent())) {
