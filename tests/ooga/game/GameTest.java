@@ -5,15 +5,13 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
-import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
+import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
 import ooga.game.behaviors.inputbehavior.JumpBehavior;
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +45,7 @@ public class GameTest {
   @Test
   void testDoCollisionLoop() {
     Entity destructibleEntity = new ImageEntity("entity1");
-    destructibleEntity.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior(new ArrayList<>()))));
+    destructibleEntity.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfEffect(new ArrayList<>()))));
     Entity obstacleEntity = new ImageEntity("entity2");
     Level level = new OogaLevel(List.of(destructibleEntity,obstacleEntity));
     OogaGame game = new OogaGame(level);

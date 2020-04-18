@@ -2,7 +2,7 @@ package ooga.game.behaviors.conditionalBehavior;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class ConditionalCollisionBehavior extends ConditionalBehaviorInstance{
 
   public ConditionalCollisionBehavior(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
                                       Map<String, Boolean> verticalCollisionConditions,
-                                      Map<String, Boolean> horizontalCollisionConditions, CollisionBehavior behavior,
+                                      Map<String, Boolean> horizontalCollisionConditions, CollisionEffect behavior,
                                       String collidingEntityName) {
     super(variableConditions, inputConditions, verticalCollisionConditions, horizontalCollisionConditions, behavior);
     this.collidingEntityName = collidingEntityName;
@@ -32,13 +32,14 @@ public class ConditionalCollisionBehavior extends ConditionalBehaviorInstance{
   @Override
   public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
-    CollisionBehavior collisionBehavior = (CollisionBehavior)behavior;
+    CollisionEffect collisionEffect = (CollisionEffect)behavior;
     for (Entity collidingWith : verticalCollisions) {
       System.out.println("got here");
       System.out.println(collidingWith.getName());
       System.out.println(collidingEntityName);
       if(collidingWith.getName().equals(collidingEntityName)) {
-        collisionBehavior.doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
+        collisionEffect
+            .doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
       }
     }
     for (Entity collidingWith : horizontalCollisions) {
@@ -46,7 +47,8 @@ public class ConditionalCollisionBehavior extends ConditionalBehaviorInstance{
       System.out.println(collidingWith.getName());
       System.out.println(collidingEntityName);
       if(collidingWith.getName().equals(collidingEntityName)) {
-        collisionBehavior.doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
+        collisionEffect
+            .doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
       }
     }
   }

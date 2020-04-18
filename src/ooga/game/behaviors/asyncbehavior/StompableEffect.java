@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 
 /**
  * Acts like RemoveSelf, but only on a vertical collision where collidingEntity is above subject.
  */
-public class StompableBehavior implements CollisionBehavior {
+public class StompableEffect implements CollisionEffect {
 
-  public StompableBehavior(List<String> args) {
+  public StompableEffect(List<String> args) {
     //This has no arguments.
   }
 

@@ -1,8 +1,9 @@
 package ooga.game.behaviors.conditionalBehavior;
 
+import java.util.HashMap;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 
 import java.util.List;
 import java.util.Map;
@@ -32,10 +33,10 @@ public class ConditionalInputBehavior extends ConditionalBehaviorInstance {
   @Override
   public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
-    ControlsBehavior controlsBehavior = (ControlsBehavior)behavior;
+    NonCollisionEffect nonCollisionEffect = (NonCollisionEffect)behavior;
     for(String input : inputs) {
       if(input.equals(inputName)) {
-        controlsBehavior.reactToControls(subject);
+        nonCollisionEffect.doEffect(1.0, subject, new HashMap<>());
         break;
       }
     }

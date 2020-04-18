@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.CreateEntity;
@@ -23,7 +23,7 @@ public class ControlsTestGameCreation {
     double speed = 160.0;
     speed = speed / 1000.0;
     double maxSpeed = speed * 2;
-    Map<String, List<ControlsBehavior>> controls = new HashMap<>();
+    Map<String, List<NonCollisionEffect>> controls = new HashMap<>();
     controls.put("UpKey2Pressed",List.of(new JumpBehavior(-1 * 3.2 * speed)));
 //    controls.put("UpKey",List.of(new MoveInputBehavior(0,-1 * speed)));
 //    controls.put("DownKey",List.of(new MoveInputBehavior(0,speed)));

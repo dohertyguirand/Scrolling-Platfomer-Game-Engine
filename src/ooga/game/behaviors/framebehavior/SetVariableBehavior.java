@@ -1,12 +1,12 @@
 package ooga.game.behaviors.framebehavior;
 
 import ooga.Entity;
-import ooga.game.behaviors.FrameBehavior;
 
 import java.util.List;
 import java.util.Map;
+import ooga.game.behaviors.NonCollisionEffect;
 
-public class SetVariableBehavior implements FrameBehavior {
+public class SetVariableBehavior implements NonCollisionEffect {
 
   public static final String DEFAULT_VARIABLE_NAME = "DEFAULT";
   public static final double DEFAULT_VARIABLE_VALUE = 0.0;
@@ -33,7 +33,7 @@ public class SetVariableBehavior implements FrameBehavior {
    * @param variables map of variables
    */
   @Override
-  public void doFrameUpdate(double elapsedTime, Entity subject, Map<String, Double> variables) {
+  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables) {
     //in the variable map, increment variableName by variableValue
     System.out.println("variables = " + variables);
     System.out.println("variableName = " + variableName);

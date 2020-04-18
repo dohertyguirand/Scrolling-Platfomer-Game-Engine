@@ -7,13 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
+import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
 import ooga.game.behaviors.asyncbehavior.MoveUpCollision;
 import ooga.game.behaviors.framebehavior.GravityBehavior;
-import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
 import ooga.game.behaviors.inputbehavior.JumpBehavior;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +32,7 @@ class EntityTest {
     List<Double> expectedPosition = List.of(0.0,100.0);
 
     for (int i = 0 ; i < numTests; i ++) {
-      subject.updateSelf(testElapsedTime);
+      subject.updateSelf(testElapsedTime, new HashMap<>());
       expectedVelocity = List.of(expectedVelocity.get(0) + xGrav, expectedVelocity.get(1) + yGrav);
       System.out.println("exp = " + expectedVelocity);
       if (expectedPosition.get(1) >= 400) {
@@ -51,12 +50,12 @@ class EntityTest {
     double elapsedTime = 1.0;
     Entity dino = new ImageEntity();
     Entity cactus = new ImageEntity("cactus");
-    Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
-    collisionMap.put("Cactus", List.of(new MoveUpCollision(20.01), new DestroySelfBehavior(new ArrayList<>())));
+    Map<String, List<CollisionEffect>> collisionMap = new HashMap<>();
+    collisionMap.put("Cactus", List.of(new MoveUpCollision(20.01), new DestroySelfEffect(new ArrayList<>())));
     dino.setCollisionBehaviors(collisionMap);
 //    dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
 
-    dino.updateSelf(1.0);
+    dino.updateSelf(1.0, new HashMap<>());
 //    dino.handleCollision(cactus, elapsedTime);
     assertTrue(dino.isDestroyed());
   }
@@ -70,7 +69,7 @@ class EntityTest {
     testEntity.reactToControls("UpKey");
     double elapsedTime = 1.0;
     System.out.println("testEntity.getVelocity() = " + testEntity.getVelocity());
-    testEntity.updateSelf(elapsedTime);
+    testEntity.updateSelf(elapsedTime, new HashMap<>());
     double expectedY = elapsedTime * jumpSpeedY;
     assertEquals(List.of(0.0,expectedY + 500),testEntity.getPosition());
   }

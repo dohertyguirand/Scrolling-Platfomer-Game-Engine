@@ -1,11 +1,11 @@
 package ooga.game;
 
 import java.util.ArrayList;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.MoveUpCollision;
-import ooga.game.behaviors.asyncbehavior.DestroySelfBehavior;
+import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
 import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class CollisionTest {
   void testMoveUpCollision() {
     double elapsedTime = 1.0;
     Entity e = new ImageEntity();
-    Map<String, List<CollisionBehavior>> collisionMap = new HashMap<>();
+    Map<String, List<CollisionEffect>> collisionMap = new HashMap<>();
     collisionMap.put("TestEntity2", List.of(new MoveUpCollision(20.01)));
     e.setCollisionBehaviors(collisionMap);
     for (int i = 0; i < NUM_MOVE_UP_ASSERTS; i++) {
@@ -60,7 +60,7 @@ public class CollisionTest {
   public void testDestroySelfCollision() {
     double elapsedTime = 1.0;
     Entity removable = new ImageEntity();
-    removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfBehavior(new ArrayList<>()))));
+    removable.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfEffect(new ArrayList<>()))));
 //    removable.handleVerticalCollision(new ImageEntity("entity2"), elapsedTime);
     assertTrue(removable.isDestroyed());
   }

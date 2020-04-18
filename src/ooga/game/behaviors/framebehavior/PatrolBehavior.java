@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import ooga.Entity;
-import ooga.game.behaviors.FrameBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 
-public class PatrolBehavior implements FrameBehavior {
+public class PatrolBehavior implements NonCollisionEffect {
 
   public static double MARGIN = 20.0;
 
@@ -34,7 +34,7 @@ public class PatrolBehavior implements FrameBehavior {
   }
 
   @Override
-  public void doFrameUpdate(double elapsedTime, Entity subject, Map<String, Double> variables) {
+  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables) {
     List<Double> difference = targetDifference(subject);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {

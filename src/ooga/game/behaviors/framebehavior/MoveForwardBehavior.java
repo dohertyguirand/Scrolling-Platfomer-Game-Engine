@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import ooga.Entity;
-import ooga.game.behaviors.FrameBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 
 
 /**
  * Very similar to VelocityInputBehavior
  */
-public class MoveForwardBehavior implements FrameBehavior {
+public class MoveForwardBehavior implements NonCollisionEffect {
 
   private double xAccelPerFrame;
   private double yAccelPerFrame;
@@ -23,7 +23,7 @@ public class MoveForwardBehavior implements FrameBehavior {
   }
 
   @Override
-  public void doFrameUpdate(double elapsedTime, Entity subject, Map<String, Double> variables) {
+  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables) {
     if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
       subject.changeVelocity(xAccelPerFrame,yAccelPerFrame);
     }

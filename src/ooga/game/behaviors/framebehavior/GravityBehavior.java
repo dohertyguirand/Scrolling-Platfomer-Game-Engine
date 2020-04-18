@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import ooga.Entity;
-import ooga.game.behaviors.FrameBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 
 /**
  * Uses constant downward motion to simulate basic gravity.
  * Brings attention to the challenge of having acceleration.
  */
-public class GravityBehavior implements FrameBehavior {
+public class GravityBehavior implements NonCollisionEffect {
 
     public static final int GROUND_LEVEL = 12000;
     //public static final double EXPECTED_DT = 33.33;
@@ -29,7 +29,7 @@ public class GravityBehavior implements FrameBehavior {
     }
 
     @Override
-    public void doFrameUpdate(double elapsedTime, Entity subject, Map<String, Double> variables) {
+    public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables) {
         //subject.changeVelocity(myGravityVector.get(0)*elapsedTime/EXPECTED_DT,myGravityVector.get(1)*elapsedTime/EXPECTED_DT);
         subject.changeVelocity(myGravityVector.get(0),myGravityVector.get(1));
         if ((subject.getPosition().get(1) >= GROUND_LEVEL) && (subject.getVelocity().get(1) > 0)) {

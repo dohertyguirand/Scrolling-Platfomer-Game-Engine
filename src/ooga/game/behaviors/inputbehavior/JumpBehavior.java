@@ -1,10 +1,11 @@
 package ooga.game.behaviors.inputbehavior;
 
 import java.util.List;
-import ooga.game.behaviors.ControlsBehavior;
+import java.util.Map;
+import ooga.game.behaviors.NonCollisionEffect;
 import ooga.Entity;
 
-public class JumpBehavior implements ControlsBehavior {
+public class JumpBehavior implements NonCollisionEffect {
 
   public static final int GROUND_LEVEL = 400;
   double myYVelocity;
@@ -18,7 +19,8 @@ public class JumpBehavior implements ControlsBehavior {
   }
 
   @Override
-  public void reactToControls(Entity subject) {
+  public void doEffect(double elapsedTime, Entity subject,
+      Map<String, Double> variables) {
 //    if (subject.getPosition().get(1) >= GROUND_LEVEL) {
 //    if (subject.getVelocity().get(1) == 0) {
       System.out.println("Jumping.");
