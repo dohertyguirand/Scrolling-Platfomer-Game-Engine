@@ -327,6 +327,8 @@ public class OogaDataReader implements DataReader{
             addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
             //TODO: take in a list of collision behaviors
+            NodeList collisionEffects = behaviorElement.getElementsByTagName("CollisionEffect");
+            List<CollisionEffect>
             String otherEntityName = behaviorElement.getElementsByTagName("With").item(0).getTextContent();
             String[] resultBehavior = behaviorElement.getElementsByTagName("Reaction").item(0).getTextContent().split(" ");
             CollisionEffect collisionEffect = (CollisionEffect) makeBasicBehavior(resultBehavior, "Collision");

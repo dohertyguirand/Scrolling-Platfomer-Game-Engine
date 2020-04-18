@@ -10,7 +10,7 @@
       <Image>mario_facing_right.png</Image>
       <ConditionalBehaviors>
         <ConditionalNonCollisionBehavior>
-          <FrameBehavior>Gravity 0 0.1</FrameBehavior>
+          <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
         </ConditionalNonCollisionBehavior>
         <ConditionalNonCollisionBehavior>
           <VerticalCollisionCondition>
