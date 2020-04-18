@@ -213,6 +213,16 @@
             <EndCondition>DestroyAll Koopa</EndCondition>
             <ImageEntityInstances>
                 <ImageEntityInstance>
+                    <Type>RedDoor</Type>
+                    <XPos>600</XPos>
+                    <YPos>318</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>BlueDoor</Type>
+                    <XPos>800</XPos>
+                    <YPos>318</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Type>Fireboy</Type>
                     <XPos>150</XPos>
                     <YPos>500</YPos>
@@ -241,16 +251,6 @@
                     <Type>LavaTerrain</Type>
                     <XPos>700</XPos>
                     <YPos>600</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Type>RedDoor</Type>
-                    <XPos>600</XPos>
-                    <YPos>318</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Type>BlueDoor</Type>
-                    <XPos>800</XPos>
-                    <YPos>318</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Floor</Type>

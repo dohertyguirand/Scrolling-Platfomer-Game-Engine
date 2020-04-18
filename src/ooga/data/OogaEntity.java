@@ -327,6 +327,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public boolean hasCollisionWith(String entityType) {
-    return myCollisionBehaviors.containsKey(entityType);
+    //TODO: remove this method
+    return true;
+    //return myCollisionBehaviors.containsKey(entityType);
   }
 }

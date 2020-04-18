@@ -67,6 +67,8 @@ entities can be created by behaviors.
 - 4/15/2020: Added ``reactToVariables`` so that entities can react to variable values each frame.
 - 4/16/2020: Added ``hasCollision`` so that the collision loop can avoid being hung up on nonexistant
 collisions and ignoring real ones.
+-4/18/20 Set ``hasCollision`` to always return true because it was messing up conditional collision
+behaviors
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require
