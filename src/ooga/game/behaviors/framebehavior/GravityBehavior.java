@@ -13,6 +13,7 @@ import ooga.game.behaviors.FrameBehavior;
 public class GravityBehavior implements FrameBehavior {
 
     public static final int GROUND_LEVEL = 12000;
+    //public static final double EXPECTED_DT = 33.33;
 
     private List<Double> myGravityVector;
 
@@ -29,6 +30,7 @@ public class GravityBehavior implements FrameBehavior {
 
     @Override
     public void doFrameUpdate(double elapsedTime, Entity subject, Map<String, Double> variables) {
+        //subject.changeVelocity(myGravityVector.get(0)*elapsedTime/EXPECTED_DT,myGravityVector.get(1)*elapsedTime/EXPECTED_DT);
         subject.changeVelocity(myGravityVector.get(0),myGravityVector.get(1));
         if ((subject.getPosition().get(1) >= GROUND_LEVEL) && (subject.getVelocity().get(1) > 0)) {
             subject.setVelocity(0,0);

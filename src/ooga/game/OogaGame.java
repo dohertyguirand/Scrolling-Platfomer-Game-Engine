@@ -175,11 +175,11 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
     Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
     for (Entity entity : currentLevel.getEntities()) {
-      for (Entity collidingWith : verticalCollisions.get(entity)) {
-        entity.handleVerticalCollision(collidingWith, elapsedTime, myVariables, this);
-      }
       for (Entity collidingWith : horizontalCollisions.get(entity)) {
         entity.handleHorizontalCollision(collidingWith, elapsedTime, myVariables, this);
+      }
+      for (Entity collidingWith : verticalCollisions.get(entity)) {
+        entity.handleVerticalCollision(collidingWith, elapsedTime, myVariables, this);
       }
       entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, verticalCollisions.get(entity),
               horizontalCollisions.get(entity), this);
