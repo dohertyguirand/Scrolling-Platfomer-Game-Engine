@@ -2,10 +2,10 @@ package ooga.game.behaviors.conditionalBehavior;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.FrameBehavior;
 
 import java.util.List;
 import java.util.Map;
+import ooga.game.behaviors.NonCollisionEffect;
 
 public class ConditionalNonCollisionBehavior extends ConditionalBehaviorInstance {
 
@@ -28,7 +28,7 @@ public class ConditionalNonCollisionBehavior extends ConditionalBehaviorInstance
   @Override
   public void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
-    FrameBehavior frameBehavior = (FrameBehavior)behavior;
-    frameBehavior.doFrameUpdate(elapsedTime, subject, variables);
+    NonCollisionEffect frameBehavior = (NonCollisionEffect) behavior;
+    frameBehavior.doEffect(elapsedTime, subject, variables);
   }
 }

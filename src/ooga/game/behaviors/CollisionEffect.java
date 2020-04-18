@@ -10,7 +10,7 @@ import ooga.game.GameInternal;
  * than that instance is in charge of determining which CollisionBehavior to use.
  * Example: Goombas stop existing when a fireball touches them.
  */
-public interface CollisionBehavior {
+public interface CollisionEffect {
 
   /**
    * Performs the specific collision behavior implementation.

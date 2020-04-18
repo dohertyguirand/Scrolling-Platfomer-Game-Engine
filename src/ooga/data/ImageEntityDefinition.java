@@ -1,9 +1,8 @@
 package ooga.data;
 
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.ControlsBehavior;
-import ooga.game.behaviors.FrameBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 
 import java.util.List;
 import java.util.Map;
@@ -12,15 +11,15 @@ public class ImageEntityDefinition {
     private double myHeight;
     private double myWidth;
     private String myImageLocation;
-    private List<FrameBehavior> myFrameBehaviors;
-    private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
-    private Map<String,List<ControlsBehavior>> myControls;
+    private List<NonCollisionEffect> myFrameBehaviors;
+    private Map<String,List<CollisionEffect>> myCollisionBehaviors;
+    private Map<String,List<NonCollisionEffect>> myControls;
     private List<ConditionalBehavior> myConditionalBehaviors;
     private String myName;
 
-    public ImageEntityDefinition(String name, double height, double width, String imageLocation, List<FrameBehavior> frameBehaviors,
-                                 Map<String,List<CollisionBehavior>> collisionBehaviors,
-                                 Map<String,List<ControlsBehavior>> controls, List<ConditionalBehavior> conditionalBehaviors){
+    public ImageEntityDefinition(String name, double height, double width, String imageLocation, List<NonCollisionEffect> frameBehaviors,
+                                 Map<String,List<CollisionEffect>> collisionBehaviors,
+                                 Map<String,List<NonCollisionEffect>> controls, List<ConditionalBehavior> conditionalBehaviors){
         myName = name;
         myHeight = height;
         myWidth = width;

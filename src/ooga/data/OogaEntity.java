@@ -8,11 +8,10 @@ import java.util.Stack;
 import java.util.function.Consumer;
 import javafx.beans.property.*;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 import ooga.Entity;
-import ooga.game.behaviors.FrameBehavior;
 import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
@@ -36,9 +35,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
-  private List<FrameBehavior> myFrameBehaviors;
-  private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
-  private Map<String,List<ControlsBehavior>> myControls;
+  private List<NonCollisionEffect> myFrameBehaviors;
+  private Map<String,List<CollisionEffect>> myCollisionBehaviors;
+  private Map<String,List<NonCollisionEffect>> myControls;
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
@@ -120,7 +119,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void setMovementBehaviors(List<FrameBehavior> behaviors) {
+  public void setMovementBehaviors(List<NonCollisionEffect> behaviors) {
     myFrameBehaviors = behaviors;
   }
 
@@ -129,8 +128,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     if (!myControls.containsKey(controls)) {
       return;
     }
-    for (ControlsBehavior behavior : myControls.get(controls)) {
-      behavior.reactToControls(this);
+    for (NonCollisionEffect behavior : myControls.get(controls)) {
+      behavior.doEffect(1.0, this, new HashMap<>());
     }
   }
 
@@ -143,8 +142,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void updateSelf(double elapsedTime, Map<String, Double> variables) {
-    for (FrameBehavior behavior : myFrameBehaviors) {
-      behavior.doFrameUpdate(elapsedTime,this, variables);
+    for (NonCollisionEffect behavior : myFrameBehaviors) {
+      behavior.doEffect(elapsedTime, this, variables);
     }
     applyFrictionHorizontal();
     applyFrictionVertical();
@@ -176,12 +175,12 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void setCollisionBehaviors(Map<String, List<CollisionBehavior>> behaviorMap) {
+  public void setCollisionBehaviors(Map<String, List<CollisionEffect>> behaviorMap) {
     myCollisionBehaviors = new HashMap<>(behaviorMap);
   }
 
   @Override
-  public void setControlsBehaviors(Map<String, List<ControlsBehavior>> behaviors) {
+  public void setControlsBehaviors(Map<String, List<NonCollisionEffect>> behaviors) {
     myControls = new HashMap<>(behaviors);
   }
 
@@ -200,7 +199,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables, GameInternal game) {
     if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
+      for (CollisionEffect behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
         behavior.doVerticalCollision(this, collidingEntity,elapsedTime, variables, game);
       }
     }
@@ -213,9 +212,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
         variables, game));
   }
 
-  private void doAllCollisions(Entity collidingEntity, Consumer<CollisionBehavior> collisionType) {
+  private void doAllCollisions(Entity collidingEntity, Consumer<CollisionEffect> collisionType) {
     if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
+      for (CollisionEffect behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
         collisionType.accept(behavior);
       }
     }

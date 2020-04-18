@@ -1,12 +1,13 @@
 package ooga.game.behaviors.inputbehavior;
 
+import java.util.Map;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 
 import java.util.List;
 
-public class SetImageBehavior implements ControlsBehavior {
+public class SetImageBehavior implements NonCollisionEffect {
 
   String newImageLocation = "";
 
@@ -19,12 +20,14 @@ public class SetImageBehavior implements ControlsBehavior {
   /**
    * Handles reaction to controls. Requires the ControlsBehavior to have a reference to the
    * instance that uses it in order to have an effect on that instance.
-   *
+   *  @param elapsedTime
    * @param subject The entity that owns this controls behavior. This is the entity that should
    *                be modified.
+   * @param variables
    */
   @Override
-  public void reactToControls(Entity subject) {
+  public void doEffect(double elapsedTime, Entity subject,
+      Map<String, Double> variables) {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;

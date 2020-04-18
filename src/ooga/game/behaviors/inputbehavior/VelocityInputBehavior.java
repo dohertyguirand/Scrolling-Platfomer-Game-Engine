@@ -1,10 +1,11 @@
 package ooga.game.behaviors.inputbehavior;
 
 import java.util.List;
-import ooga.game.behaviors.ControlsBehavior;
+import java.util.Map;
+import ooga.game.behaviors.NonCollisionEffect;
 import ooga.Entity;
 
-public class VelocityInputBehavior implements ControlsBehavior {
+public class VelocityInputBehavior implements NonCollisionEffect {
 
   private double xAccelPerFrame;
   private double yAccelPerFrame;
@@ -23,7 +24,8 @@ public class VelocityInputBehavior implements ControlsBehavior {
   }
 
   @Override
-  public void reactToControls(Entity subject) {
+  public void doEffect(double elapsedTime, Entity subject,
+      Map<String, Double> variables) {
     if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
       subject.changeVelocity(xAccelPerFrame,yAccelPerFrame);
     }

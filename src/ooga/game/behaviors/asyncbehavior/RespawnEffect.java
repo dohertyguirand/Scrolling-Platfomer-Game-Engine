@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RespawnBehavior extends DirectionlessCollision {
+public class RespawnEffect extends DirectionlessCollision {
 
   private List<Double> respawnLocation = new ArrayList<>();
 
-  public RespawnBehavior(List<String> args){
+  public RespawnEffect(List<String> args){
     if(args.size() >= 2) {
       respawnLocation.add(Double.parseDouble(args.get(0)));
       respawnLocation.add(Double.parseDouble(args.get(1)));

@@ -3,9 +3,9 @@ package ooga.game.behaviors.asyncbehavior;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 
-public abstract class QuadDirectionCollision implements CollisionBehavior {
+public abstract class QuadDirectionCollision implements CollisionEffect {
 
   @Override
   public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
