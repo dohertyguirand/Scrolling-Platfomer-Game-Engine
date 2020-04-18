@@ -54,7 +54,8 @@
             <Collisions>
                 <EntityCollision>
                     <With>WaterTerrain</With>
-                    <Reaction>RemoveSelf</Reaction>
+                    <Reaction>Respawn 150 500</Reaction>
+                    <Reaction>ChangeVariable Lives -1.0</Reaction>
                 </EntityCollision>
                 <EntityCollision>
                     <With>LavaTerrain</With>
@@ -117,7 +118,8 @@
             <Collisions>
                 <EntityCollision>
                     <With>LavaTerrain</With>
-                    <Reaction>RemoveSelf</Reaction>
+                    <Reaction>Respawn 150 500</Reaction>
+                    <Reaction>ChangeVariable Lives -1.0</Reaction>
                 </EntityCollision>
                 <EntityCollision>
                     <With>WaterTerrain</With>

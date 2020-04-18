@@ -50,6 +50,11 @@
           <With>QuestionBlock</With>
           <Reaction>TerrainCollision</Reaction>
         </EntityCollision>
+        <EntityCollision>
+          <With>Void</With>
+          <Reaction>ChangeVariable Lives -1.0</Reaction>
+          <Reaction>Respawn 0 0</Reaction>
+        </EntityCollision>
       </Collisions>
     </ImageEntity>
     <ImageEntity>
@@ -103,6 +108,12 @@
           <Reaction>ChangeVariable Score 20.0</Reaction>
         </EntityCollision>
       </Collisions>
+    </ImageEntity>
+    <ImageEntity>
+      <Name>Void</Name>
+      <Width>1500</Width>
+      <Height>1</Height>
+      <Image>mario_brick.png</Image>
     </ImageEntity>
     <ImageEntity>
       <Name>Flagpole</Name>
@@ -206,6 +217,11 @@
           <XPos>800</XPos>
           <YPos>200</YPos>
         </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Void</Type>
+          <XPos>-250</XPos>
+          <YPos>799</YPos>
+        </ImageEntityInstance>
       </ImageEntityInstances>
       <TextEntityInstances>
         <TextEntityInstance>
@@ -304,6 +320,11 @@
           <XPos>900</XPos>
           <YPos>200</YPos>
         </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Void</Type>
+          <XPos>-250</XPos>
+          <YPos>799</YPos>
+        </ImageEntityInstance>
       </ImageEntityInstances>
       <TextEntityInstances>
         <TextEntityInstance>
@@ -391,6 +412,11 @@
           <Type>Flagpole</Type>
           <XPos>700</XPos>
           <YPos>200</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Type>Void</Type>
+          <XPos>-250</XPos>
+          <YPos>799</YPos>
         </ImageEntityInstance>
       </ImageEntityInstances>
       <TextEntityInstances>
