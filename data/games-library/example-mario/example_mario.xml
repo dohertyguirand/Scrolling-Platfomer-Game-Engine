@@ -7,7 +7,7 @@
       <Name>SmallMario</Name>
       <Width>80</Width>
       <Height>120</Height>
-      <Image>mario.png</Image>
+      <Image>mario_facing_right.png</Image>
       <Movement>
         <MovementBehavior>Gravity 0 0.1</MovementBehavior>
       </Movement>
@@ -25,10 +25,12 @@
         <ControlInput>
           <Key>LeftKey2</Key>
           <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
+          <ControlBehavior>SetImage file:data/games-library/example-mario/mario_facing_left.png</ControlBehavior>
         </ControlInput>
         <ControlInput>
           <Key>RightKey2</Key>
           <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
+          <ControlBehavior>SetImage file:data/games-library/example-mario/mario_facing_right.png</ControlBehavior>
         </ControlInput>
       </Controls>
       <Collisions>
@@ -64,7 +66,7 @@
       <Image>koopa.png</Image>
       <Movement>
         <MovementBehavior>Gravity 0.0 0.10</MovementBehavior>
-        <MovementBehavior>Patrol 0.100 .11 500 485 700 485</MovementBehavior>
+        <MovementBehavior>Patrol 0.100 .12 500 485 700 485</MovementBehavior>
       </Movement>
       <Collisions>
         <EntityCollision>
