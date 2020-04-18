@@ -7,11 +7,11 @@ import ooga.game.behaviors.FrameBehavior;
 import java.util.List;
 import java.util.Map;
 
-public class ConditionalFrameBehavior extends ConditionalBehaviorInstance {
+public class ConditionalNonCollisionBehavior extends ConditionalBehaviorInstance {
 
-  public ConditionalFrameBehavior(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
-                                  Map<String, Boolean> verticalCollisionConditions,
-                                  Map<String, Boolean> horizontalCollisionConditions, Object behavior){
+  public ConditionalNonCollisionBehavior(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
+                                         Map<String, Boolean> verticalCollisionConditions,
+                                         Map<String, Boolean> horizontalCollisionConditions, Object behavior){
     super(variableConditions, inputConditions, verticalCollisionConditions, horizontalCollisionConditions, behavior);
   }
 

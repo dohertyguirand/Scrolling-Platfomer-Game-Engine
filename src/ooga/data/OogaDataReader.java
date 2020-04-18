@@ -16,8 +16,7 @@ import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
 import ooga.game.behaviors.FrameBehavior;
 import ooga.game.behaviors.conditionalBehavior.ConditionalCollisionBehavior;
-import ooga.game.behaviors.conditionalBehavior.ConditionalFrameBehavior;
-import ooga.game.behaviors.conditionalBehavior.ConditionalInputBehavior;
+import ooga.game.behaviors.conditionalBehavior.ConditionalNonCollisionBehavior;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -317,23 +316,6 @@ public class OogaDataReader implements DataReader{
 
         //TODO: refactor below loops into a single loop and use reflection
         List<ConditionalBehavior> conditionalBehaviors = new ArrayList<>();
-        NodeList nodeList4 = entityElement.getElementsByTagName("ConditionalInputBehavior");
-        for (int i=0; i<nodeList4.getLength(); i++){
-            Element behaviorElement = (Element) nodeList4.item(i);
-            Map<String, Double> variableConditions = new HashMap<>();
-            Map<String, Boolean> inputConditions = new HashMap<>();
-            Map<String, Boolean> verticalCollisionConditions = new HashMap<>();
-            Map<String, Boolean> horizontalCollisionConditions = new HashMap<>();
-            addConditions(verticalCollisionConditions, behaviorElement.getElementsByTagName("VerticalCollisionCondition"), "EntityName", "CollisionRequirement");
-            addConditions(horizontalCollisionConditions, behaviorElement.getElementsByTagName("HorizontalCollisionCondition"), "EntityName", "CollisionRequirement");
-            addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
-            addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
-            String keyPressed = behaviorElement.getElementsByTagName("Key").item(0).getTextContent();
-            String[] resultBehavior = behaviorElement.getElementsByTagName("ControlBehavior").item(0).getTextContent().split(" ");
-            ControlsBehavior controlsBehavior = (ControlsBehavior) makeBasicBehavior(resultBehavior, "Control");
-            conditionalBehaviors.add(new ConditionalInputBehavior(variableConditions, inputConditions, verticalCollisionConditions,
-                    horizontalCollisionConditions, controlsBehavior, keyPressed));
-        }
         NodeList nodeList5 = entityElement.getElementsByTagName("ConditionalCollisionBehavior");
         for (int i=0; i<nodeList5.getLength(); i++){
             Element behaviorElement = (Element) nodeList5.item(i);
@@ -345,13 +327,14 @@ public class OogaDataReader implements DataReader{
             addConditions(horizontalCollisionConditions, behaviorElement.getElementsByTagName("HorizontalCollisionCondition"), "EntityName", "CollisionRequirement");
             addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
+            //TODO: take in a list of collision behaviors
             String otherEntityName = behaviorElement.getElementsByTagName("With").item(0).getTextContent();
             String[] resultBehavior = behaviorElement.getElementsByTagName("Reaction").item(0).getTextContent().split(" ");
             CollisionBehavior collisionBehavior = (CollisionBehavior) makeBasicBehavior(resultBehavior, "Collision");
             conditionalBehaviors.add(new ConditionalCollisionBehavior(variableConditions, inputConditions, verticalCollisionConditions,
                     horizontalCollisionConditions, collisionBehavior, otherEntityName));
         }
-        NodeList nodeList6 = entityElement.getElementsByTagName("ConditionalFrameBehavior");
+        NodeList nodeList6 = entityElement.getElementsByTagName("ConditionalNonCollisionBehavior");
         for (int i=0; i<nodeList6.getLength(); i++){
             Element behaviorElement = (Element) nodeList6.item(i);
             Map<String, Double> variableConditions = new HashMap<>();
@@ -362,9 +345,9 @@ public class OogaDataReader implements DataReader{
             addConditions(horizontalCollisionConditions, behaviorElement.getElementsByTagName("HorizontalCollisionCondition"), "EntityName", "CollisionRequirement");
             addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
-            String[] resultBehavior = behaviorElement.getElementsByTagName("FrameBehavior").item(0).getTextContent().split(" ");
+            String[] resultBehavior = behaviorElement.getElementsByTagName("NonCollisionEffect").item(0).getTextContent().split(" ");
             FrameBehavior frameBehavior = (FrameBehavior) makeBasicBehavior(resultBehavior, "Movement");
-            conditionalBehaviors.add(new ConditionalFrameBehavior(variableConditions, inputConditions, verticalCollisionConditions,
+            conditionalBehaviors.add(new ConditionalNonCollisionBehavior(variableConditions, inputConditions, verticalCollisionConditions,
                     horizontalCollisionConditions, frameBehavior));
         }
 

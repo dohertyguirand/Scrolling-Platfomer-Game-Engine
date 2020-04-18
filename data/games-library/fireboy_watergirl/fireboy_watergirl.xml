@@ -12,14 +12,14 @@
                 <MovementBehavior>Gravity 0 0.1</MovementBehavior>
             </Movement>
             <ConditionalBehaviors>
-                <ConditionalInputBehavior>
+                <ConditionalNonCollisionBehavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
                     </VerticalCollisionCondition>
                     <Key>UpKeyPressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
-                </ConditionalInputBehavior>
+                </ConditionalNonCollisionBehavior>
                 <ConditionalCollisionBehavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
@@ -76,14 +76,17 @@
                 <MovementBehavior>Gravity 0 0.1</MovementBehavior>
             </Movement>
             <ConditionalBehaviors>
-                <ConditionalInputBehavior>
+                <ConditionalNonCollisionBehavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
                     </VerticalCollisionCondition>
-                    <Key>UpKey2Pressed</Key>
-                    <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
-                </ConditionalInputBehavior>
+                    <InputCondition>
+                        <Key>UpKey2Pressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>JumpBehavior -1.2</NonCollisionEffect>
+                </ConditionalNonCollisionBehavior>
                 <ConditionalCollisionBehavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
@@ -101,15 +104,31 @@
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
                     </VariableCondition>
-                    <With>BlueDoor</With>
-                    <Reaction>ChangeVariable Score 1000</Reaction>
+                    <EntityCollision>
+                        <With>BlueDoor</With>
+                        <Reaction>ChangeVariable Score 1000</Reaction>
+                    </EntityCollision>
+                    <EntityCollision>
+                        <With>NONEXISTENTDOOR</With>
+                        <Reaction>ChangeVariable Score 0</Reaction>
+                    </EntityCollision>
                 </ConditionalCollisionBehavior>
+                <ConditionalNonCollisionBehavior>
+                    <InputCondition>
+                        <Key>LeftKey2</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
+                </ConditionalNonCollisionBehavior>
+                <ConditionalNonCollisionBehavior>
+                    <InputCondition>
+                        <Key>LeftKey2</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
+                </ConditionalNonCollisionBehavior>
             </ConditionalBehaviors>
             <Controls>
-                <ControlInput>
-                    <Key>LeftKey2</Key>
-                    <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
-                </ControlInput>
                 <ControlInput>
                     <Key>RightKey2</Key>
                     <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
