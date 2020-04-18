@@ -37,8 +37,12 @@
                     <Reaction>RemoveSelf</Reaction>
                 </EntityCollision>
                 <EntityCollision>
+                    <With>LavaTerrain</With>
+                    <Reaction>TerrainCollision</Reaction>
+                </EntityCollision>
+                <EntityCollision>
                     <With>Floor</With>
-                    <Reaction>StopDownwardVelocity</Reaction>
+                    <Reaction>TerrainCollision</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -76,15 +80,19 @@
                     <Reaction>RemoveSelf</Reaction>
                 </EntityCollision>
                 <EntityCollision>
+                    <With>WaterTerrain</With>
+                    <Reaction>TerrainCollision</Reaction>
+                </EntityCollision>
+                <EntityCollision>
                     <With>Floor</With>
-                    <Reaction>StopDownwardVelocity</Reaction>
+                    <Reaction>TerrainCollision</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
         <ImageEntity>
             <Name>Floor</Name>
             <Width>200</Width>
-            <Height>100</Height>
+            <Height>50</Height>
             <Image>floorBrick.png</Image>
         </ImageEntity>
         <ImageEntity>
@@ -127,14 +135,14 @@
         </ImageEntity>
         <ImageEntity>
             <Name>RedDoor</Name>
-            <Width>50</Width>
-            <Height>70</Height>
+            <Width>75</Width>
+            <Height>107</Height>
             <Image>redDoor.jpg</Image>
         </ImageEntity>
         <ImageEntity>
             <Name>BlueDoor</Name>
-            <Width>50</Width>
-            <Height>70</Height>
+            <Width>75</Width>
+            <Height>107</Height>
             <Image>blueDoor.jpg</Image>
         </ImageEntity>
     </Entities>
@@ -156,33 +164,43 @@
             <ImageEntityInstances>
                 <ImageEntityInstance>
                     <Type>Fireboy</Type>
-                    <XPos>100</XPos>
-                    <YPos>400</YPos>
+                    <XPos>150</XPos>
+                    <YPos>500</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Watergirl</Type>
-                    <XPos>300</XPos>
-                    <YPos>400</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Type>RedDiamond</Type>
-                    <XPos>700</XPos>
-                    <YPos>400</YPos>
+                    <XPos>170</XPos>
+                    <YPos>500</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>BlueDiamond</Type>
-                    <XPos>800</XPos>
-                    <YPos>400</YPos>
+                    <XPos>500</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>RedDiamond</Type>
+                    <XPos>600</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>WaterTerrain</Type>
+                    <XPos>400</XPos>
+                    <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>LavaTerrain</Type>
+                    <XPos>700</XPos>
+                    <YPos>600</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>RedDoor</Type>
                     <XPos>600</XPos>
-                    <YPos>200</YPos>
+                    <YPos>318</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>BlueDoor</Type>
                     <XPos>800</XPos>
-                    <YPos>200</YPos>
+                    <YPos>318</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Floor</Type>
@@ -196,18 +214,153 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Floor</Type>
-                    <XPos>400</XPos>
-                    <YPos>600</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Type>Floor</Type>
-                    <XPos>600</XPos>
+                    <XPos>500</XPos>
                     <YPos>600</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Floor</Type>
                     <XPos>800</XPos>
                     <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>550</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>450</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>400</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>350</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>250</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>200</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>150</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>100</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>50</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>000</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>550</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>450</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>400</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>350</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>250</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>200</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>150</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>100</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>50</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>000</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>275</XPos>
+                    <YPos>425</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>475</XPos>
+                    <YPos>425</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>675</XPos>
+                    <YPos>425</YPos>
                 </ImageEntityInstance>
             </ImageEntityInstances>
             <TextEntityInstances>

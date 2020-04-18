@@ -113,6 +113,10 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     return ret;
   }
 
+//  private List<Map<Entity, List<Entity>>> findAllCollisions(double elapsedTime) {
+//
+//  }
+
   private List<Entity> collidingEntities(CollisionType<Entity> collisionType, Entity target) {
     List<Entity> entityCollisions = new ArrayList<>();
     for (Entity collidingWith : currentLevel.getEntities()) {
@@ -165,6 +169,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void doEntityCollisionsAndConditionals(double elapsedTime, List<String> allInputs) {
+//    List<Map<Entity, List<Entity>>> allCollisions = findAllCollisions(elapsedTime);
+//    Map<Entity, List<Entity>> verticalCollisions = allCollisions.get(0);
+//    Map<Entity,List<Entity>> horizontalCollisions = allCollisions.get(1);
     Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
     Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
     for (Entity entity : currentLevel.getEntities()) {
