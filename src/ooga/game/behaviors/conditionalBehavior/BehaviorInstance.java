@@ -2,28 +2,33 @@ package ooga.game.behaviors.conditionalBehavior;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.CollisionEffect;
 import ooga.game.behaviors.ConditionalBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ConditionalBehaviorInstance implements ConditionalBehavior {
+public class BehaviorInstance implements ConditionalBehavior {
 
   Map<String, Boolean> inputConditions;
   Map<String, Boolean> verticalCollisionConditions;
   Map<String, Boolean> horizontalCollisionConditions;
   Map<String, Double> variableConditions;
-  Object behavior;
+  Map<String, List<CollisionEffect>> collisionEffects;
+  List<NonCollisionEffect> nonCollisionEffects;
 
-  public ConditionalBehaviorInstance(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
-                                     Map<String, Boolean> verticalCollisionConditions,
-                                     Map<String, Boolean> horizontalCollisionConditions, Object behavior){
+  public BehaviorInstance(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
+                          Map<String, Boolean> verticalCollisionConditions,
+                          Map<String, Boolean> horizontalCollisionConditions, Map<String, List<CollisionEffect>> collisionEffects,
+                          List<NonCollisionEffect> nonCollisionEffects){
     this.inputConditions = inputConditions;
     this.variableConditions = variableConditions;
     this.verticalCollisionConditions = verticalCollisionConditions;
     this.horizontalCollisionConditions = horizontalCollisionConditions;
-    this.behavior = behavior;
+    this.collisionEffects = collisionEffects;
+    this.nonCollisionEffects = nonCollisionEffects;
   }
 
   /**
@@ -67,7 +72,54 @@ public abstract class ConditionalBehaviorInstance implements ConditionalBehavior
         return;
       }
     }
-    doUpdate(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
+    doCollisionEffects(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
+    doNonCollisionEffects(elapsedTime, subject, variables);
+  }
+
+  /**
+   * executes the behavior owned by this behavior
+   * @param elapsedTime time in ms
+   * @param subject entity that owns this conditional behavior
+   * @param variables map of variables in the game/level
+   * @param inputs the input keys that are currently active in this frame
+   * @param horizontalCollisions the entities this entity is colliding with horizontally
+   * @param verticalCollisions the entities this entity is colliding with vertically
+   * @param gameInternal what game this is run from
+   */
+  @Override
+  public void doCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+                       List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
+    for(Map.Entry<String, List<CollisionEffect>>  collisionEffectEntry: collisionEffects.entrySet()) {
+      String collidingEntityName = collisionEffectEntry.getKey();
+      List<CollisionEffect> specificCollisionEffects = collisionEffectEntry.getValue();
+      for (Entity collidingWith : verticalCollisions) {
+        if (collidingWith.getName().equals(collidingEntityName)) {
+          for(CollisionEffect collisionEffect : specificCollisionEffects) {
+            collisionEffect.doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
+          }
+        }
+      }
+      for (Entity collidingWith : horizontalCollisions) {
+        if (collidingWith.getName().equals(collidingEntityName)) {
+          for(CollisionEffect collisionEffect : specificCollisionEffects) {
+            collisionEffect.doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * executes the behavior owned by this behavior
+   * @param elapsedTime time in ms
+   * @param subject entity that owns this conditional behavior
+   * @param variables map of variables in the game/level
+   */
+  @Override
+  public void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables) {
+    for(NonCollisionEffect nonCollisionEffect : nonCollisionEffects) {
+      nonCollisionEffect.doEffect(elapsedTime, subject, variables);
+    }
   }
 
   private List<String> getEntityNames(List<Entity> entityList){

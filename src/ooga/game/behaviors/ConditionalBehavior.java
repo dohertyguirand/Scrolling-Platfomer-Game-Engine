@@ -42,6 +42,7 @@ public interface ConditionalBehavior {
   void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                            List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal);
 
+
   /**
    * executes the behavior owned by this behavior
    * @param elapsedTime time in ms
@@ -52,5 +53,14 @@ public interface ConditionalBehavior {
    * @param verticalCollisions the entities this entity is colliding with vertically
    * @param gameInternal what game this is run from
    */
-  void doUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs, List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal);
+  void doCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+                          List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal);
+
+  /**
+   * executes the behavior owned by this behavior
+   * @param elapsedTime time in ms
+   * @param subject entity that owns this conditional behavior
+   * @param variables map of variables in the game/level
+   */
+  void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables);
 }

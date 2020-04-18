@@ -9,18 +9,18 @@
             <Height>100</Height>
             <Image>fireboy.png</Image>
             <Behaviors>
-                <NonCollisionBehavior>
+                <Behavior>
                     <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
-                </NonCollisionBehavior>
-                <NonCollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
                     </VerticalCollisionCondition>
                     <Key>UpKeyPressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
-                </NonCollisionBehavior>
-                <CollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
@@ -39,40 +39,40 @@
                     </VariableCondition>
                     <With>RedDoor</With>
                     <Reaction>ChangeVariable Score 1000</Reaction>
-                </CollisionBehavior>
-                <NonCollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <InputCondition>
                         <Key>LeftKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
-                </NonCollisionBehavior>
-                <NonCollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <InputCondition>
                         <Key>RightKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
-                </NonCollisionBehavior>
-                <CollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <CollisionEffect>
                         <With>WaterTerrain</With>
                         <Reaction>Respawn 150 500</Reaction>
                         <Reaction>ChangeVariable Lives -1.0</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
-                <CollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <CollisionEffect>
                         <With>LavaTerrain</With>
                         <Reaction>TerrainCollision</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
-                <CollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <CollisionEffect>
                         <With>Floor</With>
                         <Reaction>TerrainCollision</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
+                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -81,10 +81,10 @@
             <Height>100</Height>
             <Image>watergirl.png</Image>
             <Behaviors>
-                <ConditionalNonCollisionBehavior>
+                <ConditionalBehavior>
                     <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
-                </ConditionalNonCollisionBehavior>
-                <NonCollisionBehavior>
+                </ConditionalBehavior>
+                <Behavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
@@ -94,8 +94,8 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>JumpBehavior -1.2</NonCollisionEffect>
-                </NonCollisionBehavior>
-                <CollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
@@ -120,40 +120,40 @@
                         <With>NONEXISTENTDOOR</With>
                         <Reaction>ChangeVariable Score 0</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
-                <NonCollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <InputCondition>
                         <Key>LeftKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
-                </NonCollisionBehavior>
-                <NonCollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <InputCondition>
                         <Key>RightKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
-                </NonCollisionBehavior>
-                <CollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <CollisionEffect>
                         <With>LavaTerrain</With>
                         <Reaction>Respawn 150 500</Reaction>
                         <Reaction>ChangeVariable Lives -1.0</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
-                <CollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <CollisionEffect>
                         <With>WaterTerrain</With>
                         <Reaction>TerrainCollision</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
-                <CollisionBehavior>
+                </Behavior>
+                <Behavior>
                     <CollisionEffect>
                         <With>Floor</With>
                         <Reaction>TerrainCollision</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
+                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -180,14 +180,14 @@
             <Height>40</Height>
             <Image>redDiamond.jpg</Image>
             <Behaviors>
-                <CollisionBehavior>
+                <Behavior>
                     <CollisionEffect>
                         <With>Fireboy</With>
                         <Reaction>RemoveSelf</Reaction>
                         <Reaction>ChangeVariable Score 1.0</Reaction>
                         <Reaction>ChangeVariable RedDiamonds 1.0</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
+                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -196,14 +196,14 @@
             <Height>40</Height>
             <Image>blueDiamond.png</Image>
             <Behaviors>
-                <CollisionBehavior>
+                <Behavior>
                     <CollisionEffect>
                         <With>Watergirl</With>
                         <Reaction>RemoveSelf</Reaction>
                         <Reaction>ChangeVariable Score 1.0</Reaction>
                         <Reaction>ChangeVariable BlueDiamonds 1.0</Reaction>
                     </CollisionEffect>
-                </CollisionBehavior>
+                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
