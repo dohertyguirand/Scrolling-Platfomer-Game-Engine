@@ -2,10 +2,12 @@ package ooga.view;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -43,10 +45,14 @@ public class ViewerGame {
   private Game myGame;
   private Timeline myAnimation;
   private String myProfileName;
+  private ParallelCamera myCamera;
+  private ViewImageEntity focus;
+
 
 
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
+    myCamera = new ParallelCamera();
     OogaGame targetGame =  new OogaGame(gameName, new OogaDataReader());
 //    targetGame = ControlsTestGameCreation.getGame();
     myGame = targetGame;
@@ -55,6 +61,7 @@ public class ViewerGame {
     setUpGameStage();
     setUpPauseButton();
     setUpInputListeners(targetGame);
+    myGameScene.setCamera(myCamera);
   }
   public ViewerGame(String gameName, String profileName) throws OogaDataException {
     this(gameName);
@@ -100,7 +107,13 @@ public class ViewerGame {
   private Node makeViewEntity(Entity entity){
     // TODO: use reflection here or something
     if(entity instanceof ImageEntity){
-      return (new ViewImageEntity((ImageEntity)entity)).getNode();
+      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity));
+      if(entity.getName().equals("SmallMario")){
+        focus = viewImageEntity;
+        myCamera.layoutXProperty().bind(focus.getXProperty());
+        //myCamera.layoutYProperty().bind(focus.getYProperty().add(new SimpleDoubleProperty(-450.0)));
+      }
+      return viewImageEntity.getNode();
     }
     else if(entity instanceof TextEntity){
       return (new ViewTextEntity((TextEntity)entity)).getNode();
