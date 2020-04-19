@@ -46,7 +46,7 @@
         </EntityCollision>
         <EntityCollision>
           <With>Flagpole</With>
-          <Reaction>TerrainCollision</Reaction>
+          <Reaction>ChangeVariable Score 1000</Reaction>
         </EntityCollision>
         <EntityCollision>
           <With>QuestionBlock</With>
