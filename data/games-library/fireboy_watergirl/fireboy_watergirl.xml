@@ -10,21 +10,14 @@
             <Image>fireboy.png</Image>
             <Behaviors>
                 <Behavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
                     <InputCondition>
-                        <Key>UpKeyPressed</Key>
+                        <Key>DownKey2Pressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
-                    <NonCollisionEffect>JumpBehavior -1.2</NonCollisionEffect>
-                </Behavior>
-                <Behavior>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
                     <InputCondition>
                         <Key>DownKeyPressed</Key>
                         <InputRequirement>true</InputRequirement>
@@ -37,8 +30,10 @@
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
                     </VariableCondition>
-                    <With>RedDoor</With>
-                    <Reaction>ChangeVariable Score 1000</Reaction>
+                    <CollisionEffect>
+                        <With>RedDoor</With>
+                        <Reaction>ChangeVariable Score 1000</Reaction>
+                    </CollisionEffect>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -76,6 +71,17 @@
                 <Behavior>
                     <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
                 </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>UpKeyPressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
+                    <NonCollisionEffect>Jump -1.2</NonCollisionEffect>
+                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -90,18 +96,11 @@
                         <CollisionRequirement>true</CollisionRequirement>
                     </VerticalCollisionCondition>
                     <InputCondition>
-                        <Key>UpKey2Pressed</Key>
+                        <Key>DownKey2Pressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <NonCollisionEffect>JumpBehavior -1.2</NonCollisionEffect>
-                </Behavior>
-                <Behavior>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
                     <InputCondition>
-                        <Key>DownKey2Pressed</Key>
+                        <Key>DownKeyPressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <VariableCondition>
@@ -115,10 +114,6 @@
                     <CollisionEffect>
                         <With>BlueDoor</With>
                         <Reaction>ChangeVariable Score 1000</Reaction>
-                    </CollisionEffect>
-                    <CollisionEffect>
-                        <With>NONEXISTENTDOOR</With>
-                        <Reaction>ChangeVariable Score 0</Reaction>
                     </CollisionEffect>
                 </Behavior>
                 <Behavior>
@@ -156,6 +151,17 @@
                 </Behavior>
                 <Behavior>
                     <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
+                    <InputCondition>
+                        <Key>UpKey2Pressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>JumpBehavior -1.2</NonCollisionEffect>
                 </Behavior>
             </Behaviors>
         </ImageEntity>

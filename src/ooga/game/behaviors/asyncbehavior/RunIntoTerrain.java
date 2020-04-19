@@ -7,7 +7,7 @@ import ooga.Entity;
 
 public class RunIntoTerrain extends QuadDirectionCollision {
 
-  public static final double HORIZONTAL_MARGIN = 10.0;
+  public static final double HORIZONTAL_MARGIN = 0.1;
   public static final double VERTICAL_MARGIN = 0.1;
 
   public RunIntoTerrain(List<String> args) {

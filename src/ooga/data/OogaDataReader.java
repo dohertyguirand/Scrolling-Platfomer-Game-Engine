@@ -267,7 +267,6 @@ public class OogaDataReader implements DataReader{
         String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
         System.out.print(String.format("Name: %s ", name));
 
-        //TODO: refactor below loops into a single loop and use reflection
         List<ConditionalBehavior> behaviors = new ArrayList<>();
         NodeList nodeList = entityElement.getElementsByTagName("Behavior");
         for (int i=0; i<nodeList.getLength(); i++){
