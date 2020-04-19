@@ -38,9 +38,21 @@
                 <Behavior>
                     <InputCondition>
                         <Key>LeftKey</Key>
+                        <InputRequirement>false</InputRequirement>
+                    </InputCondition>
+                    <InputCondition>
+                        <Key>RightKey</Key>
+                        <InputRequirement>false</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy.png</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>LeftKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy_facing_left.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -48,6 +60,7 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy_facing_right.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <CollisionEffect>
@@ -119,9 +132,21 @@
                 <Behavior>
                     <InputCondition>
                         <Key>LeftKey2</Key>
+                        <InputRequirement>false</InputRequirement>
+                    </InputCondition>
+                    <InputCondition>
+                        <Key>RightKey2</Key>
+                        <InputRequirement>false</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl.png</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>LeftKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl_facing_left.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -129,6 +154,7 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl_facing_right.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <CollisionEffect>

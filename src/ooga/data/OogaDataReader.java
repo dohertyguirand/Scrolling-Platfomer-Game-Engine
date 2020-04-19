@@ -14,7 +14,7 @@ import ooga.game.OogaLevel;
 import ooga.game.behaviors.CollisionEffect;
 import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.NonCollisionEffect;
-import ooga.game.behaviors.conditionalBehavior.BehaviorInstance;
+import ooga.game.behaviors.BehaviorInstance;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
