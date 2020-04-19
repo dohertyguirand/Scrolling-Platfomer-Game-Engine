@@ -1,7 +1,5 @@
 
 
-- worried about design in ``setUpStartMenuDisplay() `` in ProfileMenuDemo
-- have to convert an object to a ViewProfile, maybe a better way to do this?
 - sending the name of the selected profile all the way to ViewGame
 - right now it just prints the name but we can find a way to use that to update the profiles stats
 

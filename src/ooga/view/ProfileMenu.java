@@ -36,15 +36,13 @@ public class ProfileMenu extends ScrollMenu {
             if (myProfiles != null) {
                 for (ViewProfile profile : myProfiles) {
                     Button button = makeButton(profile.getProfilePhoto(), profile.getProfileName());
-                    button.setOnAction(e -> {
-                        setProfileSelected(profile);
-                    });
+                    button.setOnAction(e -> setProfileSelected(profile));
                     myHBox.getChildren().add(button);
                 }
             }
 //         ImageView defaultImage = new ImageView(addNewProfilePhoto);
 //         Button button = makeButton(defaultImage,"Add a New Profile");
-//         button.setOnAction(e->);
+//         button.setOnAction(e-> );
 //         myHBox.getChildren().add(button);
         }
 
