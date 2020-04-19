@@ -40,21 +40,19 @@ public class ViewerGame {
   private Scene myGameScene;
   private Stage myGameStage;
   private PauseMenu myPauseMenu;
-  private Game myGame;
+  private OogaGame myGame;
   private Timeline myAnimation;
   private String myProfileName;
 
 
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
-    OogaGame targetGame =  new OogaGame(gameName, new OogaDataReader());
-//    targetGame = ControlsTestGameCreation.getGame();
-    myGame = targetGame;
+    myGame =  new OogaGame(gameName, new OogaDataReader());
     //SAM added this as the way to make a Game once file loading works.
     setUpGameEntities();
     setUpGameStage();
     setUpPauseButton();
-    setUpInputListeners(targetGame);
+    setUpInputListeners(myGame);
   }
   public ViewerGame(String gameName, String profileName) throws OogaDataException {
     this(gameName);

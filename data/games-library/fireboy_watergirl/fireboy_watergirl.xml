@@ -8,23 +8,16 @@
             <Width>50</Width>
             <Height>100</Height>
             <Image>fireboy.png</Image>
-            <Movement>
-                <MovementBehavior>Gravity 0 0.1</MovementBehavior>
-            </Movement>
-            <ConditionalBehaviors>
-                <ConditionalInputBehavior>
+            <Behaviors>
+                <Behavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
                     </VerticalCollisionCondition>
-                    <Key>UpKeyPressed</Key>
-                    <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
-                </ConditionalInputBehavior>
-                <ConditionalCollisionBehavior>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
+                    <InputCondition>
+                        <Key>DownKey2Pressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
                     <InputCondition>
                         <Key>DownKeyPressed</Key>
                         <InputRequirement>true</InputRequirement>
@@ -37,60 +30,90 @@
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
                     </VariableCondition>
-                    <With>RedDoor</With>
-                    <Reaction>ChangeVariable Score 1000</Reaction>
-                </ConditionalCollisionBehavior>
-            </ConditionalBehaviors>
-            <Controls>
-                <ControlInput>
-                    <Key>LeftKey</Key>
-                    <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
-                </ControlInput>
-                <ControlInput>
-                    <Key>RightKey</Key>
-                    <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
-                </ControlInput>
-            </Controls>
-            <Collisions>
-                <EntityCollision>
-                    <With>WaterTerrain</With>
-                    <Reaction>Respawn 150 500</Reaction>
-                    <Reaction>ChangeVariable Lives -1.0</Reaction>
-                </EntityCollision>
-                <EntityCollision>
-                    <With>LavaTerrain</With>
-                    <Reaction>TerrainCollision</Reaction>
-                </EntityCollision>
-                <EntityCollision>
-                    <With>Floor</With>
-                    <Reaction>TerrainCollision</Reaction>
-                </EntityCollision>
-            </Collisions>
+                    <CollisionEffect>
+                        <With>RedDoor</With>
+                        <Reaction>ChangeVariable Score 1000</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>LeftKey</Key>
+                        <InputRequirement>false</InputRequirement>
+                    </InputCondition>
+                    <InputCondition>
+                        <Key>RightKey</Key>
+                        <InputRequirement>false</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy.png</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>LeftKey</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy_facing_left.png</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>RightKey</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy_facing_right.png</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <CollisionEffect>
+                        <With>WaterTerrain</With>
+                        <Reaction>Respawn 150 500</Reaction>
+                        <Reaction>ChangeVariable Lives -1.0</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <CollisionEffect>
+                        <With>LavaTerrain</With>
+                        <Reaction>TerrainCollision</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <CollisionEffect>
+                        <With>Floor</With>
+                        <Reaction>TerrainCollision</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>UpKeyPressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
+                    <NonCollisionEffect>Jump -1.2</NonCollisionEffect>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
         <ImageEntity>
             <Name>Watergirl</Name>
             <Width>50</Width>
             <Height>100</Height>
             <Image>watergirl.png</Image>
-            <Movement>
-                <MovementBehavior>Gravity 0 0.1</MovementBehavior>
-            </Movement>
-            <ConditionalBehaviors>
-                <ConditionalInputBehavior>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
-                    <Key>UpKey2Pressed</Key>
-                    <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
-                </ConditionalInputBehavior>
-                <ConditionalCollisionBehavior>
+            <Behaviors>
+                <Behavior>
                     <VerticalCollisionCondition>
                         <EntityName>Floor</EntityName>
                         <CollisionRequirement>true</CollisionRequirement>
                     </VerticalCollisionCondition>
                     <InputCondition>
                         <Key>DownKey2Pressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <InputCondition>
+                        <Key>DownKeyPressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <VariableCondition>
@@ -101,35 +124,72 @@
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
                     </VariableCondition>
-                    <With>BlueDoor</With>
-                    <Reaction>ChangeVariable Score 1000</Reaction>
-                </ConditionalCollisionBehavior>
-            </ConditionalBehaviors>
-            <Controls>
-                <ControlInput>
-                    <Key>LeftKey2</Key>
-                    <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
-                </ControlInput>
-                <ControlInput>
-                    <Key>RightKey2</Key>
-                    <ControlBehavior>VelocityInput .1600 0 .3200</ControlBehavior>
-                </ControlInput>
-            </Controls>
-            <Collisions>
-                <EntityCollision>
-                    <With>LavaTerrain</With>
-                    <Reaction>Respawn 150 500</Reaction>
-                    <Reaction>ChangeVariable Lives -1.0</Reaction>
-                </EntityCollision>
-                <EntityCollision>
-                    <With>WaterTerrain</With>
-                    <Reaction>TerrainCollision</Reaction>
-                </EntityCollision>
-                <EntityCollision>
-                    <With>Floor</With>
-                    <Reaction>TerrainCollision</Reaction>
-                </EntityCollision>
-            </Collisions>
+                    <CollisionEffect>
+                        <With>BlueDoor</With>
+                        <Reaction>ChangeVariable Score 1000</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>LeftKey2</Key>
+                        <InputRequirement>false</InputRequirement>
+                    </InputCondition>
+                    <InputCondition>
+                        <Key>RightKey2</Key>
+                        <InputRequirement>false</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl.png</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>LeftKey2</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl_facing_left.png</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>RightKey2</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl_facing_right.png</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <CollisionEffect>
+                        <With>LavaTerrain</With>
+                        <Reaction>Respawn 150 500</Reaction>
+                        <Reaction>ChangeVariable Lives -1.0</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <CollisionEffect>
+                        <With>WaterTerrain</With>
+                        <Reaction>TerrainCollision</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <CollisionEffect>
+                        <With>Floor</With>
+                        <Reaction>TerrainCollision</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <NonCollisionEffect>Gravity 0 0.1</NonCollisionEffect>
+                </Behavior>
+                <Behavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
+                    <InputCondition>
+                        <Key>UpKey2Pressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <NonCollisionEffect>JumpBehavior -1.2</NonCollisionEffect>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
         <ImageEntity>
             <Name>Floor</Name>
@@ -154,28 +214,32 @@
             <Width>40</Width>
             <Height>40</Height>
             <Image>redDiamond.jpg</Image>
-            <Collisions>
-                <EntityCollision>
-                    <With>Fireboy</With>
-                    <Reaction>RemoveSelf</Reaction>
-                    <Reaction>ChangeVariable Score 1.0</Reaction>
-                    <Reaction>ChangeVariable RedDiamonds 1.0</Reaction>
-                </EntityCollision>
-            </Collisions>
+            <Behaviors>
+                <Behavior>
+                    <CollisionEffect>
+                        <With>Fireboy</With>
+                        <Reaction>RemoveSelf</Reaction>
+                        <Reaction>ChangeVariable Score 1.0</Reaction>
+                        <Reaction>ChangeVariable RedDiamonds 1.0</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
         <ImageEntity>
             <Name>BlueDiamond</Name>
             <Width>40</Width>
             <Height>40</Height>
             <Image>blueDiamond.png</Image>
-            <Collisions>
-                <EntityCollision>
-                    <With>Watergirl</With>
-                    <Reaction>RemoveSelf</Reaction>
-                    <Reaction>ChangeVariable Score 1.0</Reaction>
-                    <Reaction>ChangeVariable BlueDiamonds 1.0</Reaction>
-                </EntityCollision>
-            </Collisions>
+            <Behaviors>
+                <Behavior>
+                    <CollisionEffect>
+                        <With>Watergirl</With>
+                        <Reaction>RemoveSelf</Reaction>
+                        <Reaction>ChangeVariable Score 1.0</Reaction>
+                        <Reaction>ChangeVariable BlueDiamonds 1.0</Reaction>
+                    </CollisionEffect>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
         <ImageEntity>
             <Name>RedDoor</Name>

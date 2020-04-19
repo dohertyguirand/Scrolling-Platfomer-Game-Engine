@@ -2,10 +2,10 @@ package ooga.game.behaviors.asyncbehavior;
 
 import java.util.Map;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 import ooga.Entity;
 
-public abstract class DirectionlessCollision implements CollisionBehavior {
+public abstract class DirectionlessCollision implements CollisionEffect {
 
   @Override
   public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
