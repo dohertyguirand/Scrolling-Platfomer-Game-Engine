@@ -34,6 +34,8 @@ one need only call ``doGameStep``.
 - 4/14/2020: Removed ``doCollisionLoop`` from external game interface for the same reason
 - 4/14/2020: Removed ``handleUserInput``, since that's part of the UserInputListener interface of
 the game.
+- 4/16/2020 added ``doConditionalBehaviors`` to entity (and some resulting changes related to
+conditional behaviors, mainly internal game API and new behavior interfaces and classes)
 
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.
@@ -63,7 +65,10 @@ to inputs (reacting to a press is better for jumping).
 - 4/14/2020: Added ``createEntity`` and ``popCreatedEntities`` so that new
 entities can be created by behaviors.
 - 4/15/2020: Added ``reactToVariables`` so that entities can react to variable values each frame.
-
+- 4/16/2020: Added ``hasCollision`` so that the collision loop can avoid being hung up on nonexistant
+collisions and ignoring real ones.
+-4/18/20 Set ``hasCollision`` to always return true because it was messing up conditional collision
+behaviors
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require

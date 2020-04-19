@@ -120,6 +120,10 @@ public class ViewerGame {
     });
     pauseButton.setLayoutX(0);
     pauseButton.setLayoutY(0);
+    // note: need the below because buttons consume certain key press events (like arrow keys)
+    pauseButton.setOnKeyPressed(e -> {
+      pauseButton.getParent().fireEvent(e);
+    });
     myRoot.getChildren().add(pauseButton);
   }
 
@@ -137,7 +141,8 @@ public class ViewerGame {
         step();
       } catch (Exception ex) {
         // note that this should ideally never be thrown
-        //ex.printStackTrace();
+        // TODO: remove print stack trace
+        ex.printStackTrace();
         System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is" +
                 "not allowed during animation processing");
       }

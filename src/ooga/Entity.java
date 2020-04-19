@@ -6,8 +6,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
-import ooga.game.behaviors.MovementBehavior;
+import ooga.game.behaviors.FrameBehavior;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -72,9 +73,10 @@ public interface Entity {
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
+   * @param variables
    *
    */
-  void updateSelf(double elapsedTime);
+  void updateSelf(double elapsedTime, Map<String, Double> variables);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and
@@ -95,7 +97,7 @@ public interface Entity {
    * Sets the behaviors that will be carried out for every frame
    * @param behaviors A List of MovementBehaviors
    */
-  void setMovementBehaviors(List<MovementBehavior> behaviors);
+  void setMovementBehaviors(List<FrameBehavior> behaviors);
 
   /**
    * Sets the mappings of behaviors that will be carried out when controls are inputted,
@@ -161,6 +163,11 @@ public interface Entity {
   void changeVelocity(double xChange, double yChange);
 
   /**
+   * @param change A list with the coordinates of the change in velocity.
+   */
+  void changeVelocity(List<Double> change);
+
+  /**
    *
    * @param xVelocity The x-value of the new velocity.
    * @param yVelocity The y-value of the new velocity.
@@ -189,4 +196,23 @@ public interface Entity {
    * @param propertyVariableDependencies
    */
   void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies);
+
+  /**
+<<<<<<< HEAD
+   * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
+   * assigned behavior if true
+   */
+  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal);
+
+  /**
+   * assigns the conditional behaviors of this entity
+   * @param conditionalBehaviors list of conditional behaviors
+   */
+  void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors);
+
+  /**
+   * @param entityType The type of entity to check for collision behavior with.
+   * @return True if the entity has a defined collision behavior with the type given.
+   */
+  boolean hasCollisionWith(String entityType);
 }

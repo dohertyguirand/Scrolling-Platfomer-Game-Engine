@@ -9,9 +9,10 @@ import java.util.function.Consumer;
 import javafx.beans.property.*;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
 import ooga.Entity;
-import ooga.game.behaviors.MovementBehavior;
+import ooga.game.behaviors.FrameBehavior;
 import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
@@ -35,9 +36,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
-  private List<MovementBehavior> myMovementBehaviors;
+  private List<FrameBehavior> myFrameBehaviors;
   private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
   private Map<String,List<ControlsBehavior>> myControls;
+  private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
 
@@ -48,8 +50,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.width.set(width);
     this.height.set(height);
     myCollisionBehaviors = new HashMap<>();
-    myMovementBehaviors = new ArrayList<>();
+    myFrameBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
+    myConditionalBehaviors = new ArrayList<>();
     myVelocityVectors = new Stack<>();
     myName = "";
   }
@@ -117,8 +120,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
-    myMovementBehaviors = behaviors;
+  public void setMovementBehaviors(List<FrameBehavior> behaviors) {
+    myFrameBehaviors = behaviors;
   }
 
   @Override
@@ -133,18 +136,18 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void reactToControlsPressed(String controls) {
-    //TODO: Smarten this up, so that it doesn't just change the String
-    String keyPressedCode = controls + "Pressed";
-    System.out.println(keyPressedCode);
-    reactToControls(keyPressedCode);
+    //TODO: remove this method?
+    System.out.println(controls);
+    reactToControls(controls);
   }
 
   @Override
-  public void updateSelf(double elapsedTime) {
-    for (MovementBehavior behavior : myMovementBehaviors) {
-      behavior.doMovementUpdate(elapsedTime,this);
+  public void updateSelf(double elapsedTime, Map<String, Double> variables) {
+    for (FrameBehavior behavior : myFrameBehaviors) {
+      behavior.doFrameUpdate(elapsedTime,this, variables);
     }
     applyFrictionHorizontal();
+    applyFrictionVertical();
   }
 
   private void applyFrictionHorizontal() {
@@ -155,6 +158,17 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       changeVelocity(FRICTION_ACCELERATION * -1 * Math.signum(myVelocity.get(0)),0);
     }
   }
+
+  private void applyFrictionVertical() {
+
+    if (Math.abs(myVelocity.get(1)) < FRICTION_ACCELERATION) {
+      setVelocity(getVelocity().get(0),0);
+    }
+    else {
+      changeVelocity(0,FRICTION_ACCELERATION * -1 * Math.signum(myVelocity.get(1)));
+    }
+  }
+
 
   @Override
   public void executeMovement(double elapsedTime) {
@@ -169,6 +183,16 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setControlsBehaviors(Map<String, List<ControlsBehavior>> behaviors) {
     myControls = new HashMap<>(behaviors);
+  }
+
+  /**
+   * assigns the conditional behaviors of this entity
+   *
+   * @param conditionalBehaviors list of conditional behaviors
+   */
+  @Override
+  public void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors) {
+    myConditionalBehaviors = new ArrayList<>(conditionalBehaviors);
   }
 
   //TODO: Implement the lambda (after testing) to vertical collisions
@@ -248,6 +272,11 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
+  public void changeVelocity(List<Double> change) {
+    changeVelocity(change.get(0),change.get(1));
+  }
+
+  @Override
   public void setVelocity(double xVelocity, double yVelocity) {
     myVelocity = List.of(xVelocity, yVelocity);
   }
@@ -282,5 +311,24 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies){
     this.propertyVariableDependencies = propertyVariableDependencies;
+  }
+
+  /**
+   * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
+   * assigned behavior if true
+   */
+  @Override
+  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
+                                     List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
+    for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
+      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, verticalCollisions, horizontalCollisions, gameInternal);
+    }
+  }
+
+  @Override
+  public boolean hasCollisionWith(String entityType) {
+    //TODO: remove this method
+    return true;
+    //return myCollisionBehaviors.containsKey(entityType);
   }
 }

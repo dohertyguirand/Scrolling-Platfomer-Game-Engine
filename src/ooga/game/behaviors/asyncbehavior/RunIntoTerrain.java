@@ -3,67 +3,60 @@ package ooga.game.behaviors.asyncbehavior;
 import java.util.List;
 import java.util.Map;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
 import ooga.Entity;
 
-public class RunIntoTerrain implements CollisionBehavior {
+public class RunIntoTerrain extends QuadDirectionCollision {
 
-  public static final double MARGIN = 0.1;
+  public static final double HORIZONTAL_MARGIN = 10.0;
+  public static final double VERTICAL_MARGIN = 0.1;
 
   public RunIntoTerrain(List<String> args) {
     //arguments have no effect on this behavior
   }
 
-  //TODO: Consider making collisions even richer, by having four methods (one for each direction)
   @Override
-  public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+  protected void doDownwardCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables, GameInternal game) {
     subject.setVelocity(subject.getVelocity().get(0),0);
-    double direction = Math.signum(subject.getVelocity().get(1));
-    if (direction < 0) {
-      doUpwardCollision(subject,collidingEntity,elapsedTime,variables);
-    }
-    else {
-      doDownwardCollision(subject,collidingEntity,elapsedTime,variables);
-    }
-  }
-
-  private void doDownwardCollision(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
     double targetX = subject.getPosition().get(0);
-    double targetY = collidingEntity.getPosition().get(1)-subject.getHeight()-MARGIN;
-    subject.setPosition(List.of(targetX,targetY));
-  }
-
-  private void doUpwardCollision(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
-    double targetX = subject.getPosition().get(0);
-    double targetY = collidingEntity.getPosition().get(1) + collidingEntity.getHeight() + MARGIN;
+    double targetY = collidingEntity.getPosition().get(1)-subject.getHeight()- VERTICAL_MARGIN;
     subject.setPosition(List.of(targetX,targetY));
   }
 
   @Override
-  public void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+  protected void doUpwardCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables, GameInternal game) {
-    double direction = Math.signum(subject.getVelocity().get(0));
-    subject.setVelocity(0,subject.getVelocity().get(1));
-    System.out.println("direction = " + direction);
-    if (direction < 0) {
-      doCollisionTowardLeft(subject,collidingEntity,elapsedTime,variables);
-    }
-    else {
-      doCollisionTowardRight(subject,collidingEntity,elapsedTime,variables);
-    }
-  }
-
-  private void doCollisionTowardRight(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
-    double targetX = collidingEntity.getPosition().get(0)- subject.getWidth() - MARGIN;
-    double targetY = subject.getPosition().get(1);
+    subject.setVelocity(subject.getVelocity().get(0),0);
+    double targetX = subject.getPosition().get(0);
+    double targetY = collidingEntity.getPosition().get(1) + collidingEntity.getHeight() + VERTICAL_MARGIN;
     subject.setPosition(List.of(targetX,targetY));
   }
 
-  private void doCollisionTowardLeft(Entity subject, Entity collidingEntity, double elapsedTime, Map<String,Double> variables) {
-    System.out.println("COLLIDING TOWARD LEFT");
-    double targetX = collidingEntity.getPosition().get(0) + collidingEntity.getWidth() + MARGIN;
+  @Override
+  protected void doCollisionTowardRight(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables, GameInternal game) {
+    subject.setVelocity(0,subject.getVelocity().get(1));
+    System.out.println("here!");
+    System.out.println("Subject: " + subject.getName());
+    System.out.println("pos " +subject.getPosition().get(0));
+    System.out.println("collidingPos " + collidingEntity.getPosition().toString());
+    double targetX = collidingEntity.getPosition().get(0)- subject.getWidth() - HORIZONTAL_MARGIN;
     double targetY = subject.getPosition().get(1);
+    System.out.println(targetX);
+    subject.setPosition(List.of(targetX,targetY));
+  }
+
+  @Override
+  protected void doCollisionTowardLeft(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables, GameInternal game) {
+    subject.setVelocity(0,subject.getVelocity().get(1));
+    System.out.println("here2!");
+    System.out.println("Subject: " + subject.getName());
+    System.out.println("Width: " + collidingEntity.getWidth());
+    System.out.println("collidingPos " + collidingEntity.getPosition().toString());
+    double targetX = collidingEntity.getPosition().get(0) + collidingEntity.getWidth() + HORIZONTAL_MARGIN;
+    double targetY = subject.getPosition().get(1);
+    System.out.println(targetX);
     subject.setPosition(List.of(targetX,targetY));
   }
 

@@ -11,11 +11,37 @@
             <Movement>
                 <MovementBehavior>Gravity 0 0.1</MovementBehavior>
             </Movement>
-            <Controls>
-                <ControlInput>
+            <ConditionalBehaviors>
+                <ConditionalInputBehavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
                     <Key>UpKeyPressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
-                </ControlInput>
+                </ConditionalInputBehavior>
+                <ConditionalCollisionBehavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
+                    <InputCondition>
+                        <Key>DownKeyPressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <VariableCondition>
+                        <VariableName>RedDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <VariableCondition>
+                        <VariableName>BlueDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <With>RedDoor</With>
+                    <Reaction>ChangeVariable Score 1000</Reaction>
+                </ConditionalCollisionBehavior>
+            </ConditionalBehaviors>
+            <Controls>
                 <ControlInput>
                     <Key>LeftKey</Key>
                     <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
@@ -28,11 +54,16 @@
             <Collisions>
                 <EntityCollision>
                     <With>WaterTerrain</With>
-                    <Reaction>RemoveSelf</Reaction>
+                    <Reaction>Respawn 150 500</Reaction>
+                    <Reaction>ChangeVariable Lives -1.0</Reaction>
+                </EntityCollision>
+                <EntityCollision>
+                    <With>LavaTerrain</With>
+                    <Reaction>TerrainCollision</Reaction>
                 </EntityCollision>
                 <EntityCollision>
                     <With>Floor</With>
-                    <Reaction>StopDownwardVelocity</Reaction>
+                    <Reaction>TerrainCollision</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -44,11 +75,37 @@
             <Movement>
                 <MovementBehavior>Gravity 0 0.1</MovementBehavior>
             </Movement>
-            <Controls>
-                <ControlInput>
+            <ConditionalBehaviors>
+                <ConditionalInputBehavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
                     <Key>UpKey2Pressed</Key>
                     <ControlBehavior>JumpBehavior -1.2</ControlBehavior>
-                </ControlInput>
+                </ConditionalInputBehavior>
+                <ConditionalCollisionBehavior>
+                    <VerticalCollisionCondition>
+                        <EntityName>Floor</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </VerticalCollisionCondition>
+                    <InputCondition>
+                        <Key>DownKey2Pressed</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <VariableCondition>
+                        <VariableName>RedDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <VariableCondition>
+                        <VariableName>BlueDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <With>BlueDoor</With>
+                    <Reaction>ChangeVariable Score 1000</Reaction>
+                </ConditionalCollisionBehavior>
+            </ConditionalBehaviors>
+            <Controls>
                 <ControlInput>
                     <Key>LeftKey2</Key>
                     <ControlBehavior>VelocityInput -.1600 0 .3200</ControlBehavior>
@@ -61,18 +118,23 @@
             <Collisions>
                 <EntityCollision>
                     <With>LavaTerrain</With>
-                    <Reaction>RemoveSelf</Reaction>
+                    <Reaction>Respawn 150 500</Reaction>
+                    <Reaction>ChangeVariable Lives -1.0</Reaction>
+                </EntityCollision>
+                <EntityCollision>
+                    <With>WaterTerrain</With>
+                    <Reaction>TerrainCollision</Reaction>
                 </EntityCollision>
                 <EntityCollision>
                     <With>Floor</With>
-                    <Reaction>StopDownwardVelocity</Reaction>
+                    <Reaction>TerrainCollision</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
         <ImageEntity>
             <Name>Floor</Name>
             <Width>200</Width>
-            <Height>100</Height>
+            <Height>50</Height>
             <Image>floorBrick.png</Image>
         </ImageEntity>
         <ImageEntity>
@@ -96,6 +158,8 @@
                 <EntityCollision>
                     <With>Fireboy</With>
                     <Reaction>RemoveSelf</Reaction>
+                    <Reaction>ChangeVariable Score 1.0</Reaction>
+                    <Reaction>ChangeVariable RedDiamonds 1.0</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
@@ -108,32 +172,22 @@
                 <EntityCollision>
                     <With>Watergirl</With>
                     <Reaction>RemoveSelf</Reaction>
+                    <Reaction>ChangeVariable Score 1.0</Reaction>
+                    <Reaction>ChangeVariable BlueDiamonds 1.0</Reaction>
                 </EntityCollision>
             </Collisions>
         </ImageEntity>
         <ImageEntity>
             <Name>RedDoor</Name>
-            <Width>50</Width>
-            <Height>70</Height>
+            <Width>75</Width>
+            <Height>107</Height>
             <Image>redDoor.jpg</Image>
-            <Collisions>
-                <EntityCollision>
-                    <With>Fireboy</With>
-                    <Reaction>RemoveSelf</Reaction>
-                </EntityCollision>
-            </Collisions>
         </ImageEntity>
         <ImageEntity>
             <Name>BlueDoor</Name>
-            <Width>50</Width>
-            <Height>70</Height>
+            <Width>75</Width>
+            <Height>107</Height>
             <Image>blueDoor.jpg</Image>
-            <Collisions>
-                <EntityCollision>
-                    <With>Watergirl</With>
-                    <Reaction>RemoveSelf</Reaction>
-                </EntityCollision>
-            </Collisions>
         </ImageEntity>
     </Entities>
     <Variables>
@@ -141,41 +195,64 @@
             <Name>Lives</Name>
             <StartValue>3</StartValue>
         </Variable>
+        <Variable>
+            <Name>Score</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>RedDiamonds</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>BlueDiamonds</Name>
+            <StartValue>0</StartValue>
+        </Variable>
     </Variables>
     <Levels>
         <Level>
             <ID>1</ID>
+            <NextLevel>1</NextLevel>
             <EndCondition>DestroyAll Koopa</EndCondition>
             <ImageEntityInstances>
                 <ImageEntityInstance>
-                    <Type>Fireboy</Type>
-                    <XPos>100</XPos>
-                    <YPos>400</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Type>Watergirl</Type>
-                    <XPos>300</XPos>
-                    <YPos>400</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Type>RedDiamond</Type>
-                    <XPos>700</XPos>
-                    <YPos>400</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Type>BlueDiamond</Type>
-                    <XPos>800</XPos>
-                    <YPos>400</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
                     <Type>RedDoor</Type>
                     <XPos>600</XPos>
-                    <YPos>200</YPos>
+                    <YPos>318</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>BlueDoor</Type>
                     <XPos>800</XPos>
-                    <YPos>200</YPos>
+                    <YPos>318</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Fireboy</Type>
+                    <XPos>150</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Watergirl</Type>
+                    <XPos>170</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>BlueDiamond</Type>
+                    <XPos>500</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>RedDiamond</Type>
+                    <XPos>600</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>WaterTerrain</Type>
+                    <XPos>400</XPos>
+                    <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>LavaTerrain</Type>
+                    <XPos>700</XPos>
+                    <YPos>600</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Floor</Type>
@@ -189,18 +266,153 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Floor</Type>
-                    <XPos>400</XPos>
-                    <YPos>600</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Type>Floor</Type>
-                    <XPos>600</XPos>
+                    <XPos>500</XPos>
                     <YPos>600</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Floor</Type>
                     <XPos>800</XPos>
                     <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>550</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>450</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>400</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>350</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>250</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>200</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>150</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>100</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>50</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>-100</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>000</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>550</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>450</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>400</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>350</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>250</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>200</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>150</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>100</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>50</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>950</XPos>
+                    <YPos>000</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>275</XPos>
+                    <YPos>425</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>475</XPos>
+                    <YPos>425</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>Floor</Type>
+                    <XPos>675</XPos>
+                    <YPos>425</YPos>
                 </ImageEntityInstance>
             </ImageEntityInstances>
             <TextEntityInstances>
@@ -213,6 +425,18 @@
                     <Height>50</Height>
                     <PropertyVariableDependency>
                         <VariableName>Lives</VariableName>
+                        <PropertyName>Text</PropertyName>
+                    </PropertyVariableDependency>
+                </TextEntityInstance>
+                <TextEntityInstance>
+                    <Text>Score: %.0f</Text>
+                    <Font>Times New Roman</Font>
+                    <XPos>650</XPos>
+                    <YPos>0</YPos>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                    <PropertyVariableDependency>
+                        <VariableName>Score</VariableName>
                         <PropertyName>Text</PropertyName>
                     </PropertyVariableDependency>
                 </TextEntityInstance>

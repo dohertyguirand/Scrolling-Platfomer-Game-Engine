@@ -42,22 +42,67 @@ public class VelocityCollisionDetector implements CollisionDetector {
 
   @Override
   public boolean isCollidingVertically(Entity a, Entity b, double elapsedTime) {
-//    System.out.println("a: " + a.getPosition() + " + " + a.getVelocity());
-//    System.out.println("b: " + b.getPosition() + " + " + b.getVelocity());
+    return isCollidingInDirection(a, b, elapsedTime, true);
 
-    Shape aShape = makeShapeFromEntity(a, 0,a.getVelocity().get(1) * elapsedTime);
-    Shape bShape = makeShapeFromEntity(b, 0,b.getVelocity().get(1) * elapsedTime);
-    return (aShape.getBoundsInParent().intersects(bShape.getBoundsInParent()));
+//    Shape aShape = makeShapeFromEntity(a, 0,a.getVelocity().get(1) * elapsedTime);
+//    Shape bShape = makeShapeFromEntity(b, 0,b.getVelocity().get(1) * elapsedTime);
+//    return (aShape.getBoundsInParent().intersects(bShape.getBoundsInParent()));
   }
 
   @Override
   public boolean isCollidingHorizontally(Entity a, Entity b, double elapsedTime) {
-    Shape aShape = makeShapeFromEntity(a, a.getVelocity().get(0) * elapsedTime,0);
-    Shape bShape = makeShapeFromEntity(b, b.getVelocity().get(0) * elapsedTime,0);
-    return (aShape.getBoundsInParent().intersects(bShape.getBoundsInParent()));
+    return isCollidingInDirection(a, b, elapsedTime, false);
+//    Shape aShape = makeShapeFromEntity(a, a.getVelocity().get(0) * elapsedTime,0);
+//    Shape bShape = makeShapeFromEntity(b, b.getVelocity().get(0) * elapsedTime,0);
+//    return (aShape.getBoundsInParent().intersects(bShape.getBoundsInParent()));
   }
 
-  private Shape makeShapeFromEntity(Entity e, double xVelocity, double yVelocity) {
+  private boolean isCollidingInDirection(Entity a, Entity b, double elapsedTime, boolean mustBeVertical) {
+    // first check that someone actually has a nonzero velocity, otherwise a collision doesn't make sense
+//    if(mustBeVertical && a.getVelocity().get(1) == 0 && b.getVelocity().get(1) == 0){
+//      return false;
+//    }
+//    else if(!mustBeVertical && a.getVelocity().get(0) == 0 && b.getVelocity().get(0) == 0){
+//      return false;
+//    }
+    Rectangle aShape = makeShapeFromEntity(a, a.getVelocity().get(0) * elapsedTime,a.getVelocity().get(1) * elapsedTime);
+    Rectangle bShape = makeShapeFromEntity(b, b.getVelocity().get(0) * elapsedTime,b.getVelocity().get(1) * elapsedTime);
+    if(aShape.getBoundsInParent().intersects(bShape.getBoundsInParent())) {
+      // scenario 1.1: a is left of b and below b
+      // scenario 1.2: a is left of b and above b
+      // scenario 2.1: a is right of b and below b
+      // scenario 2.2: a is right of b and above b
+      Rectangle leftShape = aShape;
+      Rectangle rightShape = bShape;
+      if (aShape.getX() > bShape.getX()) {
+        leftShape = bShape;
+        rightShape = aShape;
+      }
+      Rectangle topShape = leftShape;
+      Rectangle bottomShape = rightShape;
+      if (leftShape.getY() > bottomShape.getY()) {
+        topShape = rightShape;
+        bottomShape = leftShape;
+      }
+      double leftShapeRightEdge = leftShape.getX() + leftShape.getWidth();
+      double rightShapeLeftEdge = rightShape.getX();
+      double topShapeBottomEdge = topShape.getY() + topShape.getHeight();
+      double bottomShapeTopEdge = bottomShape.getY();
+//      System.out.println("printing");
+//      System.out.println(leftShapeRightEdge);
+//      System.out.println(rightShapeLeftEdge);
+//      System.out.println(topShapeBottomEdge);
+//      System.out.println(bottomShapeTopEdge);
+      boolean isHorizontal = leftShapeRightEdge - rightShapeLeftEdge < -(bottomShapeTopEdge - topShapeBottomEdge);
+      if(mustBeVertical){
+        return !isHorizontal;
+      }
+      return isHorizontal;
+    }
+    return false;
+  }
+
+  private Rectangle makeShapeFromEntity(Entity e, double xVelocity, double yVelocity) {
     double xPos = e.getPosition().get(0) + xVelocity;
     double yPos = e.getPosition().get(1) + yVelocity;
     return new Rectangle(xPos, yPos, e.getWidth(), e.getHeight());

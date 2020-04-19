@@ -29,7 +29,7 @@ public class GameTest {
   @Test
   void testDoUpdateLoop() {
     Entity moveForwardEntity = new ImageEntity();
-    moveForwardEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,20.0)));
+//    moveForwardEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,20.0)));
     Level level = new OogaLevel(List.of(moveForwardEntity));
     OogaGame game = new OogaGame(level);
     double expectedX = 0;

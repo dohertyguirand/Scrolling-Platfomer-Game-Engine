@@ -12,8 +12,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import ooga.game.Level;
 import ooga.game.OogaLevel;
 import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.ControlsBehavior;
-import ooga.game.behaviors.MovementBehavior;
+import ooga.game.behaviors.FrameBehavior;
+import ooga.game.behaviors.conditionalBehavior.ConditionalCollisionBehavior;
+import ooga.game.behaviors.conditionalBehavior.ConditionalFrameBehavior;
+import ooga.game.behaviors.conditionalBehavior.ConditionalInputBehavior;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -78,7 +82,7 @@ public class OogaDataReader implements DataReader{
         File gameFile = findGame(givenGameName);
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
-            String[] outerTagNames = new String[] {"Level", "Variables", "Variables"};
+            String[] outerTagNames = new String[] {"Level", "Variable", "Variable"};
             String[] innerTagNames = new String[] {"ID", "Name", "StartValue"};
             for(int j=0; j<outerTagNames.length; j++){
                 NodeList outerList = doc.getElementsByTagName(outerTagNames[j]);
@@ -179,7 +183,7 @@ public class OogaDataReader implements DataReader{
                         entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                         initialEntities.add(entity);
                     }
-                    NodeList textEntityNodes = doc.getElementsByTagName("TextEntityInstance");
+                    NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
                     for (int j = 0; j < textEntityNodes.getLength(); j++) {
                         Node currentEntity = textEntityNodes.item(j);
                         Element entityElement = (Element) currentEntity;
@@ -266,18 +270,20 @@ public class OogaDataReader implements DataReader{
         String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
         System.out.print(String.format("Name: %s ", name));
 
-        List<MovementBehavior> movementBehaviors = new ArrayList<>();
-        for (int i=0; i<entityElement.getElementsByTagName("MovementBehavior").getLength(); i++){
+        List<FrameBehavior> frameBehaviors = new ArrayList<>();
+        NodeList nodeList = entityElement.getElementsByTagName("MovementBehavior");
+        for (int i=0; i<nodeList.getLength(); i++){
             // create an array of the behavior name and its space-separated parameters
-            String[] behavior = entityElement.getElementsByTagName("MovementBehavior").item(i).getTextContent().split(" ");
+            String[] behavior = nodeList.item(i).getTextContent().split(" ");
             // determine what type of behavior it is
-            Object obj = makeBehavior(behavior, "Movement");
-            movementBehaviors.add((MovementBehavior) obj);
+            Object obj = makeBasicBehavior(behavior, "Movement");
+            frameBehaviors.add((FrameBehavior) obj);
         }
 
         Map<String,List<CollisionBehavior>> collisionBehaviors = new HashMap<>();
-        for (int i=0; i<entityElement.getElementsByTagName("EntityCollision").getLength(); i++){
-            Element behaviorElement = (Element) entityElement.getElementsByTagName("EntityCollision").item(i);
+        NodeList nodeList2 = entityElement.getElementsByTagName("EntityCollision");
+        for (int i=0; i<nodeList2.getLength(); i++){
+            Element behaviorElement = (Element)  nodeList2.item(i);
             String collisionObject = behaviorElement.getElementsByTagName("With").item(0).getTextContent();
             ArrayList<CollisionBehavior> reactions = new ArrayList<>();
             //loop through all reactions and add them to the list
@@ -285,15 +291,16 @@ public class OogaDataReader implements DataReader{
                 String[] reaction = behaviorElement.getElementsByTagName("Reaction").item(j).getTextContent().split(" ");
                 // TODO: improve the way this determines the type of Behavior
                 // determine what type of behavior it is
-                Object obj = makeBehavior(reaction, "Collision");
+                Object obj = makeBasicBehavior(reaction, "Collision");
                 reactions.add((CollisionBehavior) obj);
             }
             collisionBehaviors.put(collisionObject, reactions);
         }
 
         Map<String, List<ControlsBehavior>> controlBehaviors = new HashMap<>();
-        for (int i=0; i<entityElement.getElementsByTagName("ControlInput").getLength(); i++){
-            Element behaviorElement = (Element) entityElement.getElementsByTagName("ControlInput").item(i);
+        NodeList nodeList3 = entityElement.getElementsByTagName("ControlInput");
+        for (int i=0; i<nodeList3.getLength(); i++){
+            Element behaviorElement = (Element) nodeList3.item(i);
             String keyPressed = behaviorElement.getElementsByTagName("Key").item(0).getTextContent();
             ArrayList<ControlsBehavior> reactions = new ArrayList<>();
             //loop through all reactions and add them to the list
@@ -302,21 +309,86 @@ public class OogaDataReader implements DataReader{
                 String[] reaction = behaviorElement.getElementsByTagName("ControlBehavior").item(j).getTextContent().split(" ");
                 // TODO: improve the way this determines the type of Behavior
                 // determine what type of behavior it is
-                Object obj = makeBehavior(reaction, "Control");
+                Object obj = makeBasicBehavior(reaction, "Control");
                 reactions.add((ControlsBehavior) obj);
             }
             controlBehaviors.put(keyPressed, reactions);
         }
 
-        ImageEntityDefinition newIED = new ImageEntityDefinition(name, height, width, imagePath, movementBehaviors,
-                 collisionBehaviors, controlBehaviors);
+        //TODO: refactor below loops into a single loop and use reflection
+        List<ConditionalBehavior> conditionalBehaviors = new ArrayList<>();
+        NodeList nodeList4 = entityElement.getElementsByTagName("ConditionalInputBehavior");
+        for (int i=0; i<nodeList4.getLength(); i++){
+            Element behaviorElement = (Element) nodeList4.item(i);
+            Map<String, Double> variableConditions = new HashMap<>();
+            Map<String, Boolean> inputConditions = new HashMap<>();
+            Map<String, Boolean> verticalCollisionConditions = new HashMap<>();
+            Map<String, Boolean> horizontalCollisionConditions = new HashMap<>();
+            addConditions(verticalCollisionConditions, behaviorElement.getElementsByTagName("VerticalCollisionCondition"), "EntityName", "CollisionRequirement");
+            addConditions(horizontalCollisionConditions, behaviorElement.getElementsByTagName("HorizontalCollisionCondition"), "EntityName", "CollisionRequirement");
+            addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
+            addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
+            String keyPressed = behaviorElement.getElementsByTagName("Key").item(0).getTextContent();
+            String[] resultBehavior = behaviorElement.getElementsByTagName("ControlBehavior").item(0).getTextContent().split(" ");
+            ControlsBehavior controlsBehavior = (ControlsBehavior) makeBasicBehavior(resultBehavior, "Control");
+            conditionalBehaviors.add(new ConditionalInputBehavior(variableConditions, inputConditions, verticalCollisionConditions,
+                    horizontalCollisionConditions, controlsBehavior, keyPressed));
+        }
+        NodeList nodeList5 = entityElement.getElementsByTagName("ConditionalCollisionBehavior");
+        for (int i=0; i<nodeList5.getLength(); i++){
+            Element behaviorElement = (Element) nodeList5.item(i);
+            Map<String, Double> variableConditions = new HashMap<>();
+            Map<String, Boolean> inputConditions = new HashMap<>();
+            Map<String, Boolean> verticalCollisionConditions = new HashMap<>();
+            Map<String, Boolean> horizontalCollisionConditions = new HashMap<>();
+            addConditions(verticalCollisionConditions, behaviorElement.getElementsByTagName("VerticalCollisionCondition"), "EntityName", "CollisionRequirement");
+            addConditions(horizontalCollisionConditions, behaviorElement.getElementsByTagName("HorizontalCollisionCondition"), "EntityName", "CollisionRequirement");
+            addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
+            addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
+            String otherEntityName = behaviorElement.getElementsByTagName("With").item(0).getTextContent();
+            String[] resultBehavior = behaviorElement.getElementsByTagName("Reaction").item(0).getTextContent().split(" ");
+            CollisionBehavior collisionBehavior = (CollisionBehavior) makeBasicBehavior(resultBehavior, "Collision");
+            conditionalBehaviors.add(new ConditionalCollisionBehavior(variableConditions, inputConditions, verticalCollisionConditions,
+                    horizontalCollisionConditions, collisionBehavior, otherEntityName));
+        }
+        NodeList nodeList6 = entityElement.getElementsByTagName("ConditionalFrameBehavior");
+        for (int i=0; i<nodeList6.getLength(); i++){
+            Element behaviorElement = (Element) nodeList6.item(i);
+            Map<String, Double> variableConditions = new HashMap<>();
+            Map<String, Boolean> inputConditions = new HashMap<>();
+            Map<String, Boolean> verticalCollisionConditions = new HashMap<>();
+            Map<String, Boolean> horizontalCollisionConditions = new HashMap<>();
+            addConditions(verticalCollisionConditions, behaviorElement.getElementsByTagName("VerticalCollisionCondition"), "EntityName", "CollisionRequirement");
+            addConditions(horizontalCollisionConditions, behaviorElement.getElementsByTagName("HorizontalCollisionCondition"), "EntityName", "CollisionRequirement");
+            addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
+            addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
+            String[] resultBehavior = behaviorElement.getElementsByTagName("FrameBehavior").item(0).getTextContent().split(" ");
+            FrameBehavior frameBehavior = (FrameBehavior) makeBasicBehavior(resultBehavior, "Movement");
+            conditionalBehaviors.add(new ConditionalFrameBehavior(variableConditions, inputConditions, verticalCollisionConditions,
+                    horizontalCollisionConditions, frameBehavior));
+        }
 
-        System.out.println();
-
-        return newIED;
+        return new ImageEntityDefinition(name, height, width, imagePath, frameBehaviors,
+                 collisionBehaviors, controlBehaviors, conditionalBehaviors);
     }
 
-    private Object makeBehavior(String[] behavior, String behaviorType) throws OogaDataException {
+    private void addVariableConditions(Map<String, Double> conditionMap, NodeList variableConditionNodes) {
+        for(int j=0; j<variableConditionNodes.getLength(); j++){
+            String name = ((Element)variableConditionNodes.item(j)).getElementsByTagName("VariableName").item(0).getTextContent();
+            String requiredValue = ((Element)variableConditionNodes.item(j)).getElementsByTagName("RequiredValue").item(0).getTextContent();
+            conditionMap.put(name, Double.parseDouble(requiredValue));
+        }
+    }
+
+    private void addConditions(Map<String, Boolean> conditionMap, NodeList verticalCollisionConditionNodes, String keyName, String valueName) {
+        for(int j=0; j<verticalCollisionConditionNodes.getLength(); j++){
+            String name = ((Element)verticalCollisionConditionNodes.item(j)).getElementsByTagName(keyName).item(0).getTextContent();
+            String requirementBoolean = ((Element)verticalCollisionConditionNodes.item(j)).getElementsByTagName(valueName).item(0).getTextContent();
+            conditionMap.put(name, Boolean.parseBoolean(requirementBoolean));
+        }
+    }
+
+    private Object makeBasicBehavior(String[] behavior, String behaviorType) throws OogaDataException {
         String behaviorName = behavior[0];
         String behaviorClassName = myBehaviorsResources.getString(behaviorName);
         try {
