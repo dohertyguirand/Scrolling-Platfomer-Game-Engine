@@ -37,6 +37,7 @@
         <EntityCollision>
           <With>Koopa</With>
           <Reaction>VerticalBounce -.50 </Reaction>
+          <Reaction>Respawn 0 0</Reaction>
           <Reaction>RunIntoStompable</Reaction>
           <Reaction>ChangeVariable Lives -1.0</Reaction>
         </EntityCollision>
