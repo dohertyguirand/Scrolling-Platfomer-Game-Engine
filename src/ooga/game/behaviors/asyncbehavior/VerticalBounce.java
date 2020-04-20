@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 
-public class VerticalBounce implements CollisionBehavior {
+public class VerticalBounce implements CollisionEffect {
 
   private double bounceVelocity;
 

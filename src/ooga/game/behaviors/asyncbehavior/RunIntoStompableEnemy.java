@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
+import ooga.game.behaviors.CollisionEffect;
 
 /**
  * Acts like StompableBehavior, but essentially does the inverse.
  */
-public class RunIntoStompableEnemy implements CollisionBehavior {
+public class RunIntoStompableEnemy implements CollisionEffect {
 
   public RunIntoStompableEnemy(List<String> args) {
     //This has no arguments.

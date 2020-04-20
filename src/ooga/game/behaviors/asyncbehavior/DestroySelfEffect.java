@@ -5,10 +5,10 @@ import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
 
-public class DestroySelfBehavior extends DirectionlessCollision {
+public class DestroySelfEffect extends DirectionlessCollision {
 
 
-    public DestroySelfBehavior(List<String> args) {
+    public DestroySelfEffect(List<String> args) {
         //arguments have no effect on this behavior
     }
 

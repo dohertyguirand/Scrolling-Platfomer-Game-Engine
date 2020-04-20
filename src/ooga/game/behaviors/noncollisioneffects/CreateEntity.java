@@ -1,14 +1,12 @@
-package ooga.game.behaviors.asyncbehavior;
+package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
-import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.framebehavior.GravityBehavior;
-import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
+import ooga.game.behaviors.NonCollisionEffect;
 
-public class CreateEntity extends DirectionlessCollision {
+public class CreateEntity implements NonCollisionEffect {
 
   private String createdEntityType;
   //TODO: Allow the user to use the relative entity location.
@@ -19,8 +17,8 @@ public class CreateEntity extends DirectionlessCollision {
   }
 
   @Override
-  public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
+  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables,
+      GameInternal game) {
     game.createEntity(createdEntityType,List.of(subject.getPosition().get(0),subject.getPosition().get(1)-subject.getHeight()));
   }
 }

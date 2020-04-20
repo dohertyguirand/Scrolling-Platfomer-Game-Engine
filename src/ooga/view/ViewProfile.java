@@ -20,11 +20,10 @@ public class ViewProfile extends OggaProfile {
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
-    private BorderPane myPane;
     private ImageView myProfilePhoto;
+    private ImageView myViewPhoto;
 
     public ViewProfile(String name, String imagePath){
-        myPane = new BorderPane();
         myName = name;
         myDefaultImagePath = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
         setImageView(imagePath);
@@ -34,7 +33,6 @@ public class ViewProfile extends OggaProfile {
         setImageView(profile.getProfilePhotoPath());
         myName = profile.getProfileName();
         myHighestScores = profile.getStats();
-        myPane = new BorderPane();
     }
     public ViewProfile(){
       this("Testing","ooga/view/Resources/profilephotos/defaultphoto.jpg");
@@ -43,23 +41,26 @@ public class ViewProfile extends OggaProfile {
     public void setImageView(String photoPath){
         try{
             myProfilePhoto = new ImageView(photoPath);
+            myViewPhoto = new ImageView(photoPath);
         }
         catch (IllegalArgumentException | NullPointerException e){
             myProfilePhoto = new ImageView(myDefaultImagePath);
+            myViewPhoto = new ImageView(myDefaultImagePath);
         }
     }
 
     public Pane getPane(){
-        myPane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-        myPane.setTop(setNameAndPhoto());
-        myPane.setCenter(setStatsBox());
-        myPane.getStylesheets().add(STYLESHEET);
-        return myPane;
+        BorderPane pane = new BorderPane();
+        pane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+        pane.setTop(setNameAndPhoto());
+        pane.setCenter(setStatsBox());
+        pane.getStylesheets().add(STYLESHEET);
+        return pane;
     }
 
     private VBox setNameAndPhoto(){
         VBox nameAndPhoto = new VBox();
-        nameAndPhoto.getChildren().add(myProfilePhoto);
+        nameAndPhoto.getChildren().add(myViewPhoto);
         nameAndPhoto.getChildren().add(setNameText());
         nameAndPhoto.setOnDragEntered(e-> handleDroppedPhoto(e));
         nameAndPhoto.setOnDragDropped(e-> handleDroppedPhoto(e));
@@ -90,7 +91,7 @@ public class ViewProfile extends OggaProfile {
             File newFile = new File(profilePhotoPath);
             ImageIO.write(bufferedImage,"png",newFile);
             myProfilePhotoPath = "ooga/view/Resources/profilephotos/" + myName+ "profilephoto.jpg" ;
-            myPane.setTop(setNameAndPhoto());
+            //myPane.setTop(setNameAndPhoto());
             } catch (IOException | NullPointerException | IllegalArgumentException ex) {
             }
     }
@@ -135,6 +136,13 @@ public class ViewProfile extends OggaProfile {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(50);
         int row = 0;
+        if(myHighestScores == null) {
+           setStats(new HashMap<>(){{
+                put("SuperMario", 100);
+                put("Dino", 3500);
+                put("FireBoy and Water Girl", 3000);
+            }});
+        }
         for(String game: myHighestScores.keySet()){
             Integer stat = myHighestScores.get(game);
             Text gameName = new Text(game);
