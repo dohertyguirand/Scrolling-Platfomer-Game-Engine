@@ -10,11 +10,11 @@ import java.util.List;
 
 public class SetImageEffect implements NonCollisionEffect {
 
-  String newImageLocation = "";
+  String newImageFileName = "";
 
   public SetImageEffect(List<String> args){
     if(args.size() >= 1){
-      newImageLocation = args.get(0);
+      newImageFileName = args.get(0);
     }
   }
 
@@ -33,7 +33,7 @@ public class SetImageEffect implements NonCollisionEffect {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;
-      imageEntity.setImageLocation(newImageLocation);
+      imageEntity.setImageLocation("file:data/games-library/" + newImageFileName);
     }
   }
 }

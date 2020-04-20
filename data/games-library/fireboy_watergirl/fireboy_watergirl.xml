@@ -44,7 +44,7 @@
                         <Key>RightKey</Key>
                         <InputRequirement>false</InputRequirement>
                     </InputCondition>
-                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy.png</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage fireboy_watergirl/fireboy.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -52,7 +52,7 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
-                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy_facing_left.png</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage fireboy_watergirl/fireboy_facing_left.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -60,7 +60,7 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
-                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/fireboy_facing_right.png</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage fireboy_watergirl/fireboy_facing_right.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <CollisionEffect>
@@ -138,7 +138,7 @@
                         <Key>RightKey2</Key>
                         <InputRequirement>false</InputRequirement>
                     </InputCondition>
-                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl.png</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage fireboy_watergirl/watergirl.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -146,7 +146,7 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
-                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl_facing_left.png</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage fireboy_watergirl/watergirl_facing_left.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -154,7 +154,7 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
-                    <NonCollisionEffect>SetImage file:data/games-library/fireboy_watergirl/watergirl_facing_right.png</NonCollisionEffect>
+                    <NonCollisionEffect>SetImage fireboy_watergirl/watergirl_facing_right.png</NonCollisionEffect>
                 </Behavior>
                 <Behavior>
                     <CollisionEffect>
@@ -246,12 +246,60 @@
             <Width>75</Width>
             <Height>107</Height>
             <Image>redDoor.jpg</Image>
+            <Behaviors>
+                <Behavior>
+                    <!--                    <VerticalCollisionCondition>-->
+                    <!--                        <EntityName>Floor</EntityName>-->
+                    <!--                        <CollisionRequirement>true</CollisionRequirement>-->
+                    <!--                    </VerticalCollisionCondition>-->
+                    <HorizontalCollisionCondition>
+                        <EntityName>Fireboy</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </HorizontalCollisionCondition>
+                    <VariableCondition>
+                        <VariableName>RedDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <VariableCondition>
+                        <VariableName>BlueDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <NonCollisionEffect>SetImage fireboy_watergirl/openDoor.png</NonCollisionEffect>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
         <ImageEntity>
             <Name>BlueDoor</Name>
             <Width>75</Width>
             <Height>107</Height>
             <Image>blueDoor.jpg</Image>
+            <Behaviors>
+                <Behavior>
+<!--                    <VerticalCollisionCondition>-->
+<!--                        <EntityName>Floor</EntityName>-->
+<!--                        <CollisionRequirement>true</CollisionRequirement>-->
+<!--                    </VerticalCollisionCondition>-->
+                    <HorizontalCollisionCondition>
+                        <EntityName>Watergirl</EntityName>
+                        <CollisionRequirement>true</CollisionRequirement>
+                    </HorizontalCollisionCondition>
+                    <VariableCondition>
+                        <VariableName>RedDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <VariableCondition>
+                        <VariableName>BlueDiamonds</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </VariableCondition>
+                    <NonCollisionEffect>SetImage fireboy_watergirl/openDoor.png</NonCollisionEffect>
+                </Behavior>
+            </Behaviors>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>Background</Name>
+            <Width>1000</Width>
+            <Height>800</Height>
+            <Image>background.jpg</Image>
         </ImageEntity>
     </Entities>
     <Variables>
@@ -278,6 +326,11 @@
             <NextLevel>1</NextLevel>
             <EndCondition>DestroyAll Koopa</EndCondition>
             <ImageEntityInstances>
+                <ImageEntityInstance>
+                    <Type>Background</Type>
+                    <XPos>0</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>RedDoor</Type>
                     <XPos>600</XPos>

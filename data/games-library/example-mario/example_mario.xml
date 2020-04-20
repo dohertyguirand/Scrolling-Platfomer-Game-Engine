@@ -15,7 +15,7 @@
             <InputRequirement>true</InputRequirement>
           </InputCondition>
           <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
-          <NonCollisionEffect>SetImage file:data/games-library/example-mario/mario_facing_left.png</NonCollisionEffect>
+          <NonCollisionEffect>SetImage example-mario/mario_facing_left.png</NonCollisionEffect>
         </Behavior>
         <Behavior>
           <InputCondition>
@@ -23,14 +23,27 @@
             <InputRequirement>true</InputRequirement>
           </InputCondition>
           <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
-          <NonCollisionEffect>SetImage file:data/games-library/example-mario/mario_facing_right.png</NonCollisionEffect>
+          <NonCollisionEffect>SetImage example-mario/mario_facing_right.png</NonCollisionEffect>
         </Behavior>
         <Behavior>
+          <HorizontalCollisionCondition>
+            <EntityName>Koopa</EntityName>
+            <CollisionRequirement>true</CollisionRequirement>
+          </HorizontalCollisionCondition>
+          <CollisionEffect>
+            <With>Koopa</With>
+            <Reaction>Respawn 0.0 0.0</Reaction>
+            <Reaction>ChangeVariable Lives -1.0</Reaction>
+          </CollisionEffect>
+        </Behavior>
+        <Behavior>
+          <VerticalCollisionCondition>
+            <EntityName>Koopa</EntityName>
+            <CollisionRequirement>true</CollisionRequirement>
+          </VerticalCollisionCondition>
           <CollisionEffect>
             <With>Koopa</With>
             <Reaction>VerticalBounce -.50</Reaction>
-            <Reaction>RunIntoStompable</Reaction>
-            <Reaction>ChangeVariable Lives -1.0</Reaction>
           </CollisionEffect>
         </Behavior>
         <Behavior>
@@ -130,9 +143,13 @@
         </CollisionEffect>
       </Behavior>
       <Behavior>
+        <VerticalCollisionCondition>
+          <EntityName>SmallMario</EntityName>
+          <CollisionRequirement>true</CollisionRequirement>
+        </VerticalCollisionCondition>
         <CollisionEffect>
           <With>SmallMario</With>
-          <Reaction>Stompable</Reaction>
+          <Reaction>RemoveSelf</Reaction>
           <Reaction>ChangeVariable Score 20.0</Reaction>
         </CollisionEffect>
       </Behavior>
@@ -199,7 +216,6 @@
       <Height>400</Height>
       <Image>mario_flagpole.png</Image>
     </ImageEntity>
-
     <ImageEntity>
       <Name>QuestionBlock</Name>
       <Width>100</Width>
@@ -216,6 +232,12 @@
           <Reaction>ChangeVariable Score 20.0</Reaction>
         </CollisionEffect>
       </Behavior>
+    </ImageEntity>
+    <ImageEntity>
+      <Name>Background</Name>
+      <Width>1000</Width>
+      <Height>800</Height>
+      <Image>mario_background.png</Image>
     </ImageEntity>
   </Entities>
   <Variables>
@@ -235,6 +257,11 @@
       <EndCondition>Collision Flagpole SmallMario</EndCondition>
 <!--      <Background>mario_background.png</Background>-->
       <ImageEntityInstances>
+        <ImageEntityInstance>
+          <Type>Background</Type>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+        </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>SmallMario</Type>
           <XPos>0</XPos>
