@@ -217,4 +217,17 @@ public interface Entity {
    * @return True if the entity has a defined collision behavior with the type given.
    */
   boolean hasCollisionWith(String entityType);
+
+  /**
+   * change the value in this entity's blockedMovements map to the specified value
+   * @param direction up, down, left, or right
+   * @param isBlocked true if the entity is blocked in the direction, otherwise false
+   */
+  void blockInDirection(String direction, boolean isBlocked);
+
+  /**
+   * change every value in this entity's blockedMovements map to the specified value
+   * @param isBlocked true if the entity is blocked in the direction, otherwise false
+   */
+  void blockInAllDirections(boolean isBlocked);
 }
