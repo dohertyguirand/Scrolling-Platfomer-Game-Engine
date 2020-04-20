@@ -50,6 +50,18 @@ public class BehaviorInstance implements ConditionalBehavior {
   @Override
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                                   List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
+    //TODO: allow for collision conditions that specify any two entities, not just this entity
+    //TODO: after that, merge collision and noncollision effects since both can now have an "other entity" to interact with
+    // TODO: difficulty with this is the other entity might depend on an entity variable... (like what door a button opens)
+    //  or perhaps, it makes more sense to just have in the xml files: CollisionDeterminedEffect, VariableDeterminedEffect, etc
+    //  there are several different ways the "other entity" of the effect can be determined -> different types of "Actions"
+    //  Each action has a string key "howToFind" that helps further specify how to determine other entity
+    //  CollisionDeterminedAction: other entity is determined by collisions. "howToFind" is direction
+    //  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key
+    //  IndependentAction: no other entity is necessary for the effect
+    //  more action types could be added later but these 3 should cover most cases
+    //  This would mean CollisionEffects and NonCollisionEffects would just be merged into effects, and every effect would
+    //  take an other entity parameter, which is null if not needed
     for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
       if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
         return;
@@ -89,6 +101,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   @Override
   public void doCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
+    //TODO: Add support for NonCollision effects that interact with another entity (e.g. a lever that activates a specific door)
     for(Map.Entry<String, List<CollisionEffect>>  collisionEffectEntry: collisionEffects.entrySet()) {
       String collidingEntityName = collisionEffectEntry.getKey();
       List<CollisionEffect> specificCollisionEffects = collisionEffectEntry.getValue();

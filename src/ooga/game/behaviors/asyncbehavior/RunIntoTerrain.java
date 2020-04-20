@@ -7,8 +7,8 @@ import ooga.Entity;
 
 public class RunIntoTerrain extends QuadDirectionCollision {
 
-  public static final double HORIZONTAL_MARGIN = 10.0;
-  public static final double VERTICAL_MARGIN = 0.1;
+  public static final double HORIZONTAL_MARGIN = 0.0;
+  public static final double VERTICAL_MARGIN = 0.0;
 
   public RunIntoTerrain(List<String> args) {
     //arguments have no effect on this behavior
@@ -17,25 +17,27 @@ public class RunIntoTerrain extends QuadDirectionCollision {
   @Override
   protected void doDownwardCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables, GameInternal game) {
-    subject.setVelocity(subject.getVelocity().get(0),0);
+    //subject.setVelocity(subject.getVelocity().get(0),0);
     double targetX = subject.getPosition().get(0);
     double targetY = collidingEntity.getPosition().get(1)-subject.getHeight()- VERTICAL_MARGIN;
     subject.setPosition(List.of(targetX,targetY));
+    subject.blockInDirection("Down", true);
   }
 
   @Override
   protected void doUpwardCollision(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables, GameInternal game) {
-    subject.setVelocity(subject.getVelocity().get(0),0);
+    //subject.setVelocity(subject.getVelocity().get(0),0);
     double targetX = subject.getPosition().get(0);
     double targetY = collidingEntity.getPosition().get(1) + collidingEntity.getHeight() + VERTICAL_MARGIN;
     subject.setPosition(List.of(targetX,targetY));
+    subject.blockInDirection("Up", true);
   }
 
   @Override
   protected void doCollisionTowardRight(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables, GameInternal game) {
-    subject.setVelocity(0,subject.getVelocity().get(1));
+    //subject.setVelocity(0,subject.getVelocity().get(1));
     System.out.println("here!");
     System.out.println("Subject: " + subject.getName());
     System.out.println("pos " +subject.getPosition().get(0));
@@ -44,12 +46,13 @@ public class RunIntoTerrain extends QuadDirectionCollision {
     double targetY = subject.getPosition().get(1);
     System.out.println(targetX);
     subject.setPosition(List.of(targetX,targetY));
+    subject.blockInDirection("Right", true);
   }
 
   @Override
   protected void doCollisionTowardLeft(Entity subject, Entity collidingEntity, double elapsedTime,
       Map<String, Double> variables, GameInternal game) {
-    subject.setVelocity(0,subject.getVelocity().get(1));
+    //subject.setVelocity(0,subject.getVelocity().get(1));
     System.out.println("here2!");
     System.out.println("Subject: " + subject.getName());
     System.out.println("Width: " + collidingEntity.getWidth());
@@ -58,6 +61,7 @@ public class RunIntoTerrain extends QuadDirectionCollision {
     double targetY = subject.getPosition().get(1);
     System.out.println(targetX);
     subject.setPosition(List.of(targetX,targetY));
+    subject.blockInDirection("Left", true);
   }
 
 }

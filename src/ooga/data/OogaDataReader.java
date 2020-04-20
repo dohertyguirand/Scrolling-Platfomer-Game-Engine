@@ -33,6 +33,7 @@ import static java.lang.Class.forName;
 
 public class OogaDataReader implements DataReader{
 
+    //TODO: put all magic strings (especially xml related stuff) in resource file
     private static final Object PATH_TO_CLASSES = "ooga.game.behaviors.";
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static final String DEFAULT_LIBRARY_FILE = "data/games-library";
@@ -176,9 +177,19 @@ public class OogaDataReader implements DataReader{
                         String entityName = entityElement.getElementsByTagName("Type").item(0).getTextContent();
                         String[] parameterNames = new String[] {"XPos", "YPos"};
                         List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
-                        OogaEntity entity = entityMap.get(entityName).makeInstanceAt(parameterValues.get(0),parameterValues.get(1));
-                        entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
-                        initialEntities.add(entity);
+                        int[] rowsAndCols = getRowsAndCols(entityElement);
+                        double xPos;
+                        double yPos = parameterValues.get(1);
+                        for(int row=0; row<rowsAndCols[0]; row++){
+                            xPos = parameterValues.get(0);
+                            for(int col=0;col<rowsAndCols[1];col++){
+                                OogaEntity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
+                                entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
+                                initialEntities.add(entity);
+                                xPos += entityMap.get(entityName).getMyWidth();
+                            }
+                            yPos += entityMap.get(entityName).getMyHeight();
+                        }
                     }
                     NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
                     for (int j = 0; j < textEntityNodes.getLength(); j++) {
@@ -205,6 +216,28 @@ public class OogaDataReader implements DataReader{
         OogaLevel oogaLevel = new OogaLevel(initialEntities);
         oogaLevel.setNextLevelID(nextLevelID);
         return oogaLevel;
+    }
+
+    /**
+     * gets the rows and columns fields of this entity, each defaults to 1 if not specified
+     * @param entityElement element in the xml of this entity
+     * @return array of rows, columns
+     * @throws OogaDataException if either field is not parsable to an int
+     */
+    private int[] getRowsAndCols(Element entityElement) throws OogaDataException {
+        int[] rowsAndCols = new int[]{1, 1};
+        String[] keys = new String[]{"Rows", "Columns"};
+        for(int i=0; i<rowsAndCols.length; i++) {
+            NodeList nodes = entityElement.getElementsByTagName(keys[i]);
+            if (nodes.getLength() > 0) {
+                try {
+                    rowsAndCols[i] = Integer.parseInt(nodes.item(0).getTextContent());
+                } catch(NumberFormatException e){
+                    throw new OogaDataException("Row/columns number incorrectly formatted");
+                }
+            }
+        }
+        return rowsAndCols;
     }
 
     private List<Double> constructEntity(Element entityElement, String entityName, String[] parameterNames) {
@@ -272,7 +305,7 @@ public class OogaDataReader implements DataReader{
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
             Map<String, Double> variableConditions = new HashMap<>();
-            //TODO: Make a default for input conditions so that if no InputRequirement is specified, it assumes 'true' is required
+            //TODO: Make a default for conditions so that if no Requirement is specified, it assumes 'true' is required
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<String, Boolean> verticalCollisionConditions = new HashMap<>();
             Map<String, Boolean> horizontalCollisionConditions = new HashMap<>();
@@ -284,8 +317,6 @@ public class OogaDataReader implements DataReader{
             List<NonCollisionEffect> nonCollisionEffects = new ArrayList<>();
             for(int j=0; j<nonCollisionEffectNodes.getLength(); j++) {
                 String[] reactionEffect = nonCollisionEffectNodes.item(j).getTextContent().split(" ");
-                System.out.println("print the effect!!!!!");
-                System.out.println(reactionEffect[0]);
                 NonCollisionEffect nonCollisionEffect = (NonCollisionEffect) makeBasicEffect(reactionEffect, "NonCollision");
                 nonCollisionEffects.add(nonCollisionEffect);
             }
@@ -301,7 +332,6 @@ public class OogaDataReader implements DataReader{
                     collisionEffectsMap.get(otherEntityName).add(collisionEffect);
                 }
             }
-            System.out.println("CREATING BEHAVIOR INSTANCE FOR " + name);
             behaviors.add(new BehaviorInstance(variableConditions, inputConditions, verticalCollisionConditions,
                     horizontalCollisionConditions, collisionEffectsMap, nonCollisionEffects));
         }

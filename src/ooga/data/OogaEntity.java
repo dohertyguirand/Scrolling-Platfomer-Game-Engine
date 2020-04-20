@@ -41,6 +41,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
+  private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
+  private Map<String, Boolean> blockedMovements = new HashMap<>();
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
     myVelocity = List.of(0.,0.);
@@ -54,6 +56,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myConditionalBehaviors = new ArrayList<>();
     myVelocityVectors = new Stack<>();
     myName = "";
+    for(String direction : directions){
+      blockedMovements.put(direction, false);
+    }
   }
 
   @Override
@@ -172,6 +177,17 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void executeMovement(double elapsedTime) {
+    double[] directionalVelocities = new double[]{-myVelocity.get(1), myVelocity.get(1), -myVelocity.get(0), myVelocity.get(0)};
+    int[] velocityIndexes = new int[]{1, 1, 0, 0};
+    for(int i=0; i<directions.length; i++){
+      double[] newVelocity = new double[]{myVelocity.get(0), myVelocity.get(1)};
+      newVelocity[velocityIndexes[i]] = 0.0;
+      if(blockedMovements.get(directions[i]) && directionalVelocities[i] > 0) {
+//        System.out.println("blocked info");
+//        System.out.println(blockedMovements.toString());
+        setVelocity(newVelocity[0], newVelocity[1]);
+      }
+    }
     moveByVelocity(elapsedTime);
   }
 
@@ -268,7 +284,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void changeVelocity(double xChange, double yChange) {
-    myVelocity = List.of(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
+    setVelocity(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
   }
 
   @Override
@@ -320,9 +336,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
                                      List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
-    System.out.println(getName() + " is updating!");
+    //System.out.println(getName() + " is updating!");
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
-      System.out.println("\tbehavior: " + conditionalBehavior.getClass().toString());
+      //System.out.println("\tbehavior: " + conditionalBehavior.getClass().toString());
       conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, verticalCollisions, horizontalCollisions, gameInternal);
     }
   }
@@ -332,5 +348,24 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     //TODO: remove this method
     return true;
     //return myCollisionBehaviors.containsKey(entityType);
+  }
+
+  /**
+   * change the value in this entity's blockedMovements map to the specified value
+   * @param direction up, down, left, or right
+   * @param isBlocked true if the entity is blocked in the direction, otherwise false
+   */
+  @Override
+  public void blockInDirection(String direction, boolean isBlocked){
+    blockedMovements.put(direction, isBlocked);
+  }
+
+  /**
+   * change every value in this entity's blockedMovements map to the specified value
+   * @param isBlocked true if the entity is blocked in the direction, otherwise false
+   */
+  @Override
+  public void blockInAllDirections(boolean isBlocked){
+    blockedMovements.replaceAll((d, v) -> isBlocked);
   }
 }

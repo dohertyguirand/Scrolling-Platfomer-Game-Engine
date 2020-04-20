@@ -29,4 +29,12 @@ public class ImageEntityDefinition {
     public String toString() {
         return myName + ": (" + myHeight + " x " + myWidth + ")";
     }
+
+    public double getMyHeight() {
+        return myHeight;
+    }
+
+    public double getMyWidth() {
+        return myWidth;
+    }
 }
