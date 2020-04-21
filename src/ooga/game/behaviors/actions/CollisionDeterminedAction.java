@@ -5,6 +5,7 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,15 +28,27 @@ public class CollisionDeterminedAction extends Action {
   }
 
   @Override
-  public void doAction(double elapsedTime, Entity subject, Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+  public List<Entity> doAction(double elapsedTime, Entity subject, Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+    List<Entity> otherEntities = new ArrayList<>();
     Map<String, List<Entity>> myCollisionInfo = collisionInfo.get(subject);
     if(direction.equals(ANY)){
       for(String possibleDirection : myCollisionInfo.keySet()){
-        doActionForCollidingEntities(myCollisionInfo.get(possibleDirection));
+        otherEntities.addAll(getCollidingEntities(myCollisionInfo.get(possibleDirection));
       }
-      return;
+      return otherEntities;
     }
-    doActionForCollidingEntities(myCollisionInfo.get(direction));
+    otherEntities.addAll(getCollidingEntities(myCollisionInfo.get(direction)));
+    return otherEntities;
+  }
+
+  private List<Entity> getCollidingEntities(List<Entity> collidingWithList) {
+    List<Entity> otherEntities = new ArrayList<>();
+    for(Entity collidingWith : collidingWithList){
+      if(entityMatches(collidingEntityInfo, collidingWith)){
+        otherEntities.add(collidingWith);
+      }
+    }
+    return otherEntities;
   }
 
   private boolean entityMatches(String entity1Info, Entity entity) {
