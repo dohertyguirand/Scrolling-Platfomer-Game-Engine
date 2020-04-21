@@ -7,6 +7,7 @@ import ooga.game.behaviors.CollisionEffect;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import ooga.game.behaviors.CollisionEffect;
 
 public class SetPositionEffect implements CollisionEffect {
 

@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import ooga.game.behaviors.CollisionEffect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.asyncbehavior.MoveUpCollision;
 import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
-import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
+import ooga.game.behaviors.asyncbehavior.VerticalBounce;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +26,7 @@ public class CollisionTest {
     double elapsedTime = 1.0;
     Entity e = new ImageEntity();
     Map<String, List<CollisionEffect>> collisionMap = new HashMap<>();
-    collisionMap.put("TestEntity2", List.of(new MoveUpCollision(20.01)));
+    collisionMap.put("TestEntity2", List.of(new VerticalBounce(List.of("20.01"))));
     e.setCollisionBehaviors(collisionMap);
     for (int i = 0; i < NUM_MOVE_UP_ASSERTS; i++) {
       List<Double> expectedPos = List.of(0.0, i * 20.01);
