@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionEffect;
+import ooga.game.behaviors.Effect;
 
-public class ChangeVelocity implements CollisionEffect {
+public class ChangeVelocity implements Effect {
 
   private double bounceVelocity;
 
@@ -15,8 +15,7 @@ public class ChangeVelocity implements CollisionEffect {
   }
 
   @Override
-  public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
+  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     subject.changeVelocity(0.0,bounceVelocity * 5);
   }
 }

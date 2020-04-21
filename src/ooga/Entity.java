@@ -5,9 +5,9 @@ import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionEffect;
+import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.Effect;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -93,13 +93,13 @@ public interface Entity {
    * @param behaviorMap A Map that connects the name of the entity that is being collided with
    *                    with the list of behaviors that should happen upon this collision.
    */
-  void setCollisionBehaviors(Map<String,List<CollisionEffect>> behaviorMap);
+  void setCollisionBehaviors(Map<String,List<Effect>> behaviorMap);
 
   /**
    * Sets the behaviors that will be carried out for every frame
    * @param behaviors A List of MovementBehaviors
    */
-  void setMovementBehaviors(List<NonCollisionEffect> behaviors);
+  void setMovementBehaviors(List<Effect> behaviors);
 
   /**
    * Sets the mappings of behaviors that will be carried out when controls are inputted,
@@ -107,7 +107,7 @@ public interface Entity {
    * @param behaviors The Map from standardized control input strings to ControlsBehaviors that
    *                  define this entity's reaction to controls.
    */
-  void setControlsBehaviors(Map<String,List<NonCollisionEffect>> behaviors);
+  void setControlsBehaviors(Map<String,List<Effect>> behaviors);
 
   /**
    * Reacts to colliding with a specific entity type based on its list of reactions mapped to

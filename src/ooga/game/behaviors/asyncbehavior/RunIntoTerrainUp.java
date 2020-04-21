@@ -12,10 +12,10 @@ public class RunIntoTerrainUp extends RunIntoTerrain {
   }
 
   @Override
-  public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     //subject.setVelocity(subject.getVelocity().get(0),0);
     double targetX = subject.getPosition().get(0);
-    double targetY = collidingEntity.getPosition().get(1) + collidingEntity.getHeight();
+    double targetY = otherEntity.getPosition().get(1) + otherEntity.getHeight();
     subject.setPosition(List.of(targetX,targetY));
     subject.blockInDirection("Up", true);
   }

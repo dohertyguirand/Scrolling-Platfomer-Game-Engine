@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
-import ooga.game.behaviors.CollisionEffect;
+import ooga.game.behaviors.Effect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
 import ooga.game.behaviors.asyncbehavior.VerticalBounce;
-import ooga.game.behaviors.noncollisioneffects.GravityEffect;
-import ooga.game.behaviors.noncollisioneffects.JumpEffect;
+import ooga.game.behaviors.Effects.GravityEffect;
+import ooga.game.behaviors.Effects.JumpEffect;
 import org.junit.jupiter.api.Test;
 
 
@@ -50,7 +50,7 @@ class EntityTest {
     double elapsedTime = 1.0;
     Entity dino = new ImageEntity();
     Entity cactus = new ImageEntity("cactus");
-    Map<String, List<CollisionEffect>> collisionMap = new HashMap<>();
+    Map<String, List<Effect>> collisionMap = new HashMap<>();
     collisionMap.put("Cactus", List.of(new VerticalBounce(List.of("-20.0")), new DestroySelfEffect(new ArrayList<>())));
     dino.setCollisionBehaviors(collisionMap);
 //    dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));

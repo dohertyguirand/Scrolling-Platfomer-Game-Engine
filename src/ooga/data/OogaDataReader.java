@@ -12,9 +12,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import ooga.game.Level;
 import ooga.game.OogaLevel;
-import ooga.game.behaviors.CollisionEffect;
+import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.BehaviorInstance;
 import ooga.view.OggaProfile;
 import org.w3c.dom.Document;
@@ -338,27 +338,27 @@ public class OogaDataReader implements DataReader{
             addConditions(horizontalCollisionConditions, behaviorElement.getElementsByTagName("HorizontalCollisionCondition"), "EntityName", "CollisionRequirement");
             addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
-            NodeList nonCollisionEffectNodes = behaviorElement.getElementsByTagName("NonCollisionEffect");
-            List<NonCollisionEffect> nonCollisionEffects = new ArrayList<>();
-            for(int j=0; j<nonCollisionEffectNodes.getLength(); j++) {
-                String[] reactionEffect = nonCollisionEffectNodes.item(j).getTextContent().split(" ");
-                NonCollisionEffect nonCollisionEffect = (NonCollisionEffect) makeBasicEffect(reactionEffect, "NonCollision");
-                nonCollisionEffects.add(nonCollisionEffect);
+            NodeList EffectNodes = behaviorElement.getElementsByTagName("Effect");
+            List<Effect> effects = new ArrayList<>();
+            for(int j=0; j<EffectNodes.getLength(); j++) {
+                String[] reactionEffect = EffectNodes.item(j).getTextContent().split(" ");
+                Effect effect = (Effect) makeBasicEffect(reactionEffect, "NonCollision");
+                effects.add(effect);
             }
-            Map<String, List<CollisionEffect>> collisionEffectsMap = new HashMap<>();
-            NodeList collisionEffectNodes = behaviorElement.getElementsByTagName("CollisionEffect");
-            for(int j=0; j<collisionEffectNodes.getLength(); j++) {
+            Map<String, List<Effect>> EffectsMap = new HashMap<>();
+            NodeList EffectNodes = behaviorElement.getElementsByTagName("Effect");
+            for(int j=0; j<EffectNodes.getLength(); j++) {
                 String otherEntityName = behaviorElement.getElementsByTagName("With").item(0).getTextContent();
-                collisionEffectsMap.put(otherEntityName, new ArrayList<>());
-                NodeList reactionEffectNodes = ((Element)collisionEffectNodes.item(j)).getElementsByTagName("Reaction");
+                EffectsMap.put(otherEntityName, new ArrayList<>());
+                NodeList reactionEffectNodes = ((Element)EffectNodes.item(j)).getElementsByTagName("Reaction");
                 for(int k=0; k<reactionEffectNodes.getLength(); k++) {
                     String[] reactionEffect = reactionEffectNodes.item(k).getTextContent().split(" ");
-                    CollisionEffect collisionEffect = (CollisionEffect) makeBasicEffect(reactionEffect, "Collision");
-                    collisionEffectsMap.get(otherEntityName).add(collisionEffect);
+                    Effect effect = (Effect) makeBasicEffect(reactionEffect, "Collision");
+                    EffectsMap.get(otherEntityName).add(effect);
                 }
             }
             behaviors.add(new BehaviorInstance(variableConditions, inputConditions, verticalCollisionConditions,
-                    horizontalCollisionConditions, collisionEffectsMap, nonCollisionEffects));
+                    horizontalCollisionConditions, EffectsMap, effects));
         }
 
         return new ImageEntityDefinition(name, height, width, imagePath, behaviors);

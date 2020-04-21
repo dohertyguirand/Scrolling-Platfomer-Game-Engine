@@ -2,14 +2,13 @@ package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.Map;
 import ooga.Entity;
-import ooga.OogaDataException;
 import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.Effect;
 
 import java.util.List;
 
-public class SetImageEffect implements NonCollisionEffect {
+public class SetImageEffect implements Effect {
 
   String newImageFileName = "";
 
@@ -19,15 +18,16 @@ public class SetImageEffect implements NonCollisionEffect {
 
   /**
    * Checks if the specified data value maps to an entity variable. Changes image to that variable, otherwise to preset value.
-   * @param elapsedTime
+   * @param otherEntity
    * @param subject The entity that owns this controls behavior. This is the entity that should
-   *                be modified.
+ *                be modified.
+   * @param elapsedTime
    * @param variables
    * @param game
    */
   @Override
-  public void doEffect(double elapsedTime, Entity subject,
-      Map<String, Double> variables, GameInternal game) {
+  public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables,
+                       GameInternal game) {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;

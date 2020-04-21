@@ -12,7 +12,7 @@ import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
-import ooga.game.behaviors.noncollisioneffects.JumpEffect;
+import ooga.game.behaviors.Effects.JumpEffect;
 import org.junit.jupiter.api.Test;
 
 public class GameTest {

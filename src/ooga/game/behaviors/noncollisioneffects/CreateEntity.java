@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.Effect;
 
-public class CreateEntity implements NonCollisionEffect {
+public class CreateEntity implements Effect {
 
   private String createdEntityType;
   //TODO: Allow the user to use the relative entity location.
@@ -17,8 +17,7 @@ public class CreateEntity implements NonCollisionEffect {
   }
 
   @Override
-  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables,
-      GameInternal game) {
+  public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     game.createEntity(createdEntityType,List.of(subject.getPosition().get(0),subject.getPosition().get(1)-subject.getHeight()));
   }
 }

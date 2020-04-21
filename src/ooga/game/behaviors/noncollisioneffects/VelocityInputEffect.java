@@ -3,10 +3,10 @@ package ooga.game.behaviors.noncollisioneffects;
 import java.util.List;
 import java.util.Map;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.Effect;
 import ooga.Entity;
 
-public class VelocityInputEffect implements NonCollisionEffect {
+public class VelocityInputEffect implements Effect {
 
   private double xAccelPerFrame;
   private double yAccelPerFrame;
@@ -25,8 +25,8 @@ public class VelocityInputEffect implements NonCollisionEffect {
   }
 
   @Override
-  public void doEffect(double elapsedTime, Entity subject,
-      Map<String, Double> variables, GameInternal game) {
+  public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables,
+                       GameInternal game) {
     if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
       subject.changeVelocity(xAccelPerFrame,yAccelPerFrame);
     }

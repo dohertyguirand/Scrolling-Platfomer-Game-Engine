@@ -5,13 +5,13 @@ import java.util.Map;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.Effect;
 
 /**
  * Uses constant downward motion to simulate basic gravity.
  * Brings attention to the challenge of having acceleration.
  */
-public class GravityEffect implements NonCollisionEffect {
+public class GravityEffect implements Effect {
 
     private List<Double> myGravityVector;
 
@@ -27,8 +27,7 @@ public class GravityEffect implements NonCollisionEffect {
     }
 
     @Override
-    public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables,
-        GameInternal game) {
+    public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables, GameInternal game) {
         //subject.changeVelocity(myGravityVector.get(0)*elapsedTime/EXPECTED_DT,myGravityVector.get(1)*elapsedTime/EXPECTED_DT);
         //System.out.println("GRAVITY APPLYING TO " + subject.getName());
         subject.changeVelocity(myGravityVector.get(0),myGravityVector.get(1));

@@ -3,9 +3,9 @@
 //import java.util.Map;
 //import ooga.Entity;
 //import ooga.game.GameInternal;
-//import ooga.game.behaviors.CollisionEffect;
+//import ooga.game.behaviors.Effect;
 //
-//public abstract class QuadDirectionCollision implements CollisionEffect {
+//public abstract class QuadDirectionCollision implements Effect {
 //
 //  @Override
 //  public void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,

@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ooga.game.behaviors.NonCollisionEffect;
+
+import ooga.game.behaviors.Effect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.noncollisioneffects.CreateEntity;
 import ooga.game.behaviors.asyncbehavior.RunIntoTerrain;
 import ooga.game.collisiondetection.VelocityCollisionDetector;
-import ooga.game.behaviors.noncollisioneffects.GravityEffect;
-import ooga.game.behaviors.noncollisioneffects.JumpEffect;
-import ooga.game.behaviors.noncollisioneffects.VelocityInputEffect;
+import ooga.game.behaviors.Effects.GravityEffect;
+import ooga.game.behaviors.Effects.JumpEffect;
+import ooga.game.behaviors.Effects.VelocityInputEffect;
 
 public class ControlsTestGameCreation {
   //TODO: Remove, or transform into a reasonable test
@@ -23,7 +23,7 @@ public class ControlsTestGameCreation {
     double speed = 160.0;
     speed = speed / 1000.0;
     double maxSpeed = speed * 2;
-    Map<String, List<NonCollisionEffect>> controls = new HashMap<>();
+    Map<String, List<Effect>> controls = new HashMap<>();
     controls.put("UpKey2Pressed",List.of(new JumpEffect(-1 * 3.2 * speed)));
 //    controls.put("UpKey",List.of(new MoveInputBehavior(0,-1 * speed)));
 //    controls.put("DownKey",List.of(new MoveInputBehavior(0,speed)));

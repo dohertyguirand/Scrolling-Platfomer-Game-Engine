@@ -53,7 +53,7 @@ public interface ConditionalBehavior {
    * @param verticalCollisions the entities this entity is colliding with vertically
    * @param gameInternal what game this is run from
    */
-  void doCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+  void doEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                           List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal);
 
   /**
@@ -63,5 +63,5 @@ public interface ConditionalBehavior {
    * @param variables map of variables in the game/level
    * @param gameInternal instance of game internal
    */
-  void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, GameInternal gameInternal);
+  void doEffects(double elapsedTime, Entity subject, Map<String, Double> variables, GameInternal gameInternal);
 }

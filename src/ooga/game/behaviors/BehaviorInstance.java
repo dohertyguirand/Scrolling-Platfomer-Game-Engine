@@ -2,9 +2,6 @@ package ooga.game.behaviors;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionEffect;
-import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.NonCollisionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +13,19 @@ public class BehaviorInstance implements ConditionalBehavior {
   Map<String, Boolean> verticalCollisionConditions;
   Map<String, Boolean> horizontalCollisionConditions;
   Map<String, Double> variableConditions;
-  Map<String, List<CollisionEffect>> collisionEffects;
-  List<NonCollisionEffect> nonCollisionEffects;
+  Map<String, List<Effect>> Effects;
+  List<Effect> effects;
 
   public BehaviorInstance(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
                           Map<String, Boolean> verticalCollisionConditions,
-                          Map<String, Boolean> horizontalCollisionConditions, Map<String, List<CollisionEffect>> collisionEffects,
-                          List<NonCollisionEffect> nonCollisionEffects){
+                          Map<String, Boolean> horizontalCollisionConditions, Map<String, List<Effect>> Effects,
+                          List<Effect> effects){
     this.inputConditions = inputConditions;
     this.variableConditions = variableConditions;
     this.verticalCollisionConditions = verticalCollisionConditions;
     this.horizontalCollisionConditions = horizontalCollisionConditions;
-    this.collisionEffects = collisionEffects;
-    this.nonCollisionEffects = nonCollisionEffects;
+    this.Effects = Effects;
+    this.effects = effects;
   }
 
   /**
@@ -61,7 +58,7 @@ public class BehaviorInstance implements ConditionalBehavior {
     //  IndependentAction: no other entity is necessary for the effect
     //  NameDependentAction: executes the effect on all entities with the specified name "howToFind"
     //  more action types could be added later but these 3 should cover most cases
-    //  This would mean CollisionEffects and NonCollisionEffects would just be merged into effects, and every effect would
+    //  This would mean Effects and Effects would just be merged into effects, and every effect would
     //  take an other entity parameter, which is null if not needed
     // TODO: add ability for entity instances to have additional behaviors?
     // TODO: fix constructors of efects so they can throw errors.
@@ -87,8 +84,8 @@ public class BehaviorInstance implements ConditionalBehavior {
         return;
       }
     }
-    doNonCollisionEffects(elapsedTime, subject, variables, gameInternal);
-    doCollisionEffects(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
+    doEffects(elapsedTime, subject, variables, gameInternal);
+    doEffects(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
   }
 
   /**
@@ -102,23 +99,23 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+  public void doEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                        List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
     //TODO: Add support for NonCollision effects that interact with another entity (e.g. a lever that activates a specific door)
-    for(Map.Entry<String, List<CollisionEffect>>  collisionEffectEntry: collisionEffects.entrySet()) {
-      String collidingEntityName = collisionEffectEntry.getKey();
-      List<CollisionEffect> specificCollisionEffects = collisionEffectEntry.getValue();
+    for(Map.Entry<String, List<Effect>>  EffectEntry: Effects.entrySet()) {
+      String collidingEntityName = EffectEntry.getKey();
+      List<Effect> specificEffects = EffectEntry.getValue();
       for (Entity collidingWith : verticalCollisions) {
         if (collidingWith.getName().equals(collidingEntityName)) {
-          for(CollisionEffect collisionEffect : specificCollisionEffects) {
-            collisionEffect.doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
+          for(Effect effect : specificEffects) {
+            effect.doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
           }
         }
       }
       for (Entity collidingWith : horizontalCollisions) {
         if (collidingWith.getName().equals(collidingEntityName)) {
-          for(CollisionEffect collisionEffect : specificCollisionEffects) {
-            collisionEffect.doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
+          for(Effect effect : specificEffects) {
+            effect.doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
           }
         }
       }
@@ -133,9 +130,9 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param gameInternal instance of game internal
    */
   @Override
-  public void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, GameInternal gameInternal) {
-    for(NonCollisionEffect nonCollisionEffect : nonCollisionEffects) {
-      nonCollisionEffect.doEffect(elapsedTime, subject, variables, gameInternal);
+  public void doEffects(double elapsedTime, Entity subject, Map<String, Double> variables, GameInternal gameInternal) {
+    for(Effect effect : effects) {
+      effect.doEffect(null, subject, elapsedTime, variables, gameInternal);
     }
   }
 

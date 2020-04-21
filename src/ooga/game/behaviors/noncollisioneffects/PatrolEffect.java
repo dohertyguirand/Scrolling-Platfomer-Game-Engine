@@ -6,9 +6,9 @@ import java.util.Map;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.Effect;
 
-public class PatrolEffect implements NonCollisionEffect {
+public class PatrolEffect implements Effect {
 
   public static double MARGIN = 20.0;
 
@@ -35,8 +35,7 @@ public class PatrolEffect implements NonCollisionEffect {
   }
 
   @Override
-  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables,
-      GameInternal game) {
+  public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     List<Double> difference = targetDifference(subject);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {

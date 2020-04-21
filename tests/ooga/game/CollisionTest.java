@@ -1,7 +1,7 @@
 package ooga.game;
 
 import java.util.ArrayList;
-import ooga.game.behaviors.CollisionEffect;
+import ooga.game.behaviors.Effect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
@@ -25,7 +25,7 @@ public class CollisionTest {
   void testMoveUpCollision() {
     double elapsedTime = 1.0;
     Entity e = new ImageEntity();
-    Map<String, List<CollisionEffect>> collisionMap = new HashMap<>();
+    Map<String, List<Effect>> collisionMap = new HashMap<>();
     collisionMap.put("TestEntity2", List.of(new VerticalBounce(List.of("20.01"))));
     e.setCollisionBehaviors(collisionMap);
     for (int i = 0; i < NUM_MOVE_UP_ASSERTS; i++) {

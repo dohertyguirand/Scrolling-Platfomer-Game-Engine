@@ -2,14 +2,13 @@ package ooga.game.behaviors.asyncbehavior;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionEffect;
+import ooga.game.behaviors.Effect;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import ooga.game.behaviors.CollisionEffect;
 
-public class SetPositionEffect implements CollisionEffect {
+public class SetPositionEffect implements Effect {
 
   private List<String> respawnLocation = new ArrayList<>();
 
@@ -26,13 +25,13 @@ public class SetPositionEffect implements CollisionEffect {
    * Sets the location to the stored location. If stored location is variable dependent, attempts to find a matching game variable.
    *  If there is none, attempts to find a matching entity variable. If there is none, defaults to 0.0.
    * @param subject entity subject
-   * @param collidingEntity other entity
+   * @param otherEntity other entity
    * @param elapsedTime how much time passed
    * @param variables game variables
    * @param game internal game instance
    */
   @Override
-  public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     List<Double> newLocation = new ArrayList<>();
     for(String coordinateData : respawnLocation){
       try{

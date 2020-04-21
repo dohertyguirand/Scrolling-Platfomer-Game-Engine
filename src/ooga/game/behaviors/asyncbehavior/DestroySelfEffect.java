@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionEffect;
+import ooga.game.behaviors.Effect;
 
-public class DestroySelfEffect implements CollisionEffect {
+public class DestroySelfEffect implements Effect {
 
 
     public DestroySelfEffect(List<String> args) {
@@ -14,8 +14,7 @@ public class DestroySelfEffect implements CollisionEffect {
     }
 
     @Override
-    public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,
-        Map<String, Double> variables, GameInternal game) {
+    public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
         subject.destroySelf();
     }
 }
