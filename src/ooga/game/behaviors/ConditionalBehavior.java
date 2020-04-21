@@ -43,15 +43,14 @@ public interface ConditionalBehavior {
 
 
   /**
-   * executes the behavior owned by this behavior
+   * executes the actions owned by this behavior
    * @param elapsedTime time in ms
    * @param subject entity that owns this conditional behavior
    * @param variables map of variables in the game/level
    * @param inputs the input keys that are currently active in this frame
-   * @param horizontalCollisions the entities this entity is colliding with horizontally
-   * @param verticalCollisions the entities this entity is colliding with vertically
+   * @param collisionInfo current collision info
    * @param gameInternal what game this is run from
    */
-  void doEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
-                          List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal);
+  public void doActions(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+                        Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 }

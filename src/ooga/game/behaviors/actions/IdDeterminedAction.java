@@ -7,19 +7,21 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
-public class NameDependentAction extends Action {
+//  IDDeterminedAction: executes the effect on the entity with the specified ID
+public class IdDeterminedAction extends Action {
 
-  String myTargetName;
+  private String targetID;
 
-  public NameDependentAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
+  public IdDeterminedAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
     super(effects);
-    myTargetName = args.get(0);
+    targetID = args.get(0);
   }
 
   @Override
   public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
       Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
       GameInternal gameInternal) {
-    return gameInternal.getEntitiesWithName(myTargetName);
+    Entity target = gameInternal.getEntityWithId(targetID);
+    return List.of(target);
   }
 }

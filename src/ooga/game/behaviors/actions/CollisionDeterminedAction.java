@@ -28,12 +28,12 @@ public class CollisionDeterminedAction extends Action {
   }
 
   @Override
-  public List<Entity> doAction(double elapsedTime, Entity subject, Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+  public List<Entity> findOtherEntities(double elapsedTime, Entity subject, Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     List<Entity> otherEntities = new ArrayList<>();
     Map<String, List<Entity>> myCollisionInfo = collisionInfo.get(subject);
     if(direction.equals(ANY)){
       for(String possibleDirection : myCollisionInfo.keySet()){
-        otherEntities.addAll(getCollidingEntities(myCollisionInfo.get(possibleDirection));
+        otherEntities.addAll(getCollidingEntities(myCollisionInfo.get(possibleDirection)));
       }
       return otherEntities;
     }

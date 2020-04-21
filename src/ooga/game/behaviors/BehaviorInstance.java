@@ -12,7 +12,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
   Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
   Map<String, Double> variableConditions;
-  List<Effect> effects;
+  List<Action> actions;
 
   /**
    * 
@@ -21,16 +21,16 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param requiredCollisionConditions conditions that must be true Map<List<String>, String> [entity 1 info, entity 2 info] : direction (or "ANY")
    *    *   entity info can be id or name, method will check for either
    * @param bannedCollisionConditions conditions that must be false (see above)
-   * @param effects
+   * @param actions
    */
   public BehaviorInstance(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
                           Map<List<String>, String> requiredCollisionConditions,
-                          Map<List<String>, String> bannedCollisionConditions, List<Effect> effects){
+                          Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
     this.variableConditions = variableConditions;
     this.requiredCollisionConditions = requiredCollisionConditions;
     this.bannedCollisionConditions = bannedCollisionConditions;
-    this.effects = effects;
+    this.actions = actions;
   }
 
   /**
@@ -60,7 +60,7 @@ public class BehaviorInstance implements ConditionalBehavior {
     //  CollisionDeterminedAction: other entity is determined by collisions. "howToFind" is name of other entity. Need additional direction parameter
     //  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key (probably maps to an entity ID)
     //  IndependentAction: no other entity is necessary for the effect
-    //  NameDependentAction: executes the effect on all entities with the specified name "howToFind"
+    //  NameDeterminedAction: executes the effect on all entities with the specified name "howToFind"
     //  IDDeterminedAction: executes the effect on the entity with the specified ID
     //  more action types could be added later but these 3 should cover most cases
     //  This would mean Effects and Effects would just be merged into effects, and every effect would
@@ -77,20 +77,20 @@ public class BehaviorInstance implements ConditionalBehavior {
         return;
       }
     }
-    if(!evaluateCollisionConditions(collisionInfo, requiredCollisionConditions, true)) return;
-    if(!evaluateCollisionConditions(collisionInfo, bannedCollisionConditions, false)) return;
-    doEffects(elapsedTime, subject, variables, inputs, collisionInfo, gameInternal);
+    if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
+    if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
+    doActions(elapsedTime, subject, variables, inputs, collisionInfo, gameInternal);
   }
 
-  private boolean evaluateCollisionConditions(Map<Entity, Map<String, List<Entity>>> collisionInfo, 
-                                              Map<List<String>, String> collisionConditions, boolean b) {
+  private boolean anyCollisionConditionsUnsatisfied(Map<Entity, Map<String, List<Entity>>> collisionInfo,
+                                                    Map<List<String>, String> collisionConditions, boolean required) {
     for(Map.Entry<List<String>, String> collisionConditionEntry : collisionConditions.entrySet()){
       String entity1Info = collisionConditionEntry.getKey().get(0);
       String entity2Info = collisionConditionEntry.getKey().get(1);
       String direction = collisionConditionEntry.getValue();
-      if(!checkCollisionCondition(collisionInfo, entity1Info, entity2Info, direction)) return false;
+      if(checkCollisionCondition(collisionInfo, entity1Info, entity2Info, direction) != required) return true;
     }
-    return true;
+    return false;
   }
 
   private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info, String entity2Info, String direction) {
@@ -121,50 +121,19 @@ public class BehaviorInstance implements ConditionalBehavior {
   }
 
   /**
-   * executes the behavior owned by this behavior
+   * executes the actions owned by this behavior
    * @param elapsedTime time in ms
    * @param subject entity that owns this conditional behavior
    * @param variables map of variables in the game/level
    * @param inputs the input keys that are currently active in this frame
-   * @param horizontalCollisions the entities this entity is colliding with horizontally
-   * @param verticalCollisions the entities this entity is colliding with vertically
+   * @param collisionInfo current collision info
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
-                       List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
-    //TODO: Add support for NonCollision effects that interact with another entity (e.g. a lever that activates a specific door)
-    for(Map.Entry<String, List<Effect>>  EffectEntry: Effects.entrySet()) {
-      String collidingEntityName = EffectEntry.getKey();
-      List<Effect> specificEffects = EffectEntry.getValue();
-      for (Entity collidingWith : verticalCollisions) {
-        if (collidingWith.getName().equals(collidingEntityName)) {
-          for(Effect effect : specificEffects) {
-            effect.doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
-          }
-        }
-      }
-      for (Entity collidingWith : horizontalCollisions) {
-        if (collidingWith.getName().equals(collidingEntityName)) {
-          for(Effect effect : specificEffects) {
-            effect.doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * executes the behavior owned by this behavior
-   * @param elapsedTime time in ms
-   * @param subject entity that owns this conditional behavior
-   * @param variables map of variables in the game/level
-   * @param gameInternal instance of game internal
-   */
-  @Override
-  public void doEffects(double elapsedTime, Entity subject, Map<String, Double> variables, GameInternal gameInternal) {
-    for(Effect effect : effects) {
-      effect.doEffect(null, subject, elapsedTime, variables, gameInternal);
+  public void doActions(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+                        Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+    for(Action action : actions){
+      action.doAction(elapsedTime, subject, variables, collisionInfo, gameInternal);
     }
   }
 
