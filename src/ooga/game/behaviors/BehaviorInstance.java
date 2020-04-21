@@ -3,28 +3,33 @@ package ooga.game.behaviors;
 import ooga.Entity;
 import ooga.game.GameInternal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BehaviorInstance implements ConditionalBehavior {
 
+  public static final String ANY = "ANY";
   Map<String, Boolean> inputConditions;
-  Map<String, Boolean> verticalCollisionConditions;
-  Map<String, Boolean> horizontalCollisionConditions;
+  Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
+  Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
   Map<String, Double> variableConditions;
-  Map<String, List<Effect>> Effects;
   List<Effect> effects;
 
+  /**
+   * 
+   * @param variableConditions
+   * @param inputConditions
+   * @param requiredCollisionConditions conditions that must be true Map<List<String>, String> [entity 1 info, entity 2 info] : direction (or "ANY")
+   *    *   entity info can be id or name, method will check for either
+   * @param bannedCollisionConditions conditions that must be false (see above)
+   * @param effects
+   */
   public BehaviorInstance(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
-                          Map<String, Boolean> verticalCollisionConditions,
-                          Map<String, Boolean> horizontalCollisionConditions, Map<String, List<Effect>> Effects,
-                          List<Effect> effects){
+                          Map<List<String>, String> requiredCollisionConditions,
+                          Map<List<String>, String> bannedCollisionConditions, List<Effect> effects){
     this.inputConditions = inputConditions;
     this.variableConditions = variableConditions;
-    this.verticalCollisionConditions = verticalCollisionConditions;
-    this.horizontalCollisionConditions = horizontalCollisionConditions;
-    this.Effects = Effects;
+    this.requiredCollisionConditions = requiredCollisionConditions;
+    this.bannedCollisionConditions = bannedCollisionConditions;
     this.effects = effects;
   }
 
@@ -40,13 +45,12 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param subject     entity that owns this behavior
    * @param variables   map of game/level variables
    * @param inputs      all registered key inputs at this frame
-   * @param verticalCollisions  names of all entities this entity is currently colliding with vertically
-   * @param horizontalCollisions names of all entities this entity is currently colliding with horizontally
+   * @param collisionInfo Map of maps, direction name : map of collisions for that direction. map of collisions is entity : list of entities
    * @param gameInternal what game this is run from
    */
   @Override
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
-                                  List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
+                                  Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     //TODO: allow for collision conditions that specify any two entities, not just this entity
     //TODO: after that, merge collision and noncollision effects since both can now have an "other entity" to interact with
     // TODO: difficulty with this is the other entity might depend on an entity variable... (like what door a button opens)
@@ -57,6 +61,7 @@ public class BehaviorInstance implements ConditionalBehavior {
     //  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key (probably maps to an entity ID)
     //  IndependentAction: no other entity is necessary for the effect
     //  NameDependentAction: executes the effect on all entities with the specified name "howToFind"
+    //  IDDeterminedAction: executes the effect on the entity with the specified ID
     //  more action types could be added later but these 3 should cover most cases
     //  This would mean Effects and Effects would just be merged into effects, and every effect would
     //  take an other entity parameter, which is null if not needed
@@ -72,20 +77,47 @@ public class BehaviorInstance implements ConditionalBehavior {
         return;
       }
     }
-    List<String> verticalCollisionNames = getEntityNames(verticalCollisions);
-    for(Map.Entry<String, Boolean> collisionCondition : verticalCollisionConditions.entrySet()){
-      if(verticalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
-        return;
+    if(!evaluateCollisionConditions(collisionInfo, requiredCollisionConditions, true)) return;
+    if(!evaluateCollisionConditions(collisionInfo, bannedCollisionConditions, false)) return;
+    doEffects(elapsedTime, subject, variables, inputs, collisionInfo, gameInternal);
+  }
+
+  private boolean evaluateCollisionConditions(Map<Entity, Map<String, List<Entity>>> collisionInfo, 
+                                              Map<List<String>, String> collisionConditions, boolean b) {
+    for(Map.Entry<List<String>, String> collisionConditionEntry : collisionConditions.entrySet()){
+      String entity1Info = collisionConditionEntry.getKey().get(0);
+      String entity2Info = collisionConditionEntry.getKey().get(1);
+      String direction = collisionConditionEntry.getValue();
+      if(!checkCollisionCondition(collisionInfo, entity1Info, entity2Info, direction)) return false;
+    }
+    return true;
+  }
+
+  private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info, String entity2Info, String direction) {
+    for(Entity entity : collisionInfo.keySet()){
+      if(entityMatches(entity1Info, entity)){
+        if(direction.equals(ANY)){
+          for(String possibleDirection : collisionInfo.get(entity).keySet()){
+            if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
+          }
+        } else if (hasCollisionInDirection(collisionInfo, entity2Info, direction, entity)) return true;
       }
     }
-    List<String> horizontalCollisionNames = getEntityNames(horizontalCollisions);
-    for(Map.Entry<String, Boolean> collisionCondition : horizontalCollisionConditions.entrySet()){
-      if(horizontalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
-        return;
+    return false;
+  }
+
+  private boolean hasCollisionInDirection(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity2Info, String direction, Entity entity) {
+    List<Entity> collidingWithInDirection = collisionInfo.get(entity).get(direction);
+    for(Entity collidingEntity : collidingWithInDirection){
+      if(entityMatches(entity2Info, collidingEntity)){
+        return true;
       }
     }
-    doEffects(elapsedTime, subject, variables, gameInternal);
-    doEffects(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
+    return false;
+  }
+
+  private boolean entityMatches(String entity1Info, Entity entity) {
+    return entity.getName().equals(entity1Info) || entity.getVariable("ID").equals(entity1Info);
   }
 
   /**
