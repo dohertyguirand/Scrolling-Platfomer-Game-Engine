@@ -58,13 +58,6 @@ public class VelocityCollisionDetector implements CollisionDetector {
   }
 
   private boolean isCollidingInDirection(Entity a, Entity b, double elapsedTime, boolean mustBeVertical) {
-    // first check that someone actually has a nonzero velocity, otherwise a collision doesn't make sense
-//    if(mustBeVertical && a.getVelocity().get(1) == 0 && b.getVelocity().get(1) == 0){
-//      return false;
-//    }
-//    else if(!mustBeVertical && a.getVelocity().get(0) == 0 && b.getVelocity().get(0) == 0){
-//      return false;
-//    }
     Rectangle aShape = makeShapeFromEntity(a, a.getVelocity().get(0) * elapsedTime,a.getVelocity().get(1) * elapsedTime);
     Rectangle bShape = makeShapeFromEntity(b, b.getVelocity().get(0) * elapsedTime,b.getVelocity().get(1) * elapsedTime);
     if(aShape.getBoundsInParent().intersects(bShape.getBoundsInParent())) {
@@ -88,12 +81,17 @@ public class VelocityCollisionDetector implements CollisionDetector {
       double rightShapeLeftEdge = rightShape.getX();
       double topShapeBottomEdge = topShape.getY() + topShape.getHeight();
       double bottomShapeTopEdge = bottomShape.getY();
-//      System.out.println("printing");
-//      System.out.println(leftShapeRightEdge);
-//      System.out.println(rightShapeLeftEdge);
-//      System.out.println(topShapeBottomEdge);
-//      System.out.println(bottomShapeTopEdge);
+      // ignore corner collisions
+      if(leftShapeRightEdge - rightShapeLeftEdge == bottomShapeTopEdge - topShapeBottomEdge) return false;
       boolean isHorizontal = leftShapeRightEdge - rightShapeLeftEdge < -(bottomShapeTopEdge - topShapeBottomEdge);
+      // if they are equal, deciding factor: check that someone actually has a nonzero velocity in the desired direction, otherwise a collision doesn't make sense
+//        boolean nonZeroVerticalVelocity = a.getVelocity().get(1) != 0 || b.getVelocity().get(1) != 0;
+//        boolean nonZeroHorizontalVelocity = a.getVelocity().get(0) != 0 || b.getVelocity().get(0) != 0;
+//        if (!mustBeVertical && !nonZeroVerticalVelocity && nonZeroHorizontalVelocity) {
+//          return true;
+//        } else if (mustBeVertical && !nonZeroHorizontalVelocity && nonZeroVerticalVelocity) {
+//          return true;
+//        }
       if(mustBeVertical){
         return !isHorizontal;
       }
@@ -102,9 +100,9 @@ public class VelocityCollisionDetector implements CollisionDetector {
     return false;
   }
 
-  private Rectangle makeShapeFromEntity(Entity e, double xVelocity, double yVelocity) {
-    double xPos = e.getPosition().get(0) + xVelocity;
-    double yPos = e.getPosition().get(1) + yVelocity;
+  private Rectangle makeShapeFromEntity(Entity e, double xChange, double yChange) {
+    double xPos = e.getPosition().get(0) + xChange;
+    double yPos = e.getPosition().get(1) + yChange;
     return new Rectangle(xPos, yPos, e.getWidth(), e.getHeight());
   }
 }
