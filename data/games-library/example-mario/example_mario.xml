@@ -203,7 +203,6 @@
         </CollisionEffect>
       </Behavior>
     </ImageEntity>
-
     <ImageEntity>
       <Name>Void</Name>
       <Width>1500</Width>

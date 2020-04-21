@@ -37,6 +37,7 @@
                     <CollisionEffect>
                         <With>Floor</With>
                         <Reaction>TerrainCollision</Reaction>
+                        <Reaction>SetImageCollision flappy_bird/flappydie.png</Reaction>
                     </CollisionEffect>
                 </Behavior>
                 <Behavior>
@@ -47,6 +48,7 @@
                     <CollisionEffect>
                         <With>PipeUp</With>
                         <Reaction>VerticalBounce 0.5</Reaction>
+                        <Reaction>SetImageCollision flappy_bird/flappydie.png</Reaction>
                     </CollisionEffect>
                 </Behavior>
                 <Behavior>
@@ -57,7 +59,7 @@
                     <CollisionEffect>
                         <With>PipeUp</With>
                         <Reaction>HorizontalBounce 0.5</Reaction>
-<!--                        <Reaction>TerrainCollision</Reaction>-->
+                        <Reaction>SetImageCollision flappy_bird/flappydie.png</Reaction>
                     </CollisionEffect>
                 </Behavior>
                 <Behavior>
@@ -68,6 +70,7 @@
                     <CollisionEffect>
                         <With>PipeDown</With>
                         <Reaction>VerticalBounce 0.5</Reaction>
+                        <Reaction>SetImageCollision flappy_bird/flappydie.png</Reaction>
                     </CollisionEffect>
                 </Behavior>
                 <Behavior>
@@ -78,7 +81,7 @@
                     <CollisionEffect>
                         <With>PipeDown</With>
                         <Reaction>HorizontalBounce 0.5</Reaction>
-<!--                        <Reaction>TerrainCollision</Reaction>-->
+                        <Reaction>SetImageCollision flappy_bird/flappydie.png</Reaction>
                     </CollisionEffect>
                 </Behavior>
             </Behaviors>
@@ -90,7 +93,7 @@
             <Image>pipe_up.png</Image>
             <Behaviors>
                 <Behavior>
-                    <NonCollisionEffect>MoveForward -0.05 0.0 0.20</NonCollisionEffect>
+                    <NonCollisionEffect>MoveForward -0.03 0.0 0.20</NonCollisionEffect>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
@@ -101,7 +104,7 @@
             <Image>pipe_down.png</Image>
             <Behaviors>
                 <Behavior>
-                    <NonCollisionEffect>MoveForward -0.05 0.0 0.20</NonCollisionEffect>
+                    <NonCollisionEffect>MoveForward -0.03 0.0 0.20</NonCollisionEffect>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
@@ -118,6 +121,12 @@
             <Image>flappy_background.png</Image>
         </ImageEntity>
     </Entities>
+    <Variables>
+        <Variable>
+            <Name>Score</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+    </Variables>
     <Levels>
         <Level>
             <ID>1</ID>
@@ -156,11 +165,85 @@
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>800</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>800</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1000</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1000</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1200</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1200</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1400</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1400</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1600</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1600</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1800</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1800</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Type>Bird</Type>
                     <XPos>10</XPos>
                     <YPos>350</YPos>
                 </ImageEntityInstance>
             </ImageEntityInstances>
+            <TextEntityInstances>
+                <TextEntityInstance>
+                    <Text>Score: %.0f</Text>
+                    <Font>Times New Roman</Font>
+                    <XPos>850</XPos>
+                    <YPos>0</YPos>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                    <PropertyVariableDependency>
+                        <VariableName>Score</VariableName>
+                        <PropertyName>Text</PropertyName>
+                    </PropertyVariableDependency>
+                </TextEntityInstance>
+            </TextEntityInstances>
         </Level>
     </Levels>
 </Game>
