@@ -21,7 +21,7 @@ public class NameDependentAction extends Action {
       Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     List<Entity> targets = gameInternal.getEntitiesWithName(myTargetName);
     for (Entity target : targets) {
-      //doEffect(subject,target,...);
+      doEffects(elapsedTime,subject,target,variables,gameInternal);
     }
   }
 }

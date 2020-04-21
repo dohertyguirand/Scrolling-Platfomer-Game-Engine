@@ -21,6 +21,6 @@ public class IdDependentAction extends Action {
   public void doAction(double elapsedTime, Entity subject, Map<String, Double> variables,
       Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     Entity target = gameInternal.getEntityWithId(targetID);
-    //doEffect(subject,target,...);
+    doEffects(elapsedTime,subject,target,variables,gameInternal);
   }
 }

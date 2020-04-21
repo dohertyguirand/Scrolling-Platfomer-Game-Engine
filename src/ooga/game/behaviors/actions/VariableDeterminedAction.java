@@ -17,15 +17,11 @@ public class VariableDeterminedAction extends Action {
     myVariable = args.get(0);
   }
 
-  public VariableDeterminedAction(String variable) {
-    myVariable = variable;
-  }
-
   @Override
   public void doAction(double elapsedTime, Entity subject, Map<String, Double> variables,
       Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     String targetID = subject.getVariable(myVariable);
     Entity effectSubject = gameInternal.getEntityWithId(targetID);
-    //doEffects(effectSubject,none,...)
+    doEffects(elapsedTime,subject,effectSubject,variables,gameInternal);
   }
 }

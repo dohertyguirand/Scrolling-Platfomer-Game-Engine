@@ -16,6 +16,6 @@ public class IndependentAction extends Action {
   @Override
   public void doAction(double elapsedTime, Entity subject, Map<String, Double> variables,
       Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    //doAction(no subjects,...);
+    doEffects(elapsedTime,subject,null,variables,gameInternal);
   }
 }
