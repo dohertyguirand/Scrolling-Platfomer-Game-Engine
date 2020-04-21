@@ -21,6 +21,6 @@ public interface Effect {
    * @param variables
    * @param game
    */
-  void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables, GameInternal game);
+  void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game);
 
 }
