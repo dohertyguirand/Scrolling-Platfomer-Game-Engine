@@ -64,6 +64,7 @@ public class BehaviorInstance implements ConditionalBehavior {
     //  This would mean CollisionEffects and NonCollisionEffects would just be merged into effects, and every effect would
     //  take an other entity parameter, which is null if not needed
     // TODO: add ability for entity instances to have additional behaviors?
+    // TODO: fix constructors of efects so they can throw errors.
     for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
       if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
         return;

@@ -2,12 +2,13 @@ package ooga.game.behaviors.asyncbehavior;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.CollisionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SetPositionEffect extends DirectionlessCollision {
+public class SetPositionEffect implements CollisionEffect {
 
   private List<String> respawnLocation = new ArrayList<>();
 
