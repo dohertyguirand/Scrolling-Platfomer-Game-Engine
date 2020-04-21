@@ -6,9 +6,10 @@ import ooga.Entity;
 import java.util.List;
 import ooga.game.CollisionDetector;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.CollisionEffect;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 
-public class StopDownwardVelocity extends DirectionlessCollision {
+public class StopDownwardVelocity implements CollisionEffect {
 
     public StopDownwardVelocity(List<String> args) {
         //arguments have no effect on this behavior

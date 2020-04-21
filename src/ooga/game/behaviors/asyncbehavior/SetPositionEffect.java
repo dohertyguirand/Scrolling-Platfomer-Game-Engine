@@ -6,8 +6,9 @@ import ooga.game.GameInternal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import ooga.game.behaviors.CollisionEffect;
 
-public class SetPositionEffect extends DirectionlessCollision {
+public class SetPositionEffect implements CollisionEffect {
 
   private List<String> respawnLocation = new ArrayList<>();
 

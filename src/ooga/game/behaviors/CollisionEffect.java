@@ -18,33 +18,6 @@ public interface CollisionEffect {
    *                   should own this behavior.
    * @param collidingEntity The String identifying the type of entity that the calling entity
    */
-//  void doCollision(Entity subject, Entity collidingEntity);
-
-  /**
-   * Performs the specific collision behavior implementation, with a vertical collision.
-   * @param subject The entity that is reacting to a collision with the colliding entity, which
-   *                   should own this behavior.
-   * @param collidingEntity The String identifying the type of entity that the calling entity
-   * @param elapsedTime
-   * @param variables
-   * @param game
-   */
-  default void doVerticalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
-    //do nothing by default.
-  }
-
-  /**
-   * Performs the specific collision behavior implementation, with a horizontal collision.
-   * @param subject The entity that is reacting to a collision with the colliding entity, which
-   *                   should own this behavior.
-   * @param collidingEntity The String identifying the type of entity that the calling entity
-   * @param elapsedTime
-   * @param variables
-   * @param game
-   */
-  default void doHorizontalCollision(Entity subject, Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
-    //do nothing by default.
-  }
+  void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,
+      Map<String, Double> variables, GameInternal game);
 }

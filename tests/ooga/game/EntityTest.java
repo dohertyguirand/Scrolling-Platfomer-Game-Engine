@@ -11,7 +11,7 @@ import ooga.game.behaviors.CollisionEffect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
-import ooga.game.behaviors.asyncbehavior.MoveUpCollision;
+import ooga.game.behaviors.asyncbehavior.VerticalBounce;
 import ooga.game.behaviors.noncollisioneffects.GravityEffect;
 import ooga.game.behaviors.noncollisioneffects.JumpEffect;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ class EntityTest {
     Entity dino = new ImageEntity();
     Entity cactus = new ImageEntity("cactus");
     Map<String, List<CollisionEffect>> collisionMap = new HashMap<>();
-    collisionMap.put("Cactus", List.of(new MoveUpCollision(20.01), new DestroySelfEffect(new ArrayList<>())));
+    collisionMap.put("Cactus", List.of(new VerticalBounce(List.of("-20.0")), new DestroySelfEffect(new ArrayList<>())));
     dino.setCollisionBehaviors(collisionMap);
 //    dino.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,0.0)));
     dino.updateSelf(1.0, new HashMap<>(), new OogaGame(new OogaLevel(new ArrayList<>())));

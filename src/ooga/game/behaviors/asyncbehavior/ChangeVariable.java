@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.CollisionEffect;
 
-public class ChangeVariable extends DirectionlessCollision {
+public class ChangeVariable implements CollisionEffect {
 
   public static final String DEFAULT_VARIABLE_NAME = "DEFAULT";
   public static final double DEFAULT_INCREMENT_VALUE = 1.0;
@@ -24,6 +25,7 @@ public class ChangeVariable extends DirectionlessCollision {
     System.out.println("variableName = " + variableName);
     System.out.println("incrementValue = " + incrementValue);
   }
+
 
   @Override
   public void doCollision(Entity subject, Entity collidingEntity, double elapsedTime,

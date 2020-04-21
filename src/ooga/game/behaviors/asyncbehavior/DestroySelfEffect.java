@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.CollisionEffect;
 
-public class DestroySelfEffect extends DirectionlessCollision {
+public class DestroySelfEffect implements CollisionEffect {
 
 
     public DestroySelfEffect(List<String> args) {
