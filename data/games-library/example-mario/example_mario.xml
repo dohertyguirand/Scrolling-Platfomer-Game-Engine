@@ -32,7 +32,7 @@
           </HorizontalCollisionCondition>
           <CollisionEffect>
             <With>Koopa</With>
-            <Reaction>Respawn 0.0 0.0</Reaction>
+            <Reaction>Respawn RespawnXLocation RespawnYLocation</Reaction>
             <Reaction>ChangeVariable Lives -1.0</Reaction>
           </CollisionEffect>
         </Behavior>
@@ -266,6 +266,8 @@
           <Type>SmallMario</Type>
           <XPos>0</XPos>
           <YPos>0</YPos>
+          <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
+          <VariableValues>0 500</VariableValues>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Brick</Type>
@@ -369,6 +371,8 @@
           <Type>SmallMario</Type>
           <XPos>0</XPos>
           <YPos>0</YPos>
+          <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
+          <VariableValues>0 300</VariableValues>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Type>Brick</Type>

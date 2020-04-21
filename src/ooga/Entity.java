@@ -236,18 +236,18 @@ public interface Entity {
    * @param name name of the variable
    * @param value value of the variable
    */
-  void addVariable(String name, String value);
+  void addVariable(String name, Double value);
 
   /**
    * returns the value of entity variable mapped to name
    * @param name key
    * @return value
    */
-  String getVariable(String name);
+  Double getVariable(String name);
 
   /**
    * set myVariables to the specified map
    * @param variables map of variable names to values
    */
-  void setVariables(Map<String, String> variables);
+  void setVariables(Map<String, Double> variables);
 }

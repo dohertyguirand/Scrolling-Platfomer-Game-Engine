@@ -204,6 +204,7 @@ public class OogaDataReader implements DataReader{
                         OogaEntity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
                                 parameterValues.get(index++),  parameterValues.get(index));
                         entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
+                        entity.setVariables(getEntityVariables(entityElement));
                         initialEntities.add(entity);
                     }
                     break;
@@ -219,8 +220,8 @@ public class OogaDataReader implements DataReader{
         return oogaLevel;
     }
 
-    private Map<String, String> getEntityVariables(Element entityElement) throws OogaDataException {
-        Map<String, String> variableMap = new HashMap<>();
+    private Map<String, Double> getEntityVariables(Element entityElement) throws OogaDataException {
+        Map<String, Double> variableMap = new HashMap<>();
         NodeList nameNodes = entityElement.getElementsByTagName("VariableNames");
         NodeList valueNodes = entityElement.getElementsByTagName("VariableValues");
         if(valueNodes.getLength() != nameNodes.getLength()){
@@ -230,7 +231,11 @@ public class OogaDataReader implements DataReader{
             String[] variableNames = nameNodes.item(0).getTextContent().split(" ");
             String[] variableValues = valueNodes.item(0).getTextContent().split(" ");
             for(int i=0; i<variableNames.length; i++){
-                variableMap.put(variableNames[i], variableValues[i]);
+                try {
+                    variableMap.put(variableNames[i], Double.parseDouble(variableValues[i]));
+                } catch(NumberFormatException e){
+                    throw new OogaDataException("Entity variables values must be numeric");
+                }
             }
         }
         return variableMap;
