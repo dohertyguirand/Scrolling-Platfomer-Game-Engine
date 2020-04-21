@@ -16,6 +16,7 @@ import ooga.game.collisiondetection.VelocityCollisionDetector;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
+  public static final String ID_VARIABLE_NAME = "ID";
   private List<String> myLevelIds;
   private Level currentLevel;
   private String myName;
@@ -309,5 +310,27 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     Entity created = definition.makeInstanceAt(position.get(0),position.get(1));
     myEntities.add(created);
     currentLevel.addEntity(created);
+  }
+
+  @Override
+  public Entity getEntityWithId(String id) {
+    for (Entity e : myEntities) {
+      String entityId = e.getVariable(ID_VARIABLE_NAME);
+      if (entityId.equals(id)) {
+        return e;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public List<Entity> getEntitiesWithName(String name) {
+    List<Entity> ret = new ArrayList<>();
+    for (Entity e : myEntities) {
+      if (e.getName().equals(name)) {
+        ret.add(e);
+      }
+    }
+    return ret;
   }
 }
