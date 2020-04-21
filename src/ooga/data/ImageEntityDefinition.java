@@ -2,7 +2,9 @@ package ooga.data;
 
 import ooga.game.behaviors.ConditionalBehavior;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ImageEntityDefinition {
     private double myHeight;
@@ -10,6 +12,7 @@ public class ImageEntityDefinition {
     private String myImageLocation;
     private List<ConditionalBehavior> myBehaviors;
     private String myName;
+    private Map<String, String> myVariables = new HashMap<>();
 
     public ImageEntityDefinition(String name, double height, double width, String imageLocation, List<ConditionalBehavior> behaviors){
         myName = name;
@@ -22,6 +25,7 @@ public class ImageEntityDefinition {
     public ImageEntity makeInstanceAt(Double xpos, Double ypos){
         ImageEntity newEntity = new ImageEntity(myName, myImageLocation, xpos, ypos, myWidth, myHeight);
         newEntity.setConditionalBehaviors(myBehaviors);
+        newEntity.setVariables(myVariables);
         return newEntity;
     }
 
@@ -37,4 +41,6 @@ public class ImageEntityDefinition {
     public double getMyWidth() {
         return myWidth;
     }
+
+  public void setVariables(Map<String, String> entityVariables) { myVariables = entityVariables; }
 }

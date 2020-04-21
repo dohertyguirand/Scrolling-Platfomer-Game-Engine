@@ -220,8 +220,8 @@ public class OogaDataReader implements DataReader{
         return oogaLevel;
     }
 
-    private Map<String, Double> getEntityVariables(Element entityElement) throws OogaDataException {
-        Map<String, Double> variableMap = new HashMap<>();
+    private Map<String, String> getEntityVariables(Element entityElement) throws OogaDataException {
+        Map<String, String> variableMap = new HashMap<>();
         NodeList nameNodes = entityElement.getElementsByTagName("VariableNames");
         NodeList valueNodes = entityElement.getElementsByTagName("VariableValues");
         if(valueNodes.getLength() != nameNodes.getLength()){
@@ -232,7 +232,7 @@ public class OogaDataReader implements DataReader{
             String[] variableValues = valueNodes.item(0).getTextContent().split(" ");
             for(int i=0; i<variableNames.length; i++){
                 try {
-                    variableMap.put(variableNames[i], Double.parseDouble(variableValues[i]));
+                    variableMap.put(variableNames[i], variableValues[i]);
                 } catch(NumberFormatException e){
                     throw new OogaDataException("Entity variables values must be numeric");
                 }
@@ -301,6 +301,7 @@ public class OogaDataReader implements DataReader{
                 // add the ImageEntity to the map
                 String newName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
                 ImageEntityDefinition newIED = createImageEntityDefinition(entityElement, gameFile.getParentFile().getName());
+                newIED.setVariables(getEntityVariables(entityElement));
                 retMap.put(newName, newIED);
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {

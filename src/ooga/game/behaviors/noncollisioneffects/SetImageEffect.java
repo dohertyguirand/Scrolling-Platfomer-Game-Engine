@@ -19,8 +19,7 @@ public class SetImageEffect implements NonCollisionEffect {
   }
 
   /**
-   * Handles reaction to controls. Requires the ControlsBehavior to have a reference to the
-   * instance that uses it in order to have an effect on that instance.
+   * Checks if the specified data value maps to an entity variable. Changes image to that variable, otherwise to preset value.
    * @param elapsedTime
    * @param subject The entity that owns this controls behavior. This is the entity that should
    *                be modified.
@@ -33,7 +32,13 @@ public class SetImageEffect implements NonCollisionEffect {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;
-      imageEntity.setImageLocation("file:data/games-library/" + newImageFileName);
+      String newImageFilePath = "file:data/games-library/";
+      if(subject.getVariable(newImageFileName) != null){
+        newImageFilePath += subject.getVariable(newImageFileName);
+      } else{
+        newImageFilePath += newImageFileName;
+      }
+      imageEntity.setImageLocation(newImageFilePath);
     }
   }
 }

@@ -8,6 +8,8 @@
       <Width>80</Width>
       <Height>120</Height>
       <Image>mario_facing_right.png</Image>
+      <VariableNames>RightFacingImage LeftFacingImage</VariableNames>
+      <VariableValues>example-mario/mario_facing_right.png example-mario/mario_facing_left.png</VariableValues>
       <Behaviors>
         <Behavior>
           <InputCondition>
@@ -15,7 +17,7 @@
             <InputRequirement>true</InputRequirement>
           </InputCondition>
           <NonCollisionEffect>VelocityInput -.1600 0 .3200</NonCollisionEffect>
-          <NonCollisionEffect>SetImage example-mario/mario_facing_left.png</NonCollisionEffect>
+          <NonCollisionEffect>SetImage LeftFacingImage</NonCollisionEffect>
         </Behavior>
         <Behavior>
           <InputCondition>
@@ -23,7 +25,7 @@
             <InputRequirement>true</InputRequirement>
           </InputCondition>
           <NonCollisionEffect>VelocityInput .1600 0 .3200</NonCollisionEffect>
-          <NonCollisionEffect>SetImage example-mario/mario_facing_right.png</NonCollisionEffect>
+          <NonCollisionEffect>SetImage RightFacingImage</NonCollisionEffect>
         </Behavior>
         <Behavior>
           <HorizontalCollisionCondition>

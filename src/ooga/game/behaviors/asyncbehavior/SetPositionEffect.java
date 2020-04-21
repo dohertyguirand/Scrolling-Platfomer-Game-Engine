@@ -41,7 +41,11 @@ public class SetPositionEffect extends DirectionlessCollision {
         if(variables.containsKey(coordinateData)){
           newLocation.add(variables.get(coordinateData));
         } else if(subject.getVariable(coordinateData) != null){
-          newLocation.add(subject.getVariable(coordinateData));
+          try {
+            newLocation.add(Double.parseDouble(subject.getVariable(coordinateData)));
+          } catch(NumberFormatException e2){
+            newLocation.add(0.0);
+          }
         } else{
           newLocation.add(0.0);
         }
