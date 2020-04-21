@@ -12,6 +12,13 @@
       <VariableValues>example-mario/mario_facing_right.png example-mario/mario_facing_left.png</VariableValues>
       <Behaviors>
         <Behavior>
+          <VerticalCollisionCondition>
+            <EntityName>Mushroom</EntityName>
+            <CollisionRequirement>true</CollisionRequirement>
+          </VerticalCollisionCondition>
+          <NonCollisionEffect>ResizeImage 120 180</NonCollisionEffect>
+        </Behavior>
+        <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
             <InputRequirement>true</InputRequirement>

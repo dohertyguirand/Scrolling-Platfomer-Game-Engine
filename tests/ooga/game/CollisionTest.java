@@ -5,7 +5,6 @@ import ooga.game.behaviors.CollisionEffect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
-import ooga.game.behaviors.asyncbehavior.StopDownwardVelocity;
 import ooga.game.behaviors.asyncbehavior.VerticalBounce;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 import org.junit.jupiter.api.Test;

@@ -36,7 +36,7 @@ public class ViewImageEntity implements ViewEntity {
     System.out.println(location.getValue());
     imageView.setImage(new Image(location.getValue()));
     location.addListener((o, oldVal, newVal) -> imageView.setImage(new Image(newVal)));
-    // might need to rebind other ImageView properties here
+    //TODO: add error checking to make sure image file path is correct
   }
 
   private void bindSizeProperties(ImageEntity entity){

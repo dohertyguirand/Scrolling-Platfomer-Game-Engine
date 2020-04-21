@@ -2,6 +2,7 @@ package ooga.game.behaviors.asyncbehavior;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.CollisionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
