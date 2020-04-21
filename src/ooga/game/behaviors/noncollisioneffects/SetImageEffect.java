@@ -2,6 +2,7 @@ package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.Map;
 import ooga.Entity;
+import ooga.OogaDataException;
 import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.NonCollisionEffect;
@@ -12,10 +13,8 @@ public class SetImageEffect implements NonCollisionEffect {
 
   String newImageFileName = "";
 
-  public SetImageEffect(List<String> args){
-    if(args.size() >= 1){
-      newImageFileName = args.get(0);
-    }
+  public SetImageEffect(List<String> args) throws IndexOutOfBoundsException {
+    newImageFileName = args.get(0);
   }
 
   /**

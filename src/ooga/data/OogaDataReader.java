@@ -5,6 +5,7 @@ import ooga.game.Game;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -380,16 +381,18 @@ public class OogaDataReader implements DataReader{
     }
 
     private Object makeBasicEffect(String[] effect, String effectType) throws OogaDataException {
-        String behaviorName = effect[0];
-        String behaviorClassName = myBehaviorsResources.getString(behaviorName);
+        String effectName = effect[0];
+        String effectClassName = myBehaviorsResources.getString(effectName);
         try {
-            Class cls = forName(PATH_TO_CLASSES + behaviorClassName);
+            Class cls = forName(PATH_TO_CLASSES + effectClassName);
             Constructor cons = cls.getConstructor(List.class);
             List<String> list = Arrays.asList(effect).subList(1, effect.length);
             return cons.newInstance(Arrays.asList(effect).subList(1, effect.length));
-        } catch(Exception e){
+        } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException e){
 //            e.printStackTrace();
-            throw new OogaDataException(effectType + " Behavior listed in game file is not recognized.\n Behavior name: " + behaviorName);
+            throw new OogaDataException(effectType + " Behavior listed in game file is not recognized.\n Behavior name: " + effectName);
+        } catch(InvocationTargetException e){ // this should be OogaDataException but it won't work because reflection is used
+            throw new OogaDataException(effectName + " Effect argument list not formatted correctly");
         }
     }
 

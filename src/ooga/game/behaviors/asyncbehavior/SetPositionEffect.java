@@ -15,11 +15,9 @@ public class SetPositionEffect extends DirectionlessCollision {
    * Construct the respawn effect by setting respawnLocation. Note that it adds strings because it could depend on variables.
    * @param args list of arguments from DataReader
    */
-  public SetPositionEffect(List<String> args){
-    if(args.size() >= 2) {
-      respawnLocation.add(args.get(0));
-      respawnLocation.add(args.get(1));
-    }
+  public SetPositionEffect(List<String> args) throws IndexOutOfBoundsException{
+    respawnLocation.add(args.get(0));
+    respawnLocation.add(args.get(1));
   }
 
   /**
