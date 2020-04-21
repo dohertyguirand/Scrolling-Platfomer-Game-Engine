@@ -43,6 +43,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<Entity> myCreatedEntities = new ArrayList<>();
   private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
   private Map<String, Boolean> blockedMovements = new HashMap<>();
+  private Map<String, String> myVariables = new HashMap<>();
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
     myVelocity = List.of(0.,0.);
@@ -368,4 +369,28 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public void blockInAllDirections(boolean isBlocked){
     blockedMovements.replaceAll((d, v) -> isBlocked);
   }
+
+  /**
+   * Adds (or sets) a variable to this entity's variable map
+   * @param name name of the variable
+   * @param value value of the variable
+   */
+  @Override
+  public void addVariable(String name, String value){ myVariables.put(name, value); }
+
+  /**
+   * returns the value of entity variable mapped to name
+   * @param name key
+   * @return value
+   */
+  @Override
+  public String getVariable(String name){ return myVariables.get(name); }
+
+  /**
+   * set myVariables to the specified map
+   *
+   * @param variables map of variable names to values
+   */
+  @Override
+  public void setVariables(Map<String, String> variables) { myVariables = variables; }
 }

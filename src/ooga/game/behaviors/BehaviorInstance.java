@@ -56,12 +56,14 @@ public class BehaviorInstance implements ConditionalBehavior {
     //  or perhaps, it makes more sense to just have in the xml files: CollisionDeterminedEffect, VariableDeterminedEffect, etc
     //  there are several different ways the "other entity" of the effect can be determined -> different types of "Actions"
     //  Each action has a string key "howToFind" that helps further specify how to determine other entity
-    //  CollisionDeterminedAction: other entity is determined by collisions. "howToFind" is direction
-    //  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key
+    //  CollisionDeterminedAction: other entity is determined by collisions. "howToFind" is name of other entity. Need additional direction parameter
+    //  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key (probably maps to list of entity IDs)
     //  IndependentAction: no other entity is necessary for the effect
+    //  NameDependentAction: executes the effect on all entities with the specified name "howToFind"
     //  more action types could be added later but these 3 should cover most cases
     //  This would mean CollisionEffects and NonCollisionEffects would just be merged into effects, and every effect would
     //  take an other entity parameter, which is null if not needed
+    // TODO: add ability for entity instances to have additional behaviors?
     for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
       if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
         return;

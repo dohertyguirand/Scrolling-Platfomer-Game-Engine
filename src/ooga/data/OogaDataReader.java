@@ -185,6 +185,7 @@ public class OogaDataReader implements DataReader{
                             for(int col=0;col<rowsAndCols[1];col++){
                                 OogaEntity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
                                 entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
+                                entity.setVariables(getEntityVariables(entityElement));
                                 initialEntities.add(entity);
                                 xPos += entityMap.get(entityName).getMyWidth();
                             }
@@ -216,6 +217,23 @@ public class OogaDataReader implements DataReader{
         OogaLevel oogaLevel = new OogaLevel(initialEntities);
         oogaLevel.setNextLevelID(nextLevelID);
         return oogaLevel;
+    }
+
+    private Map<String, String> getEntityVariables(Element entityElement) throws OogaDataException {
+        Map<String, String> variableMap = new HashMap<>();
+        NodeList nameNodes = entityElement.getElementsByTagName("VariableNames");
+        NodeList valueNodes = entityElement.getElementsByTagName("VariableValues");
+        if(valueNodes.getLength() != nameNodes.getLength()){
+            throw new OogaDataException("Entity variable names and values lists must be same length");
+        }
+        if(valueNodes.getLength() > 0 && nameNodes.getLength() > 0) {
+            String[] variableNames = nameNodes.item(0).getTextContent().split(" ");
+            String[] variableValues = valueNodes.item(0).getTextContent().split(" ");
+            for(int i=0; i<variableNames.length; i++){
+                variableMap.put(variableNames[i], variableValues[i]);
+            }
+        }
+        return variableMap;
     }
 
     /**

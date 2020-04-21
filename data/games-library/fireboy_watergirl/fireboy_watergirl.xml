@@ -345,6 +345,8 @@
                     <Type>Fireboy</Type>
                     <XPos>150</XPos>
                     <YPos>500</YPos>
+                    <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
+                    <VariableValues>150 500</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Watergirl</Type>

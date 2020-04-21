@@ -230,4 +230,24 @@ public interface Entity {
    * @param isBlocked true if the entity is blocked in the direction, otherwise false
    */
   void blockInAllDirections(boolean isBlocked);
+
+  /**
+   * Adds (or sets) a variable to this entity's variable map
+   * @param name name of the variable
+   * @param value value of the variable
+   */
+  void addVariable(String name, String value);
+
+  /**
+   * returns the value of entity variable mapped to name
+   * @param name key
+   * @return value
+   */
+  String getVariable(String name);
+
+  /**
+   * set myVariables to the specified map
+   * @param variables map of variable names to values
+   */
+  void setVariables(Map<String, String> variables);
 }
