@@ -17,11 +17,9 @@ public class NameDependentAction extends Action {
   }
 
   @Override
-  public void doAction(double elapsedTime, Entity subject, Map<String, Double> variables,
-      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    List<Entity> targets = gameInternal.getEntitiesWithName(myTargetName);
-    for (Entity target : targets) {
-      doEffects(elapsedTime,subject,target,variables,gameInternal);
-    }
+  public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
+      Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
+      GameInternal gameInternal) {
+    return gameInternal.getEntitiesWithName(myTargetName);
   }
 }

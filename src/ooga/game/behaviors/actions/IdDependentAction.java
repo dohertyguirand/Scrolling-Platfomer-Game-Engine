@@ -18,9 +18,10 @@ public class IdDependentAction extends Action {
   }
 
   @Override
-  public void doAction(double elapsedTime, Entity subject, Map<String, Double> variables,
-      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+  public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
+      Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
+      GameInternal gameInternal) {
     Entity target = gameInternal.getEntityWithId(targetID);
-    doEffects(elapsedTime,subject,target,variables,gameInternal);
+    return List.of(target);
   }
 }

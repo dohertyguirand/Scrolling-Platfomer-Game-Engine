@@ -14,10 +14,18 @@ public abstract class Action {
     myEffects = effects;
   }
 
-  public abstract void doAction(double elapsedTime, Entity subject, Map<String, Double> variables,
-                       Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
+  public void doAction(double elapsedTime, Entity subject, Map<String, Double> variables,
+                       Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+    List<Entity> otherEntities = findOtherEntities(elapsedTime,subject,variables,collisionInfo,gameInternal);
+    for (Entity e : otherEntities) {
+      doEffects(elapsedTime,subject,e,variables,gameInternal);
+    }
+  }
 
-  protected void doEffects(double elapsedTime, Entity subject, Entity otherEntity, Map<String, Double> variables, GameInternal gameInternal){
+  public abstract List<Entity> findOtherEntities(double elapsedTime, Entity subject, Map<String, Double> variables,
+      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
+
+  private void doEffects(double elapsedTime, Entity subject, Entity otherEntity, Map<String, Double> variables, GameInternal gameInternal){
     for(Effect effect : myEffects){
       effect.doEffect(subject, otherEntity, elapsedTime, variables, gameInternal);
     }

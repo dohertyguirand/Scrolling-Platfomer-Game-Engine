@@ -1,5 +1,6 @@
 package ooga.game.behaviors.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
@@ -14,8 +15,11 @@ public class IndependentAction extends Action {
   }
 
   @Override
-  public void doAction(double elapsedTime, Entity subject, Map<String, Double> variables,
-      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    doEffects(elapsedTime,subject,null,variables,gameInternal);
+  public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
+      Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
+      GameInternal gameInternal) {
+    List<Entity> ret = new ArrayList<>();
+    ret.add(null);
+    return ret;
   }
 }
