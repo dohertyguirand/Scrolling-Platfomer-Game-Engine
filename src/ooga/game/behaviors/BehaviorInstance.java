@@ -11,7 +11,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   Map<String, Boolean> inputConditions;
   Map<List<String>, String> requiredCollisionConditions;
   Map<List<String>, String> bannedCollisionConditions;
-  Map<String, Double> variableConditions;
+  Map<String, String> variableConditions;
   List<Action> actions;
 
   /**
@@ -23,7 +23,7 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param bannedCollisionConditions conditions that must be false (see above)
    * @param actions
    */
-  public BehaviorInstance(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
+  public BehaviorInstance(Map<String, String> variableConditions, Map<String, Boolean> inputConditions,
                           Map<List<String>, String> requiredCollisionConditions,
                           Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
@@ -52,9 +52,10 @@ public class BehaviorInstance implements ConditionalBehavior {
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
-    for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
-      if((variables.get(variableCondition.getKey()) == null || !variables.get(variableCondition.getKey()).equals(variableCondition.getValue())) &&
-              (subject.getVariable(variableCondition.getKey()) == null || !subject.getVariable(variableCondition.getKey()).equals(variableCondition.getValue().toString()))){
+    System.out.println(variables.toString());
+    for(Map.Entry<String, String> variableCondition : variableConditions.entrySet()){
+      if((variables.get(variableCondition.getKey()) == null || !(String.valueOf(variables.get(variableCondition.getKey()))).equals(variableCondition.getValue())) &&
+              (subject.getVariable(variableCondition.getKey()) == null || !subject.getVariable(variableCondition.getKey()).equals(variableCondition.getValue()))){
         return;
       }
     }

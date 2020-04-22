@@ -369,7 +369,7 @@ public class OogaDataReader implements DataReader{
         NodeList nodeList = entityElement.getElementsByTagName("Behavior");
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
-            Map<String, Double> variableConditions = new HashMap<>();
+            Map<String, String> variableConditions = new HashMap<>();
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
@@ -434,14 +434,14 @@ public class OogaDataReader implements DataReader{
         }
     }
 
-    private void addVariableConditions(Map<String, Double> conditionMap, NodeList variableConditionNodes) throws OogaDataException {
+    private void addVariableConditions(Map<String, String> conditionMap, NodeList variableConditionNodes) throws OogaDataException {
         for(int j=0; j<variableConditionNodes.getLength(); j++){
             Element variableConditionElement = (Element) variableConditionNodes.item(j);
             checkKeyExists(variableConditionElement, "VariableName", "Missing variable name in variable condition");
             checkKeyExists(variableConditionElement, "RequiredValue", "Missing required value in variable condition");
             String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
             String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
-            conditionMap.put(name, Double.parseDouble(requiredValue));
+            conditionMap.put(name, requiredValue);
         }
     }
 

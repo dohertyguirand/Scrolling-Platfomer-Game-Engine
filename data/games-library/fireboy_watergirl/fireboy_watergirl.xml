@@ -8,8 +8,8 @@
             <Width>50</Width>
             <Height>100</Height>
             <Image>fireboy.png</Image>
-            <VariableNames>Still FacingRight FacingLeft</VariableNames>
-            <VariableValues>fireboy_watergirl/fireboy.png fireboy_watergirl/fireboy_facing_right.png fireboy_watergirl/fireboy_facing_left.png</VariableValues>
+            <VariableNames>Still FacingRight FacingLeft Blinking</VariableNames>
+            <VariableValues>fireboy_watergirl/fireboy.png fireboy_watergirl/fireboy_facing_right.png fireboy_watergirl/fireboy_facing_left.png false</VariableValues>
             <Behaviors>
                 <Behavior>
                     <RequiredCollisionCondition>
@@ -42,11 +42,11 @@
                     </InputCondition>
                     <VariableCondition>
                         <VariableName>RedDiamonds</VariableName>
-                        <RequiredValue>1</RequiredValue>
+                        <RequiredValue>1.0</RequiredValue>
                     </VariableCondition>
                     <VariableCondition>
                         <VariableName>BlueDiamonds</VariableName>
-                        <RequiredValue>1</RequiredValue>
+                        <RequiredValue>1.0</RequiredValue>
                     </VariableCondition>
                     <IndependentAction>
                         <Effect>ChangeVariable Score 1000</Effect>
@@ -70,8 +70,12 @@
                         <Key>LeftKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
+                    <VariableCondition>
+                        <VariableName>Blinking</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </VariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput -.1600 0 .3200</Effect>
+                        <Effect>VelocityInput -.1300 0 .2600</Effect>
                         <Effect>SetImage FacingLeft</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -80,8 +84,12 @@
                         <Key>RightKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
+                    <VariableCondition>
+                        <VariableName>Blinking</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </VariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput .1600 0 .3200</Effect>
+                        <Effect>VelocityInput .1300 0 .2600</Effect>
                         <Effect>SetImage FacingRight</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -92,8 +100,20 @@
                         <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Respawn 150 500</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
                         <Effect>ChangeVariable Lives -1.0</Effect>
+                        <Effect>SetVariable Blinking true</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <VariableCondition>
+                        <VariableName>Blinking</VariableName>
+                        <RequiredValue>true</RequiredValue>
+                    </VariableCondition>
+                    <IndependentAction>
+                        <Effect>BlinkImage Still none Still 50 1300</Effect>
+                        <Effect>SetVariable Blinking false 1300</Effect>
+                        <Effect>SetVelocity 0.0 0.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -198,6 +218,10 @@
                         <Entity2>Floor</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
+                    <VariableCondition>
+                        <VariableName>Blinking</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </VariableCondition>
                     <IndependentAction>
                         <Effect>Jump -1.2</Effect>
                     </IndependentAction>
@@ -209,8 +233,8 @@
             <Width>50</Width>
             <Height>100</Height>
             <Image>watergirl.png</Image>
-            <VariableNames>Still FacingRight FacingLeft</VariableNames>
-            <VariableValues>fireboy_watergirl/watergirl.png fireboy_watergirl/watergirl_facing_right.png fireboy_watergirl/watergirl_facing_left.png</VariableValues>
+            <VariableNames>Still FacingRight FacingLeft Blinking</VariableNames>
+            <VariableValues>fireboy_watergirl/watergirl.png fireboy_watergirl/watergirl_facing_right.png fireboy_watergirl/watergirl_facing_left.png false</VariableValues>
             <Behaviors>
                 <Behavior>
                     <InputCondition>
@@ -230,8 +254,12 @@
                         <Key>LeftKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
+                    <VariableCondition>
+                        <VariableName>Blinking</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </VariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput -.1600 0 .3200</Effect>
+                        <Effect>VelocityInput -.1300 0 .2600</Effect>
                         <Effect>SetImage FacingLeft</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -240,8 +268,12 @@
                         <Key>RightKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
+                    <VariableCondition>
+                        <VariableName>Blinking</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </VariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput .1600 0 .3200</Effect>
+                        <Effect>VelocityInput .1300 0 .2600</Effect>
                         <Effect>SetImage FacingRight</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -253,6 +285,18 @@
                     <IndependentAction>
                         <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
                         <Effect>ChangeVariable Lives -1.0</Effect>
+                        <Effect>SetVariable Blinking true</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <VariableCondition>
+                        <VariableName>Blinking</VariableName>
+                        <RequiredValue>true</RequiredValue>
+                    </VariableCondition>
+                    <IndependentAction>
+                        <Effect>BlinkImage Still none Still 50 1300</Effect>
+                        <Effect>SetVariable Blinking false 1300</Effect>
+                        <Effect>SetVelocity 0.0 0.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -431,11 +475,11 @@
                     </RequiredCollisionCondition>
                     <VariableCondition>
                         <VariableName>RedDiamonds</VariableName>
-                        <RequiredValue>1</RequiredValue>
+                        <RequiredValue>1.0</RequiredValue>
                     </VariableCondition>
                     <VariableCondition>
                         <VariableName>BlueDiamonds</VariableName>
-                        <RequiredValue>1</RequiredValue>
+                        <RequiredValue>1.0</RequiredValue>
                     </VariableCondition>
                     <IndependentAction>
                         <Effect>SetImage OpenDoor DoorTimeDelay</Effect>
@@ -464,11 +508,11 @@
                     </RequiredCollisionCondition>
                     <VariableCondition>
                         <VariableName>RedDiamonds</VariableName>
-                        <RequiredValue>1</RequiredValue>
+                        <RequiredValue>1.0</RequiredValue>
                     </VariableCondition>
                     <VariableCondition>
                         <VariableName>BlueDiamonds</VariableName>
-                        <RequiredValue>1</RequiredValue>
+                        <RequiredValue>1.0</RequiredValue>
                     </VariableCondition>
                     <IndependentAction>
                         <Effect>SetImage OpenDoor 600</Effect>
@@ -524,17 +568,17 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Fireboy</Name>
-                    <XPos>150</XPos>
+                    <XPos>130</XPos>
                     <YPos>500</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-                    <VariableValues>150 500</VariableValues>
+                    <VariableValues>130 500</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Watergirl</Name>
-                    <XPos>170</XPos>
+                    <XPos>180</XPos>
                     <YPos>500</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-                    <VariableValues>170 500</VariableValues>
+                    <VariableValues>180 500</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>BlueDiamond</Name>

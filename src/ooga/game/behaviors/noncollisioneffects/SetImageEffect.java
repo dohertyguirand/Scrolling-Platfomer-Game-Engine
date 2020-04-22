@@ -29,7 +29,11 @@ public class SetImageEffect extends TimeDelayedEffect {
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  public void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+    setImage(subject, newImageFileName);
+  }
+
+  public static void setImage(Entity subject, String newImageFileName) {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;
