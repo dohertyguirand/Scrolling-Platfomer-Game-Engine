@@ -44,9 +44,11 @@ public abstract class QuadDirectionCollision implements CollisionEffect {
     double leftDistance = Math.abs(subject.getX()-(collidingEntity.getX()+collidingEntity.getWidth()));
     if (leftDistance < rightDistance) {
       doCollisionTowardLeft(subject,collidingEntity,elapsedTime,variables, game);
+      System.out.println("colliding toward left");
     }
     else {
       doCollisionTowardRight(subject,collidingEntity,elapsedTime,variables, game);
+      System.out.println("colliding toward right");
     }
 //    double direction = Math.signum(subject.getVelocity().get(0) - collidingEntity.getVelocity().get(0));
 //    if (direction < 0) {
