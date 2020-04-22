@@ -9,8 +9,8 @@ public class BehaviorInstance implements ConditionalBehavior {
 
   public static final String ANY = "ANY";
   Map<String, Boolean> inputConditions;
-  Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
-  Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
+  Map<List<String>, String> requiredCollisionConditions;
+  Map<List<String>, String> bannedCollisionConditions;
   Map<String, Double> variableConditions;
   List<Action> actions;
 
@@ -51,24 +51,10 @@ public class BehaviorInstance implements ConditionalBehavior {
   @Override
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    //TODO: allow for collision conditions that specify any two entities, not just this entity
-    //TODO: after that, merge collision and noncollision effects since both can now have an "other entity" to interact with
-    // TODO: difficulty with this is the other entity might depend on an entity variable... (like what door a button opens)
-    //  or perhaps, it makes more sense to just have in the xml files: CollisionDeterminedEffect, VariableDeterminedEffect, etc
-    //  there are several different ways the "other entity" of the effect can be determined -> different types of "Actions"
-    //  Each action has a string key "howToFind" that helps further specify how to determine other entity
-    //  CollisionDeterminedAction: other entity is determined by collisions. "howToFind" is name of other entity. Need additional direction parameter
-    //  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key (probably maps to an entity ID)
-    //  IndependentAction: no other entity is necessary for the effect
-    //  NameDeterminedAction: executes the effect on all entities with the specified name "howToFind"
-    //  IDDeterminedAction: executes the effect on the entity with the specified ID
-    //  more action types could be added later but these 3 should cover most cases
-    //  This would mean Effects and Effects would just be merged into effects, and every effect would
-    //  take an other entity parameter, which is null if not needed
     // TODO: add ability for entity instances to have additional behaviors?
-    // TODO: fix constructors of efects so they can throw errors.
     for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
-      if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
+      if((variables.get(variableCondition.getKey()) == null || !variables.get(variableCondition.getKey()).equals(variableCondition.getValue())) &&
+              (subject.getVariable(variableCondition.getKey()) == null || !subject.getVariable(variableCondition.getKey()).equals(variableCondition.getValue().toString()))){
         return;
       }
     }
@@ -136,13 +122,5 @@ public class BehaviorInstance implements ConditionalBehavior {
     for(Action action : actions){
       action.doAction(elapsedTime, subject, variables, collisionInfo, gameInternal);
     }
-  }
-
-  private List<String> getEntityNames(List<Entity> entityList){
-    List<String> entityNames = new ArrayList<>();
-    for(Entity entity : entityList){
-      entityNames.add(entity.getName());
-    }
-    return entityNames;
   }
 }

@@ -8,6 +8,9 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
+/**
+ * IndependentAction: no other entity is necessary for the effect
+ */
 public class IndependentAction extends Action {
 
   public IndependentAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {

@@ -7,7 +7,7 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
-//  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key (probably maps to an entity ID)
+//  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key (maps to an entity ID)
 public class VariableDeterminedAction extends Action {
 
   String myVariable;
