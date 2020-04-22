@@ -236,6 +236,19 @@ public abstract class OogaEntity implements Entity, EntityInternal {
         }
       }
     }
+    updateAutomaticEntityVariables();
+  }
+
+  /**
+   * automatically create/set entity variables containing basic entity information, allowing it to be used in conditions and effects
+   */
+  private void updateAutomaticEntityVariables() {
+    myVariables.put("XVelocity", String.valueOf(myVelocity.get(0)));
+    myVariables.put("YVelocity", String.valueOf(myVelocity.get(1)));
+    myVariables.put("XPos", String.valueOf(this.xPos));
+    myVariables.put("YPos", String.valueOf(this.yPos));
+    myVariables.put("Width", String.valueOf(this.width));
+    myVariables.put("Height", String.valueOf(this.height));
   }
 
   @Override
