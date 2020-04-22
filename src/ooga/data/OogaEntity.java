@@ -34,7 +34,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
-  private List<Effect> myFrameBehaviors;
   private Map<String,List<Effect>> myControls;
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
@@ -49,7 +48,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.yPos.set(yPos);
     this.width.set(width);
     this.height.set(height);
-    myFrameBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
     myConditionalBehaviors = new ArrayList<>();
     myVelocityVectors = new Stack<>();
@@ -60,39 +58,25 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public String getName() {
-    return myName;
-  }
+  public String getName() { return myName; }
 
   @Override
-  public double getX() {
-    return xPos.get();
-  }
+  public double getX() { return xPos.get(); }
 
   @Override
-  public DoubleProperty xProperty() {
-    return xPos;
-  }
+  public DoubleProperty xProperty() { return xPos; }
 
   @Override
-  public double getY() {
-    return yPos.get();
-  }
+  public double getY() { return yPos.get(); }
 
   @Override
-  public DoubleProperty yProperty() {
-    return yPos;
-  }
+  public DoubleProperty yProperty() { return yPos; }
 
   @Override
-  public boolean isActiveInView() {
-    return activeInView.get();
-  }
+  public boolean isActiveInView() { return activeInView.get();}
 
   @Override
-  public BooleanProperty activeInViewProperty() {
-    return activeInView;
-  }
+  public BooleanProperty activeInViewProperty() { return activeInView; }
 
   @Override
   public void setActiveInView(boolean activeInView) { this.activeInView.set(activeInView); }
@@ -122,33 +106,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void setMovementBehaviors(List<Effect> behaviors) {
-    myFrameBehaviors = behaviors;
-  }
-
-  @Override
-  public void reactToControls(String controls, GameInternal game) {
-    if (!myControls.containsKey(controls)) {
-      return;
-    }
-    for (Effect behavior : myControls.get(controls)) {
-      behavior.doEffect(null, this, 1.0, new HashMap<>(), game);
-    }
-  }
-
-  @Override
-  public void reactToControlsPressed(String controls, GameInternal game) {
-    //TODO: remove this method?
-    System.out.println(controls);
-    reactToControls(controls, game);
-  }
-
-  @Override
   public void updateSelf(double elapsedTime, Map<String, Double> variables,
       GameInternal game) {
-    for (Effect behavior : myFrameBehaviors) {
-      behavior.doEffect(null, this, elapsedTime, variables, game);
-    }
     applyFrictionHorizontal();
     applyFrictionVertical();
   }
@@ -189,15 +148,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     moveByVelocity(elapsedTime);
   }
 
-  @Override
-  public void setCollisionBehaviors(Map<String, List<Effect>> behaviorMap) {
-  }
-
-  @Override
-  public void setControlsBehaviors(Map<String, List<Effect>> behaviors) {
-    myControls = new HashMap<>(behaviors);
-  }
-
   /**
    * assigns the conditional behaviors of this entity
    *
@@ -206,13 +156,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors) {
     myConditionalBehaviors = new ArrayList<>(conditionalBehaviors);
-  }
-
-  @Override
-  public void move(double xDistance, double yDistance) {
-//    myXPos.set(myXPos.get() + xDistance);
-//    myYPos.set(myYPos.get() + yDistance);
-//    myVelocityVectors.add(List.of(xDistance,yDistance));
   }
 
   @Override
@@ -282,7 +225,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void reactToVariables(Map<String, Double> variables) {
-    //for each variable,
+    //TODO: make this work for entity variables?
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
         String propertyName = propertyVariableDependencies.get(varName);

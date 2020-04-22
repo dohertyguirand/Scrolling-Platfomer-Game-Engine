@@ -7,8 +7,9 @@ import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
+import ooga.game.behaviors.TimeDelayedEffect;
 
-public class PatrolEffect implements Effect {
+public class PatrolEffect extends TimeDelayedEffect {
 
   public static double MARGIN = 20.0;
 
@@ -32,10 +33,23 @@ public class PatrolEffect implements Effect {
     mySecondPointData.add(args.get(5));
 
     myTargetPointData = myFirstPointData;
+
+    if(args.size() > 6){
+      setTimeDelay(args.get(6));
+    }
   }
 
+  /**
+   * Performs the effect
+   *
+   * @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity entity we are "interacting with" in this effect
+   * @param elapsedTime time between steps in ms
+   * @param variables   game variables
+   * @param game        game instance
+   */
   @Override
-  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     List<Double> difference = targetDifference(subject, variables);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {

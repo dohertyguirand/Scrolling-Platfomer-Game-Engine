@@ -11,13 +11,17 @@ public class RunIntoTerrainLeft extends RunIntoTerrain {
     super(args);
   }
 
+  /**
+   * Performs the effect
+   *
+   * @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity entity we are "interacting with" in this effect
+   * @param elapsedTime time between steps in ms
+   * @param variables   game variables
+   * @param game        game instance
+   */
   @Override
-  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
-    //subject.setVelocity(0,subject.getVelocity().get(1));
-    System.out.println("here2!");
-    System.out.println("Subject: " + subject.getName());
-    System.out.println("Width: " + otherEntity.getWidth());
-    System.out.println("collidingPos " + otherEntity.getPosition().toString());
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     double targetX = otherEntity.getPosition().get(0) + otherEntity.getWidth();
     double targetY = subject.getPosition().get(1);
     System.out.println(targetX);

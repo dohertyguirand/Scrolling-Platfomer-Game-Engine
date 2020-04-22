@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
+import ooga.game.behaviors.TimeDelayedEffect;
 
-public class SetVariableEffect implements Effect {
+public class SetVariableEffect extends TimeDelayedEffect {
 
   private String variableName;
   private String variableValue;
@@ -15,18 +16,22 @@ public class SetVariableEffect implements Effect {
   public SetVariableEffect(List<String> args) throws IndexOutOfBoundsException {
     variableName = args.get(0);
     variableValue = args.get(1);
+    if(args.size() > 2){
+      setTimeDelay(args.get(2));
+    }
   }
 
   /**
-   * Performs the subclass-specific implementation that happens per frame.
-   * @param otherEntity
-   * @param subject     The entity to perform the update upon.
-   * @param elapsedTime The time since the previous frame.
-   * @param variables map of variables
-   * @param game
+   * Performs the effect
+   *
+   * @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity entity we are "interacting with" in this effect
+   * @param elapsedTime time between steps in ms
+   * @param variables   game variables
+   * @param game        game instance
    */
   @Override
-  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     if (variables.containsKey(variableName)) {
       variables.put(variableName,parseData(variableValue, subject, variables, 0.0));

@@ -136,8 +136,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     List<String> allInputs = new ArrayList<>(activeKeys);
     allInputs.addAll(pressedKeys);
 
-    //TODO: remove methods that are no longer necessary like input reactions (since all are now conditional)
-    doEntityInputReactions(elapsedTime, activeKeys, pressedKeys);
+    doEntityFrameUpdates(elapsedTime);
 
     doEntityBehaviors(elapsedTime, allInputs);
 //    doVariableUpdates();
@@ -147,14 +146,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     checkLevelEnd();
   }
 
-  private void doEntityInputReactions(double elapsedTime, List<String> activeKeys, List<String> pressedKeys) {
+  private void doEntityFrameUpdates(double elapsedTime) {
     for (Entity entity : currentLevel.getEntities()) {
-      for (String input : activeKeys) {
-        entity.reactToControls(input, this);
-      }
-      for (String input : pressedKeys) {
-        entity.reactToControlsPressed(input, this);
-      }
       entity.blockInAllDirections(false);
       entity.updateSelf(elapsedTime, myVariables, this);
       entity.reactToVariables(myVariables);

@@ -19,7 +19,7 @@ public class ControlsTestGameCreation {
   public static OogaGame getGame() {
     List<Entity> entities = new ArrayList<>();
     Entity sampleEntity = new ImageEntity("dino", "file:data/games-library/example-dino/blue_square.jpg", 0.0, 0.0, 100.0, 100.0);
-    sampleEntity.setMovementBehaviors(List.of(new GravityEffect(0,20.0/1000)));
+    //sampleEntity.setMovementBehaviors(List.of(new GravityEffect(0,20.0/1000)));
     double speed = 160.0;
     speed = speed / 1000.0;
     double maxSpeed = speed * 2;
@@ -35,8 +35,8 @@ public class ControlsTestGameCreation {
     controls.put("LeftKey2",List.of(new VelocityInputEffect(-1 * speed,0,maxSpeed)));
     controls.put("RightKey2",List.of(new VelocityInputEffect(speed,0,maxSpeed)));
 
-    sampleEntity.setControlsBehaviors(controls);
-    sampleEntity.setCollisionBehaviors(Map.of("cactus",List.of(new RunIntoTerrainRight(new ArrayList<>())),"block",List.of(new RunIntoTerrainRight(new ArrayList<>()))));
+    //sampleEntity.setControlsBehaviors(controls);
+    //sampleEntity.setCollisionBehaviors(Map.of("cactus",List.of(new RunIntoTerrainRight(new ArrayList<>())),"block",List.of(new RunIntoTerrainRight(new ArrayList<>()))));
 //    sampleEntity.setPosition(List.of(600.0-100-1,400.0));
     sampleEntity.setPosition(List.of(600.0,500.0-sampleEntity.getHeight()-1));
     entities.add(sampleEntity);

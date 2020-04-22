@@ -55,22 +55,6 @@ public interface Entity {
   public String getName();
 
   /**
-   * 'Controls' will be a String mapping to a controls type from a shared back end resource file.
-   * @param controls The String identifier of the type of control input that must be handled.
-   * @param game
-   */
-  void reactToControls(String controls, GameInternal game);
-
-  /**
-   * @see Entity#reactToControls(String, GameInternal)
-   * Reacts to the event of the key being pressed, i.e. the first frame that the key is active,
-   * so that button presses can be reacted to just once.
-   * @param controls The String identifier of the type of control input that must be handled.
-   * @param game
-   */
-  void reactToControlsPressed(String controls, GameInternal game);
-
-  /**
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
@@ -86,37 +70,6 @@ public interface Entity {
    * @param elapsedTime Time in milliseconds since last step.
    */
   void executeMovement(double elapsedTime);
-
-  /**
-   * Sets the mappings of behaviors that will be carried out when the entity collides with
-   * another entity, based on what type of entity is being collided into.
-   * @param behaviorMap A Map that connects the name of the entity that is being collided with
-   *                    with the list of behaviors that should happen upon this collision.
-   */
-  void setCollisionBehaviors(Map<String,List<Effect>> behaviorMap);
-
-  /**
-   * Sets the behaviors that will be carried out for every frame
-   * @param behaviors A List of MovementBehaviors
-   */
-  void setMovementBehaviors(List<Effect> behaviors);
-
-  /**
-   * Sets the mappings of behaviors that will be carried out when controls are inputted,
-   * by mapping behaviors to controls.
-   * @param behaviors The Map from standardized control input strings to ControlsBehaviors that
-   *                  define this entity's reaction to controls.
-   */
-  void setControlsBehaviors(Map<String,List<Effect>> behaviors);
-
-  /**
-   * Moves the entity by the specified amount in the x and y direction.
-   * Useful for behaviors that own entity references. Might be moved to an "internal" entity
-   * interface because it is meant for behavior classes rather than the main game loop.
-   * @param xDistance Distance to move in the x direction. Can be negative.
-   * @param yDistance Distance to move in the y direction. Can be negative.
-   */
-  void move(double xDistance, double yDistance);
 
   /**
    * @return The X and Y position of the Entity, in that order.

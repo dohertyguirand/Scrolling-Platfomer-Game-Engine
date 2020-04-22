@@ -3,12 +3,13 @@ package ooga.game.behaviors.asynceffects;
 import ooga.Entity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
+import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SetPositionEffect implements Effect {
+public class SetPositionEffect extends TimeDelayedEffect {
 
   private List<String> desiredLocation = new ArrayList<>();
 
@@ -19,19 +20,22 @@ public class SetPositionEffect implements Effect {
   public SetPositionEffect(List<String> args) throws IndexOutOfBoundsException{
     desiredLocation.add(args.get(0));
     desiredLocation.add(args.get(1));
+    if(args.size() > 2){
+      setTimeDelay(args.get(2));
+    }
   }
 
   /**
    * Sets the location to the stored location. If stored location is variable dependent, attempts to find a matching game variable.
-   *  If there is none, attempts to find a matching entity variable. If there is none, defaults to 0.0.
-   * @param subject entity subject
-   * @param otherEntity other entity
-   * @param elapsedTime how much time passed
-   * @param variables game variables
-   * @param game internal game instance
+   * If there is none, attempts to find a matching entity variable. If there is none, defaults to 0.0.
+   * @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity entity we are "interacting with" in this effect
+   * @param elapsedTime time between steps in ms
+   * @param variables   game variables
+   * @param game        game instance
    */
   @Override
-  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     List<Double> newLocation = new ArrayList<>();
     for(String coordinateData : desiredLocation){
       newLocation.add(parseData(coordinateData, subject, variables, 0.0));
