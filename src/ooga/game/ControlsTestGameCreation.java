@@ -8,11 +8,11 @@ import java.util.Map;
 import ooga.game.behaviors.Effect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.asyncbehavior.RunIntoTerrain;
+import ooga.game.behaviors.asyncbehavior.RunIntoTerrainRight;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
-import ooga.game.behaviors.Effects.GravityEffect;
-import ooga.game.behaviors.Effects.JumpEffect;
-import ooga.game.behaviors.Effects.VelocityInputEffect;
+import ooga.game.behaviors.noncollisioneffects.GravityEffect;
+import ooga.game.behaviors.noncollisioneffects.JumpEffect;
+import ooga.game.behaviors.noncollisioneffects.VelocityInputEffect;
 
 public class ControlsTestGameCreation {
   //TODO: Remove, or transform into a reasonable test
@@ -36,7 +36,7 @@ public class ControlsTestGameCreation {
     controls.put("RightKey2",List.of(new VelocityInputEffect(speed,0,maxSpeed)));
 
     sampleEntity.setControlsBehaviors(controls);
-    sampleEntity.setCollisionBehaviors(Map.of("cactus",List.of(new RunIntoTerrain(new ArrayList<>())),"block",List.of(new RunIntoTerrain(new ArrayList<>()))));
+    sampleEntity.setCollisionBehaviors(Map.of("cactus",List.of(new RunIntoTerrainRight(new ArrayList<>())),"block",List.of(new RunIntoTerrainRight(new ArrayList<>()))));
 //    sampleEntity.setPosition(List.of(600.0-100-1,400.0));
     sampleEntity.setPosition(List.of(600.0,500.0-sampleEntity.getHeight()-1));
     entities.add(sampleEntity);

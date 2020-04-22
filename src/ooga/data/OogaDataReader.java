@@ -37,8 +37,10 @@ public class OogaDataReader implements DataReader{
     private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static final String DEFAULT_LIBRARY_FILE = "data/games-library";
     private static final String DEFAULT_USERS_FILE = "data/users";
-    private static final String BEHAVIORS_PROPERTIES_LOCATION = "ooga/data/resources/behaviors";
-    private final ResourceBundle myBehaviorsResources = ResourceBundle.getBundle(BEHAVIORS_PROPERTIES_LOCATION);
+    private static final String EFFECTS_PROPERTIES_LOCATION = "ooga/data/resources/effects";
+    private static final String ACTIONS_PROPERTIES_LOCATION = "ooga/data/resources/actions";
+    private final ResourceBundle myEffectsResources = ResourceBundle.getBundle(EFFECTS_PROPERTIES_LOCATION);
+    private final ResourceBundle myActionsResources = ResourceBundle.getBundle(ACTIONS_PROPERTIES_LOCATION);
 
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
@@ -248,6 +250,7 @@ public class OogaDataReader implements DataReader{
      */
     private int[] getRowsAndCols(Element entityElement) throws OogaDataException {
         int[] rowsAndCols = new int[]{1, 1};
+        //TODO: add option to put a gap
         String[] keys = new String[]{"Rows", "Columns"};
         for(int i=0; i<rowsAndCols.length; i++) {
             NodeList nodes = entityElement.getElementsByTagName(keys[i]);
@@ -328,13 +331,12 @@ public class OogaDataReader implements DataReader{
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
             Map<String, Double> variableConditions = new HashMap<>();
-            //TODO: Make a default for conditions so that if no Requirement is specified, it assumes 'true' is required
             Map<String, Boolean> inputConditions = new HashMap<>();
-            Map<String, Boolean> verticalCollisionConditions = new HashMap<>();
-            Map<String, Boolean> horizontalCollisionConditions = new HashMap<>();
-            addConditions(verticalCollisionConditions, behaviorElement.getElementsByTagName("VerticalCollisionCondition"), "EntityName", "CollisionRequirement");
-            addConditions(horizontalCollisionConditions, behaviorElement.getElementsByTagName("HorizontalCollisionCondition"), "EntityName", "CollisionRequirement");
-            addConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
+            Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
+            Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
+            addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName("RequiredCollisionCondition"));
+            addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName("BannedCollisionCondition"));
+            addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
             behaviors.add(new BehaviorInstance(variableConditions, inputConditions, requiredCollisionConditions,
                     bannedCollisionConditions, getActions(behaviorElement)));
@@ -343,32 +345,51 @@ public class OogaDataReader implements DataReader{
         return new ImageEntityDefinition(name, height, width, imagePath, behaviors);
     }
 
+    private void addCollisionConditions(Map<List<String>, String> collisionConditionsMap, NodeList collisionConditionNodes) throws OogaDataException {
+        for(int i=0; i<collisionConditionNodes.getLength(); i++){
+            Element collisionConditionElement = (Element)collisionConditionNodes.item(i);
+            try {
+                String entity1Info = collisionConditionElement.getElementsByTagName("Entity1").item(0).getTextContent();
+                String entity2Info = collisionConditionElement.getElementsByTagName("Entity2").item(0).getTextContent();
+                String direction = collisionConditionElement.getElementsByTagName("Direction").item(0).getTextContent();
+                collisionConditionsMap.put(List.of(entity1Info, entity2Info), direction);
+            } catch(NullPointerException e){
+                throw new OogaDataException("Collision condition not formatted correctly");
+            }
+        }
+    }
+
     private List<Action> getActions(Element behaviorElement) throws OogaDataException {
         List<Action> actions = new ArrayList<>();
         String[] actionTypes = new String[]{"CollisionDetermined", "IdDetermined", "NameDetermined", "VariableDetermined", "Independent"};
         for(String actionType: actionTypes) {
             NodeList actionNodes = behaviorElement.getElementsByTagName(actionType + "Action");
-            NodeList args =
-            NodeList EffectNodes = behaviorElement.getElementsByTagName("Effect");
-            List<Effect> actions = new ArrayList<>();
-            for (int j = 0; j < EffectNodes.getLength(); j++) {
-                String[] reactionEffect = EffectNodes.item(j).getTextContent().split(" ");
-                Effect effect = (Effect) makeBasicEffect(reactionEffect, "NonCollision");
-                effects.add(effect);
+            for(int i=0; i<actionNodes.getLength(); i++){
+                List<String> args = Arrays.asList(((Element) actionNodes.item(i)).getElementsByTagName("Args").item(0).getTextContent().split(" "));
+                NodeList EffectNodes = behaviorElement.getElementsByTagName("Effect");
+                List<Effect> effects = new ArrayList<>();
+                for (int j = 0; j < EffectNodes.getLength(); j++) {
+                    String[] reactionEffect = EffectNodes.item(j).getTextContent().split(" ");
+                    Effect effect = makeBasicEffect(reactionEffect);
+                    effects.add(effect);
+                }
+                actions.add(makeAction(actionType, args, effects));
             }
         }
-//            Map<String, List<Effect>> EffectsMap = new HashMap<>();
-//            NodeList EffectNodes = behaviorElement.getElementsByTagName("Effect");
-//            for(int j=0; j<EffectNodes.getLength(); j++) {
-//                String otherEntityName = behaviorElement.getElementsByTagName("With").item(0).getTextContent();
-//                EffectsMap.put(otherEntityName, new ArrayList<>());
-//                NodeList reactionEffectNodes = ((Element)EffectNodes.item(j)).getElementsByTagName("Reaction");
-//                for(int k=0; k<reactionEffectNodes.getLength(); k++) {
-//                    String[] reactionEffect = reactionEffectNodes.item(k).getTextContent().split(" ");
-//                    Effect effect = (Effect) makeBasicEffect(reactionEffect, "Collision");
-//                    EffectsMap.get(otherEntityName).add(effect);
-//                }
-//            }
+        return actions;
+    }
+
+    private Action makeAction(String actionType, List<String> args, List<Effect> effects) throws OogaDataException {
+        String effectClassName = myActionsResources.getString(actionType) + "action";
+        try {
+            Class cls = forName(PATH_TO_CLASSES + effectClassName);
+            Constructor cons = cls.getConstructor(List.class, List.class);
+            return (Action)cons.newInstance(args, effects);
+        } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException e){
+            throw new OogaDataException(actionType + " Action listed in game file is not recognized.\n Action name: " + actionType);
+        } catch(InvocationTargetException e){ // this should be OogaDataException but it won't work because reflection is used
+            throw new OogaDataException(actionType + " Action argument list not formatted correctly");
+        }
     }
 
     private void addVariableConditions(Map<String, Double> conditionMap, NodeList variableConditionNodes) {
@@ -379,7 +400,7 @@ public class OogaDataReader implements DataReader{
         }
     }
 
-    private void addConditions(Map<String, Boolean> conditionMap, NodeList verticalCollisionConditionNodes, String keyName, String valueName) {
+    private void addOneParameterConditions(Map<String, Boolean> conditionMap, NodeList verticalCollisionConditionNodes, String keyName, String valueName) {
         for(int j=0; j<verticalCollisionConditionNodes.getLength(); j++){
             String name = ((Element)verticalCollisionConditionNodes.item(j)).getElementsByTagName(keyName).item(0).getTextContent();
             String requirementBoolean = ((Element)verticalCollisionConditionNodes.item(j)).getElementsByTagName(valueName).item(0).getTextContent();
@@ -387,17 +408,17 @@ public class OogaDataReader implements DataReader{
         }
     }
 
-    private Object makeBasicEffect(String[] effect, String effectType) throws OogaDataException {
+    private Effect makeBasicEffect(String[] effect) throws OogaDataException {
         String effectName = effect[0];
-        String effectClassName = myBehaviorsResources.getString(effectName);
+        String effectClassName = myEffectsResources.getString(effectName);
         try {
             Class cls = forName(PATH_TO_CLASSES + effectClassName);
             Constructor cons = cls.getConstructor(List.class);
             List<String> list = Arrays.asList(effect).subList(1, effect.length);
-            return cons.newInstance(Arrays.asList(effect).subList(1, effect.length));
+            return (Effect)cons.newInstance(Arrays.asList(effect).subList(1, effect.length));
         } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException e){
 //            e.printStackTrace();
-            throw new OogaDataException(effectType + " Behavior listed in game file is not recognized.\n Behavior name: " + effectName);
+            throw new OogaDataException(effectName + " Behavior listed in game file is not recognized.\n Behavior name: " + effectName);
         } catch(InvocationTargetException e){ // this should be OogaDataException but it won't work because reflection is used
             throw new OogaDataException(effectName + " Effect argument list not formatted correctly");
         }

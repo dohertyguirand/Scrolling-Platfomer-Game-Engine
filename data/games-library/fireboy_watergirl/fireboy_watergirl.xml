@@ -10,10 +10,16 @@
             <Image>fireboy.png</Image>
             <Behaviors>
                 <Behavior>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>RedDoor</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
                     <InputCondition>
                         <Key>DownKey2Pressed</Key>
                         <InputRequirement>true</InputRequirement>
@@ -30,10 +36,10 @@
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
                     </VariableCondition>
-                    <Effect>
-                        <With>RedDoor</With>
-                        <Reaction>ChangeVariable Score 1000</Reaction>
-                    </Effect>
+                    <CollisionDeterminedAction>
+                        <Args>Fireboy ANY</Args>
+                        <Effect>ChangeVariable Score 1000</Effect>
+                    </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -44,36 +50,48 @@
                         <Key>RightKey</Key>
                         <InputRequirement>false</InputRequirement>
                     </InputCondition>
-                    <Effect>SetImage fireboy_watergirl/fireboy.png</Effect>
+                    <IndependentAction>
+                        <Effect>SetImage fireboy_watergirl/fireboy.png</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
                         <Key>LeftKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <Effect>VelocityInput -.1600 0 .3200</Effect>
-                    <Effect>SetImage fireboy_watergirl/fireboy_facing_left.png</Effect>
+                    <IndependentAction>
+                        <Effect>VelocityInput -.1600 0 .3200</Effect>
+                        <Effect>SetImage fireboy_watergirl/fireboy_facing_left.png</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
                         <Key>RightKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <Effect>VelocityInput .1600 0 .3200</Effect>
-                    <Effect>SetImage fireboy_watergirl/fireboy_facing_right.png</Effect>
+                    <IndependentAction>
+                        <Effect>VelocityInput .1600 0 .3200</Effect>
+                        <Effect>SetImage fireboy_watergirl/fireboy_facing_right.png</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
-                    <Effect>
-                        <With>WaterTerrain</With>
-                        <Reaction>Respawn 150 500</Reaction>
-                        <Reaction>ChangeVariable Lives -1.0</Reaction>
-                    </Effect>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>WaterTerrain</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>Respawn 150 500</Effect>
+                        <Effect>ChangeVariable Lives -1.0</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
-                    <Effect>
-                        <With>LavaTerrain</With>
-                        <Reaction>TerrainCollision</Reaction>
-                    </Effect>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>LavaTerrain</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <Effect>TerrainCollision</Effect>
                 </Behavior>
                 <Behavior>
                     <Effect>
@@ -392,6 +410,7 @@
                     <XPos>800</XPos>
                     <YPos>600</YPos>
                     <Columns>2</Columns>
+                    <Gap>0.0</Gap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>Floor</Type>
