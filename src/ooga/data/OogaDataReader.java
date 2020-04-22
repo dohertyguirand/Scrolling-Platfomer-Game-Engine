@@ -379,7 +379,7 @@ public class OogaDataReader implements DataReader{
             addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("GameVariableCondition"));
             addEntityVariableConditions(entityVariableConditions, behaviorElement.getElementsByTagName("EntityVariableCondition"));
-            behaviors.add(new BehaviorInstance(variableConditions, inputConditions, requiredCollisionConditions,
+            behaviors.add(new BehaviorInstance(variableConditions, entityVariableConditions, inputConditions, requiredCollisionConditions,
                     bannedCollisionConditions, getActions(behaviorElement)));
         }
 

@@ -1,5 +1,6 @@
 package ooga.game.behaviors;
 
+import java.util.Map.Entry;
 import ooga.Entity;
 import ooga.game.GameInternal;
 
@@ -8,26 +9,31 @@ import java.util.*;
 public class BehaviorInstance implements ConditionalBehavior {
 
   public static final String ANY = "ANY";
+  public static final String SELF_IDENTIFIER = "SELF";
   Map<String, Boolean> inputConditions;
   Map<List<String>, String> requiredCollisionConditions;
   Map<List<String>, String> bannedCollisionConditions;
-  Map<String, String> variableConditions;
+  Map<String, String> gameVariableConditions;
+  Map<String,Entry<String, String>> entityVariableConditions;
   List<Action> actions;
 
   /**
-   * 
-   * @param variableConditions
+   * @param gameVariableConditions
+   * @param entityVariableConditions
    * @param inputConditions
    * @param requiredCollisionConditions conditions that must be true Map<List<String>, String> [entity 1 info, entity 2 info] : direction (or "ANY")
-   *    *   entity info can be id or name, method will check for either
+*    *   entity info can be id or name, method will check for either
    * @param bannedCollisionConditions conditions that must be false (see above)
    * @param actions
    */
-  public BehaviorInstance(Map<String, String> variableConditions, Map<String, Boolean> inputConditions,
-                          Map<List<String>, String> requiredCollisionConditions,
-                          Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
+  public BehaviorInstance(Map<String, String> gameVariableConditions,
+      Map<String, Entry<String, String>> entityVariableConditions,
+      Map<String, Boolean> inputConditions,
+      Map<List<String>, String> requiredCollisionConditions,
+      Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
-    this.variableConditions = variableConditions;
+    this.gameVariableConditions = gameVariableConditions;
+    this.entityVariableConditions = entityVariableConditions;
     this.requiredCollisionConditions = requiredCollisionConditions;
     this.bannedCollisionConditions = bannedCollisionConditions;
     this.actions = actions;
@@ -53,11 +59,13 @@ public class BehaviorInstance implements ConditionalBehavior {
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
     System.out.println(variables.toString());
-    for(Map.Entry<String, String> variableCondition : variableConditions.entrySet()){
-      if((variables.get(variableCondition.getKey()) == null || !(String.valueOf(variables.get(variableCondition.getKey()))).equals(variableCondition.getValue())) &&
-              (subject.getVariable(variableCondition.getKey()) == null || !subject.getVariable(variableCondition.getKey()).equals(variableCondition.getValue()))){
+    for(Map.Entry<String, String> variableCondition : gameVariableConditions.entrySet()){
+      if((variables.get(variableCondition.getKey()) == null || !(String.valueOf(variables.get(variableCondition.getKey()))).equals(variableCondition.getValue()))) {
         return;
       }
+    }
+    if (!checkEntityVariableConditions(subject, gameInternal)) {
+      return;
     }
     for(Map.Entry<String, Boolean> inputCondition : inputConditions.entrySet()){
       if(inputs.contains(inputCondition.getKey()) != inputCondition.getValue()){
@@ -67,6 +75,58 @@ public class BehaviorInstance implements ConditionalBehavior {
     if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
     if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
     doActions(elapsedTime, subject, variables, inputs, collisionInfo, gameInternal);
+  }
+
+  private boolean checkEntityVariableConditions(Entity subject, GameInternal gameInternal) {
+    for(Entry<String, Entry<String, String>> variableCondition : entityVariableConditions.entrySet()){
+      if (!entityVariableConditionSatisfied(subject,gameInternal,variableCondition)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean entityVariableConditionSatisfied(Entity subject, GameInternal gameInternal,
+      Entry<String, Entry<String, String>> variableCondition) {
+    //Map: ((Variable containing Entity ID) OR (Variable Containing EntityName) OR (EntityID) OR (EntityName) ) -> ((VariableName),(Value))
+    Entity labelledEntity = identifyEntityVariableSubject(subject, gameInternal, variableCondition);
+    //once we've resolved WHERE to check, we check the variable for the value.
+    return (!(labelledEntity.getVariable(variableCondition.getKey()) == null || !labelledEntity.getVariable(variableCondition.getKey()).equals(variableCondition.getValue())));
+  }
+
+  private Entity identifyEntityVariableSubject(Entity subject, GameInternal gameInternal,
+      Entry<String, Entry<String, String>> variableCondition) {
+    String label = variableCondition.getKey();
+    //1. Check if label is a constant that represents "SELF"
+    if (label.equals(SELF_IDENTIFIER)) {
+      return subject;
+    }
+    //2. Check if label is a variable...
+    Entity e;
+    String subjectVariable = subject.getVariable(label);
+    if (subjectVariable != null) {
+      //  -  with an entity ID
+      e = gameInternal.getEntityWithId(subject.getVariable(label));
+      if (e != null) {
+        return e;
+      }
+      //  -  with an entity name
+      e = gameInternal.getEntitiesWithName(subjectVariable).get(0);
+      if (e != null) {
+        return e;
+      }
+    }
+    //3. Check if label is an entity ID
+    e = gameInternal.getEntityWithId(label);
+    if (e != null) {
+      return e;
+    }
+    //4. Check if label is an entity name (definition type)
+    e = gameInternal.getEntitiesWithName(label).get(0);
+    if (e != null) {
+      return e;
+    }
+    return null;
   }
 
   private boolean anyCollisionConditionsUnsatisfied(Map<Entity, Map<String, List<Entity>>> collisionInfo,
