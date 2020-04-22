@@ -110,20 +110,6 @@ public interface Entity {
   void setControlsBehaviors(Map<String,List<Effect>> behaviors);
 
   /**
-   * Reacts to colliding with a specific entity type based on its list of reactions mapped to
-   * entity names, as defined by the game data.
-   * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
-   * dies when hit by a fireball.
-   * @param collidingEntity The String identifier of the enemy being collided with.
-   * @param elapsedTime
-   */
-  void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game);
-
-  void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game);
-
-  /**
    * Moves the entity by the specified amount in the x and y direction.
    * Useful for behaviors that own entity references. Might be moved to an "internal" entity
    * interface because it is meant for behavior classes rather than the main game loop.
@@ -202,9 +188,10 @@ public interface Entity {
   /**
 <<<<<<< HEAD
    * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
-   * assigned behavior if true
+   * assigned actions if true
    */
-  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal);
+  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
+                              Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 
   /**
    * assigns the conditional behaviors of this entity

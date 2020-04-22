@@ -9,7 +9,7 @@ import ooga.game.behaviors.Effect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.behaviors.asyncbehavior.RunIntoTerrain;
-import ooga.game.collisiondetection.VelocityCollisionDetector;
+import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import ooga.game.behaviors.Effects.GravityEffect;
 import ooga.game.behaviors.Effects.JumpEffect;
 import ooga.game.behaviors.Effects.VelocityInputEffect;
@@ -56,6 +56,6 @@ public class ControlsTestGameCreation {
 //      otherEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(-450.0/1000,0)));
     otherEntity.setPosition(List.of(600.0,500.0));
     entities.add(otherEntity);
-    return new OogaGame(new OogaLevel(entities), new VelocityCollisionDetector());
+    return new OogaGame(new OogaLevel(entities), new DirectionalCollisionDetector());
   }
 }

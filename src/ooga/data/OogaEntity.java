@@ -35,7 +35,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
   private List<Effect> myFrameBehaviors;
-  private Map<String,List<Effect>> myCollisionBehaviors;
   private Map<String,List<Effect>> myControls;
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
@@ -50,7 +49,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.yPos.set(yPos);
     this.width.set(width);
     this.height.set(height);
-    myCollisionBehaviors = new HashMap<>();
     myFrameBehaviors = new ArrayList<>();
     myControls = new HashMap<>();
     myConditionalBehaviors = new ArrayList<>();
@@ -193,7 +191,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void setCollisionBehaviors(Map<String, List<Effect>> behaviorMap) {
-    myCollisionBehaviors = new HashMap<>(behaviorMap);
   }
 
   @Override
@@ -209,32 +206,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors) {
     myConditionalBehaviors = new ArrayList<>(conditionalBehaviors);
-  }
-
-  //TODO: Implement the lambda (after testing) to vertical collisions
-  @Override
-  public void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
-    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (Effect behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, variables, game);
-      }
-    }
-  }
-
-  @Override
-  public void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
-    doAllCollisions(collidingEntity, behavior -> behavior.doHorizontalCollision(this,collidingEntity, elapsedTime,
-        variables, game));
-  }
-
-  private void doAllCollisions(Entity collidingEntity, Consumer<Effect> collisionType) {
-    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (Effect behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        collisionType.accept(behavior);
-      }
-    }
   }
 
   @Override
@@ -335,11 +306,11 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    */
   @Override
   public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
-                                     List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
+                                     Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     //System.out.println(getName() + " is updating!");
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
       //System.out.println("\tbehavior: " + conditionalBehavior.getClass().toString());
-      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, verticalCollisions, horizontalCollisions, gameInternal);
+      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);
     }
   }
 

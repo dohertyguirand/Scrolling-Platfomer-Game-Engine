@@ -11,8 +11,7 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.*;
 import ooga.UserInputListener;
-import ooga.game.collisiondetection.OogaCollisionDetector;
-import ooga.game.collisiondetection.VelocityCollisionDetector;
+import ooga.game.collisiondetection.DirectionalCollisionDetector;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
@@ -35,7 +34,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
     myLevelIds = basicGameInfo.get(0);
     //TODO: Make the type of collision detector configurable.
-    myCollisionDetector = new VelocityCollisionDetector();
+    myCollisionDetector = new DirectionalCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
@@ -54,13 +53,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myEntities.clear();
     myEntities.addAll(level.getEntities());
     return level;
-  }
-
-  public OogaGame(Level startingLevel) {
-    myName = "Unnamed";
-    myCollisionDetector = new OogaCollisionDetector();
-    myControlsInterpreter = new KeyboardControls();
-    currentLevel = startingLevel;
   }
 
   public OogaGame(Level startingLevel, CollisionDetector collisions) {
@@ -96,39 +88,26 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myInputManager.update();
   }
 
-  private Map<Entity,List<Entity>> findVerticalCollisions(double elapsedTime) {
-    CollisionType<Entity> collisionType = (a,b) -> myCollisionDetector.isCollidingVertically(a,b,elapsedTime);
-    return findCollisions(collisionType);
-  }
-
-  private Map<Entity,List<Entity>> findHorizontalCollisions(double elapsedTime) {
-    CollisionType<Entity> collisionType = (a,b) -> myCollisionDetector.isCollidingHorizontally(a,b,elapsedTime);
-    return findCollisions(collisionType);
-  }
-
-  private Map<Entity,List<Entity>> findCollisions(CollisionType<Entity> collisionType) {
-    Map<Entity,List<Entity>> ret = new HashMap<>();
-    for (Entity target : currentLevel.getEntities()) {
-      ret.put(target,collidingEntities(collisionType, target));
-    }
-    return ret;
-  }
-
-//  private List<Map<Entity, List<Entity>>> findAllCollisions(double elapsedTime) {
-//
-//  }
-
-  private List<Entity> collidingEntities(CollisionType<Entity> collisionType, Entity target) {
-    List<Entity> entityCollisions = new ArrayList<>();
-    for (Entity collidingWith : currentLevel.getEntities()) {
-      if (collidingWith != target && target.hasCollisionWith(collidingWith.getName())
-          && collisionType.isColliding(target,collidingWith)) {
-        currentLevel.registerCollision(target.getName(),collidingWith.getName());
-        entityCollisions.add(collidingWith);
-//        break;
+  private Map<Entity, Map<String, List<Entity>>> findDirectionalCollisions(double elapsedTime) {
+    Map<Entity, Map<String, List<Entity>>> collisionInfo = new HashMap<>();
+    for(Entity entity : currentLevel.getEntities()){
+      Map<String, List<Entity>> collisionsByDirection = new HashMap<>();
+      String[] directions = new String[]{"Up", "Down", "Left", "Right"};
+      for(String direction : directions){
+        collisionsByDirection.put(direction, new ArrayList<>());
       }
+      for(Entity collidingWith : currentLevel.getEntities()){
+        //TODO: if needed, compare the exact objects instead of the names (allowing entities with same name to register collisions)
+        if(!entity.getName().equals(collidingWith.getName())) {
+          String collisionDirection = myCollisionDetector.getCollisionDirection(entity, collidingWith, elapsedTime);
+          if (collisionDirection != null){
+            collisionsByDirection.get(collisionDirection).add(collidingWith);
+          }
+        }
+      }
+      collisionInfo.put(entity, collisionsByDirection);
     }
-    return entityCollisions;
+    return collisionInfo;
   }
 
   private void doUpdateLoop(double elapsedTime) {
@@ -149,7 +128,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     //TODO: remove methods that are no longer necessary like input reactions (since all are now conditional)
     doEntityInputReactions(elapsedTime, activeKeys, pressedKeys);
 
-    doEntityCollisionsAndConditionals(elapsedTime, allInputs);
+    doEntityBehaviors(elapsedTime, allInputs);
 //    doVariableUpdates();
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
@@ -171,21 +150,10 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  private void doEntityCollisionsAndConditionals(double elapsedTime, List<String> allInputs) {
-//    List<Map<Entity, List<Entity>>> allCollisions = findAllCollisions(elapsedTime);
-//    Map<Entity, List<Entity>> verticalCollisions = allCollisions.get(0);
-//    Map<Entity,List<Entity>> horizontalCollisions = allCollisions.get(1);
-    Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
-    Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
+  private void doEntityBehaviors(double elapsedTime, List<String> allInputs) {
+    Map<Entity, Map<String, List<Entity>>> collisionInfo = findDirectionalCollisions(elapsedTime);
     for (Entity entity : currentLevel.getEntities()) {
-//      for (Entity collidingWith : horizontalCollisions.get(entity)) {
-//        entity.handleHorizontalCollision(collidingWith, elapsedTime, myVariables, this);
-//      }
-//      for (Entity collidingWith : verticalCollisions.get(entity)) {
-//        entity.handleVerticalCollision(collidingWith, elapsedTime, myVariables, this);
-//      }
-      entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, verticalCollisions.get(entity),
-              horizontalCollisions.get(entity), this);
+      entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, collisionInfo, this);
     }
   }
 
@@ -301,7 +269,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToPauseButton(boolean paused) {
-
+    //TODO: make this do something??
   }
 
   @Override
