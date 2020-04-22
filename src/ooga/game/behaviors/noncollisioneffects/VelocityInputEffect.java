@@ -12,7 +12,7 @@ public class VelocityInputEffect implements Effect {
   private double yAccelPerFrame;
   private double myMaxSpeed;
 
-  public VelocityInputEffect(List<String> args) {
+  public VelocityInputEffect(List<String> args) throws IndexOutOfBoundsException {
     xAccelPerFrame = Double.parseDouble(args.get(0));
     yAccelPerFrame = Double.parseDouble(args.get(1));
     myMaxSpeed = Double.parseDouble(args.get(2));
@@ -25,7 +25,7 @@ public class VelocityInputEffect implements Effect {
   }
 
   @Override
-  public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables,
+  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables,
                        GameInternal game) {
     if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
       subject.changeVelocity(xAccelPerFrame,yAccelPerFrame);

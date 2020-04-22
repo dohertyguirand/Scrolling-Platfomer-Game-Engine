@@ -52,6 +52,7 @@ public class CollisionDeterminedAction extends Action {
   }
 
   private boolean entityMatches(String entity1Info, Entity entity) {
-    return entity.getName().equals(entity1Info) || entity.getVariable("ID").equals(entity1Info);
+    return entity.getName().equals(entity1Info) ||
+            (entity.getVariable("ID") != null && entity.getVariable("ID").equals(entity1Info));
   }
 }

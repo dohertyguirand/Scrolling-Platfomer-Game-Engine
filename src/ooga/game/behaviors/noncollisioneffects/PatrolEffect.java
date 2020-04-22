@@ -35,7 +35,7 @@ public class PatrolEffect implements Effect {
   }
 
   @Override
-  public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     List<Double> difference = targetDifference(subject);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {

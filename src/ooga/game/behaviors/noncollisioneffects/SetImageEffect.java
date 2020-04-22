@@ -26,7 +26,7 @@ public class SetImageEffect implements Effect {
    * @param game
    */
   @Override
-  public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables,
+  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables,
                        GameInternal game) {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){

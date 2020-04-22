@@ -380,12 +380,15 @@
             <Image>redDiamond.jpg</Image>
             <Behaviors>
                 <Behavior>
-                    <Effect>
-                        <With>Fireboy</With>
-                        <Reaction>RemoveSelf</Reaction>
-                        <Reaction>ChangeVariable Score 1.0</Reaction>
-                        <Reaction>ChangeVariable RedDiamonds 1.0</Reaction>
-                    </Effect>
+                    <RequiredCollisionCondition>
+                        <Entity2>Fireboy</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>RemoveSelf</Effect>
+                        <Effect>ChangeVariable Score 1.0</Effect>
+                        <Effect>ChangeVariable RedDiamonds 1.0</Effect>
+                    </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
@@ -396,12 +399,15 @@
             <Image>blueDiamond.png</Image>
             <Behaviors>
                 <Behavior>
-                    <Effect>
-                        <With>Watergirl</With>
-                        <Reaction>RemoveSelf</Reaction>
-                        <Reaction>ChangeVariable Score 1.0</Reaction>
-                        <Reaction>ChangeVariable BlueDiamonds 1.0</Reaction>
-                    </Effect>
+                    <RequiredCollisionCondition>
+                        <Entity2>Watergirl</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>RemoveSelf</Effect>
+                        <Effect>ChangeVariable Score 1.0</Effect>
+                        <Effect>ChangeVariable BlueDiamonds 1.0</Effect>
+                    </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>

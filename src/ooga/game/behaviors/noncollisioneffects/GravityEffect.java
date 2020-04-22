@@ -27,7 +27,7 @@ public class GravityEffect implements Effect {
     }
 
     @Override
-    public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+    public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
         //subject.changeVelocity(myGravityVector.get(0)*elapsedTime/EXPECTED_DT,myGravityVector.get(1)*elapsedTime/EXPECTED_DT);
         //System.out.println("GRAVITY APPLYING TO " + subject.getName());
         subject.changeVelocity(myGravityVector.get(0),myGravityVector.get(1));

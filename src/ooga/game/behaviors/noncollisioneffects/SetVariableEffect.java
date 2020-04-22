@@ -36,7 +36,7 @@ public class SetVariableEffect implements Effect {
    * @param game
    */
   @Override
-  public void doEffect(Entity otherEntity, Entity subject, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     System.out.println("variables = " + variables);
     System.out.println("variableName = " + variableName);
