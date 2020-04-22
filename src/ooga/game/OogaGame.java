@@ -31,9 +31,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 //  public OogaGame(String gameName, String userName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myName = gameName;
-    List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
-    myLevelIds = basicGameInfo.get(0);
-    myLevelIds = basicGameInfo.get(0);
+    //ist<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
+    myLevelIds = myDataReader.getLevelIDs(gameName);
     //TODO: Make the type of collision detector configurable.
     myCollisionDetector = new VelocityCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
@@ -44,8 +43,12 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myEntityDefinitions = myDataReader.getImageEntityMap(gameName);
 
     myVariables = new HashMap<>();
-    for(int i=0; i<basicGameInfo.get(1).size(); i++){
-      myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
+//    for(int i=0; i<basicGameInfo.get(1).size(); i++){
+//      myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
+//    }
+
+    for (String key : myDataReader.getVariableMap(gameName).keySet()){
+      myVariables.put(key, Double.parseDouble(myDataReader.getVariableMap(gameName).get(key)));
     }
   }
 
