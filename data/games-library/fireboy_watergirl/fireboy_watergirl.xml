@@ -163,44 +163,44 @@
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Fireboy</Entity1>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Right</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>Floor Right</Args>
+                        <Args>universalTerrain Right</Args>
                         <Effect>TerrainCollisionRight</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Fireboy</Entity1>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Left</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>Floor Left</Args>
+                        <Args>universalTerrain Left</Args>
                         <Effect>TerrainCollisionLeft</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Fireboy</Entity1>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>Floor Down</Args>
+                        <Args>universalTerrain Down</Args>
                         <Effect>TerrainCollisionDown</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Fireboy</Entity1>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>Floor Up</Args>
+                        <Args>universalTerrain Up</Args>
                         <Effect>TerrainCollisionUp</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
@@ -215,7 +215,7 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <RequiredCollisionCondition>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <VariableCondition>
@@ -341,41 +341,41 @@
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Right</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>Floor Right</Args>
+                        <Args>universalTerrain Right</Args>
                         <Effect>TerrainCollisionRight</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Left</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>Floor Left</Args>
+                        <Args>universalTerrain Left</Args>
                         <Effect>TerrainCollisionLeft</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>Floor Down</Args>
+                        <Args>universalTerrain Down</Args>
                         <Effect>TerrainCollisionDown</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>Floor Up</Args>
+                        <Args>universalTerrain Up</Args>
                         <Effect>TerrainCollisionUp</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
@@ -390,7 +390,7 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <RequiredCollisionCondition>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
@@ -404,6 +404,8 @@
             <Width>100</Width>
             <Height>50</Height>
             <Image>floorBrick.jpg</Image>
+            <VariableNames>ID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
         </ImageEntity>
         <ImageEntity>
             <Name>LavaTerrain</Name>
@@ -526,6 +528,61 @@
             <Height>800</Height>
             <Image>background.jpg</Image>
         </ImageEntity>
+        <ImageEntity>
+            <Name>Button</Name>
+            <Width>27</Width>
+            <Height>9</Height>
+            <Image>button.png</Image>
+            <VariableNames>ID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
+            <Behaviors>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Fireboy</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <VariableCondition>
+                        <VariableName>Pressed</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </VariableCondition>
+                    <IndependentAction>
+                        <Effect>SetPosition PressedXPos PressedYPos 300</Effect>
+                        <Effect>SetVariable Pressed true 300 </Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <BannedCollisionCondition>
+                        <Entity2>Fireboy</Entity2>
+                        <Direction>Up</Direction>
+                    </BannedCollisionCondition>
+                    <VariableCondition>
+                        <VariableName>Pressed</VariableName>
+                        <RequiredValue>true</RequiredValue>
+                    </VariableCondition>
+                    <IndependentAction>
+                        <Effect>SetPosition UnpressedXPos UnpressedYPos 300</Effect>
+                        <Effect>SetVariable Pressed false 300</Effect>
+                    </IndependentAction>
+                </Behavior>
+            </Behaviors>
+        </ImageEntity>
+<!--        <ImageEntity>-->
+<!--            <Name>ActivatedDoor</Name>-->
+<!--            <Width>20</Width>-->
+<!--            <Height>300</Height>-->
+<!--            <Image>activatedDoor.png</Image>-->
+<!--            <VariableNames>ID</VariableNames>-->
+<!--            <VariableValues>universalTerrain</VariableValues>-->
+<!--            <Behaviors>-->
+<!--                <Behavior>-->
+<!--                    <VariableCondition>-->
+<!--                        <VariableName>Door0Activated</VariableName>-->
+<!--                        <RequiredValue>true</RequiredValue>-->
+<!--                    </VariableCondition>-->
+<!--                    -->
+<!--                </Behavior>-->
+<!--            </Behaviors>-->
+<!--        </ImageEntity>-->
     </Entities>
     <Variables>
         <Variable>
@@ -607,13 +664,13 @@
                     <XPos>300</XPos>
                     <YPos>250</YPos>
                 </ImageEntityInstance>
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>Button</Name>-->
-<!--                    <XPos>350</XPos>-->
-<!--                    <YPos>275</YPos>-->
-<!--                    <VariableNames>Pressed</VariableNames>-->
-<!--                    <VariableValues>false</VariableValues>-->
-<!--                </ImageEntityInstance>-->
+                <ImageEntityInstance>
+                    <Name>Button</Name>
+                    <XPos>350</XPos>
+                    <YPos>241</YPos>
+                    <VariableNames>Pressed PressedXPos PressedYPos myDoor UnpressedXPos UnpressedYPos</VariableNames>
+                    <VariableValues>false 350 249 activatedDoor0 350 241</VariableValues>
+                </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
                     <XPos>0</XPos>
