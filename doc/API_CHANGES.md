@@ -75,6 +75,7 @@ behaviors
 -4/19/20 Added ``blockInDirection`` to change the value of an entity's blocked status map. Essentially
 this allows/disallows the entity from moving in that direction
 -4/21/20 Added myVariables to entity with add and get methods
+-4/22/20 Added ``getEntityID`` to give the variable value mapped to entity variable "ID"
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require

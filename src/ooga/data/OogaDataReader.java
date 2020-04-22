@@ -370,16 +370,17 @@ public class OogaDataReader implements DataReader{
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
             Map<String, String> variableConditions = new HashMap<>();
+            Map<String, Map.Entry<String, String>> entityVariableConditions = new HashMap<>();
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
             addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName("RequiredCollisionCondition"), name);
             addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName("BannedCollisionCondition"), name);
             addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
-            addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
-            //TODO: Add a map of entity variable conditions separate from game variable conditions
-            behaviors.add(new BehaviorInstance(variableConditions, new HashMap<>(), inputConditions,
-                requiredCollisionConditions, bannedCollisionConditions, getActions(behaviorElement)));
+            addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("GameVariableCondition"));
+            addEntityVariableConditions(entityVariableConditions, behaviorElement.getElementsByTagName("EntityVariableCondition"));
+            behaviors.add(new BehaviorInstance(variableConditions, entityVariableConditions, inputConditions, requiredCollisionConditions,
+                    bannedCollisionConditions, getActions(behaviorElement)));
         }
 
         return new ImageEntityDefinition(name, height, width, imagePath, behaviors);
@@ -438,12 +439,26 @@ public class OogaDataReader implements DataReader{
     private void addVariableConditions(Map<String, String> conditionMap, NodeList variableConditionNodes) throws OogaDataException {
         for(int j=0; j<variableConditionNodes.getLength(); j++){
             Element variableConditionElement = (Element) variableConditionNodes.item(j);
-            checkKeyExists(variableConditionElement, "VariableName", "Missing variable name in variable condition");
-            checkKeyExists(variableConditionElement, "RequiredValue", "Missing required value in variable condition");
-            String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
-            String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
-            conditionMap.put(name, requiredValue);
+            conditionMap.entrySet().add(getVariableConditionEntry(variableConditionElement));
         }
+    }
+
+    private void addEntityVariableConditions(Map<String, Map.Entry<String, String>> conditionMap, NodeList variableConditionNodes) throws OogaDataException{
+        for(int j=0; j<variableConditionNodes.getLength(); j++){
+            Element variableConditionElement = (Element) variableConditionNodes.item(j);
+            checkKeyExists(variableConditionElement, "EntityNameOrID", "Missing entity name/id in entity variable condition");
+            String entityInfo = variableConditionElement.getElementsByTagName("EntityNameOrID").item(0).getTextContent();
+            Map.Entry<String, String> conditionEntry = getVariableConditionEntry(variableConditionElement);
+            conditionMap.put(entityInfo, conditionEntry);
+        }
+    }
+
+    private Map.Entry<String, String> getVariableConditionEntry(Element variableConditionElement) throws OogaDataException {
+        checkKeyExists(variableConditionElement, "VariableName", "Missing variable name in variable condition");
+        checkKeyExists(variableConditionElement, "RequiredValue", "Missing required value in variable condition");
+        String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
+        String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
+        return new HashMap.SimpleEntry<>(name, requiredValue);
     }
 
     private void addOneParameterConditions(Map<String, Boolean> conditionMap, NodeList verticalCollisionConditionNodes, String keyName, String valueName) {
