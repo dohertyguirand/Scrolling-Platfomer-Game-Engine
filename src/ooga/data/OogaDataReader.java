@@ -1,13 +1,23 @@
 package ooga.data;
 import ooga.*;
+import ooga.Entity;
 import ooga.game.Game;
 
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import ooga.game.Level;
 import ooga.game.OogaLevel;
@@ -16,10 +26,7 @@ import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.NonCollisionEffect;
 import ooga.game.behaviors.BehaviorInstance;
 import ooga.view.OggaProfile;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -73,8 +80,7 @@ public class OogaDataReader implements DataReader{
         return thumbnailList;
     }
 
-    @Override
-    public List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
+    private List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
         List<List<String>> basicGameInfo = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         File gameFile = findGame(givenGameName);
         try {
@@ -99,6 +105,28 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
+    public List<String> getLevelIDs(String gameName) throws OogaDataException {
+        List<String> IDList = getBasicGameInfo(gameName).get(0);
+        return IDList;
+    }
+
+    @Override
+    public Map<String, String> getVariableMap(String gameName) throws OogaDataException {
+        Map<String, String> varMap = new HashMap<>();
+        getBasicGameInfo(gameName);
+        List<String> varList = getBasicGameInfo(gameName).get(1);
+        List<String> varVals = getBasicGameInfo(gameName).get(2);
+        for (int i=0; i<varList.size(); i++){
+            if(i<varVals.size()){
+                varMap.put(varList.get(i), varVals.get(i));
+            }else{
+                varMap.put(varList.get(i), "");
+            }
+        }
+        return varMap;
+    }
+
+    @Override
     public List<String> getGameFilePaths() {
         ArrayList<String> FilePaths = new ArrayList<>();
         for(File f : getAllXMLFiles(myLibraryFilePath)){
@@ -106,6 +134,8 @@ public class OogaDataReader implements DataReader{
         }
         return FilePaths;
     }
+
+
 
     /**
      * For Users and for Library, there is one directory holding several smaller directories, each
@@ -366,6 +396,72 @@ public class OogaDataReader implements DataReader{
             }
         }
         return profileList;
+    }
+
+    @Override
+    public void addNewProfile(OggaProfile newProfile) throws OogaDataException {
+        //TODO: make sure profile doesn't already exist
+        String newProfileName = newProfile.getProfileName();
+        try {
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            String directory = DEFAULT_USERS_FILE+"/"+newProfileName;
+            String filepath = directory+"/"+newProfileName+".xml";
+            File file = new File(directory);
+            boolean bool = file.mkdir();
+            if(bool){
+                System.out.println("Directory created successfully");
+            }else{
+                System.out.println("Sorry couldn’t create specified directory");
+            }
+
+            // root element
+            Element root = document.createElement("User");
+            document.appendChild(root);
+
+            // name element
+            Element nameElement = document.createElement("Name");
+            nameElement.appendChild(document.createTextNode(newProfileName));
+            root.appendChild(nameElement);
+
+
+            String newProfileImage = newProfile.getProfilePhotoPath();
+            //copy image into the new user's folder
+            Path src = Paths.get(newProfileImage);
+            String imageName = newProfileImage.split("/")[newProfileImage.split("/").length-1];
+            String copiedProfileImage = directory+"/"+imageName; //
+            Path dest = Paths.get(copiedProfileImage);
+            Files.copy(src, dest);
+
+            //change the directory stored in the given Profile to point to this new copy of the image
+            newProfile.setProfilePhoto(imageName);
+
+            // Image element
+            Element imageElement = document.createElement("Image");
+            imageElement.appendChild(document.createTextNode(imageName));
+            root.appendChild(imageElement);
+
+            // Saves element
+            // Saves are initially empty for new users
+            Element saveStateElement = document.createElement("SavedGameStates");
+            root.appendChild(saveStateElement);
+
+            // create the xml file
+            //transform the DOM Object to an XML File
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(new File(filepath));
+
+            // If you use
+//             StreamResult result = new StreamResult(System.out);
+            // the output will be pushed to the standard output ...
+            // You can use that for debugging
+
+            transformer.transform(domSource, streamResult);
+
+        } catch (ParserConfigurationException | TransformerException | IOException pce) {
+            pce.printStackTrace();
+        }
     }
 
     @Override
