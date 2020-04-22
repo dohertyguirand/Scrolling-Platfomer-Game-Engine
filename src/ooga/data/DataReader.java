@@ -6,7 +6,7 @@ import java.util.Map;
 import ooga.OogaDataException;
 import ooga.game.Game;
 import ooga.game.Level;
-import ooga.view.OggaProfile;
+import ooga.view.OogaProfile;
 
 /**
  * Handles the interaction with game data files, including interpretation and writing.
@@ -20,7 +20,7 @@ public interface DataReader {
    * Returns an empty list if there are no files containing thumbnails.
    * @return The list of thumbnails of games.
    */
-  List<Thumbnail> getThumbnails();
+  List<Thumbnail> getThumbnails() throws OogaDataException;
 
   /**
    * Returns the filepaths to every game file in the library folder. Doesn't guarantee
@@ -93,11 +93,11 @@ public interface DataReader {
    * @return A list of Profiles according to the data stored in the Users folder. Returns an empty list if there are no
    * existing profiles
    */
-  List<OggaProfile> getProfiles();
+  List<OogaProfile> getProfiles() throws OogaDataException;
 
   /**
    * Adds a given profile to the profile folder
    * @param newProfile the profile to add to the saved profile folder
    */
-  void addNewProfile(OggaProfile newProfile) throws OogaDataException;
+  void addNewProfile(OogaProfile newProfile) throws OogaDataException;
 }

@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import ooga.OogaDataException;
 import ooga.data.Thumbnail;
 
 
@@ -20,13 +21,23 @@ public class StartMenu extends ScrollMenu{
   private StringProperty optionSelected = new SimpleStringProperty();
 
   public StartMenu() {
-        super();
-        addImages(myDataReader.getThumbnails());
+    super();
+    try {
+      List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+      addImages(thumbnails);
+    } catch (OogaDataException ignored){
+      //TODO: actually show an error message
+    }
   }
 
   public StartMenu(ViewProfile profile){
     super();
-    addImages(myDataReader.getThumbnails());
+    try {
+      List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+      addImages(thumbnails);
+    } catch (OogaDataException ignored){
+      //TODO: actually show an error message
+    }
     myPane.getChildren().add(setProfileData(profile));
   }
 
@@ -38,11 +49,6 @@ public class StartMenu extends ScrollMenu{
       gameButton.setOnAction(e -> setOptionSelected(thumbnail.getTitle()));
       myHBox.getChildren().add(gameButton);
     }
-  }
-
-  private void addImages() {
-    List<Thumbnail> thumbnails = myDataReader.getThumbnails();
-    addImages(thumbnails);
   }
 
 

@@ -561,7 +561,7 @@
                 <ImageEntityInstance>
                     <Name>Floor</Name>
                     <XPos>300</XPos>
-                    <YPos>300</YPos>
+                    <YPos>250</YPos>
                 </ImageEntityInstance>
 <!--                <ImageEntityInstance>-->
 <!--                    <Name>Button</Name>-->

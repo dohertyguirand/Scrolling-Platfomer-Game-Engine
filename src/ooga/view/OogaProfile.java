@@ -5,13 +5,13 @@ import ooga.Profile;
 import javax.swing.text.html.ImageView;
 import java.util.Map;
 
-public class OggaProfile implements Profile {
+public class OogaProfile implements Profile {
     protected String myProfilePhotoPath;
     protected String myName;
     protected Map<String, Integer> myHighestScores;
     protected String myDefaultImagePath;
 
-    public OggaProfile(){
+    public OogaProfile(){
     }
 
     @Override
