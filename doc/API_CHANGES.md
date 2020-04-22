@@ -82,7 +82,8 @@ The alternative would be internal 'garbage collection' inside level, but that wo
 at least one new method.
 - Added ``addEntity`` so that the main game loop can involve entities being instantiated.
 - Added ``setNextLevelID`` so that they can point to a next level.
-
+- 4/22/2020: Probably decided to get rid of level end conditions as a level-driven behavior. Instead it will be
+driven by entities.
 ### ControlsBehavior
 - Modified ``reactToControls()`` to take in the subject entity as a parameter.
 

@@ -10,4 +10,8 @@ public interface GameInternal {
   Entity getEntityWithId(String id);
 
   List<Entity> getEntitiesWithName(String name);
+
+  void goToLevel(String levelID);
+
+  void goToNextLevel();
 }
