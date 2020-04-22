@@ -79,8 +79,8 @@ public class OogaDataReader implements DataReader{
         }
         return thumbnailList;
     }
-
-    private List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
+    //TODO: fix usages in other files to make private
+    public List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
         List<List<String>> basicGameInfo = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         File gameFile = findGame(givenGameName);
         try {

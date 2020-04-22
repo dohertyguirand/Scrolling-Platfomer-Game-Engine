@@ -33,6 +33,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myName = gameName;
     List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
     myLevelIds = basicGameInfo.get(0);
+    myLevelIds = basicGameInfo.get(0);
     //TODO: Make the type of collision detector configurable.
     myCollisionDetector = new VelocityCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
