@@ -28,7 +28,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   Map<String, ImageEntityDefinition> myEntityDefinitions;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
-//  public OogaGame(String gameName, String userName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myName = gameName;
     //ist<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
@@ -38,8 +37,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
-    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
-//    currentLevel = loadLevel(gameName,userName)
     myEntityDefinitions = myDataReader.getImageEntityMap(gameName);
 
     myVariables = new HashMap<>();
@@ -50,6 +47,16 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     for (String key : myDataReader.getVariableMap(gameName).keySet()){
       myVariables.put(key, Double.parseDouble(myDataReader.getVariableMap(gameName).get(key)));
     }
+  }
+
+  public OogaGame(String gameName, DataReader dataReader, String profileName) throws OogaDataException {
+    this(gameName, dataReader);
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
+  }
+
+  public OogaGame(String gameName, DataReader dataReader, String profileName, String date) throws OogaDataException {
+    this(gameName, dataReader);
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 
   private Level loadGameLevel(String gameName, String id) throws OogaDataException {

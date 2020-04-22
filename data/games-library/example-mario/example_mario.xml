@@ -291,6 +291,12 @@
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
+          <Type>Brick</Type>
+          <XPos>1000</XPos>
+          <YPos>600</YPos>
+          <Size>2.0</Size>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Type>Koopa</Type>
           <XPos>600</XPos>
           <YPos>400</YPos>
