@@ -377,8 +377,9 @@ public class OogaDataReader implements DataReader{
             addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName("BannedCollisionCondition"), name);
             addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
-            behaviors.add(new BehaviorInstance(variableConditions, inputConditions, requiredCollisionConditions,
-                    bannedCollisionConditions, getActions(behaviorElement)));
+            //TODO: Add a map of entity variable conditions separate from game variable conditions
+            behaviors.add(new BehaviorInstance(variableConditions, new HashMap<>(), inputConditions,
+                requiredCollisionConditions, bannedCollisionConditions, getActions(behaviorElement)));
         }
 
         return new ImageEntityDefinition(name, height, width, imagePath, behaviors);
