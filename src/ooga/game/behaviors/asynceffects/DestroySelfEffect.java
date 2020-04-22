@@ -1,4 +1,4 @@
-package ooga.game.behaviors.asyncbehavior;
+package ooga.game.behaviors.asynceffects;
 
 import java.util.List;
 import java.util.Map;

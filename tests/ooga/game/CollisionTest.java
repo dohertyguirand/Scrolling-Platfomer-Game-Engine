@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import ooga.game.behaviors.Effect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
-import ooga.game.behaviors.asyncbehavior.VerticalBounce;
+import ooga.game.behaviors.asynceffects.DestroySelfEffect;
+import ooga.game.behaviors.asynceffects.VerticalBounce;
 import ooga.game.collisiondetection.OogaCollisionDetector;
 import org.junit.jupiter.api.Test;
 

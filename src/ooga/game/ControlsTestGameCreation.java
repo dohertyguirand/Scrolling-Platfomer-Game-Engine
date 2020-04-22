@@ -8,7 +8,7 @@ import java.util.Map;
 import ooga.game.behaviors.Effect;
 import ooga.Entity;
 import ooga.data.ImageEntity;
-import ooga.game.behaviors.asyncbehavior.RunIntoTerrainRight;
+import ooga.game.behaviors.asynceffects.RunIntoTerrainRight;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import ooga.game.behaviors.noncollisioneffects.GravityEffect;
 import ooga.game.behaviors.noncollisioneffects.JumpEffect;

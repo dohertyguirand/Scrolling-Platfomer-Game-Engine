@@ -1,4 +1,4 @@
-package ooga.game.behaviors.asyncbehavior;
+package ooga.game.behaviors.asynceffects;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
