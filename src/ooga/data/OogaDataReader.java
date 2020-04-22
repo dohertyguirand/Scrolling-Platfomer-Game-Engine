@@ -211,19 +211,19 @@ public class OogaDataReader implements DataReader{
                         if(!entityMap.containsKey(entityName)) throw new OogaDataException("Bad entity name: " + entityName);
                         String[] parameterNames = new String[] {"XPos", "YPos"};
                         List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
-                        int[] rowsAndCols = getRowsAndCols(entityElement);
+                        int[] rowsColsAndGaps = getRowsColsAndGaps(entityElement);
                         double xPos;
                         double yPos = parameterValues.get(1);
-                        for(int row=0; row<rowsAndCols[0]; row++){
+                        for(int row=0; row<rowsColsAndGaps[0]; row++){
                             xPos = parameterValues.get(0);
-                            for(int col=0;col<rowsAndCols[1];col++){
+                            for(int col=0;col<rowsColsAndGaps[1];col++){
                                 OogaEntity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
                                 entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                                 entity.setVariables(getEntityVariables(entityElement));
                                 initialEntities.add(entity);
-                                xPos += entityMap.get(entityName).getMyWidth();
+                                xPos += entityMap.get(entityName).getMyWidth()+rowsColsAndGaps[2];
                             }
-                            yPos += entityMap.get(entityName).getMyHeight();
+                            yPos += entityMap.get(entityName).getMyHeight()+rowsColsAndGaps[3];
                         }
                     }
                     NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
@@ -276,26 +276,26 @@ public class OogaDataReader implements DataReader{
     }
 
     /**
-     * gets the rows and columns fields of this entity, each defaults to 1 if not specified
+     * gets the rows and columns fields of this entity, each defaults to 1 if not specified. Gaps default to 0.
      * @param entityElement element in the xml of this entity
-     * @return array of rows, columns
+     * @return array of rows, columns, x gap, y gap
      * @throws OogaDataException if either field is not parsable to an int
      */
-    private int[] getRowsAndCols(Element entityElement) throws OogaDataException {
-        int[] rowsAndCols = new int[]{1, 1};
+    private int[] getRowsColsAndGaps(Element entityElement) throws OogaDataException {
+        int[] rowsColsAndGap = new int[]{1, 1, 0, 0};
         //TODO: add option to put a gap
-        String[] keys = new String[]{"Rows", "Columns"};
-        for(int i=0; i<rowsAndCols.length; i++) {
+        String[] keys = new String[]{"Rows", "Columns", "XGap", "YGap"};
+        for(int i=0; i<rowsColsAndGap.length; i++) {
             NodeList nodes = entityElement.getElementsByTagName(keys[i]);
             if (nodes.getLength() > 0) {
                 try {
-                    rowsAndCols[i] = Integer.parseInt(nodes.item(0).getTextContent());
+                    rowsColsAndGap[i] = Integer.parseInt(nodes.item(0).getTextContent());
                 } catch(NumberFormatException e){
-                    throw new OogaDataException("Row/columns number incorrectly formatted");
+                    throw new OogaDataException("Row/columns/gap number incorrectly formatted");
                 }
             }
         }
-        return rowsAndCols;
+        return rowsColsAndGap;
     }
 
     private List<Double> constructEntity(Element entityElement, String entityName, String[] parameterNames) {
