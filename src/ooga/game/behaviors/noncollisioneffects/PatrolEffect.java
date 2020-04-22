@@ -1,13 +1,14 @@
-package ooga.game.behaviors.framebehavior;
+package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import ooga.Entity;
-import ooga.game.behaviors.FrameBehavior;
+import ooga.game.GameInternal;
+import ooga.game.behaviors.NonCollisionEffect;
 
-public class PatrolBehavior implements FrameBehavior {
+public class PatrolEffect implements NonCollisionEffect {
 
   public static double MARGIN = 20.0;
 
@@ -19,7 +20,7 @@ public class PatrolBehavior implements FrameBehavior {
 
   private List<Double> myTargetPoint;
 
-  public PatrolBehavior(List<String> args) {
+  public PatrolEffect(List<String> args) {
     accelPerFrame = Double.parseDouble(args.get(0));
     myMaxSpeed = Double.parseDouble(args.get(1));
 
@@ -34,7 +35,8 @@ public class PatrolBehavior implements FrameBehavior {
   }
 
   @Override
-  public void doFrameUpdate(double elapsedTime, Entity subject, Map<String, Double> variables) {
+  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables,
+      GameInternal game) {
     List<Double> difference = targetDifference(subject);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {

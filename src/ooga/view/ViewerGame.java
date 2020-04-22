@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -25,6 +26,8 @@ import ooga.game.ControlsTestGameCreation;
 import ooga.game.Game;
 import ooga.game.OogaGame;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewerGame {
@@ -36,13 +39,14 @@ public class ViewerGame {
   private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
+  private List<ViewTextEntity> myTexts = new ArrayList<>();
   private Group myEntityGroup;
   private Group myRoot;
   private String myGameName;
   private Scene myGameScene;
   private Stage myGameStage;
   private PauseMenu myPauseMenu;
-  private Game myGame;
+  private OogaGame myGame;
   private Timeline myAnimation;
   private String myProfileName;
   private ParallelCamera myCamera;
@@ -53,15 +57,13 @@ public class ViewerGame {
   public ViewerGame(String gameName) throws OogaDataException {
     myGameName = gameName;
     myCamera = new ParallelCamera();
-    OogaGame targetGame =  new OogaGame(gameName, new OogaDataReader());
-//    targetGame = ControlsTestGameCreation.getGame();
-    myGame = targetGame;
+    myGame =  new OogaGame(gameName, new OogaDataReader());
     //SAM added this as the way to make a Game once file loading works.
     setUpGameEntities();
     setUpGameStage();
-    setUpPauseButton();
-    setUpInputListeners(targetGame);
+    myRoot.getChildren().add(setUpTopBar());
     myGameScene.setCamera(myCamera);
+    setUpInputListeners(myGame);
   }
   public ViewerGame(String gameName, String profileName) throws OogaDataException {
     this(gameName);
@@ -116,12 +118,15 @@ public class ViewerGame {
       return viewImageEntity.getNode();
     }
     else if(entity instanceof TextEntity){
-      return (new ViewTextEntity((TextEntity)entity)).getNode();
+      ViewTextEntity viewTextEntity = new ViewTextEntity((TextEntity)entity);
+     // viewTextEntity.getXProperty().bind(myCamera.layoutXProperty().add(new SimpleDoubleProperty(viewTextEntity.getX())));
+      myTexts.add(viewTextEntity);
+      return viewTextEntity.getNode();
     }
     return null;
   }
 
-  private void setUpPauseButton() {
+  private Node setUpPauseButton() {
     myPauseMenu = new PauseMenu();
     Scene pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
     Button pauseButton = new Button();
@@ -137,7 +142,7 @@ public class ViewerGame {
     pauseButton.setOnKeyPressed(e -> {
       pauseButton.getParent().fireEvent(e);
     });
-    myRoot.getChildren().add(pauseButton);
+    return pauseButton;
   }
 
   private ImageView getPauseButtonImage(){
@@ -168,10 +173,21 @@ public class ViewerGame {
     myRoot = new Group();
     myRoot.getChildren().add(myEntityGroup);
     myRoot.getChildren().add(new Line(0, PAUSE_BUTTON_SIZE, WINDOW_WIDTH, PAUSE_BUTTON_SIZE));
-    myGameScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
+    myGameScene = new Scene(myRoot, WINDOW_WIDTH , WINDOW_HEIGHT);
     myGameStage.setScene(myGameScene);
     myGameStage.setTitle(myGameName);
     myGameStage.show();
+  }
+
+  private Node setUpTopBar(){
+    HBox hBox = new HBox();
+    hBox.getChildren().add(setUpPauseButton());
+    for(ViewTextEntity textEntity: myTexts){
+      hBox.getChildren().add(textEntity.getNode());
+    }
+    hBox.layoutXProperty().bind(myCamera.layoutXProperty());
+
+    return hBox;
   }
 
   private void step() {
