@@ -1,5 +1,6 @@
 package ooga.view;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
@@ -24,6 +25,7 @@ public class ViewImageEntity implements ViewEntity {
 
   public void bindGenericProperties(OogaEntity entity) {
     imageView.xProperty().bind(entity.xProperty());
+    System.out.println(imageView.xProperty().toString());
     imageView.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET)));
     // add more properties here if needed
   }
@@ -31,6 +33,8 @@ public class ViewImageEntity implements ViewEntity {
   public Node getNode() {
     return imageView;
   }
+  public DoubleProperty getXProperty(){return imageView.xProperty();}
+  public DoubleProperty getYProperty(){return imageView.yProperty();}
 
   private void bindImageProperty(StringProperty location){
     System.out.println(location.getValue());

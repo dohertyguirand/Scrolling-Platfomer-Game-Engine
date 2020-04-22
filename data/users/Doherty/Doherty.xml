@@ -1,6 +1,6 @@
 <User>
-    <Name>Braeden</Name>
-    <Image>DefaultAvatar.png</Image>
+    <Name>Doherty</Name>
+    <Image>DohertyImage.jpg</Image>
     <SavedGameStates>
         <Game>
             <Name>Chrome Dino</Name>
@@ -15,7 +15,6 @@
                 <Date></Date>
                 <StateFilePath>saves/mario-save.xml</StateFilePath>
             </Save>
-            <HighScore>60</HighScore>
         </Game>
     </SavedGameStates>
 </User>

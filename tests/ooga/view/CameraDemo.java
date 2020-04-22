@@ -6,37 +6,32 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
 
-import java.io.IOException;
-import java.util.List;
-
-public class ProfileMenuDemo extends Application {
-
-    private static final String GAME_NOT_FOUND_MESSAGE = "Error: Game not found";
+public class CameraDemo extends Application {
+    private static final String ERROR_MESSAGE = "Error: Internal Data Error";
     private static final String START_MENU_TITLE = "Choose a Game";
-    private Stage stage;
     private String profileNameSelected;
-    private ViewProfile defaultViewProfile = new ViewProfile();
+    private Stage stage;
+
+
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-    stage = primaryStage;
-    Scene display = setUpStartMenuDisplay();
-    primaryStage.setScene(display);
-    primaryStage.setTitle(START_MENU_TITLE);
-    primaryStage.show();
-    primaryStage.setResizable(false);
-}
+    public void start(Stage primaryStage) {
+        stage = primaryStage;
+        Scene display = setUpStartMenuDisplay();
+        primaryStage.setScene(display);
+        primaryStage.setTitle(START_MENU_TITLE);
+        primaryStage.show();
+        primaryStage.setResizable(false);
+    }
 
     private Scene setUpStartMenuDisplay() {
         ProfileMenu profileMenu = new ProfileMenu();
-//        List<ViewProfile> profiles = List.of(new ViewProfile("Tree", "ooga/view/Resources/profilephotos/tree.jpg"));
-//        profileMenu.setMyProfiles(profiles);
         profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> {
-          showStartMenu(pnewVal);
+            showStartMenu(pnewVal);
         });
         return profileMenu.getScene();
     }
@@ -51,19 +46,19 @@ public class ProfileMenuDemo extends Application {
     private void startGame(String gameName, String profileName) {
         if (gameName != null) {
             try {
-                new ViewerGame(gameName, profileName);
+                new ViewerGame(gameName, profileName, true);
             } catch (OogaDataException e) {
                 //Sam added this, because he made it possible for the OogaGame constructor to throw
                 // an exception, so that the view can decide what to do when no game is found.
-                showError();
+                showError(e.getMessage());
             }
         }
     }
 
-    private void showError() {
+    private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText(GAME_NOT_FOUND_MESSAGE);
+        alert.setTitle(ERROR_MESSAGE);
+        alert.setContentText(message);
         alert.showAndWait();
     }
-
 }

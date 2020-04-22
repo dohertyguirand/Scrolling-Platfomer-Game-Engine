@@ -2,27 +2,28 @@ package ooga.view;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
-import ooga.game.ControlsTestGameCreation;
-import ooga.game.Game;
 import ooga.game.OogaGame;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewerGame {
@@ -34,6 +35,7 @@ public class ViewerGame {
   private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
+  private List<ViewTextEntity> myTexts = new ArrayList<>();
   private Group myEntityGroup;
   private Group myRoot;
   private String myGameName;
@@ -43,21 +45,33 @@ public class ViewerGame {
   private OogaGame myGame;
   private Timeline myAnimation;
   private String myProfileName;
+  private ParallelCamera myCamera;
+  private ViewImageEntity focus;
+  private boolean cameraOn = false;
 
 
-  public ViewerGame(String gameName) throws OogaDataException {
+
+  public ViewerGame(String gameName, String profileName) throws OogaDataException {
     myGameName = gameName;
-    myGame =  new OogaGame(gameName, new OogaDataReader());
+    myCamera = new ParallelCamera();
+    //TODO: Update to match the new constructors by adding the date of the save to load
+    myGame =  new OogaGame(gameName, new OogaDataReader(),profileName,"");
+
+
     //SAM added this as the way to make a Game once file loading works.
     setUpGameEntities();
     setUpGameStage();
-    setUpPauseButton();
+    myRoot.getChildren().add(setUpPauseButton());
+    myGameScene.setCamera(myCamera);
     setUpInputListeners(myGame);
-  }
-  public ViewerGame(String gameName, String profileName) throws OogaDataException {
-    this(gameName);
     myProfileName = profileName;
-    System.out.println(myProfileName);
+  }
+  public ViewerGame(String gameName, String profileName, boolean camera) throws OogaDataException {
+    this(gameName,profileName);
+    cameraOn = camera;
+    if(focus!= null){
+      myCamera.layoutXProperty().bind(focus.getXProperty());
+    }
   }
 
   private void setUpGameEntities(){
@@ -95,18 +109,36 @@ public class ViewerGame {
     });
   }
 
+//  private DoubleProperty getOutOfBounds(){
+//    if(myCamera.getBoundsInParent().intersects(focus.getNode().getBoundsInParent())){
+//      return new SimpleDoubleProperty(myCamera.getLayoutX());
+//    }
+//    else {
+//      return focus.getNode().layoutXProperty();
+//    }
+//  }
   private Node makeViewEntity(Entity entity){
     // TODO: use reflection here or something
     if(entity instanceof ImageEntity){
-      return (new ViewImageEntity((ImageEntity)entity)).getNode();
+      System.out.println(cameraOn);
+      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity));
+      if(entity.getName().equals("SmallMario")){
+        focus = viewImageEntity;
+        //myCamera.layoutYProperty().bind(focus.getYProperty().add(new SimpleDoubleProperty(-450.0)));
+      }
+      return viewImageEntity.getNode();
     }
     else if(entity instanceof TextEntity){
-      return (new ViewTextEntity((TextEntity)entity)).getNode();
+      ViewTextEntity viewTextEntity = new ViewTextEntity((TextEntity)entity);
+      viewTextEntity.getXProperty().bind(myCamera.layoutXProperty().add(new SimpleDoubleProperty(viewTextEntity.getX())));
+      return viewTextEntity.getNode();
     }
     return null;
   }
 
-  private void setUpPauseButton() {
+
+
+  private Node setUpPauseButton() {
     myPauseMenu = new PauseMenu();
     Scene pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
     Button pauseButton = new Button();
@@ -122,7 +154,7 @@ public class ViewerGame {
     pauseButton.setOnKeyPressed(e -> {
       pauseButton.getParent().fireEvent(e);
     });
-    myRoot.getChildren().add(pauseButton);
+    return pauseButton;
   }
 
   private ImageView getPauseButtonImage(){
@@ -153,11 +185,22 @@ public class ViewerGame {
     myRoot = new Group();
     myRoot.getChildren().add(myEntityGroup);
     myRoot.getChildren().add(new Line(0, PAUSE_BUTTON_SIZE, WINDOW_WIDTH, PAUSE_BUTTON_SIZE));
-    myGameScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
+    myGameScene = new Scene(myRoot, WINDOW_WIDTH , WINDOW_HEIGHT);
     myGameStage.setScene(myGameScene);
     myGameStage.setTitle(myGameName);
     myGameStage.show();
   }
+
+//  private Node setUpTopBar(){
+//    HBox hBox = new HBox();
+//    hBox.getChildren().add(setUpPauseButton());
+//    for(ViewTextEntity textEntity: myTexts){
+//      hBox.getChildren().add(textEntity.getNode());
+//    }
+//    hBox.layoutXProperty().bind(myCamera.layoutXProperty());
+//
+//    return hBox;
+//  }
 
   private void step() {
     myGame.doGameStep(myAnimation.getCurrentTime().toMillis());

@@ -96,4 +96,17 @@ public class DataReaderTest {
         }
     }
 
+    @Test
+    public void testAddNewProfile(){
+        OggaProfile testProfile = new OggaProfile();
+        testProfile.setProfileName("Doug Rattman");
+        testProfile.setProfilePhoto("data/users/Rattman.jpeg");
+        try {
+            testDataReader.addNewProfile(testProfile);
+        } catch (OogaDataException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
 }

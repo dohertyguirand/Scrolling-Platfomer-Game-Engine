@@ -17,6 +17,9 @@ create new Entity instances.
 - 4/14/20 Changed the return type of ``getProfiles`` to use the same class as View
 - 4/15/20 Changed return type of ``getBasicGameInfo`` to be list of list of strings, to allow
 it to return variables in addition to level IDs
+- 4/21/20 Added ``addNewProfile``
+- 4/21/20 Replaced ``getBasicGameInfo`` with two new methods: ``getLevelIDs`` and ``getVariableMap``. Keeping 
+``getBasicGameInfo`` as a private method.
 
 ## Game API
 - getEntities now returns an observable list instead of list
