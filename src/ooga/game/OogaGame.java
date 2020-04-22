@@ -305,4 +305,19 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
     return ret;
   }
+
+  @Override
+  public void goToLevel(String levelID) {
+    try {
+      currentLevel = loadGameLevel(myName,levelID);
+    }
+    catch (OogaDataException e) {
+      //To preserve the pristine gameplay experience, we do nothing (rather than crash).
+    }
+  }
+
+  @Override
+  public void goToNextLevel() {
+    goToLevel(currentLevel.nextLevelID());
+  }
 }
