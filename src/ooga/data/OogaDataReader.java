@@ -446,8 +446,10 @@ public class OogaDataReader implements DataReader{
     private void addEntityVariableConditions(Map<String, Map.Entry<String, String>> conditionMap, NodeList variableConditionNodes) throws OogaDataException{
         for(int j=0; j<variableConditionNodes.getLength(); j++){
             Element variableConditionElement = (Element) variableConditionNodes.item(j);
-            checkKeyExists(variableConditionElement, "EntityNameOrID", "Missing entity name/id in entity variable condition");
-            String entityInfo = variableConditionElement.getElementsByTagName("EntityNameOrID").item(0).getTextContent();
+            //checkKeyExists(variableConditionElement, "EntityNameOrID", "Missing entity name/id in entity variable condition");
+            String entityInfo;
+            if(variableConditionElement.getElementsByTagName("EntityNameOrID").getLength() == 0) entityInfo = BehaviorInstance.SELF;
+            entityInfo = variableConditionElement.getElementsByTagName("EntityNameOrID").item(0).getTextContent();
             Map.Entry<String, String> conditionEntry = getVariableConditionEntry(variableConditionElement);
             conditionMap.put(entityInfo, conditionEntry);
         }
