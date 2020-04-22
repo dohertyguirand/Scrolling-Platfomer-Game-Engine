@@ -366,8 +366,8 @@ public class OogaDataReader implements DataReader{
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
-            addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName("RequiredCollisionCondition"));
-            addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName("BannedCollisionCondition"));
+            addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName("RequiredCollisionCondition"), name);
+            addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName("BannedCollisionCondition"), name);
             addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
             behaviors.add(new BehaviorInstance(variableConditions, inputConditions, requiredCollisionConditions,
@@ -377,11 +377,14 @@ public class OogaDataReader implements DataReader{
         return new ImageEntityDefinition(name, height, width, imagePath, behaviors);
     }
 
-    private void addCollisionConditions(Map<List<String>, String> collisionConditionsMap, NodeList collisionConditionNodes) throws OogaDataException {
+    private void addCollisionConditions(Map<List<String>, String> collisionConditionsMap, NodeList collisionConditionNodes,
+                                        String entityName) throws OogaDataException {
         for(int i=0; i<collisionConditionNodes.getLength(); i++){
             Element collisionConditionElement = (Element)collisionConditionNodes.item(i);
             try {
-                String entity1Info = collisionConditionElement.getElementsByTagName("Entity1").item(0).getTextContent();
+                String entity1Info;
+                if(collisionConditionElement.getElementsByTagName("Entity1").getLength() == 0) entity1Info = entityName;
+                else entity1Info = collisionConditionElement.getElementsByTagName("Entity1").item(0).getTextContent();
                 String entity2Info = collisionConditionElement.getElementsByTagName("Entity2").item(0).getTextContent();
                 String direction = collisionConditionElement.getElementsByTagName("Direction").item(0).getTextContent();
                 collisionConditionsMap.put(List.of(entity1Info, entity2Info), direction);
@@ -397,11 +400,13 @@ public class OogaDataReader implements DataReader{
         for(String actionType: actionTypes) {
             NodeList actionNodes = behaviorElement.getElementsByTagName(actionType + "Action");
             for(int i=0; i<actionNodes.getLength(); i++){
-                List<String> args = Arrays.asList(((Element) actionNodes.item(i)).getElementsByTagName("Args").item(0).getTextContent().split(" "));
-                NodeList EffectNodes = behaviorElement.getElementsByTagName("Effect");
+                NodeList argsNodes = ((Element) actionNodes.item(i)).getElementsByTagName("Args");
+                List<String> args = new ArrayList<>();
+                if(argsNodes.getLength() > 0) args = Arrays.asList(argsNodes.item(0).getTextContent().split(" "));
+                NodeList effectNodes = behaviorElement.getElementsByTagName("Effect");
                 List<Effect> effects = new ArrayList<>();
-                for (int j = 0; j < EffectNodes.getLength(); j++) {
-                    String[] reactionEffect = EffectNodes.item(j).getTextContent().split(" ");
+                for (int j = 0; j < effectNodes.getLength(); j++) {
+                    String[] reactionEffect = effectNodes.item(j).getTextContent().split(" ");
                     Effect effect = makeBasicEffect(reactionEffect);
                     effects.add(effect);
                 }
@@ -412,7 +417,7 @@ public class OogaDataReader implements DataReader{
     }
 
     private Action makeAction(String actionType, List<String> args, List<Effect> effects) throws OogaDataException {
-        String effectClassName = myActionsResources.getString(actionType) + "action";
+        String effectClassName = myActionsResources.getString(actionType + "Action");
         try {
             Class cls = forName(PATH_TO_CLASSES + effectClassName);
             Constructor cons = cls.getConstructor(List.class, List.class);

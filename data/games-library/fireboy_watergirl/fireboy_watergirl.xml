@@ -8,6 +8,8 @@
             <Width>50</Width>
             <Height>100</Height>
             <Image>fireboy.png</Image>
+            <VariableNames>Still FacingRight FacingLeft</VariableNames>
+            <VariableValues>fireboy_watergirl/fireboy.png fireboy_watergirl/fireboy_facing_right.png fireboy_watergirl/fireboy_facing_left.png</VariableValues>
             <Behaviors>
                 <Behavior>
                     <RequiredCollisionCondition>
@@ -19,6 +21,16 @@
                         <Entity1>Fireboy</Entity1>
                         <Entity2>RedDoor</Entity2>
                         <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity1>Watergirl</Entity1>
+                        <Entity2>BlueDoor</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity1>Watergirl</Entity1>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <InputCondition>
                         <Key>DownKey2Pressed</Key>
@@ -36,10 +48,9 @@
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
                     </VariableCondition>
-                    <CollisionDeterminedAction>
-                        <Args>Fireboy ANY</Args>
+                    <IndependentAction>
                         <Effect>ChangeVariable Score 1000</Effect>
-                    </CollisionDeterminedAction>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
@@ -51,7 +62,7 @@
                         <InputRequirement>false</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-                        <Effect>SetImage fireboy_watergirl/fireboy.png</Effect>
+                        <Effect>SetImage Still</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -61,7 +72,7 @@
                     </InputCondition>
                     <IndependentAction>
                         <Effect>VelocityInput -.1600 0 .3200</Effect>
-                        <Effect>SetImage fireboy_watergirl/fireboy_facing_left.png</Effect>
+                        <Effect>SetImage FacingLeft</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -71,7 +82,7 @@
                     </InputCondition>
                     <IndependentAction>
                         <Effect>VelocityInput .1600 0 .3200</Effect>
-                        <Effect>SetImage fireboy_watergirl/fireboy_facing_right.png</Effect>
+                        <Effect>SetImage FacingRight</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -91,27 +102,105 @@
                         <Entity2>LavaTerrain</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
-                    <Effect>TerrainCollision</Effect>
+                    <CollisionDeterminedAction>
+                        <Args>LavaTerrain Down</Args>
+                        <Effect>TerrainCollisionDown</Effect>
+                    </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
-                    <Effect>
-                        <With>Floor</With>
-                        <Reaction>TerrainCollision</Reaction>
-                    </Effect>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>LavaTerrain</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>LavaTerrain Up</Args>
+                        <Effect>TerrainCollisionUp</Effect>
+                    </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
-                    <Effect>Gravity 0 0.1</Effect>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>LavaTerrain</Entity2>
+                        <Direction>Right</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>LavaTerrain Right</Args>
+                        <Effect>TerrainCollisionRight</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>LavaTerrain</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>LavaTerrain Left</Args>
+                        <Effect>TerrainCollisionLeft</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Right</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>Floor Right</Args>
+                        <Effect>TerrainCollisionRight</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>Floor Left</Args>
+                        <Effect>TerrainCollisionLeft</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>Floor Down</Args>
+                        <Effect>TerrainCollisionDown</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Fireboy</Entity1>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>Floor Up</Args>
+                        <Effect>TerrainCollisionUp</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <IndependentAction>
+                        <Effect>Gravity 0 0.1</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
                         <Key>UpKeyPressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
-                    <Effect>Jump -1.2</Effect>
+                    <RequiredCollisionCondition>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>Jump -1.2</Effect>
+                    </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
@@ -120,34 +209,10 @@
             <Width>50</Width>
             <Height>100</Height>
             <Image>watergirl.png</Image>
+            <VariableNames>Still FacingRight FacingLeft</VariableNames>
+            <VariableValues>fireboy_watergirl/watergirl.png fireboy_watergirl/watergirl_facing_right.png fireboy_watergirl/watergirl_facing_left.png</VariableValues>
             <Behaviors>
                 <Behavior>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
-                    <InputCondition>
-                        <Key>DownKey2Pressed</Key>
-                        <InputRequirement>true</InputRequirement>
-                    </InputCondition>
-                    <InputCondition>
-                        <Key>DownKeyPressed</Key>
-                        <InputRequirement>true</InputRequirement>
-                    </InputCondition>
-                    <VariableCondition>
-                        <VariableName>RedDiamonds</VariableName>
-                        <RequiredValue>1</RequiredValue>
-                    </VariableCondition>
-                    <VariableCondition>
-                        <VariableName>BlueDiamonds</VariableName>
-                        <RequiredValue>1</RequiredValue>
-                    </VariableCondition>
-                    <Effect>
-                        <With>BlueDoor</With>
-                        <Reaction>ChangeVariable Score 1000</Reaction>
-                    </Effect>
-                </Behavior>
-                <Behavior>
                     <InputCondition>
                         <Key>LeftKey2</Key>
                         <InputRequirement>false</InputRequirement>
@@ -156,56 +221,137 @@
                         <Key>RightKey2</Key>
                         <InputRequirement>false</InputRequirement>
                     </InputCondition>
-                    <Effect>SetImage fireboy_watergirl/watergirl.png</Effect>
+                    <IndependentAction>
+                        <Effect>SetImage Still</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
                         <Key>LeftKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <Effect>VelocityInput -.1600 0 .3200</Effect>
-                    <Effect>SetImage fireboy_watergirl/watergirl_facing_left.png</Effect>
+                    <IndependentAction>
+                        <Effect>VelocityInput -.1600 0 .3200</Effect>
+                        <Effect>SetImage FacingLeft</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
                         <Key>RightKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <Effect>VelocityInput .1600 0 .3200</Effect>
-                    <Effect>SetImage fireboy_watergirl/watergirl_facing_right.png</Effect>
+                    <IndependentAction>
+                        <Effect>VelocityInput .1600 0 .3200</Effect>
+                        <Effect>SetImage FacingRight</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
-                    <Effect>
-                        <With>LavaTerrain</With>
-                        <Reaction>Respawn 150 500</Reaction>
-                        <Reaction>ChangeVariable Lives -1.0</Reaction>
-                    </Effect>
+                    <RequiredCollisionCondition>
+                        <Entity2>LavaTerrain</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                        <Effect>ChangeVariable Lives -1.0</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <Behavior>
-                    <Effect>
-                        <With>WaterTerrain</With>
-                        <Reaction>TerrainCollision</Reaction>
-                    </Effect>
+                    <RequiredCollisionCondition>
+                        <Entity2>WaterTerrain</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>WaterTerrain Down</Args>
+                        <Effect>TerrainCollisionDown</Effect>
+                    </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
-                    <Effect>
-                        <With>Floor</With>
-                        <Reaction>TerrainCollision</Reaction>
-                    </Effect>
+                    <RequiredCollisionCondition>
+                        <Entity2>WaterTerrain</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>WaterTerrain Up</Args>
+                        <Effect>TerrainCollisionUp</Effect>
+                    </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
-                    <Effect>Gravity 0 0.1</Effect>
+                    <RequiredCollisionCondition>
+                        <Entity2>WaterTerrain</Entity2>
+                        <Direction>Right</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>WaterTerrain Right</Args>
+                        <Effect>TerrainCollisionRight</Effect>
+                    </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
-                    <VerticalCollisionCondition>
-                        <EntityName>Floor</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </VerticalCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity2>WaterTerrain</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>WaterTerrain Left</Args>
+                        <Effect>TerrainCollisionLeft</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Right</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>Floor Right</Args>
+                        <Effect>TerrainCollisionRight</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>Floor Left</Args>
+                        <Effect>TerrainCollisionLeft</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>Floor Down</Args>
+                        <Effect>TerrainCollisionDown</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>Floor Up</Args>
+                        <Effect>TerrainCollisionUp</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <IndependentAction>
+                        <Effect>Gravity 0 0.1</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
                     <InputCondition>
                         <Key>UpKey2Pressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <Effect>JumpBehavior -1.2</Effect>
+                    <RequiredCollisionCondition>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>Jump -1.2</Effect>
+                    </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
@@ -264,16 +410,19 @@
             <Width>75</Width>
             <Height>107</Height>
             <Image>redDoor.jpg</Image>
+            <VariableNames>OpenDoor</VariableNames>
+            <VariableValues>fireboy_watergirl/openDoor.png</VariableValues>
             <Behaviors>
                 <Behavior>
-                    <!--                    <VerticalCollisionCondition>-->
-                    <!--                        <EntityName>Floor</EntityName>-->
-                    <!--                        <CollisionRequirement>true</CollisionRequirement>-->
-                    <!--                    </VerticalCollisionCondition>-->
-                    <HorizontalCollisionCondition>
-                        <EntityName>Fireboy</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </HorizontalCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity2>Fireboy</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity1>Watergirl</Entity1>
+                        <Entity2>BlueDoor</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
                     <VariableCondition>
                         <VariableName>RedDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
@@ -282,7 +431,9 @@
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
                     </VariableCondition>
-                    <Effect>SetImage fireboy_watergirl/openDoor.png</Effect>
+                    <IndependentAction>
+                        <Effect>SetImage OpenDoor</Effect>
+                    </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
@@ -291,16 +442,20 @@
             <Width>75</Width>
             <Height>107</Height>
             <Image>blueDoor.jpg</Image>
+            <VariableNames>OpenDoor</VariableNames>
+            <VariableValues>fireboy_watergirl/openDoor.png</VariableValues>
             <Behaviors>
                 <Behavior>
-<!--                    <VerticalCollisionCondition>-->
-<!--                        <EntityName>Floor</EntityName>-->
-<!--                        <CollisionRequirement>true</CollisionRequirement>-->
-<!--                    </VerticalCollisionCondition>-->
-                    <HorizontalCollisionCondition>
-                        <EntityName>Watergirl</EntityName>
-                        <CollisionRequirement>true</CollisionRequirement>
-                    </HorizontalCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity1>RedDoor</Entity1>
+                        <Entity2>Fireboy</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <RequiredCollisionCondition>
+                        <Entity1>Watergirl</Entity1>
+                        <Entity2>BlueDoor</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
                     <VariableCondition>
                         <VariableName>RedDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
@@ -309,7 +464,9 @@
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1</RequiredValue>
                     </VariableCondition>
-                    <Effect>SetImage fireboy_watergirl/openDoor.png</Effect>
+                    <IndependentAction>
+                        <Effect>SetImage OpenDoor</Effect>
+                    </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
@@ -370,6 +527,8 @@
                     <Type>Watergirl</Type>
                     <XPos>170</XPos>
                     <YPos>500</YPos>
+                    <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
+                    <VariableValues>170 500</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Type>BlueDiamond</Type>
