@@ -13,18 +13,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
-import ooga.game.ControlsTestGameCreation;
-import ooga.game.Game;
 import ooga.game.OogaGame;
 
 import java.util.ArrayList;
@@ -56,19 +51,19 @@ public class ViewerGame {
 
 
 
-  public ViewerGame(String gameName) throws OogaDataException {
+  public ViewerGame(String gameName, String profileName) throws OogaDataException {
     myGameName = gameName;
     myCamera = new ParallelCamera();
-    myGame =  new OogaGame(gameName, new OogaDataReader());
+    //TODO: Update to match the new constructors by adding the date of the save to load
+    myGame =  new OogaGame(gameName, new OogaDataReader(),profileName,"");
+
+
     //SAM added this as the way to make a Game once file loading works.
     setUpGameEntities();
     setUpGameStage();
     myRoot.getChildren().add(setUpPauseButton());
     myGameScene.setCamera(myCamera);
     setUpInputListeners(myGame);
-  }
-  public ViewerGame(String gameName, String profileName) throws OogaDataException {
-    this(gameName);
     myProfileName = profileName;
   }
   public ViewerGame(String gameName, String profileName, boolean camera) throws OogaDataException {
