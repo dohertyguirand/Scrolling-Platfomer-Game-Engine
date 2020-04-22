@@ -547,7 +547,7 @@
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>SetPosition PressedXPos PressedYPos 300</Effect>
-                        <Effect>SetVariable Pressed true 300 </Effect>
+                        <Effect>SetVariable Pressed true 300</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -568,17 +568,17 @@
         </ImageEntity>
         <ImageEntity>
             <Name>ActivatedDoor</Name>
-            <Width>20</Width>
-            <Height>300</Height>
+            <Width>40</Width>
+            <Height>100</Height>
             <Image>activatedDoor.png</Image>
-            <VariableNames>TerrainID</VariableNames>
-            <VariableValues>universalTerrain</VariableValues>
+            <VariableNames>TerrainID myImage</VariableNames>
+            <VariableValues>universalTerrain fireboy_watergirl/activatedDoor.png</VariableValues>
             <Behaviors>
                 <Behavior>
                     <EntityVariableCondition>
                         <EntityNameOrID>ID</EntityNameOrID>
                         <VariableName>open</VariableName>
-                        <RequiredValue>false</RequiredValue>
+                        <RequiredValue>true</RequiredValue>
                     </EntityVariableCondition>
                     <EntityVariableCondition>
                         <EntityNameOrID>myButtonID</EntityNameOrID>
@@ -586,8 +586,9 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>Resize 10.0 150.0 0.0</Effect>
-                        <Effect>Resize 20.0 300.0 500</Effect>
+                        <Effect>SetImage myImage</Effect>
+                        <Effect>Resize 40.0 50.0 0.0</Effect>
+                        <Effect>Resize 40.0 100.0 500</Effect>
                         <Effect>SetVariable open false 500</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -603,7 +604,8 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>Resize 10.0 150.0 0.0</Effect>
+                        <Effect>Resize 40.0 50.0 0.0</Effect>
+                        <Effect>SetImage none 500</Effect>
                         <Effect>Resize 0.0 0.0 500</Effect>
                         <Effect>SetVariable open true 500</Effect>
                     </IndependentAction>
@@ -695,14 +697,14 @@
                     <Name>Button</Name>
                     <XPos>350</XPos>
                     <YPos>241</YPos>
-                    <VariableNames>ID Pressed PressedXPos PressedYPos myDoor UnpressedXPos UnpressedYPos</VariableNames>
-                    <VariableValues>button0 false 350 249 door0 350 241</VariableValues>
+                    <VariableNames>ID Pressed PressedXPos PressedYPos UnpressedXPos UnpressedYPos</VariableNames>
+                    <VariableValues>button0 false 350 249 350 241</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>ActivatedDoor</Name>
                     <XPos>350</XPos>
-                    <YPos>500</YPos>
-                    <VariableNames>ID myButton open</VariableNames>
+                    <YPos>475</YPos>
+                    <VariableNames>ID myButtonID open</VariableNames>
                     <VariableValues>door0 button0 false</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
@@ -722,7 +724,6 @@
                     <XPos>800</XPos>
                     <YPos>600</YPos>
                     <Columns>2</Columns>
-                    <Gap>0.0</Gap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
