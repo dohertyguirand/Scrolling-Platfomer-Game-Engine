@@ -37,7 +37,7 @@ public class SetVariableEffect extends TimeDelayedEffect {
       variables.put(variableName,parseData(variableValue, subject, variables, 0.0));
     }
     if(subject.getVariable(variableName) != null){
-      subject.addVariable(variableName, String.valueOf(variableValue));
+      subject.addVariable(variableName, variableValue);
     }
     //TODO: add ability to set value of one entity variable to that of another variable?
   }

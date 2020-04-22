@@ -134,98 +134,98 @@
             <EndCondition>DestroyAll Koopa</EndCondition>
             <ImageEntityInstances>
                 <ImageEntityInstance>
-                    <Type>Background</Type>
+                    <Name>Background</Name>
                     <XPos>0</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>Floor</Type>
+                    <Name>Floor</Name>
                     <XPos>0</XPos>
                     <YPos>700</YPos>
                     <Columns>4</Columns>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeUp</Type>
+                    <Name>PipeUp</Name>
                     <XPos>400</XPos>
                     <YPos>300</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeDown</Type>
+                    <Name>PipeDown</Name>
                     <XPos>400</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeUp</Type>
+                    <Name>PipeUp</Name>
                     <XPos>600</XPos>
                     <YPos>300</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeDown</Type>
+                    <Name>PipeDown</Name>
                     <XPos>600</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeUp</Type>
+                    <Name>PipeUp</Name>
                     <XPos>800</XPos>
                     <YPos>300</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeDown</Type>
+                    <Name>PipeDown</Name>
                     <XPos>800</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeUp</Type>
+                    <Name>PipeUp</Name>
                     <XPos>1000</XPos>
                     <YPos>300</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeDown</Type>
+                    <Name>PipeDown</Name>
                     <XPos>1000</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeUp</Type>
+                    <Name>PipeUp</Name>
                     <XPos>1200</XPos>
                     <YPos>300</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeDown</Type>
+                    <Name>PipeDown</Name>
                     <XPos>1200</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeUp</Type>
+                    <Name>PipeUp</Name>
                     <XPos>1400</XPos>
                     <YPos>300</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeDown</Type>
+                    <Name>PipeDown</Name>
                     <XPos>1400</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeUp</Type>
+                    <Name>PipeUp</Name>
                     <XPos>1600</XPos>
                     <YPos>300</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeDown</Type>
+                    <Name>PipeDown</Name>
                     <XPos>1600</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeUp</Type>
+                    <Name>PipeUp</Name>
                     <XPos>1800</XPos>
                     <YPos>300</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>PipeDown</Type>
+                    <Name>PipeDown</Name>
                     <XPos>1800</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Type>Bird</Type>
+                    <Name>Bird</Name>
                     <XPos>10</XPos>
                     <YPos>350</YPos>
                 </ImageEntityInstance>

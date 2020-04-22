@@ -49,32 +49,32 @@
       <EndCondition>DestroyAll Dino</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
-          <Type>Dino</Type>
+          <Name>Dino</Name>
           <XPos>100</XPos>
           <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Cactus</Type>
+          <Name>Cactus</Name>
           <XPos>1200</XPos>
           <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Cactus</Type>
+          <Name>Cactus</Name>
           <XPos>1600</XPos>
           <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Cactus</Type>
+          <Name>Cactus</Name>
           <XPos>2000</XPos>
           <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Cactus</Type>
+          <Name>Cactus</Name>
           <XPos>2400</XPos>
           <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Cactus</Type>
+          <Name>Cactus</Name>
           <XPos>2800</XPos>
           <YPos>400</YPos>
         </ImageEntityInstance>

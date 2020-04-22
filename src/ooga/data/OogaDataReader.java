@@ -207,7 +207,8 @@ public class OogaDataReader implements DataReader{
                     for (int j = 0; j < imageEntityNodes.getLength(); j++) {
                         Node currentEntity = imageEntityNodes.item(j);
                         Element entityElement = (Element) currentEntity;
-                        String entityName = entityElement.getElementsByTagName("Type").item(0).getTextContent();
+                        String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+                        if(!entityMap.containsKey(entityName)) throw new OogaDataException("Bad entity name: " + entityName);
                         String[] parameterNames = new String[] {"XPos", "YPos"};
                         List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
                         int[] rowsAndCols = getRowsAndCols(entityElement);

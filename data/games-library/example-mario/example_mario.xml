@@ -266,85 +266,85 @@
 <!--      <Background>mario_background.png</Background>-->
       <ImageEntityInstances>
         <ImageEntityInstance>
-          <Type>Background</Type>
+          <Name>Background</Name>
           <XPos>0</XPos>
           <YPos>0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>SmallMario</Type>
+          <Name>SmallMario</Name>
           <XPos>0</XPos>
           <YPos>0</YPos>
           <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
           <VariableValues>0 500</VariableValues>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>0</XPos>
           <YPos>600</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>300</XPos>
           <YPos>600</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>QuestionBlock</Type>
+          <Name>QuestionBlock</Name>
           <XPos>300</XPos>
           <YPos>200</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>400</XPos>
           <YPos>600</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>400</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>500</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>600</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>700</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>800</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>1000</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Koopa</Type>
+          <Name>Koopa</Name>
           <XPos>600</XPos>
           <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Flagpole</Type>
+          <Name>Flagpole</Name>
           <XPos>800</XPos>
           <YPos>200</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Void</Type>
+          <Name>Void</Name>
           <XPos>-250</XPos>
           <YPos>799</YPos>
         </ImageEntityInstance>
@@ -382,74 +382,74 @@
       <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
-          <Type>SmallMario</Type>
+          <Name>SmallMario</Name>
           <XPos>0</XPos>
           <YPos>0</YPos>
           <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
           <VariableValues>0 300</VariableValues>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>0</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>300</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>300</XPos>
           <YPos>200</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>400</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>500</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>500</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>600</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>700</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>800</XPos>
           <YPos>600</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Koopa</Type>
+          <Name>Koopa</Name>
           <XPos>800</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Flagpole</Type>
+          <Name>Flagpole</Name>
           <XPos>900</XPos>
           <YPos>200</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Void</Type>
+          <Name>Void</Name>
           <XPos>-250</XPos>
           <YPos>799</YPos>
         </ImageEntityInstance>
@@ -487,62 +487,62 @@
       <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
-          <Type>SmallMario</Type>
+          <Name>SmallMario</Name>
           <XPos>0</XPos>
           <YPos>0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>0</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>100</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>200</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>300</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>400</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>500</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>600</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Brick</Type>
+          <Name>Brick</Name>
           <XPos>700</XPos>
           <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Flagpole</Type>
+          <Name>Flagpole</Name>
           <XPos>700</XPos>
           <YPos>200</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Type>Void</Type>
+          <Name>Void</Name>
           <XPos>-250</XPos>
           <YPos>799</YPos>
         </ImageEntityInstance>
