@@ -23,4 +23,29 @@ public interface Effect {
    */
   void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game);
 
+  /**
+   * attempts to convert the given data into a double. If it can't, tries to get a value from game variables, then from entity variables.
+   *  If that doesn't work, uses default value.
+   * @param data string given by DataReader
+   * @param subject entity the effect is taking place on
+   * @param variables game variables
+   * @param defaultValue what to return if no match is found
+   * @return the parsed value
+   */
+  default double parseData(String data, Entity subject, Map<String, Double> variables, double defaultValue){
+  double parsedData = defaultValue;
+  try{
+    parsedData = Double.parseDouble(data);
+  } catch(NumberFormatException e){
+      if(variables.containsKey(data)){
+        parsedData = variables.get(data);
+      } else if(subject.getVariable(data) != null){
+        try {
+          parsedData = Double.parseDouble(subject.getVariable(data));
+        } catch(NumberFormatException ignored){
+        }
+      }
+  }
+  return parsedData;
+  }
 }

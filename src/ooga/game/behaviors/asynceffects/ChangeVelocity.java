@@ -8,14 +8,14 @@ import ooga.game.behaviors.Effect;
 
 public class ChangeVelocity implements Effect {
 
-  private double velocityMultiplier;
+  private String velocityMultiplierData;
 
   public ChangeVelocity(List<String> args) throws IndexOutOfBoundsException {
-    velocityMultiplier = Double.parseDouble(args.get(0));
+    velocityMultiplierData = args.get(0);
   }
 
   @Override
   public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
-    subject.changeVelocity(0.0, velocityMultiplier);
+    subject.changeVelocity(0.0, parseData(velocityMultiplierData, subject, variables, 0.0));
   }
 }

@@ -10,11 +10,11 @@ import ooga.game.behaviors.Effect;
 public class SetVariableEffect implements Effect {
 
   private String variableName;
-  private Double variableValue;
+  private String variableValue;
 
   public SetVariableEffect(List<String> args) throws IndexOutOfBoundsException {
     variableName = args.get(0);
-    variableValue = Double.parseDouble(args.get(1));
+    variableValue = args.get(1);
   }
 
   /**
@@ -29,7 +29,11 @@ public class SetVariableEffect implements Effect {
   public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     if (variables.containsKey(variableName)) {
-      variables.put(variableName,variableValue);
+      variables.put(variableName,parseData(variableValue, subject, variables, 0.0));
     }
+    if(subject.getVariable(variableName) != null){
+      subject.addVariable(variableName, String.valueOf(variableValue));
+    }
+    //TODO: add ability to set value of one entity variable to that of another variable?
   }
 }

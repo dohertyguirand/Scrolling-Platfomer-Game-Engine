@@ -8,27 +8,31 @@ import ooga.Entity;
 
 public class VelocityInputEffect implements Effect {
 
-  private double xAccelPerFrame;
-  private double yAccelPerFrame;
-  private double myMaxSpeed;
+  private String xAccelPerFrameData;
+  private String yAccelPerFrameData;
+  private String myMaxSpeedData;
+  private static final double MAX_SPEED_DEFAULT = 1000.0;
 
   public VelocityInputEffect(List<String> args) throws IndexOutOfBoundsException {
-    xAccelPerFrame = Double.parseDouble(args.get(0));
-    yAccelPerFrame = Double.parseDouble(args.get(1));
-    myMaxSpeed = Double.parseDouble(args.get(2));
+    xAccelPerFrameData = args.get(0);
+    yAccelPerFrameData = args.get(1);
+    myMaxSpeedData = args.get(2);
   }
 
   public VelocityInputEffect(double xAccel, double yAccel, double maxSpeed) {
-    xAccelPerFrame = xAccel;
-    yAccelPerFrame = yAccel;
-    myMaxSpeed = maxSpeed;
+    xAccelPerFrameData = String.valueOf(xAccel);
+    yAccelPerFrameData = String.valueOf(yAccel);
+    myMaxSpeedData = String.valueOf(maxSpeed);
   }
 
   @Override
   public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables,
                        GameInternal game) {
+    double myMaxSpeed = parseData(myMaxSpeedData, subject, variables, MAX_SPEED_DEFAULT);
+    double xAccelPerFrame = parseData(xAccelPerFrameData, subject, variables, 0.0);
+    double yAccelPerFrame = parseData(yAccelPerFrameData, subject, variables, 0.0);
     if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
-      subject.changeVelocity(xAccelPerFrame,yAccelPerFrame);
+      subject.changeVelocity(xAccelPerFrame, yAccelPerFrame);
     }
   }
 }

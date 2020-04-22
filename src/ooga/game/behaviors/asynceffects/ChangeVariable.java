@@ -23,5 +23,13 @@ public class ChangeVariable implements Effect {
     if (variables.containsKey(variableName)) {
       variables.put(variableName,variables.get(variableName)+incrementValue);
     }
+    String entityVariableValue = subject.getVariable(variableName);
+    if(entityVariableValue != null){
+      try {
+        subject.addVariable(variableName, String.valueOf(Double.parseDouble(entityVariableValue) + incrementValue));
+      } catch (NumberFormatException ignored){
+        System.out.println("Couldn't increment the entity variable of " + subject.getName());
+      }
+    }
   }
 }

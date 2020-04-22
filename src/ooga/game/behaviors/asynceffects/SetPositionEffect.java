@@ -10,15 +10,15 @@ import java.util.Map;
 
 public class SetPositionEffect implements Effect {
 
-  private List<String> respawnLocation = new ArrayList<>();
+  private List<String> desiredLocation = new ArrayList<>();
 
   /**
-   * Construct the respawn effect by setting respawnLocation. Note that it adds strings because it could depend on variables.
+   * Construct the set position effect by setting desiredLocation. Note that it adds strings because it could depend on variables.
    * @param args list of arguments from DataReader
    */
   public SetPositionEffect(List<String> args) throws IndexOutOfBoundsException{
-    respawnLocation.add(args.get(0));
-    respawnLocation.add(args.get(1));
+    desiredLocation.add(args.get(0));
+    desiredLocation.add(args.get(1));
   }
 
   /**
@@ -33,22 +33,8 @@ public class SetPositionEffect implements Effect {
   @Override
   public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     List<Double> newLocation = new ArrayList<>();
-    for(String coordinateData : respawnLocation){
-      try{
-        newLocation.add(Double.parseDouble(coordinateData));
-      } catch(NumberFormatException e){
-        if(variables.containsKey(coordinateData)){
-          newLocation.add(variables.get(coordinateData));
-        } else if(subject.getVariable(coordinateData) != null){
-          try {
-            newLocation.add(Double.parseDouble(subject.getVariable(coordinateData)));
-          } catch(NumberFormatException e2){
-            newLocation.add(0.0);
-          }
-        } else{
-          newLocation.add(0.0);
-        }
-      }
+    for(String coordinateData : desiredLocation){
+      newLocation.add(parseData(coordinateData, subject, variables, 0.0));
     }
     subject.setPosition(newLocation);
   }

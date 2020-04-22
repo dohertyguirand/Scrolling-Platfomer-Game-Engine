@@ -13,23 +13,24 @@ import ooga.game.behaviors.Effect;
  */
 public class GravityEffect implements Effect {
 
-    private List<Double> myGravityVector;
+    private static final double DEFAULT_Y_GRAVITY = 0.1;
+    private List<String> myGravityVectorData;
 
-    public GravityEffect(List<String> args) throws IndexOutOfBoundsException {
-        System.out.println(args.toString());
-        double xGrav = Double.parseDouble(args.get(0));
-        double yGrav = Double.parseDouble(args.get(1));
-        myGravityVector = List.of(xGrav,yGrav);
+    public GravityEffect(List<String> args) throws IndexOutOfBoundsException, NumberFormatException {
+        String xGrav = args.get(0);
+        String yGrav = args.get(1);
+        myGravityVectorData = List.of(xGrav,yGrav);
     }
 
     public GravityEffect(double xGrav, double yGrav) {
-        myGravityVector = List.of(xGrav,yGrav);
+        myGravityVectorData = List.of(String.valueOf(xGrav),String.valueOf(yGrav));
     }
 
     @Override
     public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
         //subject.changeVelocity(myGravityVector.get(0)*elapsedTime/EXPECTED_DT,myGravityVector.get(1)*elapsedTime/EXPECTED_DT);
         //System.out.println("GRAVITY APPLYING TO " + subject.getName());
-        subject.changeVelocity(myGravityVector.get(0),myGravityVector.get(1));
+        subject.changeVelocity(parseData(myGravityVectorData.get(0), subject, variables, 0.0),
+                parseData(myGravityVectorData.get(1), subject, variables, DEFAULT_Y_GRAVITY));
     }
 }
