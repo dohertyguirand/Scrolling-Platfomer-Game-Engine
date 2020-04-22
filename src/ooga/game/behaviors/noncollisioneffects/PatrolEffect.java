@@ -20,7 +20,7 @@ public class PatrolEffect implements Effect {
 
   private List<Double> myTargetPoint;
 
-  public PatrolEffect(List<String> args) {
+  public PatrolEffect(List<String> args) throws IndexOutOfBoundsException {
     accelPerFrame = Double.parseDouble(args.get(0));
     myMaxSpeed = Double.parseDouble(args.get(1));
 

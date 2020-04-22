@@ -11,7 +11,7 @@ public class JumpEffect implements Effect {
   public static final int GROUND_LEVEL = 400;
   double myYVelocity;
 
-  public JumpEffect(List<String> args) {
+  public JumpEffect(List<String> args) throws IndexOutOfBoundsException {
     myYVelocity = Double.parseDouble(args.get(0));
   }
 

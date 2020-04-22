@@ -9,22 +9,12 @@ import ooga.game.behaviors.Effect;
 
 public class SetVariableEffect implements Effect {
 
-  public static final String DEFAULT_VARIABLE_NAME = "DEFAULT";
-  public static final double DEFAULT_VARIABLE_VALUE = 0.0;
   private String variableName;
   private Double variableValue;
 
-  public SetVariableEffect(List<String> args) {
-    if (args.size() >= 2) {
-      variableName = args.get(0);
-      variableValue = Double.parseDouble(args.get(1));
-    }
-    else {
-      variableName = DEFAULT_VARIABLE_NAME;
-      variableValue = DEFAULT_VARIABLE_VALUE;
-    }
-    System.out.println("variableName = " + variableName);
-    System.out.println("variableValue = " + variableValue);
+  public SetVariableEffect(List<String> args) throws IndexOutOfBoundsException {
+    variableName = args.get(0);
+    variableValue = Double.parseDouble(args.get(1));
   }
 
   /**
@@ -38,9 +28,6 @@ public class SetVariableEffect implements Effect {
   @Override
   public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
-    System.out.println("variables = " + variables);
-    System.out.println("variableName = " + variableName);
-    System.out.println("setValue = " + variableValue);
     if (variables.containsKey(variableName)) {
       variables.put(variableName,variableValue);
     }

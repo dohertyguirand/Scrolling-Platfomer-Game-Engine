@@ -15,7 +15,7 @@ public class GravityEffect implements Effect {
 
     private List<Double> myGravityVector;
 
-    public GravityEffect(List<String> args) {
+    public GravityEffect(List<String> args) throws IndexOutOfBoundsException {
         System.out.println(args.toString());
         double xGrav = Double.parseDouble(args.get(0));
         double yGrav = Double.parseDouble(args.get(1));

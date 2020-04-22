@@ -12,7 +12,7 @@ public class CreateEntityEffect implements Effect {
   //TODO: Allow the user to use the relative entity location.
   private List<Double> relativeEntityLocation;
 
-  public CreateEntityEffect(List<String> args) {
+  public CreateEntityEffect(List<String> args) throws IndexOutOfBoundsException {
     createdEntityType = args.get(0);
   }
 
