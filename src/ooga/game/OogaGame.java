@@ -28,7 +28,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   Map<String, ImageEntityDefinition> myEntityDefinitions;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
-//  public OogaGame(String gameName, String userName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myName = gameName;
     List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
@@ -38,14 +37,22 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
-    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
-//    currentLevel = loadLevel(gameName,userName)
     myEntityDefinitions = myDataReader.getImageEntityMap(gameName);
 
     myVariables = new HashMap<>();
     for(int i=0; i<basicGameInfo.get(1).size(); i++){
       myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
     }
+  }
+
+  public OogaGame(String gameName, DataReader dataReader, String profileName) throws OogaDataException {
+    this(gameName, dataReader);
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
+  }
+
+  public OogaGame(String gameName, DataReader dataReader, String profileName, String date) throws OogaDataException {
+    this(gameName, dataReader);
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 
   private Level loadGameLevel(String gameName, String id) throws OogaDataException {
@@ -145,6 +152,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     List<String> allInputs = new ArrayList<>(activeKeys);
     allInputs.addAll(pressedKeys);
 
+    //TODO: remove methods that are no longer necessary like input reactions (since all are now conditional)
     doEntityInputReactions(elapsedTime, activeKeys, pressedKeys);
 
     doEntityCollisionsAndConditionals(elapsedTime, allInputs);
@@ -163,6 +171,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
       for (String input : pressedKeys) {
         entity.reactToControlsPressed(input, this);
       }
+      entity.blockInAllDirections(false);
       entity.updateSelf(elapsedTime, myVariables, this);
       entity.reactToVariables(myVariables);
     }

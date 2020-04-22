@@ -69,6 +69,8 @@ entities can be created by behaviors.
 collisions and ignoring real ones.
 -4/18/20 Set ``hasCollision`` to always return true because it was messing up conditional collision
 behaviors
+-4/19/20 Added ``blockInDirection`` to change the value of an entity's blocked status map. Essentially
+this allows/disallows the entity from moving in that direction
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require
