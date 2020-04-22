@@ -287,8 +287,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public Entity getEntityWithId(String id) {
     for (Entity e : myEntities) {
-      String entityId = e.getVariable(ID_VARIABLE_NAME);
-      if (entityId.equals(id)) {
+      String entityId = e.getEntityID();
+      if (entityId != null && entityId.equals(id)) {
         return e;
       }
     }

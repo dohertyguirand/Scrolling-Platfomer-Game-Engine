@@ -14,7 +14,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   Map<List<String>, String> requiredCollisionConditions;
   Map<List<String>, String> bannedCollisionConditions;
   Map<String, String> gameVariableConditions;
-  Map<String,Entry<String, String>> entityVariableConditions;
+  Map<String,List<Entry<String, String>>> entityVariableConditions;
   List<Action> actions;
 
   /**
@@ -27,10 +27,10 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param actions
    */
   public BehaviorInstance(Map<String, String> gameVariableConditions,
-      Map<String, Entry<String, String>> entityVariableConditions,
-      Map<String, Boolean> inputConditions,
-      Map<List<String>, String> requiredCollisionConditions,
-      Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
+                          Map<String, List<Entry<String, String>>> entityVariableConditions,
+                          Map<String, Boolean> inputConditions,
+                          Map<List<String>, String> requiredCollisionConditions,
+                          Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
     this.gameVariableConditions = gameVariableConditions;
     this.entityVariableConditions = entityVariableConditions;
@@ -58,7 +58,6 @@ public class BehaviorInstance implements ConditionalBehavior {
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
-    System.out.println(variables.toString());
     for(Map.Entry<String, String> variableCondition : gameVariableConditions.entrySet()){
       if((variables.get(variableCondition.getKey()) == null || !(String.valueOf(variables.get(variableCondition.getKey()))).equals(variableCondition.getValue()))) {
         return;
@@ -78,8 +77,8 @@ public class BehaviorInstance implements ConditionalBehavior {
   }
 
   private boolean checkEntityVariableConditions(Entity subject, GameInternal gameInternal) {
-    for(Entry<String, Entry<String, String>> variableCondition : entityVariableConditions.entrySet()){
-      if (!entityVariableConditionSatisfied(subject,gameInternal,variableCondition)) {
+    for(Entry<String, List<Entry<String, String>>> variableConditionsEntry : entityVariableConditions.entrySet()){
+      if (!entityVariableConditionSatisfied(subject,gameInternal,variableConditionsEntry)) {
         return false;
       }
     }
@@ -87,16 +86,23 @@ public class BehaviorInstance implements ConditionalBehavior {
   }
 
   private boolean entityVariableConditionSatisfied(Entity subject, GameInternal gameInternal,
-      Entry<String, Entry<String, String>> variableCondition) {
+      Entry<String, List<Entry<String, String>>> variableConditionsEntry) {
     //Map: ((Variable containing Entity ID) OR (Variable Containing EntityName) OR (EntityID) OR (EntityName) ) -> ((VariableName),(Value))
-    Entity labelledEntity = identifyEntityVariableSubject(subject, gameInternal, variableCondition);
-    //once we've resolved WHERE to check, we check the variable for the value.
-    return (!(labelledEntity.getVariable(variableCondition.getKey()) == null || !labelledEntity.getVariable(variableCondition.getKey()).equals(variableCondition.getValue())));
+    Entity labelledEntity = identifyEntityVariableSubject(subject, gameInternal, variableConditionsEntry.getKey());
+    //once we've resolved WHERE to check, we check that each variable matches each value.
+    if(labelledEntity == null){
+      return false;
+    }
+    for(Entry<String, String> variableCondition : variableConditionsEntry.getValue()){
+      if(labelledEntity.getVariable(variableCondition.getKey()) == null ||
+              !labelledEntity.getVariable(variableCondition.getKey()).equals(variableCondition.getValue())){
+        return false;
+      }
+    }
+    return true;
   }
 
-  private Entity identifyEntityVariableSubject(Entity subject, GameInternal gameInternal,
-      Entry<String, Entry<String, String>> variableCondition) {
-    String label = variableCondition.getKey();
+  private Entity identifyEntityVariableSubject(Entity subject, GameInternal gameInternal, String label) {
     //1. Check if label is a constant that represents "SELF"
     if (label.equals(SELF_IDENTIFIER)) {
       return subject;
@@ -122,9 +128,9 @@ public class BehaviorInstance implements ConditionalBehavior {
       return e;
     }
     //4. Check if label is an entity name (definition type)
-    e = gameInternal.getEntitiesWithName(label).get(0);
-    if (e != null) {
-      return e;
+    List<Entity> entitiesWithName = gameInternal.getEntitiesWithName(label);
+    if (!entitiesWithName.isEmpty()) {
+      return entitiesWithName.get(0);
     }
     return null;
   }

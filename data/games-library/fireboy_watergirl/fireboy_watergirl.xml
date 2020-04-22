@@ -586,8 +586,8 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>ResizeImage 10.0 150.0 0.0</Effect>
-                        <Effect>ResizeImage 20.0 300.0 500</Effect>
+                        <Effect>Resize 10.0 150.0 0.0</Effect>
+                        <Effect>Resize 20.0 300.0 500</Effect>
                         <Effect>SetVariable open false 500</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -603,8 +603,8 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>ResizeImage 10.0 150.0 0.0</Effect>
-                        <Effect>ResizeImage 0.0 0.0 500</Effect>
+                        <Effect>Resize 10.0 150.0 0.0</Effect>
+                        <Effect>Resize 0.0 0.0 500</Effect>
                         <Effect>SetVariable open true 500</Effect>
                     </IndependentAction>
                 </Behavior>

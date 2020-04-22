@@ -370,7 +370,7 @@ public class OogaDataReader implements DataReader{
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
             Map<String, String> variableConditions = new HashMap<>();
-            Map<String, Map.Entry<String, String>> entityVariableConditions = new HashMap<>();
+            Map<String, List<Map.Entry<String, String>>> entityVariableConditions = new HashMap<>();
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
@@ -439,19 +439,21 @@ public class OogaDataReader implements DataReader{
     private void addVariableConditions(Map<String, String> conditionMap, NodeList variableConditionNodes) throws OogaDataException {
         for(int j=0; j<variableConditionNodes.getLength(); j++){
             Element variableConditionElement = (Element) variableConditionNodes.item(j);
-            conditionMap.entrySet().add(getVariableConditionEntry(variableConditionElement));
+            Map.Entry<String, String> variableConditionEntry = getVariableConditionEntry(variableConditionElement);
+            conditionMap.put(variableConditionEntry.getKey(), variableConditionEntry.getValue());
         }
     }
 
-    private void addEntityVariableConditions(Map<String, Map.Entry<String, String>> conditionMap, NodeList variableConditionNodes) throws OogaDataException{
+    private void addEntityVariableConditions(Map<String, List<Map.Entry<String, String>>> conditionMap, NodeList variableConditionNodes) throws OogaDataException{
         for(int j=0; j<variableConditionNodes.getLength(); j++){
             Element variableConditionElement = (Element) variableConditionNodes.item(j);
             //checkKeyExists(variableConditionElement, "EntityNameOrID", "Missing entity name/id in entity variable condition");
             String entityInfo;
             if(variableConditionElement.getElementsByTagName("EntityNameOrID").getLength() == 0) entityInfo = BehaviorInstance.SELF_IDENTIFIER;
-            entityInfo = variableConditionElement.getElementsByTagName("EntityNameOrID").item(0).getTextContent();
+            else entityInfo = variableConditionElement.getElementsByTagName("EntityNameOrID").item(0).getTextContent();
             Map.Entry<String, String> conditionEntry = getVariableConditionEntry(variableConditionElement);
-            conditionMap.put(entityInfo, conditionEntry);
+            conditionMap.putIfAbsent(entityInfo, new ArrayList<>());
+            conditionMap.get(entityInfo).add(conditionEntry);
         }
     }
 
