@@ -190,4 +190,6 @@ public interface Entity {
    * @param variables map of variable names to values
    */
   void setVariables(Map<String, String> variables);
+
+  public String getEntityID();
 }

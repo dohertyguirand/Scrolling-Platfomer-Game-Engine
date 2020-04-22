@@ -252,6 +252,11 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
+  public String getEntityID(){
+    return getVariable("ID");
+  }
+
+  @Override
   public void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies){
     this.propertyVariableDependencies = propertyVariableDependencies;
   }

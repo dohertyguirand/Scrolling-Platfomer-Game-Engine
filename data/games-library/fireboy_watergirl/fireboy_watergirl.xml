@@ -40,14 +40,14 @@
                         <Key>DownKeyPressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <VariableCondition>
+                    <GameVariableCondition>
                         <VariableName>RedDiamonds</VariableName>
                         <RequiredValue>1.0</RequiredValue>
-                    </VariableCondition>
-                    <VariableCondition>
+                    </GameVariableCondition>
+                    <GameVariableCondition>
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1.0</RequiredValue>
-                    </VariableCondition>
+                    </GameVariableCondition>
                     <IndependentAction>
                         <Effect>ChangeVariable Score 1000</Effect>
                     </IndependentAction>
@@ -70,10 +70,10 @@
                         <Key>LeftKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Blinking</VariableName>
                         <RequiredValue>false</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>VelocityInput -.1300 0 .2600</Effect>
                         <Effect>SetImage FacingLeft</Effect>
@@ -84,10 +84,10 @@
                         <Key>RightKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Blinking</VariableName>
                         <RequiredValue>false</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>VelocityInput .1300 0 .2600</Effect>
                         <Effect>SetImage FacingRight</Effect>
@@ -106,10 +106,10 @@
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Blinking</VariableName>
                         <RequiredValue>true</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>BlinkImage Still none Still 50 1300</Effect>
                         <Effect>SetVariable Blinking false 1300</Effect>
@@ -218,10 +218,10 @@
                         <Entity2>universalTerrain</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Blinking</VariableName>
                         <RequiredValue>false</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>Jump -1.2</Effect>
                     </IndependentAction>
@@ -254,10 +254,10 @@
                         <Key>LeftKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Blinking</VariableName>
                         <RequiredValue>false</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>VelocityInput -.1300 0 .2600</Effect>
                         <Effect>SetImage FacingLeft</Effect>
@@ -268,10 +268,10 @@
                         <Key>RightKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Blinking</VariableName>
                         <RequiredValue>false</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>VelocityInput .1300 0 .2600</Effect>
                         <Effect>SetImage FacingRight</Effect>
@@ -289,10 +289,10 @@
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Blinking</VariableName>
                         <RequiredValue>true</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>BlinkImage Still none Still 50 1300</Effect>
                         <Effect>SetVariable Blinking false 1300</Effect>
@@ -404,7 +404,7 @@
             <Width>100</Width>
             <Height>50</Height>
             <Image>floorBrick.jpg</Image>
-            <VariableNames>ID</VariableNames>
+            <VariableNames>TerrainID</VariableNames>
             <VariableValues>universalTerrain</VariableValues>
         </ImageEntity>
         <ImageEntity>
@@ -475,14 +475,14 @@
                         <Entity2>BlueDoor</Entity2>
                         <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
-                    <VariableCondition>
+                    <GameVariableCondition>
                         <VariableName>RedDiamonds</VariableName>
                         <RequiredValue>1.0</RequiredValue>
-                    </VariableCondition>
-                    <VariableCondition>
+                    </GameVariableCondition>
+                    <GameVariableCondition>
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1.0</RequiredValue>
-                    </VariableCondition>
+                    </GameVariableCondition>
                     <IndependentAction>
                         <Effect>SetImage OpenDoor DoorTimeDelay</Effect>
                     </IndependentAction>
@@ -508,14 +508,14 @@
                         <Entity2>BlueDoor</Entity2>
                         <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
-                    <VariableCondition>
+                    <GameVariableCondition>
                         <VariableName>RedDiamonds</VariableName>
                         <RequiredValue>1.0</RequiredValue>
-                    </VariableCondition>
-                    <VariableCondition>
+                    </GameVariableCondition>
+                    <GameVariableCondition>
                         <VariableName>BlueDiamonds</VariableName>
                         <RequiredValue>1.0</RequiredValue>
-                    </VariableCondition>
+                    </GameVariableCondition>
                     <IndependentAction>
                         <Effect>SetImage OpenDoor 600</Effect>
                     </IndependentAction>
@@ -533,18 +533,18 @@
             <Width>27</Width>
             <Height>9</Height>
             <Image>button.png</Image>
-            <VariableNames>ID</VariableNames>
-            <VariableValues>universalTerrain</VariableValues>
+            <VariableNames>TerrainID ID</VariableNames>
+            <VariableValues>universalTerrain button0</VariableValues>
             <Behaviors>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>Fireboy</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Pressed</VariableName>
                         <RequiredValue>false</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>SetPosition PressedXPos PressedYPos 300</Effect>
                         <Effect>SetVariable Pressed true 300 </Effect>
@@ -555,10 +555,10 @@
                         <Entity2>Fireboy</Entity2>
                         <Direction>Up</Direction>
                     </BannedCollisionCondition>
-                    <VariableCondition>
+                    <EntityVariableCondition>
                         <VariableName>Pressed</VariableName>
                         <RequiredValue>true</RequiredValue>
-                    </VariableCondition>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>SetPosition UnpressedXPos UnpressedYPos 300</Effect>
                         <Effect>SetVariable Pressed false 300</Effect>
@@ -566,23 +566,50 @@
                 </Behavior>
             </Behaviors>
         </ImageEntity>
-<!--        <ImageEntity>-->
-<!--            <Name>ActivatedDoor</Name>-->
-<!--            <Width>20</Width>-->
-<!--            <Height>300</Height>-->
-<!--            <Image>activatedDoor.png</Image>-->
-<!--            <VariableNames>ID</VariableNames>-->
-<!--            <VariableValues>universalTerrain</VariableValues>-->
-<!--            <Behaviors>-->
-<!--                <Behavior>-->
-<!--                    <VariableCondition>-->
-<!--                        <VariableName>Door0Activated</VariableName>-->
-<!--                        <RequiredValue>true</RequiredValue>-->
-<!--                    </VariableCondition>-->
-<!--                    -->
-<!--                </Behavior>-->
-<!--            </Behaviors>-->
-<!--        </ImageEntity>-->
+        <ImageEntity>
+            <Name>ActivatedDoor</Name>
+            <Width>20</Width>
+            <Height>300</Height>
+            <Image>activatedDoor.png</Image>
+            <VariableNames>TerrainID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
+            <Behaviors>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <EntityNameOrID>ID</EntityNameOrID>
+                        <VariableName>open</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </EntityVariableCondition>
+                    <EntityVariableCondition>
+                        <EntityNameOrID>myButtonID</EntityNameOrID>
+                        <VariableName>Pressed</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>ResizeImage 10.0 150.0 0.0</Effect>
+                        <Effect>ResizeImage 20.0 300.0 500</Effect>
+                        <Effect>SetVariable open false 500</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <EntityNameOrID>myButtonID</EntityNameOrID>
+                        <VariableName>Pressed</VariableName>
+                        <RequiredValue>true</RequiredValue>
+                    </EntityVariableCondition>
+                    <EntityVariableCondition>
+                        <EntityNameOrID>ID</EntityNameOrID>
+                        <VariableName>open</VariableName>
+                        <RequiredValue>false</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>ResizeImage 10.0 150.0 0.0</Effect>
+                        <Effect>ResizeImage 0.0 0.0 500</Effect>
+                        <Effect>SetVariable open true 500</Effect>
+                    </IndependentAction>
+                </Behavior>
+            </Behaviors>
+        </ImageEntity>
     </Entities>
     <Variables>
         <Variable>
@@ -668,8 +695,15 @@
                     <Name>Button</Name>
                     <XPos>350</XPos>
                     <YPos>241</YPos>
-                    <VariableNames>Pressed PressedXPos PressedYPos myDoor UnpressedXPos UnpressedYPos</VariableNames>
-                    <VariableValues>false 350 249 activatedDoor0 350 241</VariableValues>
+                    <VariableNames>ID Pressed PressedXPos PressedYPos myDoor UnpressedXPos UnpressedYPos</VariableNames>
+                    <VariableValues>button0 false 350 249 door0 350 241</VariableValues>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>ActivatedDoor</Name>
+                    <XPos>350</XPos>
+                    <YPos>500</YPos>
+                    <VariableNames>ID myButton open</VariableNames>
+                    <VariableValues>door0 button0 false</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
