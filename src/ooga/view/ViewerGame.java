@@ -2,8 +2,9 @@ package ooga.view;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
@@ -12,6 +13,8 @@ import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -22,8 +25,8 @@ import ooga.UserInputListener;
 import ooga.data.*;
 import ooga.game.OogaGame;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
 public class ViewerGame {
@@ -35,7 +38,6 @@ public class ViewerGame {
   private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
-  private List<ViewTextEntity> myTexts = new ArrayList<>();
   private Group myEntityGroup;
   private Group myRoot;
   private String myGameName;
@@ -44,12 +46,11 @@ public class ViewerGame {
   private PauseMenu myPauseMenu;
   private OogaGame myGame;
   private Timeline myAnimation;
-  private String myProfileName;
   private ParallelCamera myCamera;
   private ViewImageEntity focus;
   private boolean cameraOn = false;
-
-
+  private ObjectProperty<Effect> colorEffectProperty = new SimpleObjectProperty<>();
+  private Scene pauseScene;
 
   public ViewerGame(String gameName, String profileName) throws OogaDataException {
     myGameName = gameName;
@@ -57,15 +58,15 @@ public class ViewerGame {
     //TODO: Update to match the new constructors by adding the date of the save to load
     myGame =  new OogaGame(gameName, new OogaDataReader(),profileName,"");
 
-
-    //SAM added this as the way to make a Game once file loading works.
     setUpGameEntities();
     setUpGameStage();
-    myRoot.getChildren().add(setUpPauseButton());
+    myRoot.getChildren().addAll(setUpPauseButton(), setUpDarkModeButton(), setUpNormalModeButton());
     myGameScene.setCamera(myCamera);
+    colorEffectProperty.set(new ColorAdjust());
     setUpInputListeners(myGame);
-    myProfileName = profileName;
   }
+
+  @Deprecated
   public ViewerGame(String gameName, String profileName, boolean camera) throws OogaDataException {
     this(gameName,profileName);
     cameraOn = camera;
@@ -121,7 +122,7 @@ public class ViewerGame {
     // TODO: use reflection here or something
     if(entity instanceof ImageEntity){
       System.out.println(cameraOn);
-      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity));
+      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty));
       if(entity.getName().equals("SmallMario")){
         focus = viewImageEntity;
         //myCamera.layoutYProperty().bind(focus.getYProperty().add(new SimpleDoubleProperty(-450.0)));
@@ -140,21 +141,50 @@ public class ViewerGame {
 
   private Node setUpPauseButton() {
     myPauseMenu = new PauseMenu();
-    Scene pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
-    Button pauseButton = new Button();
-    pauseButton.setGraphic(getPauseButtonImage());
-    pauseButton.setOnAction(e -> {
-      myGameStage.setScene(pauseScene);
-      myPauseMenu.setResumed(false);
-      myAnimation.stop();
+    pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
+    return makeButton(getPauseButtonImage(), null, 0, "pause");
+  }
+
+  private void pause() {
+    myGameStage.setScene(pauseScene);
+    myPauseMenu.setResumed(false);
+    myAnimation.stop();
+  }
+
+  private Node setUpDarkModeButton() {
+    return makeButton(null, "Alien Mode", 100, "setDarkMode");
+  }
+
+  private Node setUpNormalModeButton(){
+    return makeButton(null, "Normal Mode", 200, "setNormalMode");
+  }
+
+  private void setNormalMode(){
+    colorEffectProperty.set(new ColorAdjust());
+    myGameScene.getRoot().setStyle("-fx-base: rgba(255, 255, 255, 255)");
+  }
+
+  private void setDarkMode(){
+    colorEffectProperty.set(new ColorAdjust(0.5, 0.2, 0.0 ,0.0));
+    myGameScene.getRoot().setStyle("-fx-base: rgba(60, 63, 65, 255)");
+  }
+
+  private Node makeButton(Node graphic, String text, double xPos, String methodName) {
+    Button button = new Button(text);
+    button.setGraphic(graphic);
+    button.setOnAction(e -> {
+      try {
+        this.getClass().getDeclaredMethod(methodName).invoke(this);
+      } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
+      }
     });
-    pauseButton.setLayoutX(0);
-    pauseButton.setLayoutY(0);
+    button.setLayoutX(xPos);
+    button.setLayoutY(0);
     // note: need the below because buttons consume certain key press events (like arrow keys)
-    pauseButton.setOnKeyPressed(e -> {
-      pauseButton.getParent().fireEvent(e);
+    button.setOnKeyPressed(e -> {
+      button.getParent().fireEvent(e);
     });
-    return pauseButton;
+    return button;
   }
 
   private ImageView getPauseButtonImage(){
@@ -171,9 +201,9 @@ public class ViewerGame {
         step();
       } catch (Exception ex) {
         // note that this should ideally never be thrown
-        // TODO: remove print stack trace
+        // TODO: remove print stack trace, figure out how to make error winow pop up
         ex.printStackTrace();
-        System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is" +
+        System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is " +
                 "not allowed during animation processing");
       }
     });
@@ -190,17 +220,6 @@ public class ViewerGame {
     myGameStage.setTitle(myGameName);
     myGameStage.show();
   }
-
-//  private Node setUpTopBar(){
-//    HBox hBox = new HBox();
-//    hBox.getChildren().add(setUpPauseButton());
-//    for(ViewTextEntity textEntity: myTexts){
-//      hBox.getChildren().add(textEntity.getNode());
-//    }
-//    hBox.layoutXProperty().bind(myCamera.layoutXProperty());
-//
-//    return hBox;
-//  }
 
   private void step() {
     myGame.doGameStep(myAnimation.getCurrentTime().toMillis());
