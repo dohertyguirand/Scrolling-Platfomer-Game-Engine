@@ -11,9 +11,7 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.ImageEntity;
-import ooga.data.OogaDataReader;
-import ooga.game.behaviors.collisioneffects.DestroySelfEffect;
-import ooga.game.behaviors.Effects.JumpEffect;
+import ooga.game.behaviors.noncollisioneffects.ChangeVelocityEffect;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import org.junit.jupiter.api.Test;
 
@@ -52,16 +50,16 @@ public class GameTest {
     double highJumpHeight = 50.0;
     Entity highJumpEntity = new ImageEntity("high");
     highJumpEntity.setPosition(List.of(0.0,startingHeight));
-    highJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpEffect(highJumpHeight))));
+//    highJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new ChangeVelocityEffect(new ArrayList<>()));
 //    highJumpEntity.setControlsBehaviors(Map.of("DownKey",List.of(new JumpBehavior(highJumpHeight))));
     double lowJumpHeight = 10.0;
     Entity lowJumpEntity = new ImageEntity("low");
     lowJumpEntity.setPosition(List.of(0.0,startingHeight));
-    lowJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpEffect(lowJumpHeight))));
+//    lowJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpEffect(lowJumpHeight))));
 
     double elapsedTime = 1.0;
-    Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity), );
-    Game testGame = new OogaGame(testLevel);
+    Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity), "");
+    Game testGame = new OogaGame(testLevel,new DirectionalCollisionDetector());
     UserInputListener listener = testGame.makeUserInputListener();
     listener.reactToKeyPress("W");
     testGame.doGameStep(elapsedTime);

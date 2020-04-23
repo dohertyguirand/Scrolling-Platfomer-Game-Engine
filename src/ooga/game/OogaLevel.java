@@ -80,4 +80,9 @@ public class OogaLevel implements Level{
     public void registerCollision(String firstEntity, String secondEntity) {
         myEndCondition.registerCollision(firstEntity,secondEntity);
     }
+
+    @Override
+    public String getLevelId() {
+        return myId;
+    }
 }
