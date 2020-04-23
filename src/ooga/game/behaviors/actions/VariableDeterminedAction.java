@@ -15,6 +15,7 @@ import ooga.game.behaviors.comparators.VariableEquals;
 
 /**
  * VariableDeterminedAction: determined by entity variables. Action will be executed on any entity that has a matching variable
+ * NOTE: this automatically switches the order of subject and otherEntity when executing the effects
  * Example: move all entities who have entity variable "movable" set to "true"
   */
 @SuppressWarnings("unused")
@@ -45,5 +46,13 @@ public class VariableDeterminedAction extends Action {
       }
     }
     return otherEntities;
+  }
+
+  @Override
+  public void doAction(double elapsedTime, Entity subject, Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+    List<Entity> otherEntities = findOtherEntities(elapsedTime,subject,variables,collisionInfo,gameInternal);
+    for (Entity e : otherEntities) {
+      doEffects(elapsedTime,subject,e,variables,gameInternal);
+    }
   }
 }
