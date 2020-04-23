@@ -11,6 +11,7 @@ import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.OogaVariableCondition;
 import ooga.game.behaviors.VariableCondition;
+import ooga.game.behaviors.comparators.VariableComparator;
 import ooga.game.behaviors.comparators.VariableEquals;
 import ooga.view.OogaProfile;
 import org.w3c.dom.Document;
@@ -51,8 +52,10 @@ public class OogaDataReader implements DataReader{
     private static final String DEFAULT_USERS_FILE = "data/users";
     private static final String EFFECTS_PROPERTIES_LOCATION = "ooga/data/resources/effects";
     private static final String ACTIONS_PROPERTIES_LOCATION = "ooga/data/resources/actions";
+    private static final String COMPARATORS_PROPERTIES_LOCATION = "ooga/data/resources/comparators";
     private final ResourceBundle myEffectsResources = ResourceBundle.getBundle(EFFECTS_PROPERTIES_LOCATION);
     private final ResourceBundle myActionsResources = ResourceBundle.getBundle(ACTIONS_PROPERTIES_LOCATION);
+    private final ResourceBundle myComparatorsResources = ResourceBundle.getBundle(COMPARATORS_PROPERTIES_LOCATION);
 
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
@@ -390,13 +393,15 @@ public class OogaDataReader implements DataReader{
         return new ImageEntityDefinition(name, height, width, imagePath, behaviors);
     }
 
-    private List<VariableCondition> getGameVariableConditions(NodeList conditions) {
+    private List<VariableCondition> getGameVariableConditions(NodeList conditions)
+        throws OogaDataException {
         List<VariableCondition> ret = new ArrayList<>();
         for (int i = 0; i < conditions.getLength(); i ++) {
             Element variableConditionElement = (Element) conditions.item(i);
             String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
             String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
-            ret.add(new OogaVariableCondition(name,new VariableEquals(),requiredValue));
+            VariableComparator comparator = getComparator(variableConditionElement);
+            ret.add(new OogaVariableCondition(name,comparator,requiredValue));
         }
         return ret;
     }
@@ -470,7 +475,28 @@ public class OogaDataReader implements DataReader{
         checkKeyExists(variableConditionElement, "RequiredValue", "Missing required value in variable condition");
         String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
         String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
-        return new OogaVariableCondition(name,new VariableEquals(),requiredValue);
+        VariableComparator comparator = getComparator(variableConditionElement);
+        return new OogaVariableCondition(name,comparator,requiredValue);
+    }
+
+    private VariableComparator getComparator(Element variableConditionElement)
+        throws OogaDataException {
+        String comparatorClassName = myComparatorsResources.getString("Equals");
+        NodeList comparatorType = variableConditionElement.getElementsByTagName("Comparison");
+        if (comparatorType.getLength() != 0) {
+            System.out.println("FOUND COMPARATOR: " + comparatorType.item(0).getTextContent());
+            comparatorClassName = myComparatorsResources.getString(comparatorType.item(0).getTextContent());
+        }
+        try {
+            System.out.println("CP1");
+            Class cls = forName(PATH_TO_CLASSES + comparatorClassName);
+            System.out.println("CP2");
+            Constructor cons = cls.getConstructor();
+            System.out.println("CP3");
+            return (VariableComparator)cons.newInstance();
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |InstantiationException e ) {
+            throw new OogaDataException("Unknown comparator type " + comparatorClassName + " in variable condition.");
+        }
     }
 
     private void addOneParameterConditions(Map<String, Boolean> conditionMap, NodeList verticalCollisionConditionNodes, String keyName, String valueName) {
