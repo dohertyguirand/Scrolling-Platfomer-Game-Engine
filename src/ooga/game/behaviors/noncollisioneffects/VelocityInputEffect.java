@@ -15,15 +15,24 @@ public class VelocityInputEffect extends TimeDelayedEffect {
   private static final double MAX_SPEED_DEFAULT = 1000.0;
 
   public VelocityInputEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
+  }
+
+  /**
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
+   */
+  @Override
+  public void processArgs(List<String> args) {
     xAccelPerFrameData = args.get(0);
     yAccelPerFrameData = args.get(1);
     myMaxSpeedData = args.get(2);
-    if(args.size() > 3){
-      setTimeDelay(args.get(3));
-    }
   }
 
+  @Deprecated
   public VelocityInputEffect(double xAccel, double yAccel, double maxSpeed) {
+    super(null);
     xAccelPerFrameData = String.valueOf(xAccel);
     yAccelPerFrameData = String.valueOf(yAccel);
     myMaxSpeedData = String.valueOf(maxSpeed);

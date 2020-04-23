@@ -17,11 +17,18 @@ public class SetPositionEffect extends TimeDelayedEffect {
    * @param args list of arguments from DataReader
    */
   public SetPositionEffect(List<String> args) throws IndexOutOfBoundsException{
+    super(args);
+  }
+
+  /**
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
+   */
+  @Override
+  public void processArgs(List<String> args) {
     desiredLocation.add(args.get(0));
     desiredLocation.add(args.get(1));
-    if(args.size() > 2){
-      setTimeDelay(args.get(2));
-    }
   }
 
   /**
