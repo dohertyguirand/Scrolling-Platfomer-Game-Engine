@@ -35,4 +35,6 @@ public interface EntityInternal {
    * @param yVelocity The y-value of the new velocity.
    */
   void setVelocity(double xVelocity, double yVelocity);
+
+
 }
