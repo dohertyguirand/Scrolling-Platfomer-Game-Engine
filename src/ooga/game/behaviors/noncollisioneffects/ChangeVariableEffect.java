@@ -1,11 +1,13 @@
 package ooga.game.behaviors.noncollisioneffects;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.ExpressionEvaluator;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 import javax.script.ScriptEngine;
@@ -18,16 +20,18 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
   private String variableName;
   private String operatorData;
   private String changeValueData;
-  //private static final String OPERATOR_RESOURCES_LOCATION = "ooga/game/behaviors/resources/operators";
 
   public ChangeVariableEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
 
+  /**
+   * This should be variable name, operator (e.g. +), value
+   * @param args The String arguments given for this effect in the data file.
+   */
   @Override
   public void processArgs(List<String> args) {
     variableName = args.get(0);
-    //ResourceBundle operatorResources = ResourceBundle.getBundle(OPERATOR_RESOURCES_LOCATION);
     operatorData = args.get(1);
     changeValueData = args.get(2);
   }
@@ -64,9 +68,7 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
   }
 
   private String evaluateOperation(String varValue, double changeValue, String operator) throws NumberFormatException, ScriptException {
-    double varNumberValue = Double.parseDouble(varValue);
-    ScriptEngineManager mgr = new ScriptEngineManager();
-    ScriptEngine engine = mgr.getEngineByName("JavaScript");
-    return (String) engine.eval(varNumberValue + operator + changeValue);
+    String formattedVarValue = BigDecimal.valueOf(Double.parseDouble(varValue)).toPlainString();
+    return String.valueOf(ExpressionEvaluator.eval(formattedVarValue + operator + changeValue));
   }
 }
