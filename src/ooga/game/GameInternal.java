@@ -1,6 +1,8 @@
 package ooga.game;
 
 import java.util.List;
+
+import javafx.beans.property.DoubleProperty;
 import ooga.Entity;
 
 public interface GameInternal {
@@ -16,4 +18,10 @@ public interface GameInternal {
   void goToNextLevel();
 
   void restartLevel();
+
+  void setCameraShiftProperty(List<DoubleProperty> property);
+
+  void setCameraShiftValue(double xShift, double yShift);
+
+  List<Double> getCameraShiftValues();
 }

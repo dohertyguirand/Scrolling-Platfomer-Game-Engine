@@ -3,6 +3,7 @@ package ooga.view;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
 
@@ -37,7 +38,7 @@ public class CameraDemo extends Application {
     }
 
     private void showStartMenu(ViewProfile profile){
-        StartMenu startMenu = new StartMenu(profile,null);
+        StartMenu startMenu = new StartMenu(profile,new Button());
         profileNameSelected = profile.getProfileName();
         startMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal, profileNameSelected));
         stage.setScene(startMenu.getScene());

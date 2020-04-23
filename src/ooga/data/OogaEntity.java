@@ -21,7 +21,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   protected final DoubleProperty yPos = new SimpleDoubleProperty();
   protected final DoubleProperty width = new SimpleDoubleProperty();
   protected final DoubleProperty height = new SimpleDoubleProperty();
-  protected final DoubleProperty stationaryProperty = new SimpleDoubleProperty();
+  protected final DoubleProperty stationaryProperty = new SimpleDoubleProperty(0);
   protected String myName;
   protected Map<String, String> propertyVariableDependencies = new HashMap<>();
   protected final Map<String, Consumer<String>> propertyUpdaters = new HashMap<>(){{
@@ -325,7 +325,17 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    */
   @Override
   public void makeStationaryProperty(boolean stationary) {
-    if(stationary) stationaryProperty.set(1);
+    if (stationary) stationaryProperty.set(1);
     else stationaryProperty.set(0);
+  }
+
+  @Override
+  public void setStationaryProperty(double bit){
+    this.stationaryProperty.setValue(bit);
+  }
+
+  @Override
+  public DoubleProperty stationaryProperty(){
+    return stationaryProperty;
   }
 }

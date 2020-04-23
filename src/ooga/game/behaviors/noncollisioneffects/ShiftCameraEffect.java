@@ -39,6 +39,8 @@ public class ShiftCameraEffect extends TimeDelayedEffect {
    */
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
-    game.getCameraShiftProperties.setCameraShiftValue(parseData(cameraShiftData, subject, variables, 0.0));
+    double xShift = game.getCameraShiftValues().get(0)+parseData(cameraShiftXData, subject, variables, 0.0);
+    double yShift = game.getCameraShiftValues().get(1)+parseData(cameraShiftYData, subject, variables, 0.0);
+    game.setCameraShiftValue(xShift, yShift);
   }
 }
