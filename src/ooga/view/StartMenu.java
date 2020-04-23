@@ -3,11 +3,14 @@ package ooga.view;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import ooga.OogaDataException;
 import ooga.data.Thumbnail;
 
 
@@ -18,13 +21,23 @@ public class StartMenu extends ScrollMenu{
   private StringProperty optionSelected = new SimpleStringProperty();
 
   public StartMenu() {
-        super();
-        addImages(myDataReader.getThumbnails());
+    super();
+    try {
+      List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+      addImages(thumbnails);
+    } catch (OogaDataException ignored){
+      //TODO: actually show an error message
+    }
   }
 
   public StartMenu(ViewProfile profile){
     super();
-    addImages(myDataReader.getThumbnails());
+    try {
+      List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+      addImages(thumbnails);
+    } catch (OogaDataException ignored){
+      //TODO: actually show an error message
+    }
     myPane.getChildren().add(setProfileData(profile));
   }
 
@@ -38,14 +51,12 @@ public class StartMenu extends ScrollMenu{
     }
   }
 
-  private void addImages() {
-    List<Thumbnail> thumbnails = myDataReader.getThumbnails();
-    addImages(thumbnails);
-  }
-
 
   private Node setProfileData(ViewProfile profile){
     VBox vBox = new VBox();
+    vBox.setOnMouseClicked(e->{
+      showProfile(profile);
+    });
     Text text = new Text(profile.getProfileName());
     vBox.getChildren().add(profile.getProfilePhoto());
     vBox.getChildren().add(text);
@@ -53,6 +64,14 @@ public class StartMenu extends ScrollMenu{
   }
   public StringProperty selectedProperty() {
     return optionSelected;
+  }
+
+  private void showProfile(ViewProfile profile){
+    Stage stage  = new Stage();
+    Scene scene = new Scene(profile.getPane());
+    stage.setTitle(profile.getProfileName() + "'s Profile");
+    stage.setScene(scene);
+    stage.show();
   }
 
   public void setOptionSelected(String optionSelected) {

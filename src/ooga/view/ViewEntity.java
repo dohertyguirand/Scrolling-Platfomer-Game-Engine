@@ -1,11 +1,12 @@
 package ooga.view;
 
 import javafx.scene.Node;
+import ooga.Entity;
 import ooga.data.OogaEntity;
 
 public interface ViewEntity {
 
-  void bindGenericProperties(OogaEntity entity);
+  void bindGenericProperties(Entity entity);
 
   Node getNode();
 }

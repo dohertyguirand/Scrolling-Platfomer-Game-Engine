@@ -12,14 +12,17 @@ public class OogaCollisionDetector implements CollisionDetector {
     return (makeShapeFromEntity(a).getBoundsInParent().intersects(makeShapeFromEntity(b).getBoundsInParent()));
   }
 
+  /**
+   * Figure out if the entities are colliding and return the direction that a is colliding with b (e.g. a,b -> right)
+   *
+   * @param a           entity a
+   * @param b           entity b
+   * @param elapsedTime time passed in ms
+   * @return direction of collision, or null if no collision
+   */
   @Override
-  public boolean isCollidingVertically(Entity a, Entity b, double elapsedTime) {
-    return false;
-  }
-
-  @Override
-  public boolean isCollidingHorizontally(Entity a, Entity b, double elapsedTime) {
-    return false;
+  public String getCollisionDirection(Entity a, Entity b, double elapsedTime) {
+    return null;
   }
 
   private Shape makeShapeFromEntity(Entity e) {

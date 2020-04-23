@@ -1,9 +1,8 @@
 package ooga.data;
 
-import ooga.game.behaviors.CollisionBehavior;
-import ooga.game.behaviors.ControlsBehavior;
-import ooga.game.behaviors.MovementBehavior;
+import ooga.game.behaviors.ConditionalBehavior;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,27 +10,22 @@ public class ImageEntityDefinition {
     private double myHeight;
     private double myWidth;
     private String myImageLocation;
-    private List<MovementBehavior> myMovementBehaviors;
-    private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
-    private Map<String,List<ControlsBehavior>> myControls;
+    private List<ConditionalBehavior> myBehaviors;
     private String myName;
+    private Map<String, String> myVariables = new HashMap<>();
 
-    public ImageEntityDefinition(String name, double height, double width, String imageLocation, List<MovementBehavior> movementBehaviors,
-                                 Map<String,List<CollisionBehavior>> collisionBehaviors, Map<String,List<ControlsBehavior>> controls){
+    public ImageEntityDefinition(String name, double height, double width, String imageLocation, List<ConditionalBehavior> behaviors){
         myName = name;
         myHeight = height;
         myWidth = width;
         myImageLocation = imageLocation;
-        myMovementBehaviors = movementBehaviors;
-        myCollisionBehaviors = collisionBehaviors;
-        myControls = controls;
+        myBehaviors = behaviors;
     }
 
     public ImageEntity makeInstanceAt(Double xpos, Double ypos){
         ImageEntity newEntity = new ImageEntity(myName, myImageLocation, xpos, ypos, myWidth, myHeight);
-        newEntity.setCollisionBehaviors(myCollisionBehaviors);
-        newEntity.setMovementBehaviors(myMovementBehaviors);
-        newEntity.setControlsBehaviors(myControls);
+        newEntity.setConditionalBehaviors(myBehaviors);
+        newEntity.setVariables(myVariables);
         return newEntity;
     }
 
@@ -39,4 +33,14 @@ public class ImageEntityDefinition {
     public String toString() {
         return myName + ": (" + myHeight + " x " + myWidth + ")";
     }
+
+    public double getMyHeight() {
+        return myHeight;
+    }
+
+    public double getMyWidth() {
+        return myWidth;
+    }
+
+  public void setVariables(Map<String, String> entityVariables) { myVariables = entityVariables; }
 }

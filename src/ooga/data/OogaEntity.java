@@ -8,10 +8,9 @@ import java.util.Stack;
 import java.util.function.Consumer;
 import javafx.beans.property.*;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionBehavior;
-import ooga.game.behaviors.ControlsBehavior;
+import ooga.game.behaviors.Effect;
+import ooga.game.behaviors.ConditionalBehavior;
 import ooga.Entity;
-import ooga.game.behaviors.MovementBehavior;
 import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
@@ -35,11 +34,12 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
-  private List<MovementBehavior> myMovementBehaviors;
-  private Map<String,List<CollisionBehavior>> myCollisionBehaviors;
-  private Map<String,List<ControlsBehavior>> myControls;
+  private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
+  private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
+  private Map<String, Boolean> blockedMovements = new HashMap<>();
+  private Map<String, String> myVariables = new HashMap<>();
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
     myVelocity = List.of(0.,0.);
@@ -47,47 +47,34 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.yPos.set(yPos);
     this.width.set(width);
     this.height.set(height);
-    myCollisionBehaviors = new HashMap<>();
-    myMovementBehaviors = new ArrayList<>();
-    myControls = new HashMap<>();
+    myConditionalBehaviors = new ArrayList<>();
     myVelocityVectors = new Stack<>();
     myName = "";
+    for(String direction : directions){
+      blockedMovements.put(direction, false);
+    }
   }
 
   @Override
-  public String getName() {
-    return myName;
-  }
+  public String getName() { return myName; }
 
   @Override
-  public double getX() {
-    return xPos.get();
-  }
+  public double getX() { return xPos.get(); }
 
   @Override
-  public DoubleProperty xProperty() {
-    return xPos;
-  }
+  public DoubleProperty xProperty() { return xPos; }
 
   @Override
-  public double getY() {
-    return yPos.get();
-  }
+  public double getY() { return yPos.get(); }
 
   @Override
-  public DoubleProperty yProperty() {
-    return yPos;
-  }
+  public DoubleProperty yProperty() { return yPos; }
 
   @Override
-  public boolean isActiveInView() {
-    return activeInView.get();
-  }
+  public boolean isActiveInView() { return activeInView.get();}
 
   @Override
-  public BooleanProperty activeInViewProperty() {
-    return activeInView;
-  }
+  public BooleanProperty activeInViewProperty() { return activeInView; }
 
   @Override
   public void setActiveInView(boolean activeInView) { this.activeInView.set(activeInView); }
@@ -117,33 +104,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void setMovementBehaviors(List<MovementBehavior> behaviors) {
-    myMovementBehaviors = behaviors;
-  }
-
-  @Override
-  public void reactToControls(String controls) {
-    if (!myControls.containsKey(controls)) {
-      return;
-    }
-    for (ControlsBehavior behavior : myControls.get(controls)) {
-      behavior.reactToControls(this);
-    }
-  }
-
-  @Override
-  public void reactToControlsPressed(String controls) {
-    //TODO: Smarten this up, so that it doesn't just change the String
-    String keyPressedCode = controls + "Pressed";
-    System.out.println(keyPressedCode);
-    reactToControls(keyPressedCode);
-  }
-
-  @Override
-  public void updateSelf(double elapsedTime) {
-    for (MovementBehavior behavior : myMovementBehaviors) {
-      behavior.doMovementUpdate(elapsedTime,this);
-    }
+  public void updateSelf(double elapsedTime, Map<String, String> variables,
+                         GameInternal game) {
     applyFrictionHorizontal(elapsedTime);
     applyFrictionVertical(elapsedTime);
   }
@@ -170,43 +132,28 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void executeMovement(double elapsedTime) {
+    double[] directionalVelocities = new double[]{-myVelocity.get(1), myVelocity.get(1), -myVelocity.get(0), myVelocity.get(0)};
+    int[] velocityIndexes = new int[]{1, 1, 0, 0};
+    for(int i=0; i<directions.length; i++){
+      double[] newVelocity = new double[]{myVelocity.get(0), myVelocity.get(1)};
+      newVelocity[velocityIndexes[i]] = 0.0;
+      if(blockedMovements.get(directions[i]) && directionalVelocities[i] > 0) {
+//        System.out.println("blocked info");
+//        System.out.println(blockedMovements.toString());
+        setVelocity(newVelocity[0], newVelocity[1]);
+      }
+    }
     moveByVelocity(elapsedTime);
   }
 
+  /**
+   * assigns the conditional behaviors of this entity
+   *
+   * @param conditionalBehaviors list of conditional behaviors
+   */
   @Override
-  public void setCollisionBehaviors(Map<String, List<CollisionBehavior>> behaviorMap) {
-    myCollisionBehaviors = new HashMap<>(behaviorMap);
-  }
-
-  @Override
-  public void setControlsBehaviors(Map<String, List<ControlsBehavior>> behaviors) {
-    myControls = new HashMap<>(behaviors);
-  }
-
-  //TODO: Implement the lambda (after testing) to vertical collisions
-  @Override
-  public void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
-    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        behavior.doVerticalCollision(this, collidingEntity,elapsedTime, variables, game);
-      }
-    }
-  }
-
-  @Override
-  public void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
-    doAllCollisions(collidingEntity, behavior -> behavior.doHorizontalCollision(this,collidingEntity, elapsedTime,
-        variables, game));
-  }
-
-  private void doAllCollisions(Entity collidingEntity, Consumer<CollisionBehavior> collisionType) {
-    if (myCollisionBehaviors.containsKey(collidingEntity.getName())) {
-      for (CollisionBehavior behavior : myCollisionBehaviors.get(collidingEntity.getName())) {
-        collisionType.accept(behavior);
-      }
-    }
+  public void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors) {
+    myConditionalBehaviors = new ArrayList<>(conditionalBehaviors);
   }
 
   @Override
@@ -249,7 +196,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public void changeVelocity(double xChange, double yChange) {
-    myVelocity = List.of(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
+    setVelocity(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
   }
 
   @Override
@@ -275,18 +222,46 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void reactToVariables(Map<String, Double> variables) {
-    //for each variable,
+  public void reactToVariables(Map<String, String> variables) {
+    //TODO: make this work for entity variables?
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
         String propertyName = propertyVariableDependencies.get(varName);
         if (propertyUpdaters.containsKey(propertyName)) {
-          propertyUpdaters.get(propertyName).accept(variables.get(varName));
+          try{
+            propertyUpdaters.get(propertyName).accept(Double.parseDouble(variables.get(varName)));
+          } catch (NumberFormatException e){
+            System.out.println(variables.get(varName));
+            System.out.println("Could not set variable property dependency because variable could not be parsed to double");
+          }
         } else {
           System.out.println("no method defined for setting " + propertyName + " property to a variable");
         }
       }
     }
+    updateAutomaticEntityVariables();
+  }
+
+  /**
+   * automatically create/set entity variables containing basic entity information, allowing it to be used in conditions and effects
+   */
+  private void updateAutomaticEntityVariables() {
+    myVariables.put("XVelocity", String.valueOf(myVelocity.get(0)));
+    myVariables.put("YVelocity", String.valueOf(myVelocity.get(1)));
+    myVariables.put("XPos", String.valueOf(this.xPos));
+    myVariables.put("YPos", String.valueOf(this.yPos));
+    myVariables.put("Width", String.valueOf(this.width));
+    myVariables.put("Height", String.valueOf(this.height));
+  }
+
+  @Override
+  public String getEntityID(){
+    return getVariable("ID");
+  }
+
+  @Override
+  public Map<String, String> getVariables() {
+    return new HashMap<>(myVariables);
   }
 
   @Override
@@ -294,8 +269,67 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.propertyVariableDependencies = propertyVariableDependencies;
   }
 
+  /**
+   * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
+   * assigned behavior if true
+   */
+  @Override
+  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
+                                     Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+    //System.out.println(getName() + " is updating!");
+    for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
+      //System.out.println("\tbehavior: " + conditionalBehavior.getClass().toString());
+      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);
+    }
+  }
+
   @Override
   public boolean hasCollisionWith(String entityType) {
-    return myCollisionBehaviors.containsKey(entityType);
+    //TODO: remove this method
+    return true;
+    //return myCollisionBehaviors.containsKey(entityType);
   }
+
+  /**
+   * change the value in this entity's blockedMovements map to the specified value
+   * @param direction up, down, left, or right
+   * @param isBlocked true if the entity is blocked in the direction, otherwise false
+   */
+  @Override
+  public void blockInDirection(String direction, boolean isBlocked){
+    blockedMovements.put(direction, isBlocked);
+  }
+
+  /**
+   * change every value in this entity's blockedMovements map to the specified value
+   * @param isBlocked true if the entity is blocked in the direction, otherwise false
+   */
+  @Override
+  public void blockInAllDirections(boolean isBlocked){
+    blockedMovements.replaceAll((d, v) -> isBlocked);
+  }
+
+  /**
+   * Adds (or sets) a variable to this entity's variable map
+   * @param name name of the variable
+   * @param value value of the variable
+   */
+  @Override
+  public void addVariable(String name, String value){ myVariables.put(name, value); }
+
+  /**
+   * returns the value of entity variable mapped to name
+   * @param name key
+   * @return value
+   */
+  @Override
+  public String getVariable(String name){ return myVariables.get(name); }
+
+  /**
+   * add all variables to the specified map to this entity's variable map
+   *
+   * @param variables map of variable names to values
+   */
+  @Override
+  public void setVariables(Map<String, String> variables) { myVariables.putAll(variables); }
 }

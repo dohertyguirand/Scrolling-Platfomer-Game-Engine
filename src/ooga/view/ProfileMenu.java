@@ -3,9 +3,7 @@ package ooga.view;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.ImageView;
-import ooga.data.Thumbnail;
+import ooga.OogaDataException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +23,14 @@ public class ProfileMenu extends ScrollMenu {
 
 
     private void makeViewProfiles() {
-        //List<OggaProfile> oggaProfiles = new ArrayList<>();
-        List<OggaProfile> oggaProfiles = myDataReader.getProfiles();
-        for (OggaProfile oggaProfile : oggaProfiles) {
-            ViewProfile viewProfile = new ViewProfile(oggaProfile);
+        List<OogaProfile> oogaProfiles = new ArrayList<>();
+        try {
+          oogaProfiles = myDataReader.getProfiles();
+        }catch (OogaDataException e){
+          return;
+        }
+        for (OogaProfile oogaProfile : oogaProfiles) {
+            ViewProfile viewProfile = new ViewProfile(oogaProfile);
             myProfiles.add(viewProfile);
         }
     }
@@ -36,15 +38,13 @@ public class ProfileMenu extends ScrollMenu {
             if (myProfiles != null) {
                 for (ViewProfile profile : myProfiles) {
                     Button button = makeButton(profile.getProfilePhoto(), profile.getProfileName());
-                    button.setOnAction(e -> {
-                        setProfileSelected(profile);
-                    });
+                    button.setOnAction(e -> setProfileSelected(profile));
                     myHBox.getChildren().add(button);
                 }
             }
 //         ImageView defaultImage = new ImageView(addNewProfilePhoto);
 //         Button button = makeButton(defaultImage,"Add a New Profile");
-//         button.setOnAction(e->);
+//         button.setOnAction(e-> );
 //         myHBox.getChildren().add(button);
         }
 

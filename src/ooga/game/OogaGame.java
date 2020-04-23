@@ -11,13 +11,11 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.*;
 import ooga.UserInputListener;
-import ooga.game.behaviors.framebehavior.GravityBehavior;
-import ooga.game.behaviors.framebehavior.MoveForwardBehavior;
-import ooga.game.collisiondetection.OogaCollisionDetector;
-import ooga.game.collisiondetection.VelocityCollisionDetector;
+import ooga.game.collisiondetection.DirectionalCollisionDetector;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
+  public static final String ID_VARIABLE_NAME = "ID";
   private List<String> myLevelIds;
   private Level currentLevel;
   private String myName;
@@ -25,43 +23,48 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
   private InputManager myInputManager = new OogaInputManager();
-  private Map<String, Double> myVariables;
+  private Map<String, String> myVariables;
   private ObservableList<Entity> myEntities;
   Map<String, ImageEntityDefinition> myEntityDefinitions;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
-//  public OogaGame(String gameName, String userName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myName = gameName;
-    List<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
-    myLevelIds = basicGameInfo.get(0);
+    //ist<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
+    myLevelIds = myDataReader.getLevelIDs(gameName);
     //TODO: Make the type of collision detector configurable.
-    myCollisionDetector = new VelocityCollisionDetector();
+    myCollisionDetector = new DirectionalCollisionDetector();
     //TODO: Remove dependency between controls interpreter implementation and this
     myControlsInterpreter = new KeyboardControls();
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
-    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
-//    currentLevel = loadLevel(gameName,userName)
     myEntityDefinitions = myDataReader.getImageEntityMap(gameName);
 
     myVariables = new HashMap<>();
-    for(int i=0; i<basicGameInfo.get(1).size(); i++){
-      myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
+//    for(int i=0; i<basicGameInfo.get(1).size(); i++){
+//      myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
+//    }
+
+    for (String key : myDataReader.getVariableMap(gameName).keySet()){
+      myVariables.put(key, myDataReader.getVariableMap(gameName).get(key));
     }
+  }
+
+  public OogaGame(String gameName, DataReader dataReader, String profileName) throws OogaDataException {
+    this(gameName, dataReader);
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
+  }
+
+  public OogaGame(String gameName, DataReader dataReader, String profileName, String date) throws OogaDataException {
+    this(gameName, dataReader);
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 
   private Level loadGameLevel(String gameName, String id) throws OogaDataException {
     Level level = myDataReader.loadLevel(gameName,id);
     myEntities.clear();
     myEntities.addAll(level.getEntities());
+    System.out.println(myVariables);
     return level;
-  }
-
-  public OogaGame(Level startingLevel) {
-    myName = "Unnamed";
-    myCollisionDetector = new OogaCollisionDetector();
-    myControlsInterpreter = new KeyboardControls();
-    currentLevel = startingLevel;
   }
 
   public OogaGame(Level startingLevel, CollisionDetector collisions) {
@@ -97,45 +100,66 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myInputManager.update();
   }
 
-  private Map<Entity,List<Entity>> findVerticalCollisions(double elapsedTime) {
-    CollisionType<Entity> collisionType = (a,b) -> myCollisionDetector.isCollidingVertically(a,b,elapsedTime);
-    return findCollisions(collisionType);
-  }
-
-  private Map<Entity,List<Entity>> findHorizontalCollisions(double elapsedTime) {
-    CollisionType<Entity> collisionType = (a,b) -> myCollisionDetector.isCollidingHorizontally(a,b,elapsedTime);
-    return findCollisions(collisionType);
-  }
-
-  private Map<Entity,List<Entity>> findCollisions(CollisionType<Entity> collisionType) {
-    Map<Entity,List<Entity>> ret = new HashMap<>();
-    for (Entity target : currentLevel.getEntities()) {
-      ret.put(target,collidingEntities(collisionType, target));
-    }
-    return ret;
-  }
-
-  private List<Entity> collidingEntities(CollisionType<Entity> collisionType, Entity target) {
-    List<Entity> entityCollisions = new ArrayList<>();
-    for (Entity collidingWith : currentLevel.getEntities()) {
-      if (collidingWith != target && target.hasCollisionWith(collidingWith.getName())
-          && collisionType.isColliding(target,collidingWith)) {
-        currentLevel.registerCollision(target.getName(),collidingWith.getName());
-        entityCollisions.add(collidingWith);
-//        break;
+  private Map<Entity, Map<String, List<Entity>>> findDirectionalCollisions(double elapsedTime) {
+    Map<Entity, Map<String, List<Entity>>> collisionInfo = new HashMap<>();
+    for(Entity entity : currentLevel.getEntities()){
+      Map<String, List<Entity>> collisionsByDirection = new HashMap<>();
+      String[] directions = new String[]{"Up", "Down", "Left", "Right"};
+      for(String direction : directions){
+        collisionsByDirection.put(direction, new ArrayList<>());
       }
+      for(Entity collidingWith : currentLevel.getEntities()){
+        //TODO: if needed, compare the exact objects instead of the names (allowing entities with same name to register collisions)
+        if(!entity.getName().equals(collidingWith.getName())) {
+          String collisionDirection = myCollisionDetector.getCollisionDirection(entity, collidingWith, elapsedTime);
+          if (collisionDirection != null){
+            collisionsByDirection.get(collisionDirection).add(collidingWith);
+          }
+        }
+      }
+      collisionInfo.put(entity, collisionsByDirection);
     }
-    return entityCollisions;
+    return collisionInfo;
   }
 
   private void doUpdateLoop(double elapsedTime) {
-    doEntityUpdates(elapsedTime);
-    doEntityCollisions(elapsedTime);
+    //1. calculate all automatic movement
+    //2. calculate all controls-based movement
+    //3. find collisions
+    //4. calculate effect of collisions.
+    //5. execute movement.
+    List<String> activeKeys = myInputManager.getActiveKeys();
+    List<String> pressedKeys = new ArrayList<>();
+    for(String keyPressed : myInputManager.getPressedKeys()){
+      //TODO: Smarten this up, so that it doesn't just change the String
+      pressedKeys.add(keyPressed + "Pressed");
+    }
+    List<String> allInputs = new ArrayList<>(activeKeys);
+    allInputs.addAll(pressedKeys);
+
+    doEntityFrameUpdates(elapsedTime);
+
+    doEntityBehaviors(elapsedTime, allInputs);
 //    doVariableUpdates();
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
     checkLevelEnd();
+  }
+
+  private void doEntityFrameUpdates(double elapsedTime) {
+    for (Entity entity : currentLevel.getEntities()) {
+      entity.blockInAllDirections(false);
+      entity.updateSelf(elapsedTime, myVariables, this);
+      entity.reactToVariables(myVariables);
+    }
+  }
+
+  private void doEntityBehaviors(double elapsedTime, List<String> allInputs) {
+    Map<Entity, Map<String, List<Entity>>> collisionInfo = findDirectionalCollisions(elapsedTime);
+    for (Entity entity : currentLevel.getEntities()) {
+      entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, collisionInfo, this);
+    }
   }
 
   private void checkLevelEnd() {
@@ -185,35 +209,14 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  private void doEntityCollisions(double elapsedTime) {
-    Map<Entity, List<Entity>> verticalCollisions = findVerticalCollisions(elapsedTime);
-    Map<Entity,List<Entity>> horizontalCollisions = findHorizontalCollisions(elapsedTime);
-    for (Entity e : currentLevel.getEntities()) {
-      for (Entity collidingWith : verticalCollisions.get(e)) {
-        e.handleVerticalCollision(collidingWith, elapsedTime, myVariables, this);
-      }
-      for (Entity collidingWith : horizontalCollisions.get(e)) {
-        e.handleHorizontalCollision(collidingWith, elapsedTime, myVariables,this);
-      }
-    }
-  }
-
-  private void doEntityUpdates(double elapsedTime) {
-    for (Entity e : currentLevel.getEntities()) {
-      for (String input : myInputManager.getActiveKeys()) {
-        e.reactToControls(input);
-      }
-      for (String input : myInputManager.getPressedKeys()) {
-        e.reactToControlsPressed(input);
-      }
-      e.updateSelf(elapsedTime);
-      e.reactToVariables(myVariables);
-    }
-  }
-
   @Override
   public UserInputListener makeUserInputListener() {
     return this;
+  }
+
+  @Override
+  public String getCurrentLevelId() {
+    return currentLevel.getLevelId();
   }
 
   /**
@@ -276,7 +279,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToPauseButton(boolean paused) {
-
+    //TODO: make this do something??
   }
 
   @Override
@@ -285,5 +288,42 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     Entity created = definition.makeInstanceAt(position.get(0),position.get(1));
     myEntities.add(created);
     currentLevel.addEntity(created);
+  }
+
+  @Override
+  public Entity getEntityWithId(String id) {
+    for (Entity e : myEntities) {
+      String entityId = e.getEntityID();
+      if (entityId != null && entityId.equals(id)) {
+        return e;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public List<Entity> getEntitiesWithName(String name) {
+    List<Entity> ret = new ArrayList<>();
+    for (Entity e : myEntities) {
+      if (e.getName().equals(name)) {
+        ret.add(e);
+      }
+    }
+    return ret;
+  }
+
+  @Override
+  public void goToLevel(String levelID) {
+    try {
+      currentLevel = loadGameLevel(myName,levelID);
+    }
+    catch (OogaDataException e) {
+      //To preserve the pristine gameplay experience, we do nothing (rather than crash).
+    }
+  }
+
+  @Override
+  public void goToNextLevel() {
+    goToLevel(currentLevel.nextLevelID());
   }
 }

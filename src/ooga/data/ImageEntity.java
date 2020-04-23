@@ -27,16 +27,14 @@ public class ImageEntity extends OogaEntity {
     this("Unnamed", null, 0, 0, 10.0, 10.0);
   }
 
-  public String getImageLocation() {
-    return imageLocation.get();
-  }
+  public void setImageLocation(String filePath){imageLocation.set(filePath);}
 
   public StringProperty imageLocationProperty() {
     return imageLocation;
   }
 
   @Override
-  public void reactToVariables(Map<String, Double> variables) {
+  public void reactToVariables(Map<String, String> variables) {
     //does nothing for now?
   }
 }
