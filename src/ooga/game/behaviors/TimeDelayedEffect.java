@@ -55,6 +55,4 @@ public abstract class TimeDelayedEffect implements Effect {
    * @param game game instance
    */
   protected abstract void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game);
-
-  protected abstract ImageEntity doTimeDelayedEffectwithImage(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game);
 }
