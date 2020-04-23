@@ -7,6 +7,7 @@ import ooga.game.behaviors.Effect;
 import ooga.Entity;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+@Deprecated
 public class VelocityInputEffect extends TimeDelayedEffect {
 
   private String xAccelPerFrameData;

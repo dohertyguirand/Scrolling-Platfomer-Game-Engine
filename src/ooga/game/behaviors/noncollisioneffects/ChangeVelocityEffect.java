@@ -8,18 +8,20 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 public class ChangeVelocityEffect extends TimeDelayedEffect {
 
-  private String velocityXMultiplierData;
-  private String velocityYMultiplierData;
+  private String xAccelPerFrameData;
+  private String yAccelPerFrameData;
+  private String myMaxSpeedData;
+  private static final double MAX_SPEED_DEFAULT = 1000.0;
 
   public ChangeVelocityEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
-    System.out.println("HELLO");
   }
 
   @Override
   public void processArgs(List<String> args) {
-    velocityXMultiplierData = args.get(0);
-    velocityYMultiplierData = args.get(1);
+    xAccelPerFrameData = args.get(0);
+    yAccelPerFrameData = args.get(1);
+    myMaxSpeedData = args.get(2);
   }
 
   /**
@@ -33,7 +35,11 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
    */
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
-    subject.changeVelocity(parseData(velocityXMultiplierData, subject, variables, 0.0),
-            parseData(velocityYMultiplierData, subject, variables, 0.0));
+    double myMaxSpeed = parseData(myMaxSpeedData, subject, variables, MAX_SPEED_DEFAULT);
+    //TODO: use dot product
+    if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
+      subject.changeVelocity(parseData(xAccelPerFrameData, subject, variables, 0.0),
+              parseData(yAccelPerFrameData, subject, variables, 0.0));
+    }
   }
 }
