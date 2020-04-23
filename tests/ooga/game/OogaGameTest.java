@@ -66,7 +66,7 @@ public class OogaGameTest {
     double elapsedTime = 1.0;
     Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity), "");
     Game testGame = new OogaGame(testLevel,new DirectionalCollisionDetector());
-    UserInputListener listener = testGame.makeUserInputListener();
+    UserInputListener listener = (OogaGame)testGame;
     listener.reactToKeyPress("W");
     testGame.doGameStep(elapsedTime);
     double expectedHighHeight = elapsedTime * highJumpHeight;

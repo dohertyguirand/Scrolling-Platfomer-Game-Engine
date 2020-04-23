@@ -265,9 +265,21 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   @Override
   public void createEntity(String type, List<Double> position) {
-    ImageEntityDefinition definition = myEntityDefinitions.get(type);
-    Entity created = definition.makeInstanceAt(position.get(0),position.get(1));
+    Entity created = makeEntityInstance(type, position);
     myNewCreatedEntities.add(created);
+  }
+
+  @Override
+  public void createEntity(String type, List<Double> position, double width, double height) {
+    Entity created = makeEntityInstance(type, position);
+    created.setHeight(height);
+    created.setWidth(width);
+    myNewCreatedEntities.add(created);
+  }
+
+  private Entity makeEntityInstance(String type, List<Double> position) {
+    ImageEntityDefinition definition = myEntityDefinitions.get(type);
+    return definition.makeInstanceAt(position.get(0), position.get(1));
   }
 
   @Override

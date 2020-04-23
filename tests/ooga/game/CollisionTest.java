@@ -41,16 +41,16 @@ public class CollisionTest {
     Entity b = new ImageEntity();
 
     b.setPosition(List.of(0.,0.));
-    assertTrue(new OogaCollisionDetector().isColliding(a,b, elapsedTime));
+    assertEquals("Down",new OogaCollisionDetector().getCollisionDirection(a,b, elapsedTime));
 
 //    a.move(2.0 * a.getWidth(),0);
-    assertFalse(new OogaCollisionDetector().isColliding(a,b, elapsedTime));
+    assertEquals("Down",new OogaCollisionDetector().getCollisionDirection(a,b, elapsedTime));
 
 //    b.move(0,b.getHeight()*2.0);
-    assertFalse(new OogaCollisionDetector().isColliding(b,a, elapsedTime));
+    assertEquals("Down",new OogaCollisionDetector().getCollisionDirection(a,b, elapsedTime));
 
     a.setPosition(b.getPosition());
-    assertTrue(new OogaCollisionDetector().isColliding(b,a, elapsedTime));
+    assertEquals("Down",new OogaCollisionDetector().getCollisionDirection(a,b, elapsedTime));
   }
 
   @Test

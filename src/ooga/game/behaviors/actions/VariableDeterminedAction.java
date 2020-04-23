@@ -63,6 +63,7 @@ public class VariableDeterminedAction extends Action {
     VariableComparator myComparator;
     try {
       String comparatorClassName = myComparatorResources.getString(myComparatorData);
+      System.out.println("COMPARATOR: " + comparatorClassName);
       Class cls = forName(COMPARATOR_FILE_PATH + comparatorClassName);
       Constructor cons = cls.getConstructor();
       myComparator = (VariableComparator)cons.newInstance();
