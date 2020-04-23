@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;
 import ooga.game.behaviors.TimeDelayedEffect;
 
@@ -39,7 +40,7 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     double myMaxSpeed = parseData(myMaxSpeedData, subject, variables, MAX_SPEED_DEFAULT);
-    String operator = doVariableSubstitutions(operatorData, subject, variables);
+    String operator = Effect.doVariableSubstitutions(operatorData, subject, variables);
     //TODO: use dot product
     if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
       String formattedXVelocity = BigDecimal.valueOf(subject.getVelocity().get(0)).toPlainString();

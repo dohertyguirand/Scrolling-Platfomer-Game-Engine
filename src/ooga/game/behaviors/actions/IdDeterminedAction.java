@@ -9,6 +9,7 @@ import ooga.game.behaviors.Effect;
 
 //  IDDeterminedAction: executes the effect on the entity with the specified ID
 @SuppressWarnings("unused")
+@Deprecated
 public class IdDeterminedAction extends Action {
 
   private final String targetID;

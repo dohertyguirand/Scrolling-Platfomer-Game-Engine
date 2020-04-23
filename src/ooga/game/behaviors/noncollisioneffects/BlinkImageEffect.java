@@ -47,9 +47,9 @@ public class BlinkImageEffect implements Effect {
   public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     double blinkTimeDelay = parseData(blinkTimeDelayData, subject, variables, 0.0);
     double totalBlinkTime = parseData(totalBlinkTimeData, subject, variables, 0.0);
-    String finalImage = doVariableSubstitutions(finalImageData, subject, variables);
-    String image1 = doVariableSubstitutions(image1Data, subject, variables);
-    String image2 = doVariableSubstitutions(image2Data, subject, variables);
+    String finalImage = Effect.doVariableSubstitutions(finalImageData, subject, variables);
+    String image1 = Effect.doVariableSubstitutions(image1Data, subject, variables);
+    String image2 = Effect.doVariableSubstitutions(image2Data, subject, variables);
     timePassedSinceLastBlink += elapsedTime;
     if(timePassed >= totalBlinkTime){
       SetImageEffect.setImage(subject, finalImage, variables, this);
