@@ -1,4 +1,4 @@
-package ooga.game.behaviors.asynceffects;
+package ooga.game.behaviors.collisioneffects;
 
 import ooga.Entity;
 import ooga.game.GameInternal;

@@ -1,10 +1,9 @@
-package ooga.game.behaviors.asynceffects;
+package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 public class ChangeVariable extends TimeDelayedEffect {
