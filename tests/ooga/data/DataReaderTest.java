@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 package ooga.data;
 
 import ooga.Entity;
@@ -91,7 +91,6 @@ public class DataReaderTest {
 //        List<OogaProfile>  profiles = testDataReader.getProfiles();
 //        System.out.println(profiles.size() + " Profiles:");
 //        for (OogaProfile profile : profiles){
-=======
 //package ooga.data;
 //
 //import ooga.Entity;
@@ -184,22 +183,22 @@ public class DataReaderTest {
 //        List<OggaProfile>  profiles = testDataReader.getProfiles();
 //        System.out.println(profiles.size() + " Profiles:");
 //        for (OggaProfile profile : profiles){
->>>>>>> chris
+
 //            assertNotNull(profile.getProfileName(), "Profile name is null");
 //            assertNotNull(profile.getProfilePhotoPath(), "Profile photo is null");
 //            System.out.println(String.format("Name %s  Image: %s", profile.getProfileName(), profile.getProfilePhotoPath()));
 //        }
-<<<<<<< HEAD
+
     }
 
     @Test
     public void testAddNewProfile(){
-=======
+
 //    }
 //
 //    @Test
 //    public void testAddNewProfile(){
->>>>>>> chris
+
 //        OggaProfile testProfile = new OggaProfile();
 //        testProfile.setProfileName("Doug Rattman");
 //        testProfile.setProfilePhoto("data/users/Rattman.jpeg");
@@ -209,12 +208,12 @@ public class DataReaderTest {
 //            e.printStackTrace();
 //            fail();
 //        }
-<<<<<<< HEAD
+
     }
 
 }
-=======
+
 //    }
 //
 //}
->>>>>>> chris
+
