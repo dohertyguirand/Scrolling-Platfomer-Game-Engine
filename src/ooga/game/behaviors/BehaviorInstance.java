@@ -74,11 +74,10 @@ public class BehaviorInstance implements ConditionalBehavior {
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
-    //TODO: Update arguments once game stores variables as <String,String>
-    if (!checkGameVariableConditions(subject, new HashMap<>())) {
+    if (!checkGameVariableConditions(subject, variables)) {
       return;
     }
-    if (!checkEntityVariableConditions(subject, gameInternal, new HashMap<>())) {
+    if (!checkEntityVariableConditions(subject, gameInternal, variables)) {
       return;
     }
     for(Map.Entry<String, Boolean> inputCondition : inputConditions.entrySet()){
