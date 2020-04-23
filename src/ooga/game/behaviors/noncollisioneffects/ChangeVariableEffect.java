@@ -12,11 +12,13 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
   private String incrementValueData;
 
   public ChangeVariableEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
+  }
+
+  @Override
+  public void processArgs(List<String> args) {
     variableName = args.get(0);
     incrementValueData = args.get(1);
-    if(args.size() > 2){
-      setTimeDelay(args.get(2));
-    }
   }
 
   /**

@@ -9,11 +9,13 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 public class NextLevelEffect extends TimeDelayedEffect {
 
+  public NextLevelEffect(List<String> args) {
+    super(args);
+  }
 
-  public static final int NUM_DEFAULT_ARGS = 0;
-
-  public NextLevelEffect(List<String> args) throws IndexOutOfBoundsException {
-    super(args, NUM_DEFAULT_ARGS);
+  @Override
+  public void processArgs(List<String> args) {
+    //has no arguments
   }
 
   @Override

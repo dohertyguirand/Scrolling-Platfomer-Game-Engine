@@ -15,14 +15,17 @@ public abstract class TimeDelayedEffect implements Effect {
 
   private double timePassed = 0.0;
   private String timeDelayData = "";
-  private ResourceBundle resources;
+  private ResourceBundle resources = ResourceBundle.getBundle("ooga/game/behaviors/resources/effectdefaults");
 
-  public TimeDelayedEffect(List<String> args, int numDefaultArgs) {
-    processArgs(resources.getString(this.getClass().toString()));
-    processTimeDelay(args,numDefaultArgs);
+  public TimeDelayedEffect(List<String> args) {
+    processArgs(args);
+    processTimeDelay(args,Integer.parseInt(resources.getString(this.getClass().getName())));
   }
 
-
+  /**
+   * Processes the String arguments given in the data file into values used by this effect.
+   * @param args The String arguments given for this effect in the data file.
+   */
   public abstract void processArgs(List<String> args);
 
   /**
