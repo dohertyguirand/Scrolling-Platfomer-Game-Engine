@@ -49,7 +49,7 @@
                         <RequiredValue>1.0</RequiredValue>
                     </GameVariableCondition>
                     <IndependentAction>
-                        <Effect>GoToNextLevel NextLevel 1000</Effect>
+                        <Effect>GoToNextLevel 1000</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
