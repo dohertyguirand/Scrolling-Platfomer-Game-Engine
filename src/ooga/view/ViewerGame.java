@@ -2,6 +2,7 @@ package ooga.view;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -26,6 +27,8 @@ import ooga.data.*;
 import ooga.game.OogaGame;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewerGame {
@@ -56,6 +59,7 @@ public class ViewerGame {
   private Scene pauseScene;
   private String myProfileName;
 
+
   public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
     myGameName = gameName;
     myProfileName = profileName;
@@ -69,6 +73,7 @@ public class ViewerGame {
     myGameScene.setCamera(myCamera);
     colorEffectProperty.set(new ColorAdjust());
     setUpInputListeners(myGame);
+  //  setCameraListeners();
   }
 
 
@@ -78,6 +83,16 @@ public class ViewerGame {
     if(focus!= null){
       myCamera.layoutXProperty().bind(focus.getXProperty());
     }
+  }
+
+  private void setCameraListeners(){
+    List<DoubleProperty> cameraShift = new ArrayList<>();
+    cameraShift.add(new SimpleDoubleProperty());
+    cameraShift.add(new SimpleDoubleProperty());
+    myGame.setCameraShiftProperty(cameraShift);
+    myCamera.layoutXProperty().bind(cameraShift.get(0));
+    myCamera.layoutYProperty().bind(cameraShift.get(1));
+    myGameScene.setCamera(myCamera);
   }
 
   private void setGame(String saveDate) throws OogaDataException {
@@ -112,6 +127,7 @@ public class ViewerGame {
     }
   }
 
+
   private void addToEntityGroup(Entity entity) {
     Node viewEntity = makeViewEntity(entity);
     myEntityGroup.getChildren().add(viewEntity);
@@ -133,15 +149,10 @@ public class ViewerGame {
     // TODO: use reflection here or something
     if(entity instanceof ImageEntity){
       ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty));
-      if(entity.getName().equals("SmallMario")){
-        focus = viewImageEntity;
-        //myCamera.layoutYProperty().bind(focus.getYProperty().add(new SimpleDoubleProperty(-450.0)));
-      }
       return viewImageEntity.getNode();
     }
     else if(entity instanceof TextEntity){
       ViewTextEntity viewTextEntity = new ViewTextEntity((TextEntity)entity);
-      viewTextEntity.getXProperty().bind(myCamera.layoutXProperty().add(new SimpleDoubleProperty(viewTextEntity.getX())));
       return viewTextEntity.getNode();
     }
     return null;
