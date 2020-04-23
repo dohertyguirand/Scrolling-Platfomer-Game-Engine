@@ -25,6 +25,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private InputManager myInputManager = new OogaInputManager();
   private Map<String, String> myVariables;
   private ObservableList<Entity> myEntities;
+  private List<Entity> myNewCreatedEntities = new ArrayList<>();
   Map<String, ImageEntityDefinition> myEntityDefinitions;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
@@ -180,11 +181,11 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void doEntityCreation() {
-    List<Entity> createdEntities = new ArrayList<>();
-    for (Entity e : currentLevel.getEntities()) {
-        createdEntities.addAll(e.popCreatedEntities());
+    for (Entity created : myNewCreatedEntities) {
+      myEntities.add(created);
+      currentLevel.addEntity(created);
     }
-    currentLevel.addEntities(createdEntities);
+    myNewCreatedEntities.clear();
   }
 
   private void doEntityCleanup() {
@@ -286,8 +287,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public void createEntity(String type, List<Double> position) {
     ImageEntityDefinition definition = myEntityDefinitions.get(type);
     Entity created = definition.makeInstanceAt(position.get(0),position.get(1));
-    myEntities.add(created);
-    currentLevel.addEntity(created);
+    myNewCreatedEntities.add(created);
   }
 
   @Override

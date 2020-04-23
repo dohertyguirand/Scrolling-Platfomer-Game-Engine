@@ -11,6 +11,7 @@
       <VariableNames>RightFacingImage LeftFacingImage</VariableNames>
       <VariableValues>example-mario/mario_facing_right.png example-mario/mario_facing_left.png</VariableValues>
       <Behaviors>
+<!--        Colliding with a mushroom makes you big.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity1>SmallMario</Entity1>
@@ -22,6 +23,7 @@
             <Effect>ResizeImage 120 180 1000</Effect>
           </IndependentAction>
         </Behavior>
+<!--        Press left to go left.-->
         <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
@@ -32,6 +34,7 @@
             <Effect>SetImage LeftFacingImage</Effect>
           </IndependentAction>
         </Behavior>
+<!--        Press right to go right.-->
         <Behavior>
           <InputCondition>
             <Key>RightKey2</Key>
@@ -42,79 +45,129 @@
             <Effect>SetImage RightFacingImage</Effect>
           </IndependentAction>
         </Behavior>
+<!--        Run into a koopa sideways or upward in order to die.-->
         <Behavior>
-          <HorizontalCollisionCondition>
-            <EntityName>Koopa</EntityName>
-            <CollisionRequirement>true</CollisionRequirement>
-          </HorizontalCollisionCondition>
-          <Effect>
-            <With>Koopa</With>
-            <Reaction>Respawn RespawnXLocation RespawnYLocation</Reaction>
-            <Reaction>ChangeVariable Lives -1.0</Reaction>
-          </Effect>
+          <RequiredCollisionCondition>
+            <Entity2>Koopa</Entity2>
+            <Direction>Right</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+            <Effect>ChangeVariable Lives -1.0</Effect>
+          </IndependentAction>
         </Behavior>
         <Behavior>
-          <VerticalCollisionCondition>
-            <EntityName>Koopa</EntityName>
-            <CollisionRequirement>true</CollisionRequirement>
-          </VerticalCollisionCondition>
-          <Effect>
-            <With>Koopa</With>
-            <Reaction>VerticalBounce -.50</Reaction>
-          </Effect>
+          <RequiredCollisionCondition>
+            <Entity2>Koopa</Entity2>
+            <Direction>Left</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+            <Effect>ChangeVariable Lives -1.0</Effect>
+          </IndependentAction>
         </Behavior>
         <Behavior>
-          <VerticalCollisionCondition>
-            <EntityName>Brick</EntityName>
-            <CollisionRequirement>true</CollisionRequirement>
-          </VerticalCollisionCondition>
-          <Effect>
-            <With>Brick</With>
-            <Reaction>TerrainCollision</Reaction>
-          </Effect>
+          <RequiredCollisionCondition>
+            <Entity2>Koopa</Entity2>
+            <Direction>Up</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+            <Effect>ChangeVariable Lives -1.0</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Run into a koopa downward in order to bounce off of it!-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>Koopa</Entity2>
+            <Direction>Down</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>Jump -1.50</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Run into a brick downward to stop falling.-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Down</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Down</Args>
+            <Effect>TerrainCollisionDown</Effect>
+          </CollisionDeterminedAction>
+        </Behavior>
+<!--        Run into a brick sideways or downward to stop too-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Left</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Left</Args>
+            <Effect>TerrainCollisionLeft</Effect>
+          </CollisionDeterminedAction>
         </Behavior>
         <Behavior>
-          <HorizontalCollisionCondition>
-            <EntityName>Brick</EntityName>
-            <CollisionRequirement>true</CollisionRequirement>
-          </HorizontalCollisionCondition>
-          <Effect>
-            <With>Brick</With>
-            <Reaction>TerrainCollision</Reaction>
-          </Effect>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Right</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Right</Args>
+            <Effect>TerrainCollisionRight</Effect>
+          </CollisionDeterminedAction>
         </Behavior>
         <Behavior>
-          <Effect>
-            <With>Flagpole</With>
-            <Reaction>TerrainCollision</Reaction>
-          </Effect>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Up</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Up</Args>
+            <Effect>TerrainCollisionUp</Effect>
+          </CollisionDeterminedAction>
         </Behavior>
-        <Behavior>
-          <Effect>
-            <With>QuestionBlock</With>
-            <Reaction>TerrainCollision</Reaction>
-          </Effect>
-        </Behavior>
-        <Behavior>
-          <Effect>
-            <With>Void</With>
-            <Reaction>ChangeVariable Lives -1.0</Reaction>
-            <Reaction>Respawn 0 0</Reaction>
-          </Effect>
-        </Behavior>
-        <Behavior>
-          <Effect>Gravity 0 0.1</Effect>
-        </Behavior>
+<!--        Press Up while on the ground to jump.-->
         <Behavior>
           <InputCondition>
             <Key>UpKey2Pressed</Key>
             <InputRequirement>true</InputRequirement>
           </InputCondition>
-          <VerticalCollisionCondition>
-            <EntityName>Brick</EntityName>
-            <CollisionRequirement>true</CollisionRequirement>
-          </VerticalCollisionCondition>
-          <Effect>Jump -1.2</Effect>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Down</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>Jump -1.2</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Run into a flagpole to go to the next level.-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>Flagpole</Entity2>
+            <Direction>ANY</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>GoToNextLevel</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Run into the void to die.-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>Void</Entity2>
+            <Direction>ANY</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>ChangeVariable Lives -1.0</Effect>
+            <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Exist to obey gravity.-->
+        <Behavior>
+          <IndependentAction>
+            <Effect>Gravity 0 0.1</Effect>
+          </IndependentAction>
         </Behavior>
       </Behaviors>
     </ImageEntity>
@@ -123,52 +176,73 @@
       <Width>100</Width>
       <Height>120</Height>
       <Image>koopa.png</Image>
+      <VariableNames>EnemyID xVel</VariableNames>
+      <VariableValues>enemy 0.1300</VariableValues>
+      <!--        Moves forward every frame-->
       <Behavior>
-        <Effect>Gravity 0.0 0.10</Effect>
-        <Effect>Patrol 0.100 .12 500 485 700 485</Effect>
+        <IndependentAction>
+          <Effect>VelocityInput xVel 0.0 0.2600</Effect>
+        </IndependentAction>
+      </Behavior>
+<!--      Also follows gravity, like Mario-->
+      <Behavior>
+        <IndependentAction>
+          <Effect>Gravity 0 0.1</Effect>
+        </IndependentAction>
+      </Behavior>
+<!--      Also runs into terrain like Mario-->
+      <Behavior>
+        <RequiredCollisionCondition>
+          <Entity2>universalTerrain</Entity2>
+          <Direction>Down</Direction>
+        </RequiredCollisionCondition>
+        <CollisionDeterminedAction>
+          <Args>universalTerrain Down</Args>
+          <Effect>TerrainCollisionDown</Effect>
+        </CollisionDeterminedAction>
+      </Behavior>
+      <!--        Run into a brick sideways or downward to stop too-->
+      <Behavior>
+        <RequiredCollisionCondition>
+          <Entity2>universalTerrain</Entity2>
+          <Direction>Left</Direction>
+        </RequiredCollisionCondition>
+        <CollisionDeterminedAction>
+          <Args>universalTerrain Left</Args>
+          <Effect>TerrainCollisionLeft</Effect>
+          <Effect>SetVariable xVel 0.1300</Effect>
+        </CollisionDeterminedAction>
       </Behavior>
       <Behavior>
-        <VerticalCollisionCondition>
-          <EntityName>Brick</EntityName>
-          <CollisionRequirement>true</CollisionRequirement>
-        </VerticalCollisionCondition>
-        <Effect>
-          <With>Brick</With>
-          <Reaction>TerrainCollision</Reaction>
-        </Effect>
+        <RequiredCollisionCondition>
+          <Entity2>universalTerrain</Entity2>
+          <Direction>Right</Direction>
+        </RequiredCollisionCondition>
+        <CollisionDeterminedAction>
+          <Args>universalTerrain Right</Args>
+          <Effect>TerrainCollisionRight</Effect>
+          <Effect>SetVariable xVel -0.1300</Effect>
+        </CollisionDeterminedAction>
       </Behavior>
       <Behavior>
-        <HorizontalCollisionCondition>
-          <EntityName>Brick</EntityName>
-          <CollisionRequirement>true</CollisionRequirement>
-        </HorizontalCollisionCondition>
-        <Effect>
-          <With>Brick</With>
-          <Reaction>TerrainCollision</Reaction>
-        </Effect>
+        <RequiredCollisionCondition>
+          <Entity2>universalTerrain</Entity2>
+          <Direction>Up</Direction>
+        </RequiredCollisionCondition>
+        <CollisionDeterminedAction>
+          <Args>universalTerrain Up</Args>
+          <Effect>TerrainCollisionUp</Effect>
+        </CollisionDeterminedAction>
       </Behavior>
+<!--      Run into Mario's feet to die.-->
       <Behavior>
-        <Effect>
-          <With>Flagpole</With>
-          <Reaction>TerrainCollision</Reaction>
-        </Effect>
-      </Behavior>
-      <Behavior>
-        <Effect>
-          <With>QuestionBlock</With>
-          <Reaction>TerrainCollision</Reaction>
-        </Effect>
-      </Behavior>
-      <Behavior>
-        <VerticalCollisionCondition>
-          <EntityName>SmallMario</EntityName>
-          <CollisionRequirement>true</CollisionRequirement>
-        </VerticalCollisionCondition>
-        <Effect>
-          <With>SmallMario</With>
-          <Reaction>RemoveSelf</Reaction>
-          <Reaction>ChangeVariable Score 20.0</Reaction>
-        </Effect>
+        <RequiredCollisionCondition>
+          <Entity2>SmallMario</Entity2>
+          <Direction>Up</Direction>
+        </RequiredCollisionCondition>
+        <IndependentAction>
+          <Effect>RemoveSelf</Effect>
+        </IndependentAction>
       </Behavior>
     </ImageEntity>
     <ImageEntity>
@@ -176,49 +250,80 @@
       <Width>100</Width>
       <Height>100</Height>
       <Image>mario_brick.png</Image>
+      <VariableNames>TerrainID</VariableNames>
+      <VariableValues>universalTerrain</VariableValues>
     </ImageEntity>
     <ImageEntity>
       <Name>Mushroom</Name>
       <Width>80</Width>
       <Height>80</Height>
       <Image>mario_mushroom.png</Image>
-      <Behavior>
-        <Effect>MoveForward 0.10 0.0 0.20</Effect>
-        <Effect>Gravity 0.0 0.10</Effect>
-      </Behavior>
-      <Behavior>
-        <VerticalCollisionCondition>
-          <EntityName>Brick</EntityName>
-          <CollisionRequirement>true</CollisionRequirement>
-        </VerticalCollisionCondition>
-        <Effect>
-          <With>Brick</With>
-          <Reaction>TerrainCollision</Reaction>
-        </Effect>
-      </Behavior>
-      <Behavior>
-        <HorizontalCollisionCondition>
-          <EntityName>Brick</EntityName>
-          <CollisionRequirement>true</CollisionRequirement>
-        </HorizontalCollisionCondition>
-        <Effect>
-          <With>Brick</With>
-          <Reaction>TerrainCollision</Reaction>
-        </Effect>
-      </Behavior>
-      <Behavior>
-        <Effect>
-          <With>QuestionBlock</With>
-          <Reaction>TerrainCollision</Reaction>
-        </Effect>
-      </Behavior>
-      <Behavior>
-        <Effect>
-          <With>SmallMario</With>
-          <Reaction>RemoveSelf</Reaction>
-          <Reaction>ChangeVariable Score 20.0</Reaction>
-        </Effect>
-      </Behavior>
+      <Behaviors>
+        <!--      Exist to obey gravity.-->
+        <Behavior>
+          <IndependentAction>
+            <Effect>Gravity 0 0.1</Effect>
+          </IndependentAction>
+        </Behavior>
+        <!--      Also runs into terrain like Mario-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Down</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Down</Args>
+            <Effect>TerrainCollisionDown</Effect>
+          </CollisionDeterminedAction>
+        </Behavior>
+        <!--        Run into a brick sideways or downward to stop too-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Left</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Left</Args>
+            <Effect>TerrainCollisionLeft</Effect>
+          </CollisionDeterminedAction>
+        </Behavior>
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Right</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Right</Args>
+            <Effect>TerrainCollisionRight</Effect>
+          </CollisionDeterminedAction>
+        </Behavior>
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Up</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Up</Args>
+            <Effect>TerrainCollisionUp</Effect>
+          </CollisionDeterminedAction>
+        </Behavior>
+        <!--      Run into mario to be destroyed.-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>SmallMario</Entity2>
+            <Direction>ANY</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>RemoveSelf</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Moves right every frame-->
+        <Behavior>
+          <IndependentAction>
+            <Effect>VelocityInput 0.1300 0.0 0.2600</Effect>
+          </IndependentAction>
+        </Behavior>
+      </Behaviors>
     </ImageEntity>
     <ImageEntity>
       <Name>Void</Name>
@@ -231,22 +336,30 @@
       <Width>100</Width>
       <Height>400</Height>
       <Image>mario_flagpole.png</Image>
+      <VariableNames>TerrainID</VariableNames>
+      <VariableValues>universalTerrain</VariableValues>
     </ImageEntity>
     <ImageEntity>
       <Name>QuestionBlock</Name>
       <Width>100</Width>
       <Height>100</Height>
       <Image>mario_question_block.png</Image>
+      <VariableNames>TerrainID myItem empty</VariableNames>
+      <VariableValues>universalTerrain Mushroom false</VariableValues>
+<!--      Get hit by mario's head to spit out an item.-->
       <Behavior>
-        <VerticalCollisionCondition>
-          <EntityName>SmallMario</EntityName>
-          <CollisionRequirement>true</CollisionRequirement>
-        </VerticalCollisionCondition>
-        <Effect>
-          <With>SmallMario</With>
-          <Reaction>HeadHitItem Mushroom</Reaction>
-          <Reaction>ChangeVariable Score 20.0</Reaction>
-        </Effect>
+        <RequiredCollisionCondition>
+          <Entity2>SmallMario</Entity2>
+          <Direction>Down</Direction>
+        </RequiredCollisionCondition>
+        <EntityVariableCondition>
+        <VariableName>empty</VariableName>
+        <RequiredValue>false</RequiredValue>
+      </EntityVariableCondition>
+        <IndependentAction>
+          <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>
+          <Effect>SetVariable empty true</Effect>
+        </IndependentAction>
       </Behavior>
     </ImageEntity>
     <ImageEntity>
@@ -270,8 +383,6 @@
     <Level>
       <ID>1</ID>
       <NextLevel>2</NextLevel>
-      <EndCondition>Collision Flagpole SmallMario</EndCondition>
-<!--      <Background>mario_background.png</Background>-->
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Name>Background</Name>
