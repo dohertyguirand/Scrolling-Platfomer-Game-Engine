@@ -20,15 +20,14 @@ public class DestroySelfEffect extends TimeDelayedEffect {
 
     /**
      * Performs the effect
-     *
-     * @param subject     The entity that owns this. This is the entity that should be modified.
+     *  @param subject     The entity that owns this. This is the entity that should be modified.
      * @param otherEntity
      * @param elapsedTime
      * @param variables
      * @param game
      */
     @Override
-    protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+    protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
         subject.destroySelf();
     }
 }

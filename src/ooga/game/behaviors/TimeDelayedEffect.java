@@ -45,14 +45,14 @@ public abstract class TimeDelayedEffect implements Effect {
 
   /**
    * Performs the effect if time delay has been satisfied
-   * @param otherEntity
    * @param subject The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity
    * @param elapsedTime
    * @param variables
    * @param game
    */
   @Override
-  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game){
+  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game){
     if(hasTimeDelayFinished(elapsedTime, subject, variables)){
       doTimeDelayedEffect(subject, otherEntity, elapsedTime, variables, game);
       timePassed = 0.0;
@@ -61,13 +61,13 @@ public abstract class TimeDelayedEffect implements Effect {
 
   /**
    * Performs the effect
-   * @param otherEntity entity we are "interacting with" in this effect
    * @param subject The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity entity we are "interacting with" in this effect
    * @param elapsedTime time between steps in ms
    * @param variables game variables
    * @param game game instance
    */
-  protected abstract void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game);
+  protected abstract void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game);
 
   protected void processTimeDelay(List<String> args, int numDefaultArgs) {
     if (args.size() > numDefaultArgs) {

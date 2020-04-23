@@ -106,8 +106,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime, Map<String, Double> variables,
-      GameInternal game) {
+  public void updateSelf(double elapsedTime, Map<String, String> variables,
+                         GameInternal game) {
     applyFrictionHorizontal();
     applyFrictionVertical();
   }
@@ -224,7 +224,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void reactToVariables(Map<String, Double> variables) {
+  public void reactToVariables(Map<String, String> variables) {
     //TODO: make this work for entity variables?
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
@@ -266,7 +266,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    * assigned behavior if true
    */
   @Override
-  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
+  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
                                      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     //System.out.println(getName() + " is updating!");
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {

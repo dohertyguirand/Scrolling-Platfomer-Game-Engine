@@ -23,15 +23,14 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
 
   /**
    * Performs the effect
-   *
-   * @param subject     The entity that owns this. This is the entity that should be modified.
+   *  @param subject     The entity that owns this. This is the entity that should be modified.
    * @param otherEntity entity we are "interacting with" in this effect
    * @param elapsedTime time between steps in ms
    * @param variables   game variables
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     double incrementValue = parseData(incrementValueData, subject, variables, 1.0);
     if (variables.containsKey(variableName)) {

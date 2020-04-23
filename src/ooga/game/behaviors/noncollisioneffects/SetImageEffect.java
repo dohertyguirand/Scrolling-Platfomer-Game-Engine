@@ -4,7 +4,6 @@ import java.util.Map;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class SetImageEffect extends TimeDelayedEffect {
    * @param game        game instance
    */
   @Override
-  public void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  public void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     setImage(subject, newImageFileName);
   }
 

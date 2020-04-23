@@ -34,7 +34,7 @@ public class ImageEntity extends OogaEntity {
   }
 
   @Override
-  public void reactToVariables(Map<String, Double> variables) {
+  public void reactToVariables(Map<String, String> variables) {
     //does nothing for now?
   }
 }

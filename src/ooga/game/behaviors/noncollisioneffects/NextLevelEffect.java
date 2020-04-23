@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 public class NextLevelEffect extends TimeDelayedEffect {
@@ -20,7 +19,7 @@ public class NextLevelEffect extends TimeDelayedEffect {
 
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game) {
+                                     Map<String, String> variables, GameInternal game) {
     game.goToNextLevel();
   }
 }

@@ -41,7 +41,7 @@ public class SetPositionEffect extends TimeDelayedEffect {
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     List<Double> newLocation = new ArrayList<>();
     for(String coordinateData : desiredLocation){
       newLocation.add(parseData(coordinateData, subject, variables, 0.0));
