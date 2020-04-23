@@ -91,7 +91,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   }
 
   private boolean checkGameVariableConditions(Entity subject, Map<String, String> gameVariables) {
-    return checkVariableConditionsList(subject, gameVariables, gameVarConditions);
+    return checkVariableConditionsList(subject, gameVariables, gameVarConditions, gameVariables);
 //    for(Entry<String, String> variableCondition : gameVariableConditions.entrySet()){
 //      if((variables.get(variableCondition.getKey()) == null || !(String.valueOf(variables.get(variableCondition.getKey()))).equals(variableCondition.getValue()))) {
 //        return false;
@@ -100,9 +100,11 @@ public class BehaviorInstance implements ConditionalBehavior {
 //    return true;
   }
 
-  private boolean checkVariableConditionsList(Entity subject, Map<String, String> gameVariables, List<VariableCondition> varConditions) {
+  private boolean checkVariableConditionsList(Entity subject, Map<String, String> gameVariables,
+      List<VariableCondition> varConditions,
+      Map<String, String> targetEntityVars) {
     for (VariableCondition condition : varConditions) {
-      if (!condition.isSatisfied(subject,gameVariables,gameVariables)) {
+      if (!condition.isSatisfied(subject,gameVariables,targetEntityVars)) {
         return false;
       }
     }
@@ -116,7 +118,7 @@ public class BehaviorInstance implements ConditionalBehavior {
       if (identified == null) {
         return false;
       }
-      if (!checkVariableConditionsList(subject,gameVariables,conditionEntry.getValue())) {
+      if (!checkVariableConditionsList(subject,gameVariables,conditionEntry.getValue(), identified.getVariables())) {
         return false;
       }
     }
