@@ -31,8 +31,12 @@ import java.util.ResourceBundle;
 public class ViewerGame {
 
   private static final double MILLISECOND_DELAY = 33.33;
+  public static final int NORMAL_BUTTON_XPOS = 300;
+  public static final int ALIEN_BUTTON_XPOS = 100;
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
+  private final String ALIEN_BUTTON_LOCATION = myResources.getString("alienButtonLocation");
+  private final String NORMAL_BUTTON_LOCATION = myResources.getString("normalButtonLocation");
   private final double PAUSE_BUTTON_SIZE = Double.parseDouble(myResources.getString("pauseButtonSize"));
   private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
@@ -139,7 +143,7 @@ public class ViewerGame {
   private Node setUpPauseButton() {
     myPauseMenu = new PauseMenu();
     pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
-    return makeButton(getPauseButtonImage(), null, 0, "pause");
+    return makeButton(getImage(PAUSE_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), null, 0, "pause");
   }
 
   @SuppressWarnings("unused")
@@ -150,11 +154,11 @@ public class ViewerGame {
   }
 
   private Node setUpDarkModeButton() {
-    return makeButton(null, "Alien Mode", 100, "setDarkMode");
+    return makeButton(getImage(ALIEN_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), "Alien Mode", ALIEN_BUTTON_XPOS, "setDarkMode");
   }
 
   private Node setUpNormalModeButton(){
-    return makeButton(null, "Normal Mode", 200, "setNormalMode");
+    return makeButton(getImage(NORMAL_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), "Normal Mode", NORMAL_BUTTON_XPOS, "setNormalMode");
   }
 
   @SuppressWarnings("unused")
@@ -185,10 +189,10 @@ public class ViewerGame {
     return button;
   }
 
-  private ImageView getPauseButtonImage(){
-    ImageView imageView = new ImageView(PAUSE_BUTTON_LOCATION);
-    imageView.setFitHeight(PAUSE_BUTTON_IMAGE_SIZE);
-    imageView.setFitWidth(PAUSE_BUTTON_IMAGE_SIZE);
+  private ImageView getImage(String location, double size){
+    ImageView imageView = new ImageView(location);
+    imageView.setFitHeight(size);
+    imageView.setFitWidth(size);
     return imageView;
   }
 
@@ -199,7 +203,7 @@ public class ViewerGame {
         step();
       } catch (Exception ex) {
         // note that this should ideally never be thrown
-        // TODO: remove print stack trace, figure out how to make error winow pop up
+        // TODO: remove print stack trace, figure out how to make error window pop up
         ex.printStackTrace();
         System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is " +
                 "not allowed during animation processing");
