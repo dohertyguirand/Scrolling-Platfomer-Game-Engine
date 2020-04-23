@@ -590,6 +590,7 @@
                         <Effect>Resize 40.0 50.0 0.0</Effect>
                         <Effect>Resize 40.0 100.0 500</Effect>
                         <Effect>SetVariable open false 500</Effect>
+                        <Effect>SetVariable TerrainID universalTerrain</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -608,6 +609,7 @@
                         <Effect>SetImage none 500</Effect>
                         <Effect>Resize 0.0 0.0 500</Effect>
                         <Effect>SetVariable open true 500</Effect>
+                        <Effect>SetVariable TerrainID none 500</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>

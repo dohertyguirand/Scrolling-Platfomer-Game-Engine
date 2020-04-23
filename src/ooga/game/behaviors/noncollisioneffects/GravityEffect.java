@@ -12,6 +12,7 @@ import ooga.game.behaviors.TimeDelayedEffect;
  * Uses constant downward motion to simulate basic gravity.
  * Brings attention to the challenge of having acceleration.
  */
+@Deprecated
 public class GravityEffect extends TimeDelayedEffect {
 
     private static final double DEFAULT_Y_GRAVITY = 0.1;
