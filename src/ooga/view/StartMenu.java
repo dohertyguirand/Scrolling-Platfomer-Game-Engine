@@ -30,7 +30,7 @@ public class StartMenu extends ScrollMenu{
     }
   }
 
-  public StartMenu(ViewProfile profile){
+  public StartMenu(ViewProfile profile, Node backButton){
     super();
     try {
       List<Thumbnail> thumbnails = myDataReader.getThumbnails();
@@ -39,6 +39,7 @@ public class StartMenu extends ScrollMenu{
       //TODO: actually show an error message
     }
     myPane.getChildren().add(setProfileData(profile));
+    myPane.getChildren().add(backButton);
   }
 
   private void addImages(List<Thumbnail> thumbnails){
@@ -58,7 +59,8 @@ public class StartMenu extends ScrollMenu{
       showProfile(profile);
     });
     Text text = new Text(profile.getProfileName());
-    vBox.getChildren().add(profile.getProfilePhoto());
+    ImageView imageView = new ImageView(profile.getProfilePhotoPath());
+    vBox.getChildren().add(imageView);
     vBox.getChildren().add(text);
     return vBox;
   }

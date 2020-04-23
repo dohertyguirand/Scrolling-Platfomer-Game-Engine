@@ -3,6 +3,7 @@ package ooga.view;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import ooga.OogaDataException;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class ProfileMenu extends ScrollMenu {
      private void addProfileImages() {
             if (myProfiles != null) {
                 for (ViewProfile profile : myProfiles) {
-                    Button button = makeButton(profile.getProfilePhoto(), profile.getProfileName());
+                    Button button = makeButton(new ImageView(profile.getProfilePhotoPath()), profile.getProfileName());
                     button.setOnAction(e -> setProfileSelected(profile));
                     myHBox.getChildren().add(button);
                 }

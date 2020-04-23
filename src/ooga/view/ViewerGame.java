@@ -51,27 +51,33 @@ public class ViewerGame {
 
 
 
-  public ViewerGame(String gameName, String profileName) throws OogaDataException {
+  public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
     myGameName = gameName;
+    myProfileName = profileName;
     myCamera = new ParallelCamera();
     //TODO: Update to match the new constructors by adding the date of the save to load
-    myGame =  new OogaGame(gameName, new OogaDataReader(),profileName,"");
-
-
+    setGame(saveDate);
     //SAM added this as the way to make a Game once file loading works.
     setUpGameEntities();
     setUpGameStage();
     myRoot.getChildren().add(setUpPauseButton());
     myGameScene.setCamera(myCamera);
     setUpInputListeners(myGame);
-    myProfileName = profileName;
   }
-  public ViewerGame(String gameName, String profileName, boolean camera) throws OogaDataException {
-    this(gameName,profileName);
+
+  public ViewerGame(String gameName, String profileName, String saveDate ,boolean camera) throws OogaDataException {
+    this(gameName,profileName,saveDate);
     cameraOn = camera;
     if(focus!= null){
       myCamera.layoutXProperty().bind(focus.getXProperty());
     }
+  }
+
+  private void setGame(String saveDate) throws OogaDataException {
+    if(saveDate.equals("")){
+      myGame = new OogaGame(myGameName, new OogaDataReader(),myProfileName);
+    }
+    else myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
   }
 
   private void setUpGameEntities(){

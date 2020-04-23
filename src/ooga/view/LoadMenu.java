@@ -42,7 +42,7 @@ public class LoadMenu {
     private Scene myScene = new Scene(root);
     private StringProperty dateSelected = new SimpleStringProperty();
 
-    public LoadMenu(String gamename, String profilename, DataReader reader){
+    public LoadMenu(String gamename, String profilename, DataReader reader, Node backButton){
         gameName = gamename;
         profileName = profilename;
         dataReader = reader;
@@ -52,7 +52,7 @@ public class LoadMenu {
         imgView.setFitHeight(WINDOW_HEIGHT);
         root.getChildren().addAll(imgView);
         root.setTop(makeMenuTitle());
-        root.setLeft(setMenuItems());
+        root.setLeft(setMenuItems(backButton));
         root.setCenterShape(true);
     }
 
@@ -61,7 +61,7 @@ public class LoadMenu {
     }
     public Scene getScene() {return myScene;}
     private Button makeButton(String date, String text){
-        Button button = new Button(date);
+        Button button = new Button(text);
        // ImageView icon = new ImageView();
        // icon.setStyle(ICON_STYLE);
        // icon.setFitHeight(ICON_SIZE);
@@ -71,7 +71,7 @@ public class LoadMenu {
         return button;
     }
 
-    private Node setMenuItems() {
+    private Node setMenuItems(Node backButton) {
         VBox buttonVBox = new VBox(SPACING);
         buttonVBox.setAlignment(Pos.CENTER);
         ScrollPane scrollPane = new ScrollPane();
@@ -87,6 +87,7 @@ public class LoadMenu {
 //        for(){
 //            buttonVBox.getChildren().add(makeButton(buttonPropertyAndName.getKey(), buttonPropertyAndName.getValue()));
 //        }
+        buttonVBox.getChildren().add(backButton);
         return scrollPane;
 
     }
@@ -99,10 +100,10 @@ public class LoadMenu {
     private Text makeMenuTitle() {
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
-        Text text = new Text("Select Saved Game or New Game");
-      //  text.setStyle(TITLE_STYLE);
+        Text text = new Text("Saved Game or New Game");
+        text.setStyle(TITLE_STYLE);
         text.setFont(Font.font(TITLE_FONT_SIZE));
-        //text.setFill(Color.WHITE);
+        text.setFill(Color.WHITE);
         hbox.getChildren().add(text);
         return text;
     }

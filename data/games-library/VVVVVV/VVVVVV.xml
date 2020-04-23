@@ -7,18 +7,18 @@
             <Name>Avatar</Name>
             <Width>50</Width>
             <Height>100</Height>
-            <Image>avatarUp.png</Image>
+            <Image>avatarUp.jpg</Image>
             <VariableNames>Up Down</VariableNames>
-            <VariableValues>avatarUp.jpg avatarDown</VariableValues>
+            <VariableValues>avatarUp.jpg avatarDown.jpg</VariableValues>
             <Behaviors>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Avatar</Entity1>
                         <Entity2>Floor</Entity2>
-                        <Direction>Up</Direction>
+                        <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <InputCondition>
-                        <Key>UpKeyPressed</Key>
+                        <Key>DownKeyPressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
@@ -30,10 +30,10 @@
                     <RequiredCollisionCondition>
                         <Entity1>Avatar</Entity1>
                         <Entity2>Floor</Entity2>
-                        <Direction>Down</Direction>
+                        <Direction>Up</Direction>
                     </RequiredCollisionCondition>
                     <InputCondition>
-                        <Key>DownKey2Pressed</Key>
+                        <Key>UpKey2Pressed</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
@@ -52,6 +52,9 @@
                         <Effect>ChangeVariable Lives -1.0</Effect>
                     </IndependentAction>
                 </Behavior>
+                <IndependentAction>
+                    <Effect>VelocityInputEffect .1 0 0.1</Effect>
+                </IndependentAction>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -85,13 +88,6 @@
 <!--                    <XPos>0</XPos>-->
 <!--                    <YPos>0</YPos>-->
 <!--                </ImageEntityInstance>-->
-                <ImageEntityInstance>
-                    <Name>Avatar</Name>
-                    <XPos>300</XPos>
-                    <YPos>251</YPos>
-                    <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-                    <VariableValues>0 0</VariableValues>
-                </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
                     <XPos>300</XPos>
@@ -146,10 +142,17 @@
                     <XPos>500</XPos>
                     <YPos>600</YPos>
                 </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Avatar</Name>
+                    <XPos>100</XPos>
+                    <YPos>500</YPos>
+                    <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
+                    <VariableValues>0 0</VariableValues>
+                </ImageEntityInstance>
             </ImageEntityInstances>
             <TextEntityInstances>
                 <TextEntityInstance>
-                    <Text>Lives: %.0f</Text>
+                    <Text>Lives: 0</Text>
                     <Font>Times New Roman</Font>
                     <XPos>850</XPos>
                     <YPos>0</YPos>
@@ -161,7 +164,7 @@
                     </PropertyVariableDependency>
                 </TextEntityInstance>
                 <TextEntityInstance>
-                    <Text>Score: %.0f</Text>
+                    <Text>Score: 0</Text>
                     <Font>Times New Roman</Font>
                     <XPos>650</XPos>
                     <YPos>0</YPos>
