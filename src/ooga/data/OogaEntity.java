@@ -34,7 +34,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
-  private Map<String,List<Effect>> myControls;
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
@@ -48,7 +47,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.yPos.set(yPos);
     this.width.set(width);
     this.height.set(height);
-    myControls = new HashMap<>();
     myConditionalBehaviors = new ArrayList<>();
     myVelocityVectors = new Stack<>();
     myName = "";
@@ -233,6 +231,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
           try{
             propertyUpdaters.get(propertyName).accept(Double.parseDouble(variables.get(varName)));
           } catch (NumberFormatException e){
+            System.out.println(variables.get(varName));
             System.out.println("Could not set variable property dependency because variable could not be parsed to double");
           }
         } else {

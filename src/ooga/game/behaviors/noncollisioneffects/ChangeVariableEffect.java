@@ -34,7 +34,8 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
     //in the variable map, increment variableName by variableValue
     double incrementValue = parseData(incrementValueData, subject, variables, 1.0);
     if (variables.containsKey(variableName)) {
-      variables.put(variableName,variables.get(variableName)+incrementValue);
+      variables.put(variableName,String.valueOf(Double.parseDouble(variables.get(variableName)) + incrementValue));
+      return;
     }
     String entityVariableValue = subject.getVariable(variableName);
     if(entityVariableValue != null){

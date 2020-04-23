@@ -63,6 +63,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     Level level = myDataReader.loadLevel(gameName,id);
     myEntities.clear();
     myEntities.addAll(level.getEntities());
+    System.out.println(myVariables);
     return level;
   }
 

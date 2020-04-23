@@ -19,8 +19,6 @@ public class OogaVariableCondition implements VariableCondition {
   @Override
   public boolean isSatisfied(Entity behaviorEntity, Map<String, String> gameVariables,
       Map<String, String> subjectVariables) {
-    System.out.println("Comparing " + myVariableName + " to " + myCompareTo);
-    System.out.println(subjectVariables.get(myVariableName));
     if (!subjectVariables.containsKey(myVariableName)) {
       return false;
     }
@@ -35,8 +33,6 @@ public class OogaVariableCondition implements VariableCondition {
       compareToValue = behaviorEntity.getVariable(myCompareTo);
     }
     //3. compare directly.
-    boolean eval = myComparator.compare(subjectVariables.get(myVariableName),compareToValue) == 0;
-    System.out.println("eval = " + eval);
     return (myComparator.compare(subjectVariables.get(myVariableName),compareToValue) == 0);
   }
 
