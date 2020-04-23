@@ -392,6 +392,7 @@ public class OogaDataReader implements DataReader{
             Element variableConditionElement = (Element) conditions.item(i);
             String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
             String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
+            //TODO: implement other kinds of comparators
             ret.add(new OogaVariableCondition(name,new VariableEquals(),requiredValue));
         }
         return ret;

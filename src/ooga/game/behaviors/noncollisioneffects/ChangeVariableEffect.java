@@ -2,15 +2,23 @@ package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+
 import ooga.Entity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 @SuppressWarnings("unused")
 public class ChangeVariableEffect extends TimeDelayedEffect {
 
   private String variableName;
-  private String incrementValueData;
+  private String operatorData;
+  private String changeValueData;
+  //private static final String OPERATOR_RESOURCES_LOCATION = "ooga/game/behaviors/resources/operators";
 
   public ChangeVariableEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
@@ -19,7 +27,9 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
   @Override
   public void processArgs(List<String> args) {
     variableName = args.get(0);
-    incrementValueData = args.get(1);
+    //ResourceBundle operatorResources = ResourceBundle.getBundle(OPERATOR_RESOURCES_LOCATION);
+    operatorData = args.get(1);
+    changeValueData = args.get(2);
   }
 
   /**
@@ -33,18 +43,30 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
-    double incrementValue = parseData(incrementValueData, subject, variables, 1.0);
+    double changeValue = parseData(changeValueData, subject, variables, 1.0);
+    String operator = doVariableSubstitutions(operatorData, subject, variables);
     if (variables.containsKey(variableName)) {
-      variables.put(variableName,String.valueOf(Double.parseDouble(variables.get(variableName)) + incrementValue));
-      return;
+      try {
+        variables.put(variableName, evaluateOperation(variables.get(variableName), changeValue, operator));
+        return;
+      }catch (NumberFormatException | ScriptException ignored){
+        System.out.println("Couldn't increment the game variable " + variableName);
+      }
     }
     String entityVariableValue = subject.getVariable(variableName);
     if(entityVariableValue != null){
       try {
-        subject.addVariable(variableName, String.valueOf(Double.parseDouble(entityVariableValue) + incrementValue));
-      } catch (NumberFormatException ignored){
+        subject.addVariable(variableName, evaluateOperation(entityVariableValue, changeValue, operator));
+      } catch (NumberFormatException | ScriptException ignored){
         System.out.println("Couldn't increment the entity variable of " + subject.getName());
       }
     }
+  }
+
+  private String evaluateOperation(String varValue, double changeValue, String operator) throws NumberFormatException, ScriptException {
+    double varNumberValue = Double.parseDouble(varValue);
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    return (String) engine.eval(varNumberValue + operator + changeValue);
   }
 }
