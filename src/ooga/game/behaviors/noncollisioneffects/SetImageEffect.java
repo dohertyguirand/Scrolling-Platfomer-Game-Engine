@@ -14,10 +14,17 @@ public class SetImageEffect extends TimeDelayedEffect {
   String newImageFileName = "";
 
   public SetImageEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
+  }
+
+  /**
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
+   */
+  @Override
+  public void processArgs(List<String> args) {
     newImageFileName = args.get(0);
-    if(args.size() > 1){
-      setTimeDelay(args.get(1));
-    }
   }
 
   /**

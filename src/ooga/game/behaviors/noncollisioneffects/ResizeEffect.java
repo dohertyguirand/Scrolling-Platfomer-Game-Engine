@@ -15,11 +15,18 @@ public class ResizeEffect extends TimeDelayedEffect {
   List<String> newImageSizeData = new ArrayList<>();
 
   public ResizeEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
+  }
+
+  /**
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
+   */
+  @Override
+  public void processArgs(List<String> args) {
     newImageSizeData.add(args.get(0));
     newImageSizeData.add(args.get(1));
-    if(args.size() > 2){
-      setTimeDelay(args.get(2));
-    }
   }
 
   /**
