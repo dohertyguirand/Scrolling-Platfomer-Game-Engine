@@ -58,7 +58,8 @@ public class StartMenu extends ScrollMenu{
     vBox.setOnMouseClicked(e->{
       showProfile(profile);
     });
-    Text text = new Text(profile.getProfileName());
+    String name = profile.getProfileName();
+    Text text = new Text(name);
     ImageView imageView = new ImageView(profile.getProfilePhotoPath());
     vBox.getChildren().add(imageView);
     vBox.getChildren().add(text);
