@@ -15,6 +15,10 @@ import ooga.game.behaviors.ConditionalBehavior;
  */
 public interface Entity {
 
+  DoubleProperty stationaryProperty();
+
+  void setStationaryProperty(double bit);
+
   double getX();
 
   DoubleProperty xProperty();

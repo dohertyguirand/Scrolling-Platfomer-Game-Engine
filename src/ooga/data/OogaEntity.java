@@ -39,6 +39,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
   private final Map<String, Boolean> blockedMovements = new HashMap<>();
   private final Map<String, String> myVariables = new HashMap<>();
+  private DoubleProperty stationaryProperty = new SimpleDoubleProperty(0);
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
     myVelocity = List.of(0.,0.);
@@ -316,4 +317,14 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    */
   @Override
   public void setVariables(Map<String, String> variables) { myVariables.putAll(variables); }
+
+  @Override
+  public void setStationaryProperty(double bit){
+    this.stationaryProperty.setValue(bit);
+  }
+
+  @Override
+  public DoubleProperty stationaryProperty(){
+    return stationaryProperty;
+  }
 }
