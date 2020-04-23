@@ -23,7 +23,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
   private InputManager myInputManager = new OogaInputManager();
-  private Map<String, Double> myVariables;
+  private Map<String, String> myVariables;
   private ObservableList<Entity> myEntities;
   Map<String, ImageEntityDefinition> myEntityDefinitions;
 
@@ -45,7 +45,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 //    }
 
     for (String key : myDataReader.getVariableMap(gameName).keySet()){
-      myVariables.put(key, Double.parseDouble(myDataReader.getVariableMap(gameName).get(key)));
+      myVariables.put(key, myDataReader.getVariableMap(gameName).get(key));
     }
   }
 

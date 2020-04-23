@@ -71,7 +71,7 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
     //TODO: Update arguments once game stores variables as <String,String>
@@ -237,7 +237,7 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doActions(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
+  public void doActions(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
                         Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     for(Action action : actions){
       action.doAction(elapsedTime, subject, variables, collisionInfo, gameInternal);

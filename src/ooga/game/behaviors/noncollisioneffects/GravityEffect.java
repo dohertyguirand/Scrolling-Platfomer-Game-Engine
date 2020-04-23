@@ -6,7 +6,6 @@ import java.util.Map;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
@@ -37,15 +36,14 @@ public class GravityEffect extends TimeDelayedEffect {
 
     /**
      * Performs the effect
-     *
-     * @param subject     The entity that owns this. This is the entity that should be modified.
+     *  @param subject     The entity that owns this. This is the entity that should be modified.
      * @param otherEntity entity we are "interacting with" in this effect
      * @param elapsedTime time between steps in ms
      * @param variables   game variables
      * @param game        game instance
      */
     @Override
-    protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+    protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
         //subject.changeVelocity(myGravityVector.get(0)*elapsedTime/EXPECTED_DT,myGravityVector.get(1)*elapsedTime/EXPECTED_DT);
         //System.out.println("GRAVITY APPLYING TO " + subject.getName());
         subject.changeVelocity(parseData(myGravityVectorData.get(0), subject, variables, 0.0),

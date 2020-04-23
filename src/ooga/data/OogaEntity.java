@@ -106,8 +106,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime, Map<String, Double> variables,
-      GameInternal game) {
+  public void updateSelf(double elapsedTime, Map<String, String> variables,
+                         GameInternal game) {
     applyFrictionHorizontal();
     applyFrictionVertical();
   }
@@ -224,13 +224,17 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void reactToVariables(Map<String, Double> variables) {
+  public void reactToVariables(Map<String, String> variables) {
     //TODO: make this work for entity variables?
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
         String propertyName = propertyVariableDependencies.get(varName);
         if (propertyUpdaters.containsKey(propertyName)) {
-          propertyUpdaters.get(propertyName).accept(variables.get(varName));
+          try{
+            propertyUpdaters.get(propertyName).accept(Double.parseDouble(variables.get(varName)));
+          } catch (NumberFormatException e){
+            System.out.println("Could not set variable property dependency because variable could not be parsed to double");
+          }
         } else {
           System.out.println("no method defined for setting " + propertyName + " property to a variable");
         }
@@ -271,7 +275,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    * assigned behavior if true
    */
   @Override
-  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
+  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
                                      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     //System.out.println(getName() + " is updating!");
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {

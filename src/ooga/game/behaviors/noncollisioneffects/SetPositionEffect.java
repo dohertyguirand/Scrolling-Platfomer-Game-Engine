@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class SetPositionEffect extends TimeDelayedEffect {
 
-  private List<String> desiredLocation = new ArrayList<>();
+  private List<String> desiredLocation;
 
   /**
    * Construct the set position effect by setting desiredLocation. Note that it adds strings because it could depend on variables.
@@ -27,6 +27,7 @@ public class SetPositionEffect extends TimeDelayedEffect {
    */
   @Override
   public void processArgs(List<String> args) {
+    desiredLocation = new ArrayList<>();
     desiredLocation.add(args.get(0));
     desiredLocation.add(args.get(1));
   }
@@ -41,7 +42,7 @@ public class SetPositionEffect extends TimeDelayedEffect {
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     List<Double> newLocation = new ArrayList<>();
     for(String coordinateData : desiredLocation){
       newLocation.add(parseData(coordinateData, subject, variables, 0.0));
