@@ -11,6 +11,7 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.OogaVariableCondition;
 import ooga.game.behaviors.VariableCondition;
+import ooga.game.behaviors.comparators.VariableComparator;
 import ooga.game.behaviors.comparators.VariableEquals;
 
 /**
@@ -36,7 +37,7 @@ public class VariableDeterminedAction extends Action {
   public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
                                         Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
                                         GameInternal gameInternal) {
-    Comparator<String> myComparator = new VariableEquals(); //Effect.doVariableSubstitutions(myComparatorData, subject, variables);
+    VariableComparator myComparator = new VariableEquals(); //Effect.doVariableSubstitutions(myComparatorData, subject, variables);
     //TODO: use other comparators as well
     List<Entity> otherEntities = new ArrayList<>();
     for(Entity otherEntity : ((Game)gameInternal).getEntities()){
