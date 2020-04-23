@@ -52,7 +52,7 @@ public class BlinkImageEffect implements Effect {
     String image2 = doVariableSubstitutions(image2Data, subject, variables);
     timePassedSinceLastBlink += elapsedTime;
     if(timePassed >= totalBlinkTime){
-      setImage(subject, finalImage, variables);
+      SetImageEffect.setImage(subject, finalImage, variables, this);
       timePassed = 0.0;
       /* note that due to this method only being called when the behavior conditions are true means timePassed will be
        somewhat meaningless; that is, this effect is unlikely to give you the desired final image unless the numbers
@@ -61,22 +61,14 @@ public class BlinkImageEffect implements Effect {
     }
     else if(timePassedSinceLastBlink >= blinkTimeDelay){
       if(currentImage.equals(image1)) {
-        setImage(subject, image2, variables);
+        SetImageEffect.setImage(subject, image2, variables, this);
         currentImage = image2;
       } else{
-        setImage(subject, image1, variables);
+        SetImageEffect.setImage(subject, image1, variables, this);
         currentImage = image1;
       }
       timePassedSinceLastBlink = 0.0;
     }
     timePassed += elapsedTime;
-  }
-
-  private void setImage(Entity subject, String newImageFileName, Map<String, String> variables) {
-    //TODO: find a better way than using instanceof
-    if(subject instanceof ImageEntity){
-      ImageEntity imageEntity = (ImageEntity)subject;
-      imageEntity.setImageLocation("file:data/games-library/" + doVariableSubstitutions(newImageFileName, subject, variables));
-    }
   }
 }
