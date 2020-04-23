@@ -11,7 +11,7 @@ public class LevelTest {
   @Test
   void testRemoveEntity() {
     Entity removable = new ImageEntity();
-    Level level = new OogaLevel(List.of(removable));
+    Level level = new OogaLevel(List.of(removable), );
     assertEquals(1,level.getEntities().size());
     level.removeEntity(removable);
     assertEquals(0,level.getEntities().size());

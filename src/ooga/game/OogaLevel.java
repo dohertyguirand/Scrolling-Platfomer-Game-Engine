@@ -6,8 +6,6 @@ import javafx.collections.ObservableList;
 import java.util.List;
 import ooga.Entity;
 
-import java.util.ArrayList;
-
 /**
  * This is a rough draft of a Level that will work for now. More should likely be added later.
  * As Braeden doesn't have End Conditions fully fleshed out at this momment, this is just returning false, but
@@ -18,14 +16,16 @@ public class OogaLevel implements Level{
     private ObservableList<Entity> myEntities;
     private String myNextLevelId;
     private LevelEndCondition myEndCondition;
+    private String myId;
 
-    public OogaLevel(List<Entity> entities){
+    public OogaLevel(List<Entity> entities, String id){
 //        myEntities = (ObservableList<EntityAPI>) Entities;
         myEntities = FXCollections.observableArrayList(entities);
         myNextLevelId = "UNDEFINED_NEXT_LEVEL";
         myNextLevelId = "1"; //TODO: REMOVE BECAUSE THIS IS A DEBUG LEVEL ID
         //TODO: Allow assigning of an end condition
         myEndCondition = new CollisionEndCondition(List.of("SmallMario","Flagpole"));
+        myId = id;
     }
 
     public OogaLevel(List<Entity> entities, LevelEndCondition condition){

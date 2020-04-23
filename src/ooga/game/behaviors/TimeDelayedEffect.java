@@ -1,5 +1,7 @@
 package ooga.game.behaviors;
 
+import java.util.List;
+import java.util.ResourceBundle;
 import ooga.Entity;
 import ooga.game.GameInternal;
 
@@ -13,6 +15,15 @@ public abstract class TimeDelayedEffect implements Effect {
 
   private double timePassed = 0.0;
   private String timeDelayData = "";
+  private ResourceBundle resources;
+
+  public TimeDelayedEffect(List<String> args, int numDefaultArgs) {
+    processArgs(resources.getString(this.getClass().toString()));
+    processTimeDelay(args,numDefaultArgs);
+  }
+
+
+  public abstract void processArgs(List<String> args);
 
   /**
    * Setter
@@ -54,4 +65,10 @@ public abstract class TimeDelayedEffect implements Effect {
    * @param game game instance
    */
   protected abstract void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game);
+
+  protected void processTimeDelay(List<String> args, int numDefaultArgs) {
+    if (args.size() > numDefaultArgs) {
+      setTimeDelay(args.get(numDefaultArgs));
+    }
+  }
 }

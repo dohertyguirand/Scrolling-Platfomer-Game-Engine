@@ -213,6 +213,11 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     return this;
   }
 
+  @Override
+  public String getCurrentLevelId() {
+    return currentLevel.getLevelId();
+  }
+
   /**
    * @param mouseX The X-coordinate of the mouse click, in in-game screen coordinates
    *               (not "view-relative" coordinates).

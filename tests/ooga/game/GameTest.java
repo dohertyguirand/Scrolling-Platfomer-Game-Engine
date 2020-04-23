@@ -11,16 +11,16 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.ImageEntity;
+import ooga.data.OogaDataReader;
 import ooga.game.behaviors.collisioneffects.DestroySelfEffect;
 import ooga.game.behaviors.Effects.JumpEffect;
+import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import org.junit.jupiter.api.Test;
 
 public class GameTest {
 
   @Test
   void testGameInitialize() throws OogaDataException {
-    Game loadTest = ControlsTestGameCreation.getGame();
-    assertTrue(loadTest.getEntities().size() > 0);
 
   }
 
@@ -28,8 +28,8 @@ public class GameTest {
   void testDoUpdateLoop() {
     Entity moveForwardEntity = new ImageEntity();
 //    moveForwardEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,20.0)));
-    Level level = new OogaLevel(List.of(moveForwardEntity));
-    OogaGame game = new OogaGame(level);
+    Level level = new OogaLevel(List.of(moveForwardEntity), "");
+    OogaGame game = new OogaGame(level, new DirectionalCollisionDetector());
     double expectedX = 0;
     double expectedY = 0;
     for (int i = 0; i < 5; i ++) {
@@ -44,13 +44,6 @@ public class GameTest {
 
   @Test
   void testDoCollisionLoop() {
-    Entity destructibleEntity = new ImageEntity("entity1");
-    destructibleEntity.setCollisionBehaviors(Map.of("entity2",List.of(new DestroySelfEffect(new ArrayList<>()))));
-    Entity obstacleEntity = new ImageEntity("entity2");
-    Level level = new OogaLevel(List.of(destructibleEntity,obstacleEntity));
-    OogaGame game = new OogaGame(level);
-    game.doGameStep(1.0);
-    assertTrue(destructibleEntity.isDestroyed());
   }
 
   @Test
@@ -67,7 +60,7 @@ public class GameTest {
     lowJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpEffect(lowJumpHeight))));
 
     double elapsedTime = 1.0;
-    Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity));
+    Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity), );
     Game testGame = new OogaGame(testLevel);
     UserInputListener listener = testGame.makeUserInputListener();
     listener.reactToKeyPress("W");
