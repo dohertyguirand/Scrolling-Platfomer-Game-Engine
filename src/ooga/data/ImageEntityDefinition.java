@@ -13,6 +13,7 @@ public class ImageEntityDefinition {
     private final List<ConditionalBehavior> myBehaviors;
     private final String myName;
     private Map<String, String> myVariables = new HashMap<>();
+    private boolean stationary = false;
 
     public ImageEntityDefinition(String name, double height, double width, String imageLocation, List<ConditionalBehavior> behaviors){
         myName = name;
@@ -42,5 +43,7 @@ public class ImageEntityDefinition {
         return myWidth;
     }
 
-  public void setVariables(Map<String, String> entityVariables) { myVariables = entityVariables; }
+    public void setVariables(Map<String, String> entityVariables) { myVariables = entityVariables; }
+
+    public void setStationary(boolean isStationary){stationary = isStationary;}
 }

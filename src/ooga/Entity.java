@@ -176,4 +176,12 @@ public interface Entity {
   String getEntityID();
 
   Map<String,String> getVariables();
+
+  /**
+   * creates the double property stationaryProperty for the entity. 0 if false, 1 if true.
+   * @param stationary
+   */
+  void makeStationaryProperty(boolean stationary);
+
+  DoubleProperty stationaryProperty();
 }
