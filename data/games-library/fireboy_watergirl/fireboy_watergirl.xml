@@ -62,7 +62,7 @@
                         <InputRequirement>false</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-<!--                        <Effect>SetImage Still</Effect>-->
+                        <Effect>SetImage Still</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -76,7 +76,7 @@
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>VelocityInput -.1300 0 .2600</Effect>
-<!--                        <Effect>SetImage FacingLeft</Effect>-->
+                        <Effect>SetImage FacingLeft</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -90,7 +90,7 @@
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>VelocityInput .1300 0 .2600</Effect>
-<!--                        <Effect>SetImage FacingRight</Effect>-->
+                        <Effect>SetImage FacingRight</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
