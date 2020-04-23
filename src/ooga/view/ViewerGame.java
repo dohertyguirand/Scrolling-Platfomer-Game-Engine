@@ -54,19 +54,15 @@ public class ViewerGame {
   private boolean cameraOn = false;
   private final ObjectProperty<Effect> colorEffectProperty = new SimpleObjectProperty<>();
   private Scene pauseScene;
+  private String myProfileName;
 
   public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
     myGameName = gameName;
     myProfileName = profileName;
     myCamera = new ParallelCamera();
     //TODO: Update to match the new constructors by adding the date of the save to load
-<<<<<<< HEAD
     setGame(saveDate);
     //SAM added this as the way to make a Game once file loading works.
-=======
-    myGame =  new OogaGame(gameName, new OogaDataReader(),profileName,"");
-
->>>>>>> master
     setUpGameEntities();
     setUpGameStage();
     myRoot.getChildren().addAll(setUpPauseButton(), setUpDarkModeButton(), setUpNormalModeButton());
@@ -75,14 +71,9 @@ public class ViewerGame {
     setUpInputListeners(myGame);
   }
 
-<<<<<<< HEAD
-  public ViewerGame(String gameName, String profileName, String saveDate ,boolean camera) throws OogaDataException {
+
+  public ViewerGame(String gameName, String profileName,String saveDate, boolean camera) throws OogaDataException {
     this(gameName,profileName,saveDate);
-=======
-  @Deprecated
-  public ViewerGame(String gameName, String profileName, boolean camera) throws OogaDataException {
-    this(gameName,profileName);
->>>>>>> master
     cameraOn = camera;
     if(focus!= null){
       myCamera.layoutXProperty().bind(focus.getXProperty());
