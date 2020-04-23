@@ -192,4 +192,6 @@ public interface Entity {
   void setVariables(Map<String, String> variables);
 
   public String getEntityID();
+
+  Map<String,String> getVariables();
 }

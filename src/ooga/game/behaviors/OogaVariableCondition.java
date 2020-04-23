@@ -33,4 +33,8 @@ public class OogaVariableCondition implements VariableCondition {
     return (myComparator.compare(subjectVariables.get(myVariableName),myCompareTo) > 0);
   }
 
+  @Override
+  public String toString() {
+    return "Compares variable " + myVariableName + " to value " + myCompareTo;
+  }
 }

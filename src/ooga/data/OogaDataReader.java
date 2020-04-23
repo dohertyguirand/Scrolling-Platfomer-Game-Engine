@@ -9,6 +9,9 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.BehaviorInstance;
 import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.Effect;
+import ooga.game.behaviors.OogaVariableCondition;
+import ooga.game.behaviors.VariableCondition;
+import ooga.game.behaviors.comparators.VariableEquals;
 import ooga.view.OogaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -378,12 +381,34 @@ public class OogaDataReader implements DataReader{
             addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName("BannedCollisionCondition"), name);
             addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("GameVariableCondition"));
+            List<VariableCondition> gameVariableConditions = getGameVariableConditions(behaviorElement.getElementsByTagName("GameVariableCondition"));
             addEntityVariableConditions(entityVariableConditions, behaviorElement.getElementsByTagName("EntityVariableCondition"));
-            behaviors.add(new BehaviorInstance(variableConditions, entityVariableConditions, inputConditions, requiredCollisionConditions,
-                    bannedCollisionConditions, getActions(behaviorElement)));
+            Map<String,List<VariableCondition>> entityVarConditions = getEntityVariableConditions(behaviorElement.getElementsByTagName("EntityVariableCondition"));
+//            behaviors.add(new BehaviorInstance(variableConditions, entityVariableConditions, inputConditions, requiredCollisionConditions,
+//                    bannedCollisionConditions, getActions(behaviorElement)));
+            for (VariableCondition condition : gameVariableConditions) {
+                System.out.println(condition);
+            }
+            for (List<VariableCondition> conditionList : entityVarConditions.values()) {
+                for (VariableCondition condition : conditionList) {
+                    System.out.println(condition);
+                }
+            }
+            behaviors.add(new BehaviorInstance(gameVariableConditions,entityVarConditions,inputConditions,requiredCollisionConditions,bannedCollisionConditions,getActions(behaviorElement)));
         }
 
         return new ImageEntityDefinition(name, height, width, imagePath, behaviors);
+    }
+
+    private List<VariableCondition> getGameVariableConditions(NodeList conditions) {
+        List<VariableCondition> ret = new ArrayList<>();
+        for (int i = 0; i < conditions.getLength(); i ++) {
+            Element variableConditionElement = (Element) conditions.item(i);
+            String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
+            String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
+            ret.add(new OogaVariableCondition(name,new VariableEquals(),requiredValue));
+        }
+        return ret;
     }
 
     private void addCollisionConditions(Map<List<String>, String> collisionConditionsMap, NodeList collisionConditionNodes,
@@ -455,6 +480,29 @@ public class OogaDataReader implements DataReader{
             conditionMap.putIfAbsent(entityInfo, new ArrayList<>());
             conditionMap.get(entityInfo).add(conditionEntry);
         }
+    }
+
+    private Map<String,List<VariableCondition>> getEntityVariableConditions(NodeList variableConditionNodes) throws OogaDataException{
+        Map<String,List<VariableCondition>> ret = new HashMap<>();
+        for(int j=0; j<variableConditionNodes.getLength(); j++){
+            Element variableConditionElement = (Element) variableConditionNodes.item(j);
+            //checkKeyExists(variableConditionElement, "EntityNameOrID", "Missing entity name/id in entity variable condition");
+            String entityInfo;
+            if(variableConditionElement.getElementsByTagName("EntityNameOrID").getLength() == 0) entityInfo = BehaviorInstance.SELF_IDENTIFIER;
+            else entityInfo = variableConditionElement.getElementsByTagName("EntityNameOrID").item(0).getTextContent();
+            ret.putIfAbsent(entityInfo, new ArrayList<>());
+            ret.get(entityInfo).add(getEntityVariableCondition(variableConditionElement));
+        }
+        return ret;
+    }
+
+    private VariableCondition getEntityVariableCondition(Element variableConditionElement)
+        throws OogaDataException {
+        checkKeyExists(variableConditionElement, "VariableName", "Missing variable name in variable condition");
+        checkKeyExists(variableConditionElement, "RequiredValue", "Missing required value in variable condition");
+        String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
+        String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
+        return new OogaVariableCondition(name,new VariableEquals(),requiredValue);
     }
 
     private Map.Entry<String, String> getVariableConditionEntry(Element variableConditionElement) throws OogaDataException {

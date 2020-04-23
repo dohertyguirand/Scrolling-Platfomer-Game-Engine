@@ -19,7 +19,7 @@ public abstract class TimeDelayedEffect implements Effect {
 
   public TimeDelayedEffect(List<String> args) {
     processArgs(args);
-    processTimeDelay(args,Integer.parseInt(resources.getString(this.getClass().getName())));
+    processTimeDelay(args,Integer.parseInt(resources.getString(this.getClass().getSimpleName())));
   }
 
   /**
