@@ -13,6 +13,7 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
 
   public ChangeVelocityEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
+    System.out.println("HELLO");
   }
 
   @Override
