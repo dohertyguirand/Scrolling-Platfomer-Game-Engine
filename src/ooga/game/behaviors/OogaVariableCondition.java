@@ -20,6 +20,7 @@ public class OogaVariableCondition implements VariableCondition {
   public boolean isSatisfied(Entity behaviorEntity, Map<String, String> gameVariables,
       Map<String, String> subjectVariables) {
     System.out.println("Comparing " + myVariableName + " to " + myCompareTo);
+    System.out.println(subjectVariables.get(myVariableName));
     if (!subjectVariables.containsKey(myVariableName)) {
       return false;
     }

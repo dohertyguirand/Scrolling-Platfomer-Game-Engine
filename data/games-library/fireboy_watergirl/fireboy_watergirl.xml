@@ -33,11 +33,11 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <InputCondition>
-                        <Key>DownKey2Pressed</Key>
+                        <Key>DownKey2</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <InputCondition>
-                        <Key>DownKeyPressed</Key>
+                        <Key>DownKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <GameVariableCondition>

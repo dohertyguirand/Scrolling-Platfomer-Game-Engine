@@ -13,7 +13,6 @@ public class BehaviorInstance implements ConditionalBehavior {
   Map<String, Boolean> inputConditions;
   Map<List<String>, String> requiredCollisionConditions;
   Map<List<String>, String> bannedCollisionConditions;
-  //TODO: Make Game variable conditions like entity variable conditions
   Map<String, String> gameVariableConditions;
   List<VariableCondition> gameVarConditions;
   Map<String,List<Entry<String, String>>> entityVariableConditions;
@@ -92,12 +91,6 @@ public class BehaviorInstance implements ConditionalBehavior {
 
   private boolean checkGameVariableConditions(Entity subject, Map<String, String> gameVariables) {
     return checkVariableConditionsList(subject, gameVariables, gameVarConditions, gameVariables);
-//    for(Entry<String, String> variableCondition : gameVariableConditions.entrySet()){
-//      if((variables.get(variableCondition.getKey()) == null || !(String.valueOf(variables.get(variableCondition.getKey()))).equals(variableCondition.getValue()))) {
-//        return false;
-//      }
-//    }
-//    return true;
   }
 
   private boolean checkVariableConditionsList(Entity subject, Map<String, String> gameVariables,
@@ -123,16 +116,9 @@ public class BehaviorInstance implements ConditionalBehavior {
       }
     }
     return true;
-//
-//
-//    for(Entry<String, List<Entry<String, String>>> variableConditionsEntry : entityVariableConditions.entrySet()){
-//      if (!entityVariableConditionSatisfied(subject,gameInternal,variableConditionsEntry)) {
-//        return false;
-//      }
-//    }
-//    return true;
   }
 
+  @Deprecated
   private boolean entityVariableConditionSatisfied(Entity subject, GameInternal gameInternal,
       Entry<String, List<Entry<String, String>>> variableConditionsEntry) {
     //Map: ((Variable containing Entity ID) OR (Variable Containing EntityName) OR (EntityID) OR (EntityName) ) -> ((VariableName),(Value))
