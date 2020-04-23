@@ -11,6 +11,11 @@ public class RunIntoTerrainDownEffect extends RunIntoTerrainEffect {
     super(args);
   }
 
+  @Override
+  public void processArgs(List<String> args) {
+    //has no arguments
+  }
+
   /**
    * Performs the effect
    *
