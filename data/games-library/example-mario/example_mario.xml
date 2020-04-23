@@ -12,27 +12,35 @@
       <VariableValues>example-mario/mario_facing_right.png example-mario/mario_facing_left.png</VariableValues>
       <Behaviors>
         <Behavior>
-          <VerticalCollisionCondition>
-            <EntityName>Mushroom</EntityName>
-            <CollisionRequirement>true</CollisionRequirement>
-          </VerticalCollisionCondition>
-          <Effect>ResizeImage 120 180</Effect>
+          <RequiredCollisionCondition>
+            <Entity1>SmallMario</Entity1>
+            <Entity2>Mushroom</Entity2>
+            <Direction>ANY</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>ResizeImage 100 150</Effect>
+            <Effect>ResizeImage 120 180 1000</Effect>
+          </IndependentAction>
         </Behavior>
         <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
             <InputRequirement>true</InputRequirement>
           </InputCondition>
-          <Effect>VelocityInput -.1600 0 .3200</Effect>
-          <Effect>SetImage LeftFacingImage</Effect>
+          <IndependentAction>
+            <Effect>VelocityInput -.1600 0 .3200</Effect>
+            <Effect>SetImage LeftFacingImage</Effect>
+          </IndependentAction>
         </Behavior>
         <Behavior>
           <InputCondition>
             <Key>RightKey2</Key>
             <InputRequirement>true</InputRequirement>
           </InputCondition>
-          <Effect>VelocityInput .1600 0 .3200</Effect>
-          <Effect>SetImage RightFacingImage</Effect>
+          <IndependentAction>
+            <Effect>VelocityInput .1600 0 .3200</Effect>
+            <Effect>SetImage RightFacingImage</Effect>
+          </IndependentAction>
         </Behavior>
         <Behavior>
           <HorizontalCollisionCondition>

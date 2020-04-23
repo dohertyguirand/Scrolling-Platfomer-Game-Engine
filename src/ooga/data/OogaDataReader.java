@@ -483,12 +483,12 @@ public class OogaDataReader implements DataReader{
 
     private Effect makeBasicEffect(String[] effect) throws OogaDataException {
         String effectName = effect[0];
-        String effectClassName = myEffectsResources.getString(effectName);
         try {
+            String effectClassName = myEffectsResources.getString(effectName);
             Class cls = forName(PATH_TO_CLASSES + effectClassName);
             Constructor cons = cls.getConstructor(List.class);
             return (Effect)cons.newInstance(Arrays.asList(effect).subList(1, effect.length));
-        } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException e){
+        } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | MissingResourceException e) {
             throw new OogaDataException(effectName + " effect listed in game file is not recognized.");
         } catch(InvocationTargetException e){ // this should be OogaDataException but it won't work because reflection is used
             throw new OogaDataException(effectName + " effect argument list not formatted correctly");
