@@ -15,14 +15,13 @@ import ooga.game.collisiondetection.DirectionalCollisionDetector;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
-  public static final String ID_VARIABLE_NAME = "ID";
   private List<String> myLevelIds;
   private Level currentLevel;
-  private String myName;
+  private final String myName;
   private DataReader myDataReader;
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
-  private InputManager myInputManager = new OogaInputManager();
+  private final InputManager myInputManager = new OogaInputManager();
   private Map<String, String> myVariables;
   private ObservableList<Entity> myEntities;
   Map<String, ImageEntityDefinition> myEntityDefinitions;
@@ -63,10 +62,10 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     Level level = myDataReader.loadLevel(gameName,id);
     myEntities.clear();
     myEntities.addAll(level.getEntities());
-    System.out.println(myVariables);
     return level;
   }
 
+  @Deprecated
   public OogaGame(Level startingLevel, CollisionDetector collisions) {
     myName = "Unnamed";
     myCollisionDetector = collisions;
@@ -77,11 +76,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public ObservableList<Entity> getEntities() {
     return myEntities;
-  }
-
-  @Override
-  public ObservableList<OogaEntity> getAbstractEntities() {
-    return null;
   }
 
   @Override
@@ -197,21 +191,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     for (Entity destroyed : destroyedEntities) {
       if (destroyed.isDestroyed()) {
         currentLevel.removeEntity(destroyed);
-        for (Entity e : myEntities) {
-          System.out.println(e.getName());
-        }
-        System.out.println("destroyed.getName() = " + destroyed.getName());
         myEntities.remove(destroyed);
-        for (Entity e : myEntities) {
-          System.out.println(e.getName());
-        }
       }
     }
-  }
-
-  @Override
-  public UserInputListener makeUserInputListener() {
-    return this;
   }
 
   @Override
@@ -237,14 +219,12 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void reactToKeyPress(String keyName) {
     String inputType = myControlsInterpreter.translateInput(keyName);
-    System.out.println(keyName + " pressed.");
     myInputManager.keyPressed(inputType);
   }
 
   @Override
   public void reactToKeyRelease(String keyName) {
     String inputType = myControlsInterpreter.translateInput(keyName);
-    System.out.println(keyName + " released.");
     myInputManager.keyReleased(inputType);
   }
 

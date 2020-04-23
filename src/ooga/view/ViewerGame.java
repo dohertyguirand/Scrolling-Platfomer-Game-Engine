@@ -26,13 +26,12 @@ import ooga.data.*;
 import ooga.game.OogaGame;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
 public class ViewerGame {
 
   private static final double MILLISECOND_DELAY = 33.33;
-  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+  private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final double PAUSE_BUTTON_SIZE = Double.parseDouble(myResources.getString("pauseButtonSize"));
   private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
@@ -40,16 +39,16 @@ public class ViewerGame {
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
   private Group myEntityGroup;
   private Group myRoot;
-  private String myGameName;
+  private final String myGameName;
   private Scene myGameScene;
   private Stage myGameStage;
   private PauseMenu myPauseMenu;
   private OogaGame myGame;
   private Timeline myAnimation;
-  private ParallelCamera myCamera;
+  private final ParallelCamera myCamera;
   private ViewImageEntity focus;
   private boolean cameraOn = false;
-  private ObjectProperty<Effect> colorEffectProperty = new SimpleObjectProperty<>();
+  private final ObjectProperty<Effect> colorEffectProperty = new SimpleObjectProperty<>();
   private Scene pauseScene;
 
   public ViewerGame(String gameName, String profileName) throws OogaDataException {
@@ -84,7 +83,6 @@ public class ViewerGame {
       while (c.next()) {
         if(c.wasAdded() || c.wasRemoved()){
           for (Entity removedItem : c.getRemoved()) {
-            System.out.println(removedItem.isActiveInView());
             removedItem.setActiveInView(false);
           }
           for (Entity addedItem : c.getAddedSubList()) {
@@ -121,7 +119,6 @@ public class ViewerGame {
   private Node makeViewEntity(Entity entity){
     // TODO: use reflection here or something
     if(entity instanceof ImageEntity){
-      System.out.println(cameraOn);
       ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty));
       if(entity.getName().equals("SmallMario")){
         focus = viewImageEntity;
@@ -145,6 +142,7 @@ public class ViewerGame {
     return makeButton(getPauseButtonImage(), null, 0, "pause");
   }
 
+  @SuppressWarnings("unused")
   private void pause() {
     myGameStage.setScene(pauseScene);
     myPauseMenu.setResumed(false);
@@ -159,11 +157,13 @@ public class ViewerGame {
     return makeButton(null, "Normal Mode", 200, "setNormalMode");
   }
 
+  @SuppressWarnings("unused")
   private void setNormalMode(){
     colorEffectProperty.set(new ColorAdjust());
     myGameScene.getRoot().setStyle("-fx-base: rgba(255, 255, 255, 255)");
   }
 
+  @SuppressWarnings("unused")
   private void setDarkMode(){
     colorEffectProperty.set(new ColorAdjust(0.5, 0.2, 0.0 ,0.0));
     myGameScene.getRoot().setStyle("-fx-base: rgba(60, 63, 65, 255)");
@@ -181,9 +181,7 @@ public class ViewerGame {
     button.setLayoutX(xPos);
     button.setLayoutY(0);
     // note: need the below because buttons consume certain key press events (like arrow keys)
-    button.setOnKeyPressed(e -> {
-      button.getParent().fireEvent(e);
-    });
+    button.setOnKeyPressed(e -> button.getParent().fireEvent(e));
     return button;
   }
 
@@ -226,8 +224,8 @@ public class ViewerGame {
     myRoot.requestLayout();
   }
 
+  @SuppressWarnings("unused")
   private void showError(String message) {
-    System.out.println(message);
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setContentText(message);
     alert.showAndWait();

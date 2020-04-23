@@ -8,9 +8,10 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
 //  VariableDeterminedAction: determined by this entity's variables. "howToFind" is variable name/key (maps to an entity ID)
+@SuppressWarnings("unused")
 public class VariableDeterminedAction extends Action {
 
-  String myVariable;
+  final String myVariable;
 
   public VariableDeterminedAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
     super(effects);

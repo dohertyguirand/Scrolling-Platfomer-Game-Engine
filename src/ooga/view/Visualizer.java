@@ -31,9 +31,7 @@ public class Visualizer extends Application {
 
   private Scene setUpStartMenuDisplay() {
     ProfileMenu profileMenu = new ProfileMenu();
-    profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> {
-      showStartMenu(pnewVal);
-    });
+    profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> showStartMenu(pnewVal));
     return profileMenu.getScene();
   }
 

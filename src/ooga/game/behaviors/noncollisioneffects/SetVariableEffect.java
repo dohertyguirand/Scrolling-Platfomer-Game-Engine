@@ -7,6 +7,7 @@ import java.util.Map;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+@SuppressWarnings("unused")
 public class SetVariableEffect extends TimeDelayedEffect {
 
   private String variableName;

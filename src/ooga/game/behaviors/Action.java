@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class Action {
 
-  List<Effect> myEffects;
+  final List<Effect> myEffects;
 
   public Action(List<Effect> effects){
     myEffects = effects;

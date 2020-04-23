@@ -46,7 +46,7 @@ public class OogaDataReader implements DataReader{
 
     //TODO: put all magic strings (especially xml related stuff) in resource file
     private static final Object PATH_TO_CLASSES = "ooga.game.behaviors.";
-    private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
+    private final String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static final String DEFAULT_LIBRARY_FILE = "data/games-library";
     private static final String DEFAULT_USERS_FILE = "data/users";
     private static final String EFFECTS_PROPERTIES_LOCATION = "ooga/data/resources/effects";
@@ -372,8 +372,6 @@ public class OogaDataReader implements DataReader{
         NodeList nodeList = entityElement.getElementsByTagName("Behavior");
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
-            Map<String, String> variableConditions = new HashMap<>();
-            Map<String, List<Map.Entry<String, String>>> entityVariableConditions = new HashMap<>();
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
@@ -382,8 +380,6 @@ public class OogaDataReader implements DataReader{
             addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
             List<VariableCondition> gameVariableConditions = getGameVariableConditions(behaviorElement.getElementsByTagName("GameVariableCondition"));
             Map<String,List<VariableCondition>> entityVarConditions = getEntityVariableConditions(behaviorElement.getElementsByTagName("EntityVariableCondition"));
-//            behaviors.add(new BehaviorInstance(variableConditions, entityVariableConditions, inputConditions, requiredCollisionConditions,
-//                    bannedCollisionConditions, getActions(behaviorElement)));
             behaviors.add(new BehaviorInstance(gameVariableConditions,entityVarConditions,inputConditions,requiredCollisionConditions,bannedCollisionConditions,getActions(behaviorElement)));
         }
 
@@ -473,10 +469,11 @@ public class OogaDataReader implements DataReader{
         return new OogaVariableCondition(name,new VariableEquals(),requiredValue);
     }
 
-    private void addOneParameterConditions(Map<String, Boolean> conditionMap, NodeList verticalCollisionConditionNodes, String keyName, String valueName) {
-        for(int j=0; j<verticalCollisionConditionNodes.getLength(); j++){
-            String name = ((Element)verticalCollisionConditionNodes.item(j)).getElementsByTagName(keyName).item(0).getTextContent();
-            String requirementBoolean = ((Element)verticalCollisionConditionNodes.item(j)).getElementsByTagName(valueName).item(0).getTextContent();
+    @SuppressWarnings("SameParameterValue")
+    private void addOneParameterConditions(Map<String, Boolean> conditionMap, NodeList conditionNodes, String keyName, String valueName) {
+        for(int j=0; j<conditionNodes.getLength(); j++){
+            String name = ((Element)conditionNodes.item(j)).getElementsByTagName(keyName).item(0).getTextContent();
+            String requirementBoolean = ((Element)conditionNodes.item(j)).getElementsByTagName(valueName).item(0).getTextContent();
             conditionMap.put(name, Boolean.parseBoolean(requirementBoolean));
         }
     }
@@ -598,17 +595,17 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public void saveGameState(String filePath) throws OogaDataException {
+    public void saveGameState(String filePath) {
 
     }
 
     @Override
-    public Game loadGameState(String filePath) throws OogaDataException {
+    public Game loadGameState(String filePath) {
         return null;
     }
 
     @Override
-    public String getEntityImage(String entityName, String gameFile) throws OogaDataException {
+    public String getEntityImage(String entityName, String gameFile) {
 
         return null;
     }

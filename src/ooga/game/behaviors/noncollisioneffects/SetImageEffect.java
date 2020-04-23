@@ -9,6 +9,7 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class SetImageEffect extends TimeDelayedEffect {
 
   String newImageFileName;

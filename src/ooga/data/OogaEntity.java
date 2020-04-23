@@ -8,38 +8,37 @@ import java.util.Stack;
 import java.util.function.Consumer;
 import javafx.beans.property.*;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ConditionalBehavior;
 import ooga.Entity;
 import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
 
-  public static double FRICTION_ACCELERATION = 30.0 / 1000.0;
+  public static final double FRICTION_ACCELERATION = 30.0 / 1000.0;
 
-  private BooleanProperty activeInView = new SimpleBooleanProperty(true);
-  protected DoubleProperty xPos = new SimpleDoubleProperty();
-  protected DoubleProperty yPos = new SimpleDoubleProperty();
-  protected DoubleProperty width = new SimpleDoubleProperty();
-  protected DoubleProperty height = new SimpleDoubleProperty();
+  private final BooleanProperty activeInView = new SimpleBooleanProperty(true);
+  protected final DoubleProperty xPos = new SimpleDoubleProperty();
+  protected final DoubleProperty yPos = new SimpleDoubleProperty();
+  protected final DoubleProperty width = new SimpleDoubleProperty();
+  protected final DoubleProperty height = new SimpleDoubleProperty();
   protected String myName;
   protected Map<String, String> propertyVariableDependencies = new HashMap<>();
-  protected Map<String, Consumer<Double>> propertyUpdaters = new HashMap<>(){{
-    put("XPos", variableValue -> xPos.set(variableValue));
-    put("YPos", variableValue -> yPos.set(variableValue));
-    put("Width", variableValue -> width.set(variableValue));
-    put("Height", variableValue -> height.set(variableValue));
+  protected final Map<String, Consumer<String>> propertyUpdaters = new HashMap<>(){{
+    put("XPos", variableValue -> xPos.set(Double.parseDouble(variableValue)));
+    put("YPos", variableValue -> yPos.set(Double.parseDouble(variableValue)));
+    put("Width", variableValue -> width.set(Double.parseDouble(variableValue)));
+    put("Height", variableValue -> height.set(Double.parseDouble(variableValue)));
   }};
 
   private List<Double> myVelocity;
-  private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
+  private final Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
   private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
-  private Map<String, Boolean> blockedMovements = new HashMap<>();
-  private Map<String, String> myVariables = new HashMap<>();
+  private final Map<String, Boolean> blockedMovements = new HashMap<>();
+  private final Map<String, String> myVariables = new HashMap<>();
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
     myVelocity = List.of(0.,0.);
@@ -79,10 +78,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void setActiveInView(boolean activeInView) { this.activeInView.set(activeInView); }
 
-  @Override
   public DoubleProperty widthProperty(){ return width; }
 
-  @Override
   public DoubleProperty heightProperty(){ return height; }
 
   @Override
@@ -210,11 +207,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void createEntity(Entity e) {
-    myCreatedEntities.add(e);
-  }
-
-  @Override
   public List<Entity> popCreatedEntities() {
     List<Entity> ret = myCreatedEntities;
     myCreatedEntities = new ArrayList<>();
@@ -229,9 +221,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
         String propertyName = propertyVariableDependencies.get(varName);
         if (propertyUpdaters.containsKey(propertyName)) {
           try{
-            propertyUpdaters.get(propertyName).accept(Double.parseDouble(variables.get(varName)));
+            propertyUpdaters.get(propertyName).accept(variables.get(varName));
           } catch (NumberFormatException e){
-            System.out.println(variables.get(varName));
             System.out.println("Could not set variable property dependency because variable could not be parsed to double");
           }
         } else {
@@ -281,13 +272,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       //System.out.println("\tbehavior: " + conditionalBehavior.getClass().toString());
       conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);
     }
-  }
-
-  @Override
-  public boolean hasCollisionWith(String entityType) {
-    //TODO: remove this method
-    return true;
-    //return myCollisionBehaviors.containsKey(entityType);
   }
 
   /**

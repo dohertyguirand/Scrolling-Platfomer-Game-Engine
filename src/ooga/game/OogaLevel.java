@@ -13,13 +13,12 @@ import ooga.Entity;
  * TODO: fully flesh this out to be a working class
  */
 public class OogaLevel implements Level{
-    private ObservableList<Entity> myEntities;
+    private final ObservableList<Entity> myEntities;
     private String myNextLevelId;
-    private LevelEndCondition myEndCondition;
+    private final LevelEndCondition myEndCondition;
     private String myId;
 
     public OogaLevel(List<Entity> entities, String id){
-//        myEntities = (ObservableList<EntityAPI>) Entities;
         myEntities = FXCollections.observableArrayList(entities);
         myNextLevelId = "UNDEFINED_NEXT_LEVEL";
         myNextLevelId = "1"; //TODO: REMOVE BECAUSE THIS IS A DEBUG LEVEL ID
@@ -74,11 +73,6 @@ public class OogaLevel implements Level{
     @Override
     public void setNextLevelID(String nextID) {
         myNextLevelId = nextID;
-    }
-
-    @Override
-    public void registerCollision(String firstEntity, String secondEntity) {
-        myEndCondition.registerCollision(firstEntity,secondEntity);
     }
 
     @Override

@@ -6,9 +6,9 @@ import ooga.Entity;
 
 public class OogaVariableCondition implements VariableCondition {
 
-  private Comparator<String> myComparator;
-  private String myCompareTo;
-  private String myVariableName;
+  private final Comparator<String> myComparator;
+  private final String myCompareTo;
+  private final String myVariableName;
 
   public OogaVariableCondition(String varName, Comparator<String> comparator, String value) {
     myComparator = comparator;

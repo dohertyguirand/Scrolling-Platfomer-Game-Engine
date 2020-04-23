@@ -8,9 +8,10 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
 //  IDDeterminedAction: executes the effect on the entity with the specified ID
+@SuppressWarnings("unused")
 public class IdDeterminedAction extends Action {
 
-  private String targetID;
+  private final String targetID;
 
   public IdDeterminedAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
     super(effects);

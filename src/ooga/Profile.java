@@ -1,7 +1,5 @@
 package ooga;
 
-import javafx.scene.image.Image;
-
 import java.util.Map;
 
 public interface Profile {

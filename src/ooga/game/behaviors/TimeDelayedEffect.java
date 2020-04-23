@@ -13,12 +13,13 @@ import java.util.Map;
  */
 public abstract class TimeDelayedEffect implements Effect {
 
+  public static final String PATH_TO_DEFAULTS = "ooga/game/behaviors/resources/effectdefaults";
   private double timePassed = 0.0;
   private String timeDelayData = "";
-  private ResourceBundle resources = ResourceBundle.getBundle("ooga/game/behaviors/resources/effectdefaults");
 
   public TimeDelayedEffect(List<String> args) {
     processArgs(args);
+    ResourceBundle resources = ResourceBundle.getBundle(PATH_TO_DEFAULTS);
     processTimeDelay(args, Integer.parseInt(resources.getString(this.getClass().getSimpleName())));
   }
 
@@ -67,6 +68,7 @@ public abstract class TimeDelayedEffect implements Effect {
    * @param variables game variables
    * @param game game instance
    */
+  @SuppressWarnings("unused")
   protected abstract void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game);
 
   protected void processTimeDelay(List<String> args, int numDefaultArgs) {

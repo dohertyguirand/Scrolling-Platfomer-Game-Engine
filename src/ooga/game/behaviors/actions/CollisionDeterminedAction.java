@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class CollisionDeterminedAction extends Action {
 
-  private String direction;
-  private String collidingEntityInfo;
+  private final String direction;
+  private final String collidingEntityInfo;
   public static final String ANY = "ANY";
 
   /**
