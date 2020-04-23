@@ -53,6 +53,7 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+<!--            <Effect>RestartLevel</Effect>-->
             <Effect>ChangeVariable Lives -1.0</Effect>
           </IndependentAction>
         </Behavior>

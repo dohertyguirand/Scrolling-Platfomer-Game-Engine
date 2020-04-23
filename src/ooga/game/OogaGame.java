@@ -326,4 +326,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public void goToNextLevel() {
     goToLevel(currentLevel.nextLevelID());
   }
+
+  @Override
+  public void restartLevel() {
+    goToLevel(currentLevel.getLevelId());
+  }
 }

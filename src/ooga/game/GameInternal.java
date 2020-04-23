@@ -14,4 +14,6 @@ public interface GameInternal {
   void goToLevel(String levelID);
 
   void goToNextLevel();
+
+  void restartLevel();
 }
