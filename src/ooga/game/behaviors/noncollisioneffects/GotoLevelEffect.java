@@ -12,10 +12,12 @@ public class GotoLevelEffect extends TimeDelayedEffect {
   private String myLevelId;
 
   public GotoLevelEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
+  }
+
+  @Override
+  public void processArgs(List<String> args) {
     myLevelId = args.get(0);
-    if(args.size() > 1){
-      setTimeDelay(args.get(1));
-    }
   }
 
   @Override

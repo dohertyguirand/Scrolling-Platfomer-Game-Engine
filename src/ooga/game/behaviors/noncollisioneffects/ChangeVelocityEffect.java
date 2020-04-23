@@ -12,11 +12,13 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
   private String velocityYMultiplierData;
 
   public ChangeVelocityEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
+  }
+
+  @Override
+  public void processArgs(List<String> args) {
     velocityXMultiplierData = args.get(0);
     velocityYMultiplierData = args.get(1);
-    if(args.size() > 2){
-      setTimeDelay(args.get(1));
-    }
   }
 
   /**

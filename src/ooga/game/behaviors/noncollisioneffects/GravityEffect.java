@@ -1,5 +1,6 @@
 package ooga.game.behaviors.noncollisioneffects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,15 +20,18 @@ public class GravityEffect extends TimeDelayedEffect {
     private List<String> myGravityVectorData;
 
     public GravityEffect(List<String> args) throws IndexOutOfBoundsException {
+        super(args);
+    }
+
+    @Override
+    public void processArgs(List<String> args) {
         String xGrav = args.get(0);
         String yGrav = args.get(1);
         myGravityVectorData = List.of(xGrav,yGrav);
-        if(args.size() > 2){
-            setTimeDelay(args.get(2));
-        }
     }
 
     public GravityEffect(double xGrav, double yGrav) {
+        super(new ArrayList<>());
         myGravityVectorData = List.of(String.valueOf(xGrav),String.valueOf(yGrav));
     }
 

@@ -1,5 +1,6 @@
 package ooga.game.behaviors.noncollisioneffects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import ooga.game.GameInternal;
@@ -13,13 +14,17 @@ public class JumpEffect extends TimeDelayedEffect {
   String myYVelocityData;
 
   public JumpEffect(List<String> args) throws IndexOutOfBoundsException {
-    myYVelocityData = args.get(0);
-    if(args.size() > 1){
-      setTimeDelay(args.get(1));
-    }
+    super(args);
   }
 
-  public JumpEffect(double yVelocity) { myYVelocityData = String.valueOf(yVelocity); }
+  @Override
+  public void processArgs(List<String> args) {
+    myYVelocityData = args.get(0);
+  }
+
+  public JumpEffect(double yVelocity) {
+    super(new ArrayList<>());
+    myYVelocityData = String.valueOf(yVelocity); }
 
   /**
    * Performs the effect

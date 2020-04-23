@@ -10,9 +10,12 @@ public class DestroySelfEffect extends TimeDelayedEffect {
 
 
     public DestroySelfEffect(List<String> args) {
-        if(args.size() > 0){
-            setTimeDelay(args.get(0));
-        }
+        super(args);
+    }
+
+    @Override
+    public void processArgs(List<String> args) {
+        //has no arguments.
     }
 
     /**
