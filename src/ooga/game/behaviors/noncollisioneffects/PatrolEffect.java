@@ -69,7 +69,7 @@ public class PatrolEffect extends TimeDelayedEffect {
     }
   }
 
-  private void switchTargets(Entity subject, Map<String, Double> variables) {
+  private void switchTargets(Entity subject, Map<String, String> variables) {
     List<Double> myTargetPoint = List.of(parseData(myTargetPointData.get(0), subject, variables, 0.0),
             parseData(myTargetPointData.get(1), subject, variables, 0.0));
     List<Double> myFirstPoint = List.of(parseData(myFirstPointData.get(0), subject, variables, 0.0),
@@ -82,7 +82,7 @@ public class PatrolEffect extends TimeDelayedEffect {
     }
   }
 
-  private List<Double> targetDifference(Entity subject, Map<String, Double> variables) {
+  private List<Double> targetDifference(Entity subject, Map<String, String> variables) {
     List<Double> difference = new ArrayList<>();
     List<Double> myTargetPoint = List.of(parseData(myTargetPointData.get(0), subject, variables, 0.0),
             parseData(myTargetPointData.get(1), subject, variables, 0.0));

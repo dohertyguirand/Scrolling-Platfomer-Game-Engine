@@ -39,7 +39,7 @@ public class SetVariableEffect extends TimeDelayedEffect {
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     if (variables.containsKey(variableName)) {
-      variables.put(variableName,parseData(variableValue, subject, variables, 0.0));
+      variables.put(variableName,doVariableSubstitutions(variableValue, subject, variables));
     }
     if(subject.getVariable(variableName) != null){
       subject.addVariable(variableName, variableValue);

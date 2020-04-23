@@ -15,7 +15,7 @@ public interface Effect {
    * Handles reaction to controls. Requires the ControlsBehavior to have a reference to the
    * instance that uses it in order to have an effect on that instance.
    * @param subject The entity that owns this controls behavior. This is the entity that should
- *                be modified.
+   *                be modified.
    * @param otherEntity
    * @param elapsedTime
    * @param variables
@@ -33,25 +33,31 @@ public interface Effect {
    * @return the parsed value
    */
   default double parseData(String data, Entity subject, Map<String, String> variables, double defaultValue){
-  double parsedData;
-  /*
-  Have string theValue
-  Look for matching game variable, set theValue to it
-  If not found, look for matching entity variable, set theValue to it
-  Try to parse theValue to double and try to parse variable.getValue to double, and compare them as doubles
-  Compare theValue to variable.getValue as strings
+    double parsedData;
+    String finalValue = doVariableSubstitutions(data, subject, variables);
+    try{
+      parsedData = Double.parseDouble(finalValue);
+    } catch (NumberFormatException e){
+      parsedData = defaultValue;
+    }
+    return parsedData;
+  }
+
+  /**
+   * tries to get a value from game variables, then from entity variables.
+   *  If that doesn't work, returns the original value.
+   * @param data string given by DataReader
+   * @param subject entity the effect is taking place on
+   * @param variables game variables
+   * @return the parsed value
    */
-  String finalValue = data;
-  if(variables.containsKey(data)){
-    finalValue = variables.get(data);
-  } else if(subject.getVariable(data) != null){
-    finalValue = subject.getVariable(data);
-  }
-  try{
-    parsedData = Double.parseDouble(finalValue);
-  } catch (NumberFormatException e){
-    parsedData = defaultValue;
-  }
-  return parsedData;
+  default String doVariableSubstitutions(String data, Entity subject, Map<String, String> variables){
+    String finalValue = data;
+    if(variables.containsKey(data)){
+      finalValue = variables.get(data);
+    } else if(subject.getVariable(data) != null){
+      finalValue = subject.getVariable(data);
+    }
+    return finalValue;
   }
 }

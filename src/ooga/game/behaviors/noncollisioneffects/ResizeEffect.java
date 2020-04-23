@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ResizeEffect extends TimeDelayedEffect {
 
-  List<String> newImageSizeData = new ArrayList<>();
+  private List<String> newImageSizeData;
 
   public ResizeEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
@@ -23,6 +23,7 @@ public class ResizeEffect extends TimeDelayedEffect {
    */
   @Override
   public void processArgs(List<String> args) {
+    newImageSizeData = new ArrayList<>();
     newImageSizeData.add(args.get(0));
     newImageSizeData.add(args.get(1));
   }

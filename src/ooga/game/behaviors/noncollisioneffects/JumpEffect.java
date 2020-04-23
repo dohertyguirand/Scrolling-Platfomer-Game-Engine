@@ -17,9 +17,7 @@ public class JumpEffect extends TimeDelayedEffect {
   }
 
   @Override
-  public void processArgs(List<String> args) {
-    myYVelocityData = args.get(0);
-  }
+  public void processArgs(List<String> args) { myYVelocityData = args.get(0); }
 
   public JumpEffect(double yVelocity) {
     super(new ArrayList<>());

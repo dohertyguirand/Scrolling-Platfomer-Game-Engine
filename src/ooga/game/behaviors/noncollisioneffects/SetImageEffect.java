@@ -4,6 +4,7 @@ import java.util.Map;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.List;
@@ -36,20 +37,14 @@ public class SetImageEffect extends TimeDelayedEffect {
    */
   @Override
   public void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
-    setImage(subject, newImageFileName);
+    setImage(subject, newImageFileName, variables);
   }
 
-  public static void setImage(Entity subject, String newImageFileName) {
+  private void setImage(Entity subject, String newImageFileName, Map<String, String> variables) {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;
-      String newImageFilePath = "file:data/games-library/";
-      if(subject.getVariable(newImageFileName) != null){
-        newImageFilePath += subject.getVariable(newImageFileName);
-      } else{
-        newImageFilePath += newImageFileName;
-      }
-      imageEntity.setImageLocation(newImageFilePath);
+      imageEntity.setImageLocation("file:data/games-library/" + doVariableSubstitutions(newImageFileName, subject, variables));
     }
   }
 }

@@ -19,7 +19,7 @@ public abstract class TimeDelayedEffect implements Effect {
 
   public TimeDelayedEffect(List<String> args) {
     processArgs(args);
-    processTimeDelay(args,Integer.parseInt(resources.getString(this.getClass().getName())));
+    processTimeDelay(args, Integer.parseInt(resources.getString(this.getClass().getSimpleName())));
   }
 
   /**
@@ -37,7 +37,7 @@ public abstract class TimeDelayedEffect implements Effect {
     this.timeDelayData = timeDelayData;
   }
 
-  private boolean hasTimeDelayFinished(double elapsedTime, Entity subject, Map<String, Double> variables) {
+  private boolean hasTimeDelayFinished(double elapsedTime, Entity subject, Map<String, String> variables) {
     timePassed += elapsedTime;
     double timeDelay = parseData(timeDelayData, subject, variables, 0.0);
     return timePassed >= timeDelay;
