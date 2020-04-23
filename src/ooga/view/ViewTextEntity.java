@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
+import ooga.Entity;
 import ooga.data.OogaEntity;
 import ooga.data.TextEntity;
 
@@ -29,7 +30,7 @@ public class ViewTextEntity implements ViewEntity {
     bindGenericProperties(entity);
   }
 
-  public void bindGenericProperties(OogaEntity entity) {
+  public void bindGenericProperties(Entity entity) {
     text.setTextOrigin(VPos.TOP);
     text.xProperty().bind(entity.xProperty());
     text.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET)));

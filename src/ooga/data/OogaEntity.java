@@ -34,7 +34,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private List<Double> myVelocity;
   private Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
 
-  private Map<String,List<Effect>> myControls;
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
@@ -48,7 +47,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.yPos.set(yPos);
     this.width.set(width);
     this.height.set(height);
-    myControls = new HashMap<>();
     myConditionalBehaviors = new ArrayList<>();
     myVelocityVectors = new Stack<>();
     myName = "";
@@ -106,13 +104,13 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime, Map<String, Double> variables,
-      GameInternal game) {
-    applyFrictionHorizontal();
-    applyFrictionVertical();
+  public void updateSelf(double elapsedTime, Map<String, String> variables,
+                         GameInternal game) {
+    applyFrictionHorizontal(elapsedTime);
+    applyFrictionVertical(elapsedTime);
   }
 
-  private void applyFrictionHorizontal() {
+  private void applyFrictionHorizontal(double elapsedTime) {
     if (Math.abs(myVelocity.get(0)) < FRICTION_ACCELERATION) {
       setVelocity(0,getVelocity().get(1));
     }
@@ -121,7 +119,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     }
   }
 
-  private void applyFrictionVertical() {
+  private void applyFrictionVertical(double elapsedTime) {
 
     if (Math.abs(myVelocity.get(1)) < FRICTION_ACCELERATION) {
       setVelocity(getVelocity().get(0),0);
@@ -224,18 +222,46 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void reactToVariables(Map<String, Double> variables) {
+  public void reactToVariables(Map<String, String> variables) {
     //TODO: make this work for entity variables?
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
         String propertyName = propertyVariableDependencies.get(varName);
         if (propertyUpdaters.containsKey(propertyName)) {
-          propertyUpdaters.get(propertyName).accept(variables.get(varName));
+          try{
+            propertyUpdaters.get(propertyName).accept(Double.parseDouble(variables.get(varName)));
+          } catch (NumberFormatException e){
+            System.out.println(variables.get(varName));
+            System.out.println("Could not set variable property dependency because variable could not be parsed to double");
+          }
         } else {
           System.out.println("no method defined for setting " + propertyName + " property to a variable");
         }
       }
     }
+    updateAutomaticEntityVariables();
+  }
+
+  /**
+   * automatically create/set entity variables containing basic entity information, allowing it to be used in conditions and effects
+   */
+  private void updateAutomaticEntityVariables() {
+    myVariables.put("XVelocity", String.valueOf(myVelocity.get(0)));
+    myVariables.put("YVelocity", String.valueOf(myVelocity.get(1)));
+    myVariables.put("XPos", String.valueOf(this.xPos));
+    myVariables.put("YPos", String.valueOf(this.yPos));
+    myVariables.put("Width", String.valueOf(this.width));
+    myVariables.put("Height", String.valueOf(this.height));
+  }
+
+  @Override
+  public String getEntityID(){
+    return getVariable("ID");
+  }
+
+  @Override
+  public Map<String, String> getVariables() {
+    return new HashMap<>(myVariables);
   }
 
   @Override
@@ -248,7 +274,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    * assigned behavior if true
    */
   @Override
-  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
+  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
                                      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     //System.out.println(getName() + " is updating!");
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {

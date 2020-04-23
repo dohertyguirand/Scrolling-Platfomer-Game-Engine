@@ -39,6 +39,7 @@ one need only call ``doGameStep``.
 the game.
 - 4/16/2020 added ``doConditionalBehaviors`` to entity (and some resulting changes related to
 conditional behaviors, mainly internal game API and new behavior interfaces and classes)
+- 4/22/2020 changed game variables from map with double values to map with string values
 
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.
@@ -75,13 +76,16 @@ behaviors
 -4/19/20 Added ``blockInDirection`` to change the value of an entity's blocked status map. Essentially
 this allows/disallows the entity from moving in that direction
 -4/21/20 Added myVariables to entity with add and get methods
+-4/22/20 Added ``getEntityID`` to give the variable value mapped to entity variable "ID"
+-4/22/20 Added method to get a map of all an entity's variables.
 ### Level
 - Added ``removeEntity`` so that the game can remove destroyed entities.
 The alternative would be internal 'garbage collection' inside level, but that would also require
 at least one new method.
 - Added ``addEntity`` so that the main game loop can involve entities being instantiated.
 - Added ``setNextLevelID`` so that they can point to a next level.
-
+- 4/22/2020: Probably decided to get rid of level end conditions as a level-driven behavior. Instead it will be
+driven by entities.
 ### ControlsBehavior
 - Modified ``reactToControls()`` to take in the subject entity as a parameter.
 

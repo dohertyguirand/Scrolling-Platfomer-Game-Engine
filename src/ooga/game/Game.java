@@ -41,4 +41,9 @@ public interface Game {
   void doGameStep(double elapsedTime);
 
   UserInputListener makeUserInputListener();
+
+  /**
+   * @return The String ID of the game's current level.
+   */
+  String getCurrentLevelId();
 }

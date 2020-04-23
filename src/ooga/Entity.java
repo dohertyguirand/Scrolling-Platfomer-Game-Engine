@@ -5,9 +5,7 @@ import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.Effect;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -62,7 +60,7 @@ public interface Entity {
    * @param game
    *
    */
-  void updateSelf(double elapsedTime, Map<String, Double> variables, GameInternal game);
+  void updateSelf(double elapsedTime, Map<String, String> variables, GameInternal game);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and
@@ -129,8 +127,9 @@ public interface Entity {
 
   /**
    * Handles any behavior that depends on the values of variables.
+   * @param variables
    */
-  void reactToVariables(Map<String,Double> variables);
+  void reactToVariables(Map<String, String> variables);
 
   /**
    * Add a dependency to the map so that when the variable with the given name changes, the property with the given name is updated
@@ -143,7 +142,7 @@ public interface Entity {
    * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
    * assigned actions if true
    */
-  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
+  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
                               Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 
   /**
@@ -190,4 +189,8 @@ public interface Entity {
    * @param variables map of variable names to values
    */
   void setVariables(Map<String, String> variables);
+
+  public String getEntityID();
+
+  Map<String,String> getVariables();
 }

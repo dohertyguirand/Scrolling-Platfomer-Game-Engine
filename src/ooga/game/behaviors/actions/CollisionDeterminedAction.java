@@ -28,7 +28,7 @@ public class CollisionDeterminedAction extends Action {
   }
 
   @Override
-  public List<Entity> findOtherEntities(double elapsedTime, Entity subject, Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+  public List<Entity> findOtherEntities(double elapsedTime, Entity subject, Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     List<Entity> otherEntities = new ArrayList<>();
     Map<String, List<Entity>> myCollisionInfo = collisionInfo.get(subject);
     if(direction.equals(ANY)){
@@ -53,6 +53,6 @@ public class CollisionDeterminedAction extends Action {
 
   private boolean entityMatches(String entity1Info, Entity entity) {
     return entity.getName().equals(entity1Info) ||
-            (entity.getVariable("ID") != null && entity.getVariable("ID").equals(entity1Info));
+            (entity.getVariable("TerrainID") != null && entity.getVariable("TerrainID").equals(entity1Info));
   }
 }
