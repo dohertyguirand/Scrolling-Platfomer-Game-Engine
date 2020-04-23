@@ -1,4 +1,4 @@
-package ooga.game.behaviors.asynceffects;
+package ooga.game.behaviors.collisioneffects;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
@@ -6,8 +6,8 @@ import ooga.game.GameInternal;
 import java.util.List;
 import java.util.Map;
 
-public class RunIntoTerrainLeft extends RunIntoTerrain {
-  public RunIntoTerrainLeft(List<String> args) {
+public class RunIntoTerrainUp extends RunIntoTerrain {
+  public RunIntoTerrainUp(List<String> args) {
     super(args);
   }
 
@@ -22,9 +22,9 @@ public class RunIntoTerrainLeft extends RunIntoTerrain {
    */
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
-    double targetX = otherEntity.getPosition().get(0) + otherEntity.getWidth();
-    double targetY = subject.getPosition().get(1);
+    double targetX = subject.getPosition().get(0);
+    double targetY = otherEntity.getPosition().get(1) + otherEntity.getHeight();
     subject.setPosition(List.of(targetX,targetY));
-    subject.blockInDirection("Left", true);
+    subject.blockInDirection("Up", true);
   }
 }

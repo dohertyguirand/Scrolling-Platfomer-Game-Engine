@@ -1,8 +1,7 @@
-package ooga.game.behaviors.asynceffects;
+package ooga.game.behaviors.noncollisioneffects;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.ArrayList;

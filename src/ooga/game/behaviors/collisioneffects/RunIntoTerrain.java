@@ -1,8 +1,7 @@
-package ooga.game.behaviors.asynceffects;
+package ooga.game.behaviors.collisioneffects;
 
 import java.util.List;
 
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 public abstract class RunIntoTerrain extends TimeDelayedEffect {
