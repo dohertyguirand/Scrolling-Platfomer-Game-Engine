@@ -11,10 +11,12 @@ import ooga.game.behaviors.Effect;
 public class VariableDeterminedAction extends Action {
 
   String myVariable;
+  String myComparatorType;
 
   public VariableDeterminedAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
     super(effects);
     myVariable = args.get(0);
+    myComparatorType = args.get(1);
   }
 
   @Override
