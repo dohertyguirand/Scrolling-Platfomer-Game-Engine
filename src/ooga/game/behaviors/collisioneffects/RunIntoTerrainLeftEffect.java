@@ -6,8 +6,8 @@ import ooga.game.GameInternal;
 import java.util.List;
 import java.util.Map;
 
-public class RunIntoTerrainRight extends RunIntoTerrain {
-  public RunIntoTerrainRight(List<String> args) {
+public class RunIntoTerrainLeftEffect extends RunIntoTerrainEffect {
+  public RunIntoTerrainLeftEffect(List<String> args) {
     super(args);
   }
 
@@ -22,10 +22,9 @@ public class RunIntoTerrainRight extends RunIntoTerrain {
    */
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
-    double targetX = otherEntity.getPosition().get(0)- subject.getWidth();
+    double targetX = otherEntity.getPosition().get(0) + otherEntity.getWidth();
     double targetY = subject.getPosition().get(1);
     subject.setPosition(List.of(targetX,targetY));
-    //TODO: make block in directions entity variables?
-    subject.blockInDirection("Right", true);
+    subject.blockInDirection("Left", true);
   }
 }

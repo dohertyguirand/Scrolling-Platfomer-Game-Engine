@@ -6,12 +6,12 @@ import ooga.Entity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
-public class ChangeVariable extends TimeDelayedEffect {
+public class ChangeVariableEffect extends TimeDelayedEffect {
 
   private String variableName;
   private String incrementValueData;
 
-  public ChangeVariable(List<String> args) throws IndexOutOfBoundsException {
+  public ChangeVariableEffect(List<String> args) throws IndexOutOfBoundsException {
     variableName = args.get(0);
     incrementValueData = args.get(1);
     if(args.size() > 2){

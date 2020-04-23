@@ -6,14 +6,14 @@ import ooga.Entity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
-public class ChangeVelocity extends TimeDelayedEffect {
+public class SetVelocityEffect extends TimeDelayedEffect {
 
-  private String velocityXMultiplierData;
-  private String velocityYMultiplierData;
+  private String velocityXData;
+  private String velocityYData;
 
-  public ChangeVelocity(List<String> args) throws IndexOutOfBoundsException {
-    velocityXMultiplierData = args.get(0);
-    velocityYMultiplierData = args.get(1);
+  public SetVelocityEffect(List<String> args) throws IndexOutOfBoundsException {
+    velocityXData = args.get(0);
+    velocityYData = args.get(1);
     if(args.size() > 2){
       setTimeDelay(args.get(1));
     }
@@ -30,7 +30,7 @@ public class ChangeVelocity extends TimeDelayedEffect {
    */
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
-    subject.changeVelocity(parseData(velocityXMultiplierData, subject, variables, 0.0),
-            parseData(velocityYMultiplierData, subject, variables, 0.0));
+    subject.setVelocity(parseData(velocityXData, subject, variables, 0.0),
+            parseData(velocityYData, subject, variables, 0.0));
   }
 }

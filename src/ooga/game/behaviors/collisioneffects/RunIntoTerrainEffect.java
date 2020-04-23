@@ -4,9 +4,9 @@ import java.util.List;
 
 import ooga.game.behaviors.TimeDelayedEffect;
 
-public abstract class RunIntoTerrain extends TimeDelayedEffect {
+public abstract class RunIntoTerrainEffect extends TimeDelayedEffect {
 
-  public RunIntoTerrain(List<String> args) {
+  public RunIntoTerrainEffect(List<String> args) {
     if(args.size() > 0){
       setTimeDelay(args.get(0));
     }

@@ -6,8 +6,8 @@ import ooga.game.GameInternal;
 import java.util.List;
 import java.util.Map;
 
-public class RunIntoTerrainDown extends RunIntoTerrain {
-  public RunIntoTerrainDown(List<String> args) {
+public class RunIntoTerrainUpEffect extends RunIntoTerrainEffect {
+  public RunIntoTerrainUpEffect(List<String> args) {
     super(args);
   }
 
@@ -15,17 +15,16 @@ public class RunIntoTerrainDown extends RunIntoTerrain {
    * Performs the effect
    *
    * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity
-   * @param elapsedTime
-   * @param variables
-   * @param game
+   * @param otherEntity entity we are "interacting with" in this effect
+   * @param elapsedTime time between steps in ms
+   * @param variables   game variables
+   * @param game        game instance
    */
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
-    //subject.setVelocity(subject.getVelocity().get(0),0);
     double targetX = subject.getPosition().get(0);
-    double targetY = otherEntity.getPosition().get(1)-subject.getHeight();
+    double targetY = otherEntity.getPosition().get(1) + otherEntity.getHeight();
     subject.setPosition(List.of(targetX,targetY));
-    subject.blockInDirection("Down", true);
+    subject.blockInDirection("Up", true);
   }
 }
