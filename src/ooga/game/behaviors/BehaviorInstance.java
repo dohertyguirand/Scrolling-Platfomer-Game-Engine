@@ -13,6 +13,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   Map<String, Boolean> inputConditions;
   Map<List<String>, String> requiredCollisionConditions;
   Map<List<String>, String> bannedCollisionConditions;
+  //TODO: Make Game variable conditions like entity variable conditions
   Map<String, String> gameVariableConditions;
   Map<String,List<Entry<String, String>>> entityVariableConditions;
   List<Action> actions;
