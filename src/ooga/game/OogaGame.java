@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ooga.Entity;
@@ -29,7 +28,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private ObservableList<Entity> myEntities;
   private List<Entity> myNewCreatedEntities = new ArrayList<>();
   Map<String, ImageEntityDefinition> myEntityDefinitions;
-  private List<DoubleProperty> cameraShiftProperty;
+  private List<DoubleProperty> cameraShiftProperties;
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
@@ -314,24 +313,16 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void restartLevel() {
     goToLevel(currentLevel.getLevelId());
-    
   }
 
   @Override
-  public void setCameraShiftProperty(List<DoubleProperty> property){
-    cameraShiftProperty = property;
-  }
-  @Override
   public void setCameraShiftValue(double xValue, double yValue){
-    cameraShiftProperty = List.of(new SimpleDoubleProperty(xValue), new SimpleDoubleProperty(yValue));
+    cameraShiftProperties.get(0).set(xValue);
+    cameraShiftProperties.get(1).set(yValue);
   }
 
   @Override
   public List<Double> getCameraShiftValues() {
-    return List.of(cameraShiftProperty.get(0).getValue(), cameraShiftProperty.get(0).getValue());
-  }
-  @Override
-  public List<DoubleProperty> cameraShiftProperty() {
-    return cameraShiftProperty;
+    return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
   }
 }
