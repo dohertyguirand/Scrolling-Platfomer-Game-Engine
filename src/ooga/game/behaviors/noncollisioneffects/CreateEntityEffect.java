@@ -7,24 +7,20 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 @SuppressWarnings("unused")
-public class SetVelocityEffect extends TimeDelayedEffect {
+@Deprecated
+public class CreateEntityEffect extends TimeDelayedEffect {
 
-  private String velocityXData;
-  private String velocityYData;
+  private String createdEntityType;
+  //TODO: Allow the user to use the relative entity location.
+  private List<Double> relativeEntityLocation;
 
-  public SetVelocityEffect(List<String> args) throws IndexOutOfBoundsException {
+  public CreateEntityEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
 
-  /**
-   * Processes the String arguments given in the data file into values used by this effect.
-   *
-   * @param args The String arguments given for this effect in the data file.
-   */
   @Override
   public void processArgs(List<String> args) {
-    velocityXData = args.get(0);
-    velocityYData = args.get(1);
+    createdEntityType = args.get(0);
   }
 
   /**
@@ -37,7 +33,7 @@ public class SetVelocityEffect extends TimeDelayedEffect {
    */
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
-    subject.setVelocity(parseData(velocityXData, subject, variables, 0.0),
-            parseData(velocityYData, subject, variables, 0.0));
+    game.createEntity(createdEntityType,List.of(subject.getPosition().get(0),subject.getPosition().get(1)-subject.getHeight()));
+    //TODO: make it so this can create an entity related to a variable if the above fails
   }
 }

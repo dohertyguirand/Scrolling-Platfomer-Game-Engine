@@ -75,7 +75,7 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput -.1300 0 .2600</Effect>
+                        <Effect>VelocityInput -.1300 0 + .2600</Effect>
                         <Effect>SetImage FacingLeft</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -89,7 +89,7 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput .1300 0 .2600</Effect>
+                        <Effect>VelocityInput .1300 0 + .2600</Effect>
                         <Effect>SetImage FacingRight</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -101,7 +101,7 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
-                        <Effect>ChangeVariable Lives -1.0</Effect>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
                         <Effect>SetVariable Blinking true</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -259,7 +259,7 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput -.1300 0 .2600</Effect>
+                        <Effect>VelocityInput -.1300 0 + .2600</Effect>
                         <Effect>SetImage FacingLeft</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -273,7 +273,7 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput .1300 0 .2600</Effect>
+                        <Effect>VelocityInput .1300 0 + .2600</Effect>
                         <Effect>SetImage FacingRight</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -284,7 +284,7 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
-                        <Effect>ChangeVariable Lives -1.0</Effect>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
                         <Effect>SetVariable Blinking true</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -432,8 +432,8 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>RemoveSelf</Effect>
-                        <Effect>ChangeVariable Score 1.0</Effect>
-                        <Effect>ChangeVariable RedDiamonds 1.0</Effect>
+                        <Effect>ChangeVariable Score + 1.0</Effect>
+                        <Effect>ChangeVariable RedDiamonds + 1.0</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
@@ -451,8 +451,8 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>RemoveSelf</Effect>
-                        <Effect>ChangeVariable Score 1.0</Effect>
-                        <Effect>ChangeVariable BlueDiamonds 1.0</Effect>
+                        <Effect>ChangeVariable Score + 1.0</Effect>
+                        <Effect>ChangeVariable BlueDiamonds + 1.0</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>

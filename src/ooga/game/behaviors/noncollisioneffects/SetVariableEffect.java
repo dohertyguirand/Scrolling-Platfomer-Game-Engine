@@ -5,8 +5,10 @@ import ooga.Entity;
 import java.util.List;
 import java.util.Map;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+@SuppressWarnings("unused")
 public class SetVariableEffect extends TimeDelayedEffect {
 
   private String variableName;
@@ -39,7 +41,7 @@ public class SetVariableEffect extends TimeDelayedEffect {
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     if (variables.containsKey(variableName)) {
-      variables.put(variableName,doVariableSubstitutions(variableValue, subject, variables));
+      variables.put(variableName, Effect.doVariableSubstitutions(variableValue, subject, variables));
     }
     if(subject.getVariable(variableName) != null){
       subject.addVariable(variableName, variableValue);

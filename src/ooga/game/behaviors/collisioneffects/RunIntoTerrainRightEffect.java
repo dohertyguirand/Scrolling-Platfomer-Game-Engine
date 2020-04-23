@@ -6,6 +6,7 @@ import ooga.game.GameInternal;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class RunIntoTerrainRightEffect extends RunIntoTerrainEffect {
   public RunIntoTerrainRightEffect(List<String> args) {
     super(args);

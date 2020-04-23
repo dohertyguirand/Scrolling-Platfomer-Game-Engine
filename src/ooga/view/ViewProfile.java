@@ -16,10 +16,10 @@ import java.util.ResourceBundle;
 
 
 public class ViewProfile extends OogaProfile {
-    private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+    private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
-    private final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
+    private static final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
     private ImageView myProfilePhoto;
 
 
@@ -37,6 +37,8 @@ public class ViewProfile extends OogaProfile {
         myName = profile.getProfileName();
         myHighestScores = profile.getStats();
     }
+
+    @Deprecated
     public ViewProfile(){
       this("Testing","ooga/view/Resources/profilephotos/defaultphoto.jpg");
     }
@@ -64,8 +66,8 @@ public class ViewProfile extends OogaProfile {
         VBox nameAndPhoto = new VBox();
         nameAndPhoto.getChildren().add(myProfilePhoto);
         nameAndPhoto.getChildren().add(setNameText());
-        nameAndPhoto.setOnDragEntered(e-> handleDroppedPhoto(e));
-        nameAndPhoto.setOnDragDropped(e-> handleDroppedPhoto(e));
+        nameAndPhoto.setOnDragEntered(this::handleDroppedPhoto);
+        nameAndPhoto.setOnDragDropped(this::handleDroppedPhoto);
         nameAndPhoto.setOnMouseClicked(e->{ if(e.getClickCount() == 2){ handleChosenPhoto();}});
         return nameAndPhoto;
     }

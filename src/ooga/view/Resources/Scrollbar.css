@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-.scroll-bar:horizontal.track{
-=======
+.scroll-bar:horizontal.track {
 
+}
 .hbox{
     -fx-background-color: transparent;
 }
@@ -63,8 +62,3 @@
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 2.0em;
 }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> game_dg211

@@ -2,7 +2,6 @@ package ooga.view;
 
 import ooga.Profile;
 
-import javax.swing.text.html.ImageView;
 import java.util.Map;
 
 public class OogaProfile implements Profile {

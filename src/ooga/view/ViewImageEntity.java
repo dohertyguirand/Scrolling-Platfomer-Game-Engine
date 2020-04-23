@@ -2,23 +2,19 @@ package ooga.view;
 
 import javafx.beans.property.*;
 import javafx.scene.Node;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
-import javafx.scene.effect.Glow;
-import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ooga.Entity;
-import ooga.data.OogaEntity;
 import ooga.data.ImageEntity;
 
 import java.util.ResourceBundle;
 
 public class ViewImageEntity implements ViewEntity {
 
-  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+  private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final double Y_OFFSET = Double.parseDouble(myResources.getString("pauseButtonSize"));
-  private ImageView imageView = new ImageView();
+  private final ImageView imageView = new ImageView();
 
   public ViewImageEntity(ImageEntity entity, ObjectProperty<Effect> colorEffect){
     bindImageProperty(entity.imageLocationProperty(), colorEffect);
@@ -36,6 +32,7 @@ public class ViewImageEntity implements ViewEntity {
     return imageView;
   }
   public DoubleProperty getXProperty(){return imageView.xProperty();}
+  @SuppressWarnings("unused")
   public DoubleProperty getYProperty(){return imageView.yProperty();}
 
   private void bindImageProperty(StringProperty location, ObjectProperty<Effect> colorEffect){

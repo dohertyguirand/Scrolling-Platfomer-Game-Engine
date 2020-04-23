@@ -6,6 +6,7 @@ import ooga.Entity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+@SuppressWarnings("unused")
 public class NextLevelEffect extends TimeDelayedEffect {
 
   public NextLevelEffect(List<String> args) {

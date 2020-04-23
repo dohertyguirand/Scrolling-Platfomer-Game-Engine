@@ -20,18 +20,11 @@ public interface Game {
    */
   ObservableList<Entity> getEntities();
 
-
-  //TODO: Remove, since this causes an abstraction (Game) to rely on an implementation (Entity)
-  /**
-   * @return The list of entities as a list of abstract Entity class objects instead of as
-   * EntityAPI objects.
-   */
-  ObservableList<OogaEntity> getAbstractEntities();
-
   /**
    * Runs anything that needs to be run by the game, levels, or any entities in a level when
    * the game is first started.
    */
+  @Deprecated
   void doGameStart();
 
   /**
@@ -39,8 +32,6 @@ public interface Game {
    * @param elapsedTime time passed in milliseconds
    */
   void doGameStep(double elapsedTime);
-
-  UserInputListener makeUserInputListener();
 
   /**
    * @return The String ID of the game's current level.

@@ -10,14 +10,12 @@ public class BehaviorInstance implements ConditionalBehavior {
 
   public static final String ANY = "ANY";
   public static final String SELF_IDENTIFIER = "SELF";
-  Map<String, Boolean> inputConditions;
-  Map<List<String>, String> requiredCollisionConditions;
-  Map<List<String>, String> bannedCollisionConditions;
-  Map<String, String> gameVariableConditions;
+  final Map<String, Boolean> inputConditions;
+  final Map<List<String>, String> requiredCollisionConditions;
+  final Map<List<String>, String> bannedCollisionConditions;
   List<VariableCondition> gameVarConditions;
-  Map<String,List<Entry<String, String>>> entityVariableConditions;
   Map<String,List<VariableCondition>> entityVarConditions;
-  List<Action> actions;
+  final List<Action> actions;
 
   /**
    * @param gameVariableConditions
@@ -28,14 +26,13 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param bannedCollisionConditions conditions that must be false (see above)
    * @param actions
    */
+  @SuppressWarnings("unused")
   public BehaviorInstance(Map<String, String> gameVariableConditions,
                           Map<String, List<Entry<String, String>>> entityVariableConditions,
                           Map<String, Boolean> inputConditions,
                           Map<List<String>, String> requiredCollisionConditions,
                           Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
-    this.gameVariableConditions = gameVariableConditions;
-    this.entityVariableConditions = entityVariableConditions;
     this.requiredCollisionConditions = requiredCollisionConditions;
     this.bannedCollisionConditions = bannedCollisionConditions;
     this.actions = actions;

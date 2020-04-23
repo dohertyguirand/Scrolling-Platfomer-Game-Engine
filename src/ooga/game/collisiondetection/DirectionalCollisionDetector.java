@@ -1,7 +1,6 @@
 package ooga.game.collisiondetection;
 
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import ooga.Entity;
 import ooga.game.CollisionDetector;
 
@@ -14,6 +13,7 @@ public class DirectionalCollisionDetector implements CollisionDetector {
    * @param elapsedTime time passed in ms
    * @return direction of collision, or null if no collision
    */
+  @SuppressWarnings("SuspiciousNameCombination")
   @Override
   public String getCollisionDirection(Entity a, Entity b, double elapsedTime) {
     Rectangle aShape = makeShapeFromEntity(a, a.getVelocity().get(0) * elapsedTime,a.getVelocity().get(1) * elapsedTime);
@@ -62,21 +62,6 @@ public class DirectionalCollisionDetector implements CollisionDetector {
       return "Up";
     }
     return null;
-  }
-
-  /**
-   * NOTE: The order of a and b doesn't matter.
-   * @param a The entity to check for collision with Entity a.
-   * @param b The entity to check for collision with Entity b.
-   * @param elapsedTime
-   * @return True if entities a and b are colliding (touching) and should thus run their
-   * collision actions.
-   */
-  @Override
-  public boolean isColliding(Entity a, Entity b, double elapsedTime) {
-    Rectangle aShape = makeShapeFromEntity(a, a.getVelocity().get(0) * elapsedTime,a.getVelocity().get(1) * elapsedTime);
-    Rectangle bShape = makeShapeFromEntity(b, b.getVelocity().get(0) * elapsedTime,b.getVelocity().get(1) * elapsedTime);
-    return aShape.getBoundsInParent().intersects(bShape.getBoundsInParent());
   }
 
   private Rectangle makeShapeFromEntity(Entity e, double xChange, double yChange) {
