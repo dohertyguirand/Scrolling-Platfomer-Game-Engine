@@ -1,17 +1,18 @@
 package ooga.game.behaviors.comparators;
 
-import java.util.Comparator;
-
-public class VariableEquals implements Comparator<String> {
+public class VariableEquals implements VariableComparator {
 
   @Override
-  public int compare(String o1, String o2) {
-    try {
-      Double d1 = Double.parseDouble(o1);
-      Double d2 = Double.parseDouble(o2);
-      return d1.compareTo(d2);
-    } catch (NumberFormatException e) {
-      return o1.compareTo(o2);
-    }
+  public boolean doubleComparison(Double o1, Double o2) {
+    return compareEquals(o1,o2);
+  }
+
+  @Override
+  public boolean stringComparison(String o1, String o2) {
+    return compareEquals(o1,o2);
+  }
+
+  private boolean compareEquals(Object o1, Object o2) {
+    return (o1.equals(o2));
   }
 }

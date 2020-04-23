@@ -3,14 +3,15 @@ package ooga.game.behaviors;
 import java.util.Comparator;
 import java.util.Map;
 import ooga.Entity;
+import ooga.game.behaviors.comparators.VariableComparator;
 
 public class OogaVariableCondition implements VariableCondition {
 
-  private Comparator<String> myComparator;
+  private VariableComparator myComparator;
   private String myCompareTo;
   private String myVariableName;
 
-  public OogaVariableCondition(String varName, Comparator<String> comparator, String value) {
+  public OogaVariableCondition(String varName, VariableComparator comparator, String value) {
     myComparator = comparator;
     myCompareTo = value;
     myVariableName = varName;
@@ -33,7 +34,7 @@ public class OogaVariableCondition implements VariableCondition {
       compareToValue = behaviorEntity.getVariable(myCompareTo);
     }
     //3. compare directly.
-    return (myComparator.compare(subjectVariables.get(myVariableName),compareToValue) == 0);
+    return (myComparator.compareVars(subjectVariables.get(myVariableName),compareToValue));
   }
 
   @Override
