@@ -484,15 +484,11 @@ public class OogaDataReader implements DataReader{
         String comparatorClassName = myComparatorsResources.getString("Equals");
         NodeList comparatorType = variableConditionElement.getElementsByTagName("Comparison");
         if (comparatorType.getLength() != 0) {
-            System.out.println("FOUND COMPARATOR: " + comparatorType.item(0).getTextContent());
             comparatorClassName = myComparatorsResources.getString(comparatorType.item(0).getTextContent());
         }
         try {
-            System.out.println("CP1");
             Class cls = forName(PATH_TO_CLASSES + comparatorClassName);
-            System.out.println("CP2");
             Constructor cons = cls.getConstructor();
-            System.out.println("CP3");
             return (VariableComparator)cons.newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |InstantiationException e ) {
             throw new OogaDataException("Unknown comparator type " + comparatorClassName + " in variable condition.");
