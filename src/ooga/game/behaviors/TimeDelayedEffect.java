@@ -1,6 +1,7 @@
 package ooga.game.behaviors;
 
 import ooga.Entity;
+import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
 
 import java.util.Map;
@@ -54,4 +55,6 @@ public abstract class TimeDelayedEffect implements Effect {
    * @param game game instance
    */
   protected abstract void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game);
+
+  protected abstract ImageEntity doTimeDelayedEffectwithImage(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game);
 }

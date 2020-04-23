@@ -42,4 +42,9 @@ public class SetImageEffect extends TimeDelayedEffect {
       imageEntity.setImageLocation(newImageFilePath);
     }
   }
+
+  @Override
+  protected ImageEntity doTimeDelayedEffectwithImage(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+    return null;
+  }
 }
