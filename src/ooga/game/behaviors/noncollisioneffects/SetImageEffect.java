@@ -4,36 +4,47 @@ import java.util.Map;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.Effect;
+import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.List;
 
-public class SetImageEffect implements NonCollisionEffect {
+public class SetImageEffect extends TimeDelayedEffect {
 
-  String newImageLocation = "";
+  String newImageFileName;
 
-  public SetImageEffect(List<String> args){
-    if(args.size() >= 1){
-      newImageLocation = args.get(0);
-    }
+  public SetImageEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
   }
 
   /**
-   * Handles reaction to controls. Requires the ControlsBehavior to have a reference to the
-   * instance that uses it in order to have an effect on that instance.
-   * @param elapsedTime
-   * @param subject The entity that owns this controls behavior. This is the entity that should
-   *                be modified.
-   * @param variables
-   * @param game
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
    */
   @Override
-  public void doEffect(double elapsedTime, Entity subject,
-      Map<String, Double> variables, GameInternal game) {
+  public void processArgs(List<String> args) {
+    newImageFileName = args.get(0);
+  }
+
+  /**
+   * Checks if the specified data value maps to an entity variable. Changes image to that variable, otherwise to preset value.
+   * @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity entity we are "interacting with" in this effect
+   * @param elapsedTime time between steps in ms
+   * @param variables   game variables
+   * @param game        game instance
+   */
+  @Override
+  public void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+    setImage(subject, newImageFileName, variables, this);
+  }
+
+  public static void setImage(Entity subject, String newImageFileName, Map<String, String> variables, Effect effectSource) {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;
-      imageEntity.setImageLocation(newImageLocation);
+      imageEntity.setImageLocation("file:data/games-library/" + effectSource.doVariableSubstitutions(newImageFileName, subject, variables));
     }
   }
 }

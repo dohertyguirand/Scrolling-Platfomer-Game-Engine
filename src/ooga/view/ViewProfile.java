@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class ViewProfile extends OggaProfile {
+public class ViewProfile extends OogaProfile {
     private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
@@ -29,7 +29,7 @@ public class ViewProfile extends OggaProfile {
         setImageView(imagePath);
         myHighestScores = new HashMap<>();
     }
-    public ViewProfile(OggaProfile profile){
+    public ViewProfile(OogaProfile profile){
         setImageView(profile.getProfilePhotoPath());
         myName = profile.getProfileName();
         myHighestScores = profile.getStats();

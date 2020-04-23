@@ -1,36 +1,52 @@
 package ooga.game.behaviors.noncollisioneffects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * Uses constant downward motion to simulate basic gravity.
  * Brings attention to the challenge of having acceleration.
  */
-public class GravityEffect implements NonCollisionEffect {
+@Deprecated
+public class GravityEffect extends TimeDelayedEffect {
 
-    private List<Double> myGravityVector;
+    private static final double DEFAULT_Y_GRAVITY = 0.1;
+    private List<String> myGravityVectorData;
 
-    public GravityEffect(List<String> args) {
-        System.out.println(args.toString());
-        double xGrav = Double.parseDouble(args.get(0));
-        double yGrav = Double.parseDouble(args.get(1));
-        myGravityVector = List.of(xGrav,yGrav);
-    }
-
-    public GravityEffect(double xGrav, double yGrav) {
-        myGravityVector = List.of(xGrav,yGrav);
+    public GravityEffect(List<String> args) throws IndexOutOfBoundsException {
+        super(args);
     }
 
     @Override
-    public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables,
-        GameInternal game) {
+    public void processArgs(List<String> args) {
+        String xGrav = args.get(0);
+        String yGrav = args.get(1);
+        myGravityVectorData = List.of(xGrav,yGrav);
+    }
+
+    public GravityEffect(double xGrav, double yGrav) {
+        super(new ArrayList<>());
+        myGravityVectorData = List.of(String.valueOf(xGrav),String.valueOf(yGrav));
+    }
+
+    /**
+     * Performs the effect
+     *  @param subject     The entity that owns this. This is the entity that should be modified.
+     * @param otherEntity entity we are "interacting with" in this effect
+     * @param elapsedTime time between steps in ms
+     * @param variables   game variables
+     * @param game        game instance
+     */
+    @Override
+    protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
         //subject.changeVelocity(myGravityVector.get(0)*elapsedTime/EXPECTED_DT,myGravityVector.get(1)*elapsedTime/EXPECTED_DT);
         //System.out.println("GRAVITY APPLYING TO " + subject.getName());
-        subject.changeVelocity(myGravityVector.get(0),myGravityVector.get(1));
+        subject.changeVelocity(parseData(myGravityVectorData.get(0), subject, variables, 0.0),
+                parseData(myGravityVectorData.get(1), subject, variables, DEFAULT_Y_GRAVITY));
     }
 }

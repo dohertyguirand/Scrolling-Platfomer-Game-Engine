@@ -5,44 +5,45 @@ import ooga.Entity;
 import java.util.List;
 import java.util.Map;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.TimeDelayedEffect;
 
-public class SetVariableEffect implements NonCollisionEffect {
+public class SetVariableEffect extends TimeDelayedEffect {
 
-  public static final String DEFAULT_VARIABLE_NAME = "DEFAULT";
-  public static final double DEFAULT_VARIABLE_VALUE = 0.0;
   private String variableName;
-  private Double variableValue;
+  private String variableValue;
 
-  public SetVariableEffect(List<String> args) {
-    if (args.size() >= 2) {
-      variableName = args.get(0);
-      variableValue = Double.parseDouble(args.get(1));
-    }
-    else {
-      variableName = DEFAULT_VARIABLE_NAME;
-      variableValue = DEFAULT_VARIABLE_VALUE;
-    }
-    System.out.println("variableName = " + variableName);
-    System.out.println("variableValue = " + variableValue);
+  public SetVariableEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
   }
 
   /**
-   * Performs the subclass-specific implementation that happens per frame.
-   * @param elapsedTime The time since the previous frame.
-   * @param subject     The entity to perform the update upon.
-   * @param variables map of variables
-   * @param game
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
    */
   @Override
-  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables,
-      GameInternal game) {
+  public void processArgs(List<String> args) {
+    variableName = args.get(0);
+    variableValue = args.get(1);
+  }
+
+  /**
+   * Performs the effect
+   *  @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity entity we are "interacting with" in this effect
+   * @param elapsedTime time between steps in ms
+   * @param variables   game variables
+   * @param game        game instance
+   */
+  @Override
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
-    System.out.println("variables = " + variables);
-    System.out.println("variableName = " + variableName);
-    System.out.println("setValue = " + variableValue);
     if (variables.containsKey(variableName)) {
-      variables.put(variableName,variableValue);
+      variables.put(variableName,doVariableSubstitutions(variableValue, subject, variables));
     }
+    if(subject.getVariable(variableName) != null){
+      subject.addVariable(variableName, variableValue);
+    }
+    //TODO: add ability to set value of one entity variable to that of another variable?
   }
 }

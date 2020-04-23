@@ -3,9 +3,7 @@ package ooga.view;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.ImageView;
-import ooga.data.Thumbnail;
+import ooga.OogaDataException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +23,14 @@ public class ProfileMenu extends ScrollMenu {
 
 
     private void makeViewProfiles() {
-        //List<OggaProfile> oggaProfiles = new ArrayList<>();
-        List<OggaProfile> oggaProfiles = myDataReader.getProfiles();
-        for (OggaProfile oggaProfile : oggaProfiles) {
-            ViewProfile viewProfile = new ViewProfile(oggaProfile);
+        List<OogaProfile> oogaProfiles = new ArrayList<>();
+        try {
+          oogaProfiles = myDataReader.getProfiles();
+        }catch (OogaDataException e){
+          return;
+        }
+        for (OogaProfile oogaProfile : oogaProfiles) {
+            ViewProfile viewProfile = new ViewProfile(oogaProfile);
             myProfiles.add(viewProfile);
         }
     }

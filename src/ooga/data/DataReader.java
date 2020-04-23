@@ -6,7 +6,7 @@ import java.util.Map;
 import ooga.OogaDataException;
 import ooga.game.Game;
 import ooga.game.Level;
-import ooga.view.OggaProfile;
+import ooga.view.OogaProfile;
 
 /**
  * Handles the interaction with game data files, including interpretation and writing.
@@ -20,7 +20,7 @@ public interface DataReader {
    * Returns an empty list if there are no files containing thumbnails.
    * @return The list of thumbnails of games.
    */
-  List<Thumbnail> getThumbnails();
+  List<Thumbnail> getThumbnails() throws OogaDataException;
 
   /**
    * Returns the filepaths to every game file in the library folder. Doesn't guarantee
@@ -34,11 +34,17 @@ public interface DataReader {
   /**
    * Give a Game a list of level ID's in the order that they're listed in the .xml files
    * @param gameName the name of the Game at the start of the .xml file
-   * @return Three lists: A list of Integers, the ID's of the Level written in the game file; a list of strings, the names
-   *  of the variables; a list of strings/doubles, the variable values in order
+   * @return A list of strings, the ID's of the Level written in the game file;
    * @throws OogaDataException if the String given isn't a directory or the cooresponding file is not properly formatted
    */
-  List<List<String>> getBasicGameInfo(String gameName) throws OogaDataException;
+  List<String> getLevelIDs(String gameName) throws OogaDataException;
+
+  /**
+   * @param gameName the name of the Game at the start of the .xml file
+   * @return A map of variable names [Strings] to their initial values [Strings]
+   * @throws OogaDataException if the String given isn't a directory or the cooresponding file is not properly formatted
+   */
+  Map<String, String> getVariableMap(String gameName) throws OogaDataException;
 
   /**
    * @param gameName The name of the game
@@ -87,5 +93,11 @@ public interface DataReader {
    * @return A list of Profiles according to the data stored in the Users folder. Returns an empty list if there are no
    * existing profiles
    */
-  List<OggaProfile> getProfiles();
+  List<OogaProfile> getProfiles() throws OogaDataException;
+
+  /**
+   * Adds a given profile to the profile folder
+   * @param newProfile the profile to add to the saved profile folder
+   */
+  void addNewProfile(OogaProfile newProfile) throws OogaDataException;
 }

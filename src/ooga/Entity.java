@@ -5,9 +5,7 @@ import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionEffect;
 import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.NonCollisionEffect;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -55,22 +53,6 @@ public interface Entity {
   public String getName();
 
   /**
-   * 'Controls' will be a String mapping to a controls type from a shared back end resource file.
-   * @param controls The String identifier of the type of control input that must be handled.
-   * @param game
-   */
-  void reactToControls(String controls, GameInternal game);
-
-  /**
-   * @see Entity#reactToControls(String, GameInternal)
-   * Reacts to the event of the key being pressed, i.e. the first frame that the key is active,
-   * so that button presses can be reacted to just once.
-   * @param controls The String identifier of the type of control input that must be handled.
-   * @param game
-   */
-  void reactToControlsPressed(String controls, GameInternal game);
-
-  /**
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
@@ -78,7 +60,7 @@ public interface Entity {
    * @param game
    *
    */
-  void updateSelf(double elapsedTime, Map<String, Double> variables, GameInternal game);
+  void updateSelf(double elapsedTime, Map<String, String> variables, GameInternal game);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and
@@ -86,51 +68,6 @@ public interface Entity {
    * @param elapsedTime Time in milliseconds since last step.
    */
   void executeMovement(double elapsedTime);
-
-  /**
-   * Sets the mappings of behaviors that will be carried out when the entity collides with
-   * another entity, based on what type of entity is being collided into.
-   * @param behaviorMap A Map that connects the name of the entity that is being collided with
-   *                    with the list of behaviors that should happen upon this collision.
-   */
-  void setCollisionBehaviors(Map<String,List<CollisionEffect>> behaviorMap);
-
-  /**
-   * Sets the behaviors that will be carried out for every frame
-   * @param behaviors A List of MovementBehaviors
-   */
-  void setMovementBehaviors(List<NonCollisionEffect> behaviors);
-
-  /**
-   * Sets the mappings of behaviors that will be carried out when controls are inputted,
-   * by mapping behaviors to controls.
-   * @param behaviors The Map from standardized control input strings to ControlsBehaviors that
-   *                  define this entity's reaction to controls.
-   */
-  void setControlsBehaviors(Map<String,List<NonCollisionEffect>> behaviors);
-
-  /**
-   * Reacts to colliding with a specific entity type based on its list of reactions mapped to
-   * entity names, as defined by the game data.
-   * Example: A Goomba might map a RemoveSelf behavior object to 'Fireball', so that it
-   * dies when hit by a fireball.
-   * @param collidingEntity The String identifier of the enemy being collided with.
-   * @param elapsedTime
-   */
-  void handleVerticalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game);
-
-  void handleHorizontalCollision(Entity collidingEntity, double elapsedTime,
-      Map<String, Double> variables, GameInternal game);
-
-  /**
-   * Moves the entity by the specified amount in the x and y direction.
-   * Useful for behaviors that own entity references. Might be moved to an "internal" entity
-   * interface because it is meant for behavior classes rather than the main game loop.
-   * @param xDistance Distance to move in the x direction. Can be negative.
-   * @param yDistance Distance to move in the y direction. Can be negative.
-   */
-  void move(double xDistance, double yDistance);
 
   /**
    * @return The X and Y position of the Entity, in that order.
@@ -190,8 +127,9 @@ public interface Entity {
 
   /**
    * Handles any behavior that depends on the values of variables.
+   * @param variables
    */
-  void reactToVariables(Map<String,Double> variables);
+  void reactToVariables(Map<String, String> variables);
 
   /**
    * Add a dependency to the map so that when the variable with the given name changes, the property with the given name is updated
@@ -202,9 +140,10 @@ public interface Entity {
   /**
 <<<<<<< HEAD
    * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
-   * assigned behavior if true
+   * assigned actions if true
    */
-  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables, List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal);
+  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
+                              Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 
   /**
    * assigns the conditional behaviors of this entity
@@ -230,4 +169,28 @@ public interface Entity {
    * @param isBlocked true if the entity is blocked in the direction, otherwise false
    */
   void blockInAllDirections(boolean isBlocked);
+
+  /**
+   * Adds (or sets) a variable to this entity's variable map
+   * @param name name of the variable
+   * @param value value of the variable
+   */
+  void addVariable(String name, String value);
+
+  /**
+   * returns the value of entity variable mapped to name
+   * @param name key
+   * @return value
+   */
+  String getVariable(String name);
+
+  /**
+   * set myVariables to the specified map
+   * @param variables map of variable names to values
+   */
+  void setVariables(Map<String, String> variables);
+
+  public String getEntityID();
+
+  Map<String,String> getVariables();
 }

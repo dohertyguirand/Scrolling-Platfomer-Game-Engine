@@ -1,0 +1,20 @@
+<User>
+    <Name>Doherty</Name>
+    <Image>DohertyImage.jpg</Image>
+    <SavedGameStates>
+        <Game>
+            <Name>Chrome Dino</Name>
+            <Save>
+                <Date></Date>
+                <StateFilePath></StateFilePath>
+            </Save>
+        </Game>
+        <Game>
+            <Name>Super Mario Bros</Name>
+            <Save>
+                <Date></Date>
+                <StateFilePath>saves/mario-save.xml</StateFilePath>
+            </Save>
+        </Game>
+    </SavedGameStates>
+</User>

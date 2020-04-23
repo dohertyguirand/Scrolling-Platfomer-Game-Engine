@@ -1,34 +1,57 @@
 package ooga.game.behaviors;
 
+import java.util.Map.Entry;
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.CollisionEffect;
-import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.NonCollisionEffect;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BehaviorInstance implements ConditionalBehavior {
 
+  public static final String ANY = "ANY";
+  public static final String SELF_IDENTIFIER = "SELF";
   Map<String, Boolean> inputConditions;
-  Map<String, Boolean> verticalCollisionConditions;
-  Map<String, Boolean> horizontalCollisionConditions;
-  Map<String, Double> variableConditions;
-  Map<String, List<CollisionEffect>> collisionEffects;
-  List<NonCollisionEffect> nonCollisionEffects;
+  Map<List<String>, String> requiredCollisionConditions;
+  Map<List<String>, String> bannedCollisionConditions;
+  Map<String, String> gameVariableConditions;
+  List<VariableCondition> gameVarConditions;
+  Map<String,List<Entry<String, String>>> entityVariableConditions;
+  Map<String,List<VariableCondition>> entityVarConditions;
+  List<Action> actions;
 
-  public BehaviorInstance(Map<String, Double> variableConditions, Map<String, Boolean> inputConditions,
-                          Map<String, Boolean> verticalCollisionConditions,
-                          Map<String, Boolean> horizontalCollisionConditions, Map<String, List<CollisionEffect>> collisionEffects,
-                          List<NonCollisionEffect> nonCollisionEffects){
+  /**
+   * @param gameVariableConditions
+   * @param entityVariableConditions
+   * @param inputConditions
+   * @param requiredCollisionConditions conditions that must be true Map<List<String>, String> [entity 1 info, entity 2 info] : direction (or "ANY")
+*    *   entity info can be id or name, method will check for either
+   * @param bannedCollisionConditions conditions that must be false (see above)
+   * @param actions
+   */
+  public BehaviorInstance(Map<String, String> gameVariableConditions,
+                          Map<String, List<Entry<String, String>>> entityVariableConditions,
+                          Map<String, Boolean> inputConditions,
+                          Map<List<String>, String> requiredCollisionConditions,
+                          Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
-    this.variableConditions = variableConditions;
-    this.verticalCollisionConditions = verticalCollisionConditions;
-    this.horizontalCollisionConditions = horizontalCollisionConditions;
-    this.collisionEffects = collisionEffects;
-    this.nonCollisionEffects = nonCollisionEffects;
+    this.gameVariableConditions = gameVariableConditions;
+    this.entityVariableConditions = entityVariableConditions;
+    this.requiredCollisionConditions = requiredCollisionConditions;
+    this.bannedCollisionConditions = bannedCollisionConditions;
+    this.actions = actions;
+  }
+
+  public BehaviorInstance(List<VariableCondition> gameVariableConditions,
+      Map<String, List<VariableCondition>> entityVariableConditions,
+      Map<String, Boolean> inputConditions,
+      Map<List<String>, String> requiredCollisionConditions,
+      Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
+    this.inputConditions = inputConditions;
+    this.gameVarConditions = gameVariableConditions;
+    this.entityVarConditions = entityVariableConditions;
+    this.requiredCollisionConditions = requiredCollisionConditions;
+    this.bannedCollisionConditions = bannedCollisionConditions;
+    this.actions = actions;
   }
 
   /**
@@ -43,91 +66,168 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param subject     entity that owns this behavior
    * @param variables   map of game/level variables
    * @param inputs      all registered key inputs at this frame
-   * @param verticalCollisions  names of all entities this entity is currently colliding with vertically
-   * @param horizontalCollisions names of all entities this entity is currently colliding with horizontally
+   * @param collisionInfo Map of maps, direction name : map of collisions for that direction. map of collisions is entity : list of entities
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
-                                  List<Entity> verticalCollisions, List<Entity> horizontalCollisions, GameInternal gameInternal) {
-    for(Map.Entry<String, Double> variableCondition : variableConditions.entrySet()){
-      if(!variables.get(variableCondition.getKey()).equals(variableCondition.getValue())){
-        return;
-      }
+  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
+                                  Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+    // TODO: add ability for entity instances to have additional behaviors?
+    if (!checkGameVariableConditions(subject, variables)) {
+      return;
+    }
+    if (!checkEntityVariableConditions(subject, gameInternal, variables)) {
+      return;
     }
     for(Map.Entry<String, Boolean> inputCondition : inputConditions.entrySet()){
       if(inputs.contains(inputCondition.getKey()) != inputCondition.getValue()){
         return;
       }
     }
-    List<String> verticalCollisionNames = getEntityNames(verticalCollisions);
-    for(Map.Entry<String, Boolean> collisionCondition : verticalCollisionConditions.entrySet()){
-      if(verticalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
-        return;
+    if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
+    if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
+    doActions(elapsedTime, subject, variables, inputs, collisionInfo, gameInternal);
+  }
+
+  private boolean checkGameVariableConditions(Entity subject, Map<String, String> gameVariables) {
+    return checkVariableConditionsList(subject, gameVariables, gameVarConditions, gameVariables);
+  }
+
+  private boolean checkVariableConditionsList(Entity subject, Map<String, String> gameVariables,
+      List<VariableCondition> varConditions,
+      Map<String, String> targetEntityVars) {
+    for (VariableCondition condition : varConditions) {
+      if (!condition.isSatisfied(subject,gameVariables,targetEntityVars)) {
+        return false;
       }
     }
-    List<String> horizontalCollisionNames = getEntityNames(horizontalCollisions);
-    for(Map.Entry<String, Boolean> collisionCondition : horizontalCollisionConditions.entrySet()){
-      if(horizontalCollisionNames.contains(collisionCondition.getKey()) != collisionCondition.getValue()){
-        return;
+    return true;
+  }
+
+  private boolean checkEntityVariableConditions(Entity subject, GameInternal gameInternal,
+      Map<String, String> gameVariables) {
+    for (Entry<String ,List<VariableCondition>> conditionEntry : entityVarConditions.entrySet()) {
+      Entity identified = identifyEntityVariableSubject(subject,gameInternal,conditionEntry.getKey());
+      if (identified == null) {
+        return false;
+      }
+      if (!checkVariableConditionsList(subject,gameVariables,conditionEntry.getValue(), identified.getVariables())) {
+        return false;
       }
     }
-    doNonCollisionEffects(elapsedTime, subject, variables, gameInternal);
-    doCollisionEffects(elapsedTime, subject, variables, inputs, horizontalCollisions, verticalCollisions, gameInternal);
+    return true;
+  }
+
+  @Deprecated
+  private boolean entityVariableConditionSatisfied(Entity subject, GameInternal gameInternal,
+      Entry<String, List<Entry<String, String>>> variableConditionsEntry) {
+    //Map: ((Variable containing Entity ID) OR (Variable Containing EntityName) OR (EntityID) OR (EntityName) ) -> ((VariableName),(Value))
+    Entity labelledEntity = identifyEntityVariableSubject(subject, gameInternal, variableConditionsEntry.getKey());
+    //once we've resolved WHERE to check, we check that each variable matches each value.
+    if(labelledEntity == null){
+      return false;
+    }
+    for(Entry<String, String> variableCondition : variableConditionsEntry.getValue()){
+      if(labelledEntity.getVariable(variableCondition.getKey()) == null ||
+              !labelledEntity.getVariable(variableCondition.getKey()).equals(variableCondition.getValue())){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private Entity identifyEntityVariableSubject(Entity subject, GameInternal gameInternal, String label) {
+    //1. Check if label is a constant that represents "SELF"
+    if (label.equals(SELF_IDENTIFIER)) {
+      return subject;
+    }
+    //2. Check if label is a variable...
+    Entity e;
+    String subjectVariable = subject.getVariable(label);
+    if (subjectVariable != null) {
+      //  -  with an entity ID
+      e = gameInternal.getEntityWithId(subject.getVariable(label));
+      if (e != null) {
+        return e;
+      }
+      //  -  with an entity name
+      e = gameInternal.getEntitiesWithName(subjectVariable).get(0);
+      if (e != null) {
+        return e;
+      }
+    }
+    //3. Check if label is an entity ID
+    e = gameInternal.getEntityWithId(label);
+    if (e != null) {
+      return e;
+    }
+    //4. Check if label is an entity name (definition type)
+    List<Entity> entitiesWithName = gameInternal.getEntitiesWithName(label);
+    if (!entitiesWithName.isEmpty()) {
+      return entitiesWithName.get(0);
+    }
+    return null;
+  }
+
+  private boolean anyCollisionConditionsUnsatisfied(Map<Entity, Map<String, List<Entity>>> collisionInfo,
+                                                    Map<List<String>, String> collisionConditions, boolean required) {
+    for(Map.Entry<List<String>, String> collisionConditionEntry : collisionConditions.entrySet()){
+      String entity1Info = collisionConditionEntry.getKey().get(0);
+      String entity2Info = collisionConditionEntry.getKey().get(1);
+      String direction = collisionConditionEntry.getValue();
+      if(checkCollisionCondition(collisionInfo, entity1Info, entity2Info, direction) != required) return true;
+    }
+    return false;
+  }
+
+  private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info, String entity2Info, String direction) {
+    for(Entity entity : collisionInfo.keySet()){
+      if(entityMatches(entity1Info, entity)){
+        if(direction.equals(ANY)){
+          for(String possibleDirection : collisionInfo.get(entity).keySet()){
+            if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
+          }
+        } else if (hasCollisionInDirection(collisionInfo, entity2Info, direction, entity)) return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean hasCollisionInDirection(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity2Info, String direction, Entity entity) {
+    List<Entity> collidingWithInDirection = collisionInfo.get(entity).get(direction);
+    for(Entity collidingEntity : collidingWithInDirection){
+      if(entityMatches(entity2Info, collidingEntity)){
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
-   * executes the behavior owned by this behavior
+   * collision/terrain specific!
+   * @param entity1Info
+   * @param entity
+   * @return
+   */
+  private boolean entityMatches(String entity1Info, Entity entity) {
+    return entity.getName().equals(entity1Info) ||
+            (entity.getVariable("TerrainID") != null && entity.getVariable("TerrainID").equals(entity1Info));
+  }
+
+  /**
+   * executes the actions owned by this behavior
    * @param elapsedTime time in ms
    * @param subject entity that owns this conditional behavior
    * @param variables map of variables in the game/level
    * @param inputs the input keys that are currently active in this frame
-   * @param horizontalCollisions the entities this entity is colliding with horizontally
-   * @param verticalCollisions the entities this entity is colliding with vertically
+   * @param collisionInfo current collision info
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, List<String> inputs,
-                       List<Entity> horizontalCollisions, List<Entity> verticalCollisions, GameInternal gameInternal) {
-    for(Map.Entry<String, List<CollisionEffect>>  collisionEffectEntry: collisionEffects.entrySet()) {
-      String collidingEntityName = collisionEffectEntry.getKey();
-      List<CollisionEffect> specificCollisionEffects = collisionEffectEntry.getValue();
-      for (Entity collidingWith : verticalCollisions) {
-        if (collidingWith.getName().equals(collidingEntityName)) {
-          for(CollisionEffect collisionEffect : specificCollisionEffects) {
-            collisionEffect.doVerticalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
-          }
-        }
-      }
-      for (Entity collidingWith : horizontalCollisions) {
-        if (collidingWith.getName().equals(collidingEntityName)) {
-          for(CollisionEffect collisionEffect : specificCollisionEffects) {
-            collisionEffect.doHorizontalCollision(subject, collidingWith, elapsedTime, variables, gameInternal);
-          }
-        }
-      }
+  public void doActions(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
+                        Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+    for(Action action : actions){
+      action.doAction(elapsedTime, subject, variables, collisionInfo, gameInternal);
     }
-  }
-
-  /**
-   * executes the behavior owned by this behavior
-   * @param elapsedTime time in ms
-   * @param subject entity that owns this conditional behavior
-   * @param variables map of variables in the game/level
-   * @param gameInternal instance of game internal
-   */
-  @Override
-  public void doNonCollisionEffects(double elapsedTime, Entity subject, Map<String, Double> variables, GameInternal gameInternal) {
-    for(NonCollisionEffect nonCollisionEffect : nonCollisionEffects) {
-      nonCollisionEffect.doEffect(elapsedTime, subject, variables, gameInternal);
-    }
-  }
-
-  private List<String> getEntityNames(List<Entity> entityList){
-    List<String> entityNames = new ArrayList<>();
-    for(Entity entity : entityList){
-      entityNames.add(entity.getName());
-    }
-    return entityNames;
   }
 }

@@ -15,6 +15,7 @@
                 <Date></Date>
                 <StateFilePath>saves/mario-save.xml</StateFilePath>
             </Save>
+            <HighScore>60</HighScore>
         </Game>
     </SavedGameStates>
 </User>

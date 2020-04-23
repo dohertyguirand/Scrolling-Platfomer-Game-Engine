@@ -19,20 +19,11 @@ public interface CollisionDetector {
   boolean isColliding(Entity a, Entity b, double elapsedTime);
 
   /**
-   * NOTE: The order of a and b doesn't matter.
-   * @param a The entity to check for collision with Entity a.
-   * @param b The entity to check for collision with Entity b.
-   * @param elapsedTime The time elapsed between the frame being modified and the previous frame.
-   * @return True if entities a and b are colliding vertically (not diagonally).
+   * Figure out if the entities are colliding and return the direction that a is colliding with b (e.g. a,b -> right)
+   * @param a entity a
+   * @param b entity b
+   * @param elapsedTime time passed in ms
+   * @return direction of collision, or null if no collision
    */
-  boolean isCollidingVertically(Entity a, Entity b, double elapsedTime);
-
-  /**
-   * NOTE: The order of a and b doesn't matter.
-   * @param a The entity to check for collision with Entity a.
-   * @param b The entity to check for collision with Entity b.
-   * @param elapsedTime The time elapsed between the frame being modified and the previous frame.
-   * @return True if entities a and b are colliding sideways (not diagonally).
-   */
-  boolean isCollidingHorizontally(Entity a, Entity b, double elapsedTime);
+  String getCollisionDirection(Entity a, Entity b, double elapsedTime);
 }

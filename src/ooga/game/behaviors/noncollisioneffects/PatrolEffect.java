@@ -6,61 +6,86 @@ import java.util.Map;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.NonCollisionEffect;
+import ooga.game.behaviors.TimeDelayedEffect;
 
-public class PatrolEffect implements NonCollisionEffect {
+public class PatrolEffect extends TimeDelayedEffect {
 
   public static double MARGIN = 20.0;
 
-  private double accelPerFrame;
-  private double myMaxSpeed;
+  private String accelPerFrameData;
+  private String myMaxSpeedData;
 
-  private List<Double> myFirstPoint;
-  private List<Double> mySecondPoint;
+  private List<String> myFirstPointData;
+  private List<String> mySecondPointData;
 
-  private List<Double> myTargetPoint;
+  private List<String> myTargetPointData;
 
-  public PatrolEffect(List<String> args) {
-    accelPerFrame = Double.parseDouble(args.get(0));
-    myMaxSpeed = Double.parseDouble(args.get(1));
-
-    myFirstPoint = new ArrayList<>();
-    myFirstPoint.add(Double.parseDouble(args.get(2)));
-    myFirstPoint.add(Double.parseDouble(args.get(3)));
-    mySecondPoint = new ArrayList<>();
-    mySecondPoint.add(Double.parseDouble(args.get(4)));
-    mySecondPoint.add(Double.parseDouble(args.get(5)));
-
-    myTargetPoint = myFirstPoint;
+  public PatrolEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
   }
 
+  /**
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
+   */
   @Override
-  public void doEffect(double elapsedTime, Entity subject, Map<String, Double> variables,
-      GameInternal game) {
-    List<Double> difference = targetDifference(subject);
+  public void processArgs(List<String> args) {
+    accelPerFrameData = args.get(0);
+    myMaxSpeedData = args.get(1);
+
+    myFirstPointData = new ArrayList<>();
+    myFirstPointData.add(args.get(2));
+    myFirstPointData.add(args.get(3));
+    mySecondPointData = new ArrayList<>();
+    mySecondPointData.add(args.get(4));
+    mySecondPointData.add(args.get(5));
+
+    myTargetPointData = myFirstPointData;
+  }
+
+  /**
+   * Performs the effect
+   *  @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param otherEntity entity we are "interacting with" in this effect
+   * @param elapsedTime time between steps in ms
+   * @param variables   game variables
+   * @param game        game instance
+   */
+  @Override
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+    List<Double> difference = targetDifference(subject, variables);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {
-      switchTargets();
+      switchTargets(subject, variables);
     }
+    double accelPerFrame = parseData(accelPerFrameData, subject, variables, 0.0);
     for (int i = 0; i < difference.size(); i ++) {
       difference.set(i,accelPerFrame * (1.0 / distanceFromTarget) * difference.get(i));
     }
+    double myMaxSpeed = parseData(myMaxSpeedData, subject, variables, 0.0);
     if ((getDotProduct(subject.getVelocity(),difference)) < Math.pow(myMaxSpeed,2)) {
       subject.changeVelocity(difference);
     }
   }
 
-  private void switchTargets() {
+  private void switchTargets(Entity subject, Map<String, String> variables) {
+    List<Double> myTargetPoint = List.of(parseData(myTargetPointData.get(0), subject, variables, 0.0),
+            parseData(myTargetPointData.get(1), subject, variables, 0.0));
+    List<Double> myFirstPoint = List.of(parseData(myFirstPointData.get(0), subject, variables, 0.0),
+            parseData(myFirstPointData.get(1), subject, variables, 0.0));
     if (myTargetPoint.equals(myFirstPoint)) {
-      myTargetPoint = mySecondPoint;
+      myTargetPointData = mySecondPointData;
     }
     else {
-      myTargetPoint = myFirstPoint;
+      myTargetPointData = myFirstPointData;
     }
   }
 
-  private List<Double> targetDifference(Entity subject) {
+  private List<Double> targetDifference(Entity subject, Map<String, String> variables) {
     List<Double> difference = new ArrayList<>();
+    List<Double> myTargetPoint = List.of(parseData(myTargetPointData.get(0), subject, variables, 0.0),
+            parseData(myTargetPointData.get(1), subject, variables, 0.0));
     for (int i = 0; i < subject.getPosition().size(); i ++) {
       difference.add(myTargetPoint.get(i) - subject.getPosition().get(i));
     }
