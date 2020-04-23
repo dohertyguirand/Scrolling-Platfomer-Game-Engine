@@ -1,5 +1,8 @@
 package ooga.game;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+
 import java.util.List;
 
 /**
@@ -35,4 +38,5 @@ public interface EntityInternal {
    * @param yVelocity The y-value of the new velocity.
    */
   void setVelocity(double xVelocity, double yVelocity);
+
 }
