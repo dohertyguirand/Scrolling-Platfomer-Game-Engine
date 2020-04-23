@@ -38,8 +38,8 @@ public interface ConditionalBehavior {
    * @param collisionInfo Map of maps, direction name : map of collisions for that direction. map of collisions is entity : list of entities
    * @param gameInternal what game this is run from
    */
-  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
-                                  Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
+  void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
+                           Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 
 
   /**
@@ -51,6 +51,6 @@ public interface ConditionalBehavior {
    * @param collisionInfo current collision info
    * @param gameInternal what game this is run from
    */
-  public void doActions(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
-                        Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
+  void doActions(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
+                 Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 }

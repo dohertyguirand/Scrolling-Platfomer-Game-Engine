@@ -11,6 +11,7 @@ import ooga.game.behaviors.Effect;
 /**
  * IndependentAction: no other entity is necessary for the effect
  */
+@SuppressWarnings("unused")
 public class IndependentAction extends Action {
 
   public IndependentAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {

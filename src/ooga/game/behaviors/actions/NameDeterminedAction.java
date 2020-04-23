@@ -10,9 +10,10 @@ import ooga.game.behaviors.Effect;
 /**
  * NameDeterminedAction: executes the effect on all entities with the specified name "howToFind"
  */
+@SuppressWarnings("unused")
 public class NameDeterminedAction extends Action {
 
-  String myTargetName;
+  final String myTargetName;
 
   public NameDeterminedAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
     super(effects);

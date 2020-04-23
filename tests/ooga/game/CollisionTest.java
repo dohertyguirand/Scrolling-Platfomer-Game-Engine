@@ -73,3 +73,4 @@ public class CollisionTest {
     assertEquals(0.0,velocity.get(1));
   }
 }
+

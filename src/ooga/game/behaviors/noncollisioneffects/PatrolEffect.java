@@ -8,9 +8,10 @@ import ooga.Entity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+@SuppressWarnings("unused")
 public class PatrolEffect extends TimeDelayedEffect {
 
-  public static double MARGIN = 20.0;
+  public static final double MARGIN = 20.0;
 
   private String accelPerFrameData;
   private String myMaxSpeedData;

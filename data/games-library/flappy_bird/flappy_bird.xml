@@ -7,6 +7,54 @@
             <Name>Bird</Name>
             <Width>50</Width>
             <Height>50</Height>
+<<<<<<< HEAD
+            <Image>flappybird.jpg</Image>
+            <Movement>
+                <MovementBehavior>Gravity 0 0.1</MovementBehavior>
+            </Movement>
+            <Controls>
+                <ControlInput>
+                    <Key>UpKey</Key>
+                    <ControlBehavior>JumpBehavior -0.5</ControlBehavior>
+                </ControlInput>
+            </Controls>
+            <Collisions>
+                <EntityCollision>
+                    <With>PipeUp</With>
+                    <Reaction>RemoveSelf</Reaction>
+                    <With>PipeDown</With>
+                    <Reaction>RemoveSelf</Reaction>
+                    <With>Floor</With>
+                    <Reaction>RemoveSelf</Reaction>
+                </EntityCollision>
+            </Collisions>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>PipeUp</Name>
+            <Width>75</Width>
+            <Height>200</Height>
+            <Image>pipe_up.png</Image>
+            <Movement>
+                <MovementBehavior>MoveForward -0.3 0</MovementBehavior>
+            </Movement>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>PipeDown</Name>
+            <Width>75</Width>
+            <Height>200</Height>
+            <Image>pipe_down.png</Image>
+            <Movement>
+                <MovementBehavior>MoveForward -0.3 0</MovementBehavior>
+            </Movement>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>Floor</Name>
+            <Width>100</Width>
+            <Height>30</Height>
+            <Image>floor.png</Image>
+        </ImageEntity>
+    </Entities>
+=======
             <Image>flappy_down.png</Image>
             <Behaviors>
                 <Behavior>
@@ -127,10 +175,61 @@
             <StartValue>0</StartValue>
         </Variable>
     </Variables>
+>>>>>>> fb12296e50bd78b92d3d4030c07ae5414356fdc9
     <Levels>
         <Level>
             <ID>1</ID>
             <NextLevel>1</NextLevel>
+<<<<<<< HEAD
+            <EndCondition>DestroyAll Bird</EndCondition>
+            <ImageEntityInstances>
+                <ImageEntityInstance>
+                    <Type>Bird</Type>
+                    <XPos>100</XPos>
+                    <YPos>400</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1200</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1200</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1400</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1400</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1600</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1600</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeUp</Type>
+                    <XPos>1800</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Type>PipeDown</Type>
+                    <XPos>1800</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+            </ImageEntityInstances>
+=======
             <EndCondition>DestroyAll Koopa</EndCondition>
             <ImageEntityInstances>
                 <ImageEntityInstance>
@@ -244,6 +343,7 @@
                     </PropertyVariableDependency>
                 </TextEntityInstance>
             </TextEntityInstances>
+>>>>>>> fb12296e50bd78b92d3d4030c07ae5414356fdc9
         </Level>
     </Levels>
 </Game>

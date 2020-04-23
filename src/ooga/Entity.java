@@ -29,10 +29,6 @@ public interface Entity {
 
   void setActiveInView(boolean activeInView);
 
-  DoubleProperty heightProperty();
-
-  DoubleProperty widthProperty();
-
   void setWidth(double width);
 
   void setHeight(double height);
@@ -50,7 +46,7 @@ public interface Entity {
   /**
    * @return The name identifying what type of entity this is, as defined in the game file.
    */
-  public String getName();
+  String getName();
 
   /**
    * Handles updates that happen every frame, regardless of context. Can still have logic.
@@ -114,13 +110,6 @@ public interface Entity {
   void setVelocity(double xVelocity, double yVelocity);
 
   /**
-   * Adds an entity to the buffer of entities that will be created next frame. May be removed
-   * in favor of the game making the new entity immediately.
-   * @param e
-   */
-  void createEntity(Entity e);
-
-  /**
    * @return Any entities that were created by this one this frame. This is emptied by the call.
    */
   List<Entity> popCreatedEntities();
@@ -150,12 +139,6 @@ public interface Entity {
    * @param conditionalBehaviors list of conditional behaviors
    */
   void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors);
-
-  /**
-   * @param entityType The type of entity to check for collision behavior with.
-   * @return True if the entity has a defined collision behavior with the type given.
-   */
-  boolean hasCollisionWith(String entityType);
 
   /**
    * change the value in this entity's blockedMovements map to the specified value
@@ -190,7 +173,7 @@ public interface Entity {
    */
   void setVariables(Map<String, String> variables);
 
-  public String getEntityID();
+  String getEntityID();
 
   Map<String,String> getVariables();
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class SetPositionEffect extends TimeDelayedEffect {
 
   private List<String> desiredLocation;

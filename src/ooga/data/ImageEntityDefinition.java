@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ImageEntityDefinition {
-    private double myHeight;
-    private double myWidth;
-    private String myImageLocation;
-    private List<ConditionalBehavior> myBehaviors;
-    private String myName;
+    private final double myHeight;
+    private final double myWidth;
+    private final String myImageLocation;
+    private final List<ConditionalBehavior> myBehaviors;
+    private final String myName;
     private Map<String, String> myVariables = new HashMap<>();
 
     public ImageEntityDefinition(String name, double height, double width, String imageLocation, List<ConditionalBehavior> behaviors){

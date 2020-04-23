@@ -6,9 +6,9 @@ package ooga.data;
  */
 public class Thumbnail {
 
-    private String imageFile;
-    private String title;
-    private String description;
+    private final String imageFile;
+    private final String title;
+    private final String description;
 
     public Thumbnail(String imageFileName, String title, String description){
         imageFile = imageFileName;

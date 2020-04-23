@@ -1,7 +1,6 @@
 package ooga.game.behaviors.noncollisioneffects;
 
 import ooga.Entity;
-import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 
@@ -13,13 +12,14 @@ import java.util.Map;
  * Note: this does not implement TimeDelayedEffect because it has its own time delays
  * This can be coupled with another time delayed effect like respawn (but this effect must complete before respawn)
  */
+@SuppressWarnings("unused")
 public class BlinkImageEffect implements Effect {
 
-  String image1Data;
-  String image2Data;
-  String finalImageData;
-  String blinkTimeDelayData;
-  String totalBlinkTimeData;
+  final String image1Data;
+  final String image2Data;
+  final String finalImageData;
+  final String blinkTimeDelayData;
+  final String totalBlinkTimeData;
   double timePassed = 0.0;
   double timePassedSinceLastBlink = 0.0;
   String currentImage;
@@ -47,9 +47,9 @@ public class BlinkImageEffect implements Effect {
   public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     double blinkTimeDelay = parseData(blinkTimeDelayData, subject, variables, 0.0);
     double totalBlinkTime = parseData(totalBlinkTimeData, subject, variables, 0.0);
-    String finalImage = doVariableSubstitutions(finalImageData, subject, variables);
-    String image1 = doVariableSubstitutions(image1Data, subject, variables);
-    String image2 = doVariableSubstitutions(image2Data, subject, variables);
+    String finalImage = Effect.doVariableSubstitutions(finalImageData, subject, variables);
+    String image1 = Effect.doVariableSubstitutions(image1Data, subject, variables);
+    String image2 = Effect.doVariableSubstitutions(image2Data, subject, variables);
     timePassedSinceLastBlink += elapsedTime;
     if(timePassed >= totalBlinkTime){
       SetImageEffect.setImage(subject, finalImage, variables, this);

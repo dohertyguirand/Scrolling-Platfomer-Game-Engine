@@ -16,36 +16,40 @@ import java.util.ResourceBundle;
 
 
 public class ViewProfile extends OogaProfile {
-    private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+    private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
-    private final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
+    private static final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
     private ImageView myProfilePhoto;
-    private ImageView myViewPhoto;
+
 
     public ViewProfile(String name, String imagePath){
         myName = name;
+        myProfilePhotoPath = imagePath;
         myDefaultImagePath = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
-        setImageView(imagePath);
+        setImageView();
         myHighestScores = new HashMap<>();
     }
     public ViewProfile(OogaProfile profile){
-        setImageView(profile.getProfilePhotoPath());
+        myProfilePhotoPath = profile.getProfilePhotoPath();
+        myDefaultImagePath = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
+        setImageView();
         myName = profile.getProfileName();
         myHighestScores = profile.getStats();
     }
+
+    @Deprecated
     public ViewProfile(){
       this("Testing","ooga/view/Resources/profilephotos/defaultphoto.jpg");
     }
 
-    public void setImageView(String photoPath){
+    public void setImageView(){
         try{
-            myProfilePhoto = new ImageView(photoPath);
-            myViewPhoto = new ImageView(photoPath);
+            myProfilePhoto = new ImageView(myProfilePhotoPath);
         }
         catch (IllegalArgumentException | NullPointerException e){
             myProfilePhoto = new ImageView(myDefaultImagePath);
-            myViewPhoto = new ImageView(myDefaultImagePath);
+            myProfilePhotoPath = myDefaultImagePath;
         }
     }
 
@@ -60,10 +64,10 @@ public class ViewProfile extends OogaProfile {
 
     private VBox setNameAndPhoto(){
         VBox nameAndPhoto = new VBox();
-        nameAndPhoto.getChildren().add(myViewPhoto);
+        nameAndPhoto.getChildren().add(myProfilePhoto);
         nameAndPhoto.getChildren().add(setNameText());
-        nameAndPhoto.setOnDragEntered(e-> handleDroppedPhoto(e));
-        nameAndPhoto.setOnDragDropped(e-> handleDroppedPhoto(e));
+        nameAndPhoto.setOnDragEntered(this::handleDroppedPhoto);
+        nameAndPhoto.setOnDragDropped(this::handleDroppedPhoto);
         nameAndPhoto.setOnMouseClicked(e->{ if(e.getClickCount() == 2){ handleChosenPhoto();}});
         return nameAndPhoto;
     }

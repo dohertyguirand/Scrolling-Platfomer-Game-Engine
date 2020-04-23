@@ -35,6 +35,7 @@ public interface UserInputListener {
    * This might be modified to account for identifying which game must close when
    * there are multiple games open.
    */
+  @SuppressWarnings("EmptyMethod")
   void reactToGameQuit();
 
   /**

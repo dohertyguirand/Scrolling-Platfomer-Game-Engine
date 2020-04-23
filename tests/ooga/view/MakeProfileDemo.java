@@ -17,6 +17,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 
 public class MakeProfileDemo extends Application {
@@ -29,7 +31,7 @@ public class MakeProfileDemo extends Application {
     private ImageView mv = new ImageView();
     private Stage myStage;
 
-    @Override
+    @Test
     public void start(Stage primaryStage) throws Exception {
         myGridpane = createRegistrationFormPane();
         addUIControls(myGridpane);

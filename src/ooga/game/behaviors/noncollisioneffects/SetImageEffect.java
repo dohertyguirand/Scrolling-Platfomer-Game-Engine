@@ -9,6 +9,7 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class SetImageEffect extends TimeDelayedEffect {
 
   String newImageFileName;
@@ -44,7 +45,7 @@ public class SetImageEffect extends TimeDelayedEffect {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;
-      imageEntity.setImageLocation("file:data/games-library/" + effectSource.doVariableSubstitutions(newImageFileName, subject, variables));
+      imageEntity.setImageLocation("file:data/games-library/" + Effect.doVariableSubstitutions(newImageFileName, subject, variables));
     }
   }
 }

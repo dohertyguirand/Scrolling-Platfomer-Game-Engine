@@ -51,7 +51,7 @@ public interface Effect {
    * @param variables game variables
    * @return the parsed value
    */
-  default String doVariableSubstitutions(String data, Entity subject, Map<String, String> variables){
+  static String doVariableSubstitutions(String data, Entity subject, Map<String, String> variables){
     String finalValue = data;
     if(variables.containsKey(data)){
       finalValue = variables.get(data);

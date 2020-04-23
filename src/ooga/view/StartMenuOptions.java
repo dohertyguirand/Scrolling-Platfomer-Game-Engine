@@ -18,17 +18,16 @@ public class StartMenuOptions {
     private static final double Button_Space = 30;
     private static final double MARGIN = 50;
     private static final Color BACKGROUND_COLOR = Color.WHITE;
-    private BooleanProperty Display = new SimpleBooleanProperty(false);
-    private BooleanProperty Audio = new SimpleBooleanProperty(false);
-    private BooleanProperty Reset = new SimpleBooleanProperty(false);
-    private BooleanProperty GoBack = new SimpleBooleanProperty(false);
-    Map<BooleanProperty, String> buttonPropertiesAndNames = new HashMap<>() {{
+    private final BooleanProperty Display = new SimpleBooleanProperty(false);
+    private final BooleanProperty Audio = new SimpleBooleanProperty(false);
+    private final BooleanProperty Reset = new SimpleBooleanProperty(false);
+    private final BooleanProperty GoBack = new SimpleBooleanProperty(false);
+    final Map<BooleanProperty, String> buttonPropertiesAndNames = new HashMap<>() {{
         put(Display, "Display");
         put(Audio, "Audio");
         put(Reset, "Reset");
         put(GoBack, "Go Back");
     }};
-    private Slider myVolumeSlider;
     private static final int SLIDERMINNUM = 0;
     private static final int SLIDERMAXNUM = 100;
     private static final int SLIDERUNIT = 10;
@@ -57,7 +56,7 @@ public class StartMenuOptions {
     }
 
     public Slider volumeControl() {
-        myVolumeSlider = new Slider();
+        Slider myVolumeSlider = new Slider();
         myVolumeSlider.setMin(SLIDERMINNUM);
         myVolumeSlider.setMax(SLIDERMAXNUM);
         myVolumeSlider.setValue(1);
@@ -66,12 +65,9 @@ public class StartMenuOptions {
         myVolumeSlider.setMajorTickUnit(SLIDERUNIT);
         myVolumeSlider.setBlockIncrement(SLIDERUNIT);
 
-        myVolumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
+        //myVolumeSlider.valueProperty().addListener((ov, old_val, new_val) -> {
 //                animation.setRate((Double) new_val);
-            }
-        });
+        //});
         return myVolumeSlider;
     }
 
