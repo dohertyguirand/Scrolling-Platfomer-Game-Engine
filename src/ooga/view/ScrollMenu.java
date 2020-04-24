@@ -20,9 +20,8 @@ public abstract class ScrollMenu {
     protected final Pane myPane;
 
     private final Scene myScene;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final Group myRoot;
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+    @SuppressWarnings("FieldCanBeLocal")
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private final double IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
@@ -37,7 +36,7 @@ public abstract class ScrollMenu {
 
     protected ScrollMenu(){
         myDataReader = new OogaDataReader();
-        myRoot = new Group();
+        Group myRoot = new Group();
         myPane = new Pane();
         myPane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 

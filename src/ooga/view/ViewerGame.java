@@ -9,13 +9,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.*;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -44,7 +41,7 @@ public class ViewerGame {
   private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
-  private Group myEntityGroup = new Group();
+  private final Group myEntityGroup = new Group();
   private Group myRoot;
   private final String myGameName;
   private Scene myGameScene;
@@ -54,11 +51,9 @@ public class ViewerGame {
   private Timeline myAnimation;
   private final ObjectProperty<Effect> colorEffectProperty = new SimpleObjectProperty<>();
   private Scene pauseScene;
-  private String myProfileName;
-  private List<DoubleProperty> cameraShift = new ArrayList<>();
-
-
-
+  private final String myProfileName;
+  private final List<DoubleProperty> cameraShift = new ArrayList<>();
+  private Exception currentError = null;
 
   public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
     myGameName = gameName;
@@ -66,17 +61,14 @@ public class ViewerGame {
     //TODO: Update to match the new constructors by adding the date of the save to load
     setGame(saveDate);
     setUpGameStage();
-    setCameraListeners();
-    //SAM added this as the way to make a Game once file loading works.
+    setCameraProperties();
     setUpGameEntities();
     myRoot.getChildren().addAll(setUpPauseButton(), setUpDarkModeButton(), setUpNormalModeButton());
     colorEffectProperty.set(new ColorAdjust());
     setUpInputListeners(myGame);
   }
 
-
-
-  private void setCameraListeners(){
+  private void setCameraProperties(){
     cameraShift.add(new SimpleDoubleProperty());
     cameraShift.add(new SimpleDoubleProperty());
     myGame.setCameraShiftProperties(cameraShift);
@@ -88,7 +80,6 @@ public class ViewerGame {
     }
     else myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
   }
-
 
   private void setUpGameEntities(){
     ObservableList<Entity> gameEntities = myGame.getEntities();
@@ -108,7 +99,6 @@ public class ViewerGame {
         }
       }
     });
-
     for(Entity entity : gameEntities){
       addToEntityGroup(entity);
     }
@@ -124,16 +114,8 @@ public class ViewerGame {
     });
   }
 
-//  private DoubleProperty getOutOfBounds(){
-//    if(myCamera.getBoundsInParent().intersects(focus.getNode().getBoundsInParent())){
-//      return new SimpleDoubleProperty(myCamera.getLayoutX());
-//    }
-//    else {
-//      return focus.getNode().layoutXProperty();
-//    }
-//  }
   private Node makeViewEntity(Entity entity){
-    // TODO: use reflection here or something
+    // TODO: use reflection here?
     if(entity instanceof ImageEntity){
       ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift));
       return viewImageEntity.getNode();
@@ -144,8 +126,6 @@ public class ViewerGame {
     }
     return null;
   }
-
-
 
   private Node setUpPauseButton() {
     myPauseMenu = new PauseMenu();
@@ -210,10 +190,11 @@ public class ViewerGame {
         step();
       } catch (Exception ex) {
         // note that this should ideally never be thrown
-        // TODO: remove print stack trace, figure out how to make error window pop up
-        ex.printStackTrace();
-        System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is " +
-                "not allowed during animation processing");
+        if(currentError == null || !ex.getClass().equals(currentError.getClass())) {
+          myAnimation.stop();
+          showError(ex.getMessage());
+          currentError = ex;
+        }
       }
     });
     myAnimation = new Timeline();
@@ -238,7 +219,8 @@ public class ViewerGame {
   private void showError(String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setContentText(message);
-    alert.showAndWait();
+    alert.show();
+    alert.setOnCloseRequest(e -> myAnimation.play());
   }
 
   private void setUpInputListeners(UserInputListener userInputListener) {

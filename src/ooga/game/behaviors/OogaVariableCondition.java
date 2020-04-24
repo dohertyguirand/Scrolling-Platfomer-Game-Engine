@@ -1,15 +1,14 @@
 package ooga.game.behaviors;
 
-import java.util.Comparator;
 import java.util.Map;
 import ooga.Entity;
 import ooga.game.behaviors.comparators.VariableComparator;
 
 public class OogaVariableCondition implements VariableCondition {
 
-  private VariableComparator myComparator;
-  private String myCompareTo;
-  private String myVariableName;
+  private final VariableComparator myComparator;
+  private final String myCompareTo;
+  private final String myVariableName;
 
   public OogaVariableCondition(String varName, VariableComparator comparator, String value) {
     myComparator = comparator;

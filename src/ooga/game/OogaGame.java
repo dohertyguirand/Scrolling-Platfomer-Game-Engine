@@ -28,9 +28,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private final InputManager myInputManager = new OogaInputManager();
   private Map<String, String> myVariables;
   private ObservableList<Entity> myEntities;
-  private List<Entity> myNewCreatedEntities = new ArrayList<>();
+  private final List<Entity> myNewCreatedEntities = new ArrayList<>();
   Map<String, ImageEntityDefinition> myEntityDefinitions;
-  private List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
+  private final List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
 
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
@@ -125,11 +125,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void doUpdateLoop(double elapsedTime) {
-    //1. calculate all automatic movement
-    //2. calculate all controls-based movement
-    //3. find collisions
-    //4. calculate effect of collisions.
-    //5. execute movement.
     List<String> activeKeys = myInputManager.getActiveKeys();
     List<String> pressedKeys = new ArrayList<>();
     for(String keyPressed : myInputManager.getPressedKeys()){
@@ -142,17 +137,15 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     doEntityFrameUpdates(elapsedTime);
 
     doEntityBehaviors(elapsedTime, allInputs);
-//    doVariableUpdates();
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
-    checkLevelEnd();
   }
 
   private void doEntityFrameUpdates(double elapsedTime) {
     for (Entity entity : currentLevel.getEntities()) {
       entity.blockInAllDirections(false);
-      entity.updateSelf(elapsedTime, myVariables, this);
+      entity.updateSelf(elapsedTime);
       entity.reactToVariables(myVariables);
     }
   }
@@ -161,17 +154,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     Map<Entity, Map<String, List<Entity>>> collisionInfo = findDirectionalCollisions(elapsedTime);
     for (Entity entity : currentLevel.getEntities()) {
       entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, collisionInfo, this);
-    }
-  }
-
-  private void checkLevelEnd() {
-    if (currentLevel.checkEndCondition()) {
-      try {
-        currentLevel = loadGameLevel(myName,currentLevel.nextLevelID());
-        System.out.println("LOADED LEVEL");
-      } catch (OogaDataException e) {
-        //if the next level fails to load, continue this level.
-      }
     }
   }
 
@@ -262,6 +244,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    * @param paused whether or not the button clicked was pause or resume
    */
   @Override
+  @SuppressWarnings("EmptyMethod")
   public void reactToPauseButton(boolean paused) {
     //Ooga games do nothing as a reaction to pausing, but other implementations could do things.
   }
@@ -298,22 +281,22 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   @Override
   public List<Entity> getEntitiesWithName(String name) {
-    List<Entity> ret = new ArrayList<>();
+    List<Entity> entitiesWithName = new ArrayList<>();
     for (Entity e : myEntities) {
       if (e.getName().equals(name)) {
-        ret.add(e);
+        entitiesWithName.add(e);
       }
     }
-    return ret;
+    return entitiesWithName;
   }
 
   @Override
   public void goToLevel(String levelID) {
     try {
       currentLevel = loadGameLevel(myName,levelID);
-      setCameraShiftValue(0,0);
+      setCameraShiftValues(0,0);
     }
-    catch (OogaDataException e) {
+    catch (OogaDataException ignored) {
       //To preserve the pristine gameplay experience, we do nothing (rather than crash).
     }
   }
@@ -321,13 +304,13 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void goToNextLevel() {
     goToLevel(currentLevel.nextLevelID());
-    setCameraShiftValue(0,0);
+    setCameraShiftValues(0,0);
   }
 
   @Override
   public void restartLevel() {
     goToLevel(currentLevel.getLevelId());
-    setCameraShiftValue(0,0);
+    setCameraShiftValues(0,0);
   }
 
   @Override
@@ -337,19 +320,13 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  public void setCameraShiftValue(double xValue, double yValue){
+  public void setCameraShiftValues(double xValue, double yValue){
     cameraShiftProperties.get(0).set(xValue);
     cameraShiftProperties.get(1).set(yValue);
-  }
-
-
-  public List<DoubleProperty> getCameraShiftProperties() {
-    return cameraShiftProperties;
   }
 
   @Override
   public List<Double> getCameraShiftValues() {
     return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
-
   }
 }

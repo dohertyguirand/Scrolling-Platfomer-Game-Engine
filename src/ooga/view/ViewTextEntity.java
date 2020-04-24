@@ -36,9 +36,6 @@ public class ViewTextEntity implements ViewEntity {
     // add more properties here if needed
   }
 
-  public DoubleProperty getXProperty(){return text.xProperty();}
-  public double getX(){return text.xProperty().getValue();}
-
   public Node getNode() {
     return text;
   }

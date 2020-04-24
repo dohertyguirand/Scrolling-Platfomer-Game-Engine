@@ -96,7 +96,7 @@ public class ViewProfile extends OogaProfile {
             ImageIO.write(bufferedImage,"png",newFile);
             myProfilePhotoPath = "ooga/view/Resources/profilephotos/" + myName+ "profilephoto.jpg" ;
             //myPane.setTop(setNameAndPhoto());
-            } catch (IOException | NullPointerException | IllegalArgumentException ex) {
+            } catch (IOException | NullPointerException | IllegalArgumentException ignored) {
             }
     }
     private void handleExitPressed(TextArea textArea, HBox hBox, KeyEvent e){

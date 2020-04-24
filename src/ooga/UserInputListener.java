@@ -11,6 +11,7 @@ public interface UserInputListener {
    *               (not "view-relative" coordinates).
    * @param mouseY The Y-coordinate of the mouse click, in-game screen coordinates.
    */
+  @SuppressWarnings("EmptyMethod")
   void reactToMouseClick(double mouseX, double mouseY);
 
   /**
@@ -42,5 +43,6 @@ public interface UserInputListener {
    * indicates the pause button was clicked in the ui
    * @param paused whether or not the button clicked was pause or resume
    */
+  @SuppressWarnings("EmptyMethod")
   void reactToPauseButton(boolean paused);
 }

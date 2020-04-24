@@ -7,6 +7,7 @@ import ooga.Entity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+@SuppressWarnings("unused")
 public class CreateEntityRelativeEffect extends TimeDelayedEffect {
 
   public static final double DEFAULT_Y_OFFSET = -100.0;

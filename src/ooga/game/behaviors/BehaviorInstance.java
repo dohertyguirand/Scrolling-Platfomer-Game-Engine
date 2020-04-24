@@ -83,7 +83,7 @@ public class BehaviorInstance implements ConditionalBehavior {
     }
     if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
     if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
-    doActions(elapsedTime, subject, variables, inputs, collisionInfo, gameInternal);
+    doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
   }
 
   private boolean checkGameVariableConditions(Entity subject, Map<String, String> gameVariables) {
@@ -216,12 +216,11 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param elapsedTime time in ms
    * @param subject entity that owns this conditional behavior
    * @param variables map of variables in the game/level
-   * @param inputs the input keys that are currently active in this frame
    * @param collisionInfo current collision info
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doActions(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
+  public void doActions(double elapsedTime, Entity subject, Map<String, String> variables,
                         Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     for(Action action : actions){
       action.doAction(elapsedTime, subject, variables, collisionInfo, gameInternal);

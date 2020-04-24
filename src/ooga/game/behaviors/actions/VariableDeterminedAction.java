@@ -44,7 +44,7 @@ public class VariableDeterminedAction extends Action {
   }
 
   @Override
-  public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
+  public List<Entity> findOtherEntities(Entity subject,
                                         Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
                                         GameInternal gameInternal) {
     VariableComparator myComparator = determineComparator();
@@ -75,7 +75,7 @@ public class VariableDeterminedAction extends Action {
 
   @Override
   public void doAction(double elapsedTime, Entity subject, Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    List<Entity> otherEntities = findOtherEntities(elapsedTime,subject,variables,collisionInfo,gameInternal);
+    List<Entity> otherEntities = findOtherEntities(subject,variables,collisionInfo,gameInternal);
     for (Entity e : otherEntities) {
       doEffects(elapsedTime,subject,e,variables,gameInternal);
     }

@@ -26,19 +26,6 @@ public interface Level {
   void addEntity(Entity e);
 
   /**
-   * Similar to addEntity, but adds multiple easily.
-   * @param e The entities to add.
-   */
-  void addEntities(Collection<Entity> e);
-
-  /**
-   * Usually relies on an owned instance of LevelEndCondition to handle the unique logic of
-   * a specific level's end condition.
-   * @return True if the level should end, which should cause the game to progress.
-   */
-  boolean checkEndCondition();
-
-  /**
    * @return The ID in the game file of the level that comes after this one.
    */
   String nextLevelID();

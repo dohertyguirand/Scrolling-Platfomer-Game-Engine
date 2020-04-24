@@ -19,11 +19,11 @@ public class IndependentAction extends Action {
   }
 
   @Override
-  public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
+  public List<Entity> findOtherEntities(Entity subject,
                                         Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
                                         GameInternal gameInternal) {
-    List<Entity> ret = new ArrayList<>();
-    ret.add(null);
-    return ret;
+    List<Entity> otherEntities = new ArrayList<>();
+    otherEntities.add(null);
+    return otherEntities;
   }
 }

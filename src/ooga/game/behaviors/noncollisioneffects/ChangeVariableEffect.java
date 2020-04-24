@@ -3,7 +3,6 @@ package ooga.game.behaviors.noncollisioneffects;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
@@ -11,8 +10,6 @@ import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;
 import ooga.game.behaviors.TimeDelayedEffect;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 @SuppressWarnings("unused")

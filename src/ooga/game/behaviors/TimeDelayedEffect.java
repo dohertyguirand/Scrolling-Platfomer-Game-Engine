@@ -3,7 +3,6 @@ package ooga.game.behaviors;
 import java.util.List;
 import java.util.ResourceBundle;
 import ooga.Entity;
-import ooga.data.ImageEntity;
 import ooga.game.GameInternal;
 
 import java.util.Map;

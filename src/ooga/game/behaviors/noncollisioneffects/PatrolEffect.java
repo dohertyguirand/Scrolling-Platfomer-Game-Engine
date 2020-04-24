@@ -69,7 +69,7 @@ public class PatrolEffect extends TimeDelayedEffect {
     }
     double myMaxSpeed = parseData(myMaxSpeedData, subject, variables, 0.0);
     if ((getDotProduct(subject.getVelocity(),difference)) < Math.pow(myMaxSpeed,2)) {
-      subject.changeVelocity(difference);
+      subject.changeVelocity(difference.get(0), difference.get(1));
     }
   }
 
