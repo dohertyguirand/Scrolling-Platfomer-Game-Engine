@@ -44,9 +44,6 @@ public abstract class ScrollMenu {
         imgView.setFitWidth(WINDOW_WIDTH);
         imgView.setFitHeight(WINDOW_HEIGHT);
 
-       // horizontalScroller();
-
-
         myPane.getChildren().addAll(imgView);
         myRoot.getChildren().addAll(myPane, horizontalScroller());
 

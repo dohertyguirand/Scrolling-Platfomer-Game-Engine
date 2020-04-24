@@ -13,6 +13,7 @@ public class Visualizer extends Application {
 
   private static final String ERROR_MESSAGE = "Error: Internal Data Error";
   private static final String START_MENU_TITLE = "Choose a Game";
+  private static final String BACK_BUTTON_TEXT = "Back";
   private String profileNameSelected;
   private Stage stage;
   private final DataReader dataReader = new OogaDataReader();
@@ -24,7 +25,6 @@ public class Visualizer extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-
     stage = primaryStage;
     Scene display = setUpStartMenuDisplay();
     primaryStage.setScene(display);
@@ -52,8 +52,9 @@ public class Visualizer extends Application {
   private void showLoadMenu(String gameName, Scene returnScene){
     Button backToStartMenu = makeBackButton(returnScene);
     LoadMenu loadMenu = new LoadMenu(gameName, profileNameSelected,dataReader, backToStartMenu);
+    Scene loadScene = new Scene(loadMenu, loadMenu.getWidth(),loadMenu.getHeight());
     loadMenu.getDateSelected().addListener((d,dold,dnew)-> startGame(gameName,profileNameSelected,dnew));
-    stage.setScene(loadMenu.getScene());
+    stage.setScene(loadScene);
   }
 
   private void startGame(String gameName, String profileName, String date) {
@@ -70,7 +71,7 @@ public class Visualizer extends Application {
 
   private Button makeBackButton(Scene backScene){
     Button button = new Button();
-    button.setText("Back");
+    button.setText(BACK_BUTTON_TEXT);
     button.setOnAction(e->stage.setScene(backScene));
     return button;
   }

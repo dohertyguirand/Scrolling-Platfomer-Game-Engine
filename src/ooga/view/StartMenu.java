@@ -56,11 +56,11 @@ public class StartMenu extends ScrollMenu{
   private Node setProfileData(ViewProfile profile){
     VBox vBox = new VBox();
     vBox.setOnMouseClicked(e-> showProfile(profile));
-    String name = profile.getProfileName();
-    Text text = new Text(name);
+ //   String name = profile.getProfileName();
+   // Text text = new Text(name);
     ImageView imageView = new ImageView(profile.getProfilePhotoPath());
     vBox.getChildren().add(imageView);
-    vBox.getChildren().add(text);
+  //  vBox.getChildren().add(text);
     return vBox;
   }
   public StringProperty selectedProperty() {

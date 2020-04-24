@@ -20,21 +20,20 @@ public class ViewProfile extends OogaProfile {
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private static final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
+    private static final String DEFAULT_IMAGE_PATH = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
     private ImageView myProfilePhoto;
+
+
 
 
     public ViewProfile(String name, String imagePath){
         myName = name;
         myProfilePhotoPath = imagePath;
-        myDefaultImagePath = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
         setImageView();
         myHighestScores = new HashMap<>();
     }
     public ViewProfile(OogaProfile profile){
-        myProfilePhotoPath = profile.getProfilePhotoPath();
-        myDefaultImagePath = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
-        setImageView();
-        myName = profile.getProfileName();
+        this(profile.getProfileName(),profile.myProfilePhotoPath);
         myHighestScores = profile.getStats();
     }
 
@@ -48,8 +47,8 @@ public class ViewProfile extends OogaProfile {
             myProfilePhoto = new ImageView(myProfilePhotoPath);
         }
         catch (IllegalArgumentException | NullPointerException e){
-            myProfilePhoto = new ImageView(myDefaultImagePath);
-            myProfilePhotoPath = myDefaultImagePath;
+            myProfilePhoto = new ImageView(DEFAULT_IMAGE_PATH);
+            myProfilePhotoPath = DEFAULT_IMAGE_PATH;
         }
     }
 
@@ -64,7 +63,7 @@ public class ViewProfile extends OogaProfile {
 
     private VBox setNameAndPhoto(){
         VBox nameAndPhoto = new VBox();
-        nameAndPhoto.getChildren().add(myProfilePhoto);
+        nameAndPhoto.getChildren().add(new ImageView(myProfilePhotoPath));
         nameAndPhoto.getChildren().add(setNameText());
         nameAndPhoto.setOnDragEntered(this::handleDroppedPhoto);
         nameAndPhoto.setOnDragDropped(this::handleDroppedPhoto);
@@ -134,6 +133,7 @@ public class ViewProfile extends OogaProfile {
         gridPane.add(hBox,1,0);
         return gridPane;
     }
+
 
 
     private GridPane setStatsBox(){
