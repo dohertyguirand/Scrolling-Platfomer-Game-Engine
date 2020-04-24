@@ -1,7 +1,5 @@
 package ooga.game.collisiondetection;
 
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import ooga.Entity;
 import ooga.game.CollisionDetector;
 

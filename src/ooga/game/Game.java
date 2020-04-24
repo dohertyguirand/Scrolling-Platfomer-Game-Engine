@@ -2,10 +2,8 @@ package ooga.game;
 
 import javafx.beans.property.DoubleProperty;
 import ooga.Entity;
-import ooga.data.OogaEntity;
 
 import javafx.collections.ObservableList;
-import ooga.UserInputListener;
 
 import java.util.List;
 
@@ -22,13 +20,6 @@ public interface Game {
    * UI.
    */
   ObservableList<Entity> getEntities();
-
-  /**
-   * Runs anything that needs to be run by the game, levels, or any entities in a level when
-   * the game is first started.
-   */
-  @Deprecated
-  void doGameStart();
 
   /**
    * Updates things in the gaem according to how much time has passed

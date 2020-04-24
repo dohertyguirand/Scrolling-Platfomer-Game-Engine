@@ -1,7 +1,6 @@
 package ooga.game.behaviors.actions;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
@@ -34,7 +33,7 @@ public class VariableDeterminedAction extends Action {
   }
 
   @Override
-  public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
+  public List<Entity> findOtherEntities(Entity subject,
                                         Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
                                         GameInternal gameInternal) {
     VariableComparator myComparator = new VariableEquals(); //Effect.doVariableSubstitutions(myComparatorData, subject, variables);
@@ -51,7 +50,7 @@ public class VariableDeterminedAction extends Action {
 
   @Override
   public void doAction(double elapsedTime, Entity subject, Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    List<Entity> otherEntities = findOtherEntities(elapsedTime,subject,variables,collisionInfo,gameInternal);
+    List<Entity> otherEntities = findOtherEntities(subject,variables,collisionInfo,gameInternal);
     for (Entity e : otherEntities) {
       doEffects(elapsedTime,subject,e,variables,gameInternal);
     }

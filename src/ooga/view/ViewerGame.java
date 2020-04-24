@@ -41,7 +41,7 @@ public class ViewerGame {
   private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
-  private Group myEntityGroup = new Group();
+  private final Group myEntityGroup = new Group();
   private Group myRoot;
   private final String myGameName;
   private Scene myGameScene;
@@ -51,8 +51,8 @@ public class ViewerGame {
   private Timeline myAnimation;
   private final ObjectProperty<Effect> colorEffectProperty = new SimpleObjectProperty<>();
   private Scene pauseScene;
-  private String myProfileName;
-  private List<DoubleProperty> cameraShift = new ArrayList<>();
+  private final String myProfileName;
+  private final List<DoubleProperty> cameraShift = new ArrayList<>();
   private Exception currentError = null;
 
   public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {

@@ -17,17 +17,9 @@ public interface Entity {
 
   DoubleProperty nonStationaryProperty();
 
-  void setNonStationaryProperty(double bit);
-
-  double getX();
-
   DoubleProperty xProperty();
 
-  double getY();
-
   DoubleProperty yProperty();
-
-  boolean isActiveInView();
 
   BooleanProperty activeInViewProperty();
 
@@ -56,11 +48,10 @@ public interface Entity {
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
-   * @param variables
-   * @param game
+   *
    *
    */
-  void updateSelf(double elapsedTime, Map<String, String> variables, GameInternal game);
+  void updateSelf(double elapsedTime);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and

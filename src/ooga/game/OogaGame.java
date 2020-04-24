@@ -27,9 +27,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private final InputManager myInputManager = new OogaInputManager();
   private Map<String, String> myVariables;
   private ObservableList<Entity> myEntities;
-  private List<Entity> myNewCreatedEntities = new ArrayList<>();
+  private final List<Entity> myNewCreatedEntities = new ArrayList<>();
   Map<String, ImageEntityDefinition> myEntityDefinitions;
-  private List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
+  private final List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
 
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
@@ -82,11 +82,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public ObservableList<Entity> getEntities() {
     return myEntities;
-  }
-
-  @Override
-  public void doGameStart() {
-
   }
 
   /**
@@ -143,7 +138,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private void doEntityFrameUpdates(double elapsedTime) {
     for (Entity entity : currentLevel.getEntities()) {
       entity.blockInAllDirections(false);
-      entity.updateSelf(elapsedTime, myVariables, this);
+      entity.updateSelf(elapsedTime);
       entity.reactToVariables(myVariables);
     }
   }

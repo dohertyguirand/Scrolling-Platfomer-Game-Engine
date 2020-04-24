@@ -468,8 +468,8 @@ public class OogaDataReader implements DataReader{
     private Action makeAction(String actionType, List<String> args, List<Effect> effects) throws OogaDataException {
         String effectClassName = myActionsResources.getString(actionType + "Action");
         try {
-            Class cls = forName(PATH_TO_CLASSES + effectClassName);
-            Constructor cons = cls.getConstructor(List.class, List.class);
+            Class<?> cls = forName(PATH_TO_CLASSES + effectClassName);
+            Constructor<?> cons = cls.getConstructor(List.class, List.class);
             return (Action)cons.newInstance(args, effects);
         } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException e){
             throw new OogaDataException(actionType + " Action listed in game file is not recognized.\n Action name: " + actionType);
@@ -509,8 +509,8 @@ public class OogaDataReader implements DataReader{
             comparatorClassName = myComparatorsResources.getString(comparatorType.item(0).getTextContent());
         }
         try {
-            Class cls = forName(PATH_TO_CLASSES + comparatorClassName);
-            Constructor cons = cls.getConstructor();
+            Class<?> cls = forName(PATH_TO_CLASSES + comparatorClassName);
+            Constructor<?> cons = cls.getConstructor();
             return (VariableComparator)cons.newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |InstantiationException e ) {
             throw new OogaDataException("Unknown comparator type " + comparatorClassName + " in variable condition.");
@@ -530,8 +530,8 @@ public class OogaDataReader implements DataReader{
         String effectName = effect[0];
         try {
             String effectClassName = myEffectsResources.getString(effectName);
-            Class cls = forName(PATH_TO_CLASSES + effectClassName);
-            Constructor cons = cls.getConstructor(List.class);
+            Class<?> cls = forName(PATH_TO_CLASSES + effectClassName);
+            Constructor<?> cons = cls.getConstructor(List.class);
             return (Effect)cons.newInstance(Arrays.asList(effect).subList(1, effect.length));
         } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | MissingResourceException e) {
             throw new OogaDataException(effectName + " effect listed in game file is not recognized.");
@@ -577,7 +577,7 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public void addNewProfile(OogaProfile newProfile) throws OogaDataException {
+    public void addNewProfile(OogaProfile newProfile) {
         //TODO: make sure profile doesn't already exist
         String newProfileName = newProfile.getProfileName();
         try {

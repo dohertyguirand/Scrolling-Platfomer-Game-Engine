@@ -20,7 +20,7 @@ public class IdDeterminedAction extends Action {
   }
 
   @Override
-  public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
+  public List<Entity> findOtherEntities(Entity subject,
                                         Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
                                         GameInternal gameInternal) {
     Entity target = gameInternal.getEntityWithId(targetID);

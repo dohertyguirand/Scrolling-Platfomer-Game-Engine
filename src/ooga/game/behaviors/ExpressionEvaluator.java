@@ -45,7 +45,6 @@ public interface ExpressionEvaluator {
       double parseFactor() {
         if (eat('+')) return parseFactor(); // unary plus
         if (eat('-')) return -parseFactor(); // unary minus
-
         double x;
         int startPos = this.pos;
         if (eat('(')) { // parentheses
@@ -61,12 +60,16 @@ public interface ExpressionEvaluator {
           switch (func) {
             case "sqrt":
               x = Math.sqrt(x);
+              break;
             case "sin":
               x = Math.sin(Math.toRadians(x));
+              break;
             case "cos":
               x = Math.cos(Math.toRadians(x));
+              break;
             case "tan":
               x = Math.tan(Math.toRadians(x));
+              break;
             default:
               throw new RuntimeException("Unknown function: " + func);
           }

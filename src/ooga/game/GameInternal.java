@@ -2,7 +2,6 @@ package ooga.game;
 
 import java.util.List;
 
-import javafx.beans.property.DoubleProperty;
 import ooga.Entity;
 
 public interface GameInternal {

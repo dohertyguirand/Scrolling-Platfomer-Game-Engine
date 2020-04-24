@@ -58,19 +58,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public String getName() { return myName; }
 
   @Override
-  public double getX() { return xPos.get(); }
-
-  @Override
   public DoubleProperty xProperty() { return xPos; }
 
   @Override
-  public double getY() { return yPos.get(); }
-
-  @Override
   public DoubleProperty yProperty() { return yPos; }
-
-  @Override
-  public boolean isActiveInView() { return activeInView.get();}
 
   @Override
   public BooleanProperty activeInViewProperty() { return activeInView; }
@@ -101,13 +92,12 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime, Map<String, String> variables,
-                         GameInternal game) {
-    applyFrictionHorizontal(elapsedTime);
-    applyFrictionVertical(elapsedTime);
+  public void updateSelf(double elapsedTime) {
+    applyFrictionHorizontal();
+    applyFrictionVertical();
   }
 
-  private void applyFrictionHorizontal(double elapsedTime) {
+  private void applyFrictionHorizontal() {
     if (Math.abs(myVelocity.get(0)) < FRICTION_ACCELERATION) {
       setVelocity(0,getVelocity().get(1));
     }
@@ -116,7 +106,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     }
   }
 
-  private void applyFrictionVertical(double elapsedTime) {
+  private void applyFrictionVertical() {
 
     if (Math.abs(myVelocity.get(1)) < FRICTION_ACCELERATION) {
       setVelocity(getVelocity().get(0),0);
@@ -310,11 +300,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public void makeNonStationaryProperty(boolean stationary) {
     if (stationary) nonStationaryProperty.set(0);
     else nonStationaryProperty.set(1);
-  }
-
-  @Override
-  public void setNonStationaryProperty(double value){
-    this.nonStationaryProperty.setValue(value);
   }
 
   @Override
