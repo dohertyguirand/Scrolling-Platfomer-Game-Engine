@@ -7,8 +7,8 @@ import java.util.List;
  */
 public class CollisionEndCondition implements LevelEndCondition{
 
-  private String firstEntityName;
-  private String secondEntityName;
+  private final String firstEntityName;
+  private final String secondEntityName;
   private boolean satisfied;
 
   public CollisionEndCondition(List<String> args) {

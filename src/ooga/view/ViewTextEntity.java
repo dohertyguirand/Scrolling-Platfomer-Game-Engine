@@ -7,32 +7,32 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
-import ooga.data.OogaEntity;
+import ooga.Entity;
 import ooga.data.TextEntity;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewTextEntity implements ViewEntity {
 
-  private Text text = new Text();
-  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+  private final Text text = new Text();
+  private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final double Y_OFFSET = Double.parseDouble(myResources.getString("pauseButtonSize"));
   private static final double SIGNIFICANT_DIFFERENCE = 5.0;
   private static final double DEFAULT_FONT_SIZE = 12.0;
   private static final double FONT_SIZE_INCREMENT = 0.2;
 
-  public ViewTextEntity(TextEntity entity) {
+  public ViewTextEntity(TextEntity entity, List<DoubleProperty> cameraShift) {
     bindTextProperty(entity.textProperty());
     bindWidthProperty(entity.widthProperty());
     bindFontProperties(entity);
-    bindGenericProperties(entity);
+    bindGenericProperties(entity, cameraShift);
   }
 
-  public void bindGenericProperties(OogaEntity entity) {
+  public void bindGenericProperties(Entity entity, List<DoubleProperty> cameraShift) {
     text.setTextOrigin(VPos.TOP);
-    text.xProperty().bind(entity.xProperty());
-    text.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET)));
+    text.xProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
+    text.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET)).add(entity.stationaryProperty().multiply(cameraShift.get(1))));
     // add more properties here if needed
   }
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 public class OogaInputManager implements InputManager {
 
-  private List<String> myActiveKeys;
-  private List<String> myPressedKeys;
+  private final List<String> myActiveKeys;
+  private final List<String> myPressedKeys;
 
   public OogaInputManager() {
     myActiveKeys = new ArrayList<>();

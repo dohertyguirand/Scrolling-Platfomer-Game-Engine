@@ -18,23 +18,24 @@ import java.util.ResourceBundle;
 
 
 public class PauseMenu extends BorderPane {
-  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+  private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+  @SuppressWarnings("FieldCanBeLocal")
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
 
   private static final String STYLESHEET = "ooga/view/Resources/PauseMenu.css";
-  private  String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
-  private  String TITLE_STYLE = myResources.getString("titlecss");
-  private  String ICON_STYLE = myResources.getString("iconcss");
+  private final String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
+  private final String TITLE_STYLE = myResources.getString("titlecss");
+  private final String ICON_STYLE = myResources.getString("iconcss");
   private static final String PAUSE_MENU_TITLE_KEY = "pauseMenuTitle";
   private static final double SPACING = 30;
   private static final double ICON_SIZE = 50;
   private static final double TITLE_FONT_SIZE = 70;
 
-  private BooleanProperty resumed = new SimpleBooleanProperty(true);
-  private BooleanProperty quit = new SimpleBooleanProperty(false);
-  private BooleanProperty save = new SimpleBooleanProperty(false);
-  Map<BooleanProperty, String> buttonPropertiesAndNames = new HashMap<>(){{
+  private final BooleanProperty resumed = new SimpleBooleanProperty(true);
+  private final BooleanProperty quit = new SimpleBooleanProperty(false);
+  private final BooleanProperty save = new SimpleBooleanProperty(false);
+  final Map<BooleanProperty, String> buttonPropertiesAndNames = new HashMap<>(){{
     put(resumed, "Play");
     put(quit, "Quit");
     put(save, "Save");

@@ -10,9 +10,10 @@ import ooga.game.behaviors.Effect;
 /**
  * NameDeterminedAction: executes the effect on all entities with the specified name "howToFind"
  */
+@SuppressWarnings("unused")
 public class NameDeterminedAction extends Action {
 
-  String myTargetName;
+  final String myTargetName;
 
   public NameDeterminedAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
     super(effects);
@@ -21,8 +22,8 @@ public class NameDeterminedAction extends Action {
 
   @Override
   public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
-      Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
-      GameInternal gameInternal) {
+                                        Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
+                                        GameInternal gameInternal) {
     return gameInternal.getEntitiesWithName(myTargetName);
   }
 }

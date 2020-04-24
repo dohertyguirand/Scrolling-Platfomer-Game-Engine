@@ -9,6 +9,9 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.BehaviorInstance;
 import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.Effect;
+import ooga.game.behaviors.OogaVariableCondition;
+import ooga.game.behaviors.VariableCondition;
+import ooga.game.behaviors.comparators.VariableComparator;
 import ooga.view.OogaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -43,13 +46,15 @@ public class OogaDataReader implements DataReader{
 
     //TODO: put all magic strings (especially xml related stuff) in resource file
     private static final Object PATH_TO_CLASSES = "ooga.game.behaviors.";
-    private String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
+    private final String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static final String DEFAULT_LIBRARY_FILE = "data/games-library";
     private static final String DEFAULT_USERS_FILE = "data/users";
     private static final String EFFECTS_PROPERTIES_LOCATION = "ooga/data/resources/effects";
     private static final String ACTIONS_PROPERTIES_LOCATION = "ooga/data/resources/actions";
+    private static final String COMPARATORS_PROPERTIES_LOCATION = "ooga/data/resources/comparators";
     private final ResourceBundle myEffectsResources = ResourceBundle.getBundle(EFFECTS_PROPERTIES_LOCATION);
     private final ResourceBundle myActionsResources = ResourceBundle.getBundle(ACTIONS_PROPERTIES_LOCATION);
+    private final ResourceBundle myComparatorsResources = ResourceBundle.getBundle(COMPARATORS_PROPERTIES_LOCATION);
 
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
@@ -206,9 +211,10 @@ public class OogaDataReader implements DataReader{
                     for(int row=0; row<rowsColsAndGaps[0]; row++){
                         xPos = parameterValues.get(0);
                         for(int col=0;col<rowsColsAndGaps[1];col++){
-                            OogaEntity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
+                            Entity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
                             entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                             entity.setVariables(getEntityVariables(entityElement));
+                            entity.makeStationaryProperty(isStationary(entityElement));
                             initialEntities.add(entity);
                             xPos += entityMap.get(entityName).getMyWidth()+rowsColsAndGaps[2];
                         }
@@ -226,16 +232,17 @@ public class OogaDataReader implements DataReader{
                     String[] parameterNames = new String[] {"XPos", "YPos", "Width", "Height"};
                     List<Double> parameterValues = constructEntity(entityElement, text, parameterNames);
                     int index = 0;
-                    OogaEntity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
+                    Entity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
                             parameterValues.get(index++),  parameterValues.get(index));
                     entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                     entity.setVariables(getEntityVariables(entityElement));
+                    entity.makeStationaryProperty(isStationary(entityElement));
                     initialEntities.add(entity);
                 }
                 break;
             }
         }
-        OogaLevel oogaLevel = new OogaLevel(initialEntities);
+        OogaLevel oogaLevel = new OogaLevel(initialEntities, givenLevelID);
         oogaLevel.setNextLevelID(nextLevelID);
         return oogaLevel;
     }
@@ -394,24 +401,46 @@ public class OogaDataReader implements DataReader{
         double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
         double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
         String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
+        boolean stationary = isStationary(entityElement);
 
         List<ConditionalBehavior> behaviors = new ArrayList<>();
         NodeList nodeList = entityElement.getElementsByTagName("Behavior");
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
-            Map<String, Double> variableConditions = new HashMap<>();
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
             addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName("RequiredCollisionCondition"), name);
             addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName("BannedCollisionCondition"), name);
             addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
-            addVariableConditions(variableConditions, behaviorElement.getElementsByTagName("VariableCondition"));
-            behaviors.add(new BehaviorInstance(variableConditions, inputConditions, requiredCollisionConditions,
-                    bannedCollisionConditions, getActions(behaviorElement)));
+            List<VariableCondition> gameVariableConditions = getGameVariableConditions(behaviorElement.getElementsByTagName("GameVariableCondition"));
+            Map<String,List<VariableCondition>> entityVarConditions = getEntityVariableConditions(behaviorElement.getElementsByTagName("EntityVariableCondition"));
+            behaviors.add(new BehaviorInstance(gameVariableConditions,entityVarConditions,inputConditions,requiredCollisionConditions,bannedCollisionConditions,getActions(behaviorElement)));
         }
 
-        return new ImageEntityDefinition(name, height, width, imagePath, behaviors);
+        ImageEntityDefinition imageEntityDefinition = new ImageEntityDefinition(name, height, width, imagePath, behaviors);
+        imageEntityDefinition.setStationary(stationary);
+        return imageEntityDefinition;
+    }
+
+    private boolean isStationary(Element entityElement) {
+        if(entityElement.getElementsByTagName("Stationary").getLength() > 0){
+            return Boolean.parseBoolean(entityElement.getElementsByTagName("Stationary").item(0).getTextContent());
+        }
+        return false;
+    }
+
+    private List<VariableCondition> getGameVariableConditions(NodeList conditions)
+        throws OogaDataException {
+        List<VariableCondition> variableConditions = new ArrayList<>();
+        for (int i = 0; i < conditions.getLength(); i ++) {
+            Element variableConditionElement = (Element) conditions.item(i);
+            String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
+            String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
+            VariableComparator comparator = getComparator(variableConditionElement);
+            variableConditions.add(new OogaVariableCondition(name,comparator,requiredValue));
+        }
+        return variableConditions;
     }
 
     private void addCollisionConditions(Map<List<String>, String> collisionConditionsMap, NodeList collisionConditionNodes,
@@ -464,33 +493,62 @@ public class OogaDataReader implements DataReader{
         }
     }
 
-    private void addVariableConditions(Map<String, Double> conditionMap, NodeList variableConditionNodes) throws OogaDataException {
+    private Map<String,List<VariableCondition>> getEntityVariableConditions(NodeList variableConditionNodes) throws OogaDataException{
+        Map<String,List<VariableCondition>> entityVariableConditions = new HashMap<>();
         for(int j=0; j<variableConditionNodes.getLength(); j++){
             Element variableConditionElement = (Element) variableConditionNodes.item(j);
-            checkKeyExists(variableConditionElement, "VariableName", "Missing variable name in variable condition");
-            checkKeyExists(variableConditionElement, "RequiredValue", "Missing required value in variable condition");
-            String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
-            String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
-            conditionMap.put(name, Double.parseDouble(requiredValue));
+            //checkKeyExists(variableConditionElement, "EntityNameOrID", "Missing entity name/id in entity variable condition");
+            String entityInfo;
+            if(variableConditionElement.getElementsByTagName("EntityNameOrID").getLength() == 0) entityInfo = BehaviorInstance.SELF_IDENTIFIER;
+            else entityInfo = variableConditionElement.getElementsByTagName("EntityNameOrID").item(0).getTextContent();
+            entityVariableConditions.putIfAbsent(entityInfo, new ArrayList<>());
+            entityVariableConditions.get(entityInfo).add(getEntityVariableCondition(variableConditionElement));
+        }
+        return entityVariableConditions;
+    }
+
+    private VariableCondition getEntityVariableCondition(Element variableConditionElement) throws OogaDataException {
+        checkKeyExists(variableConditionElement, "VariableName", "Missing variable name in variable condition");
+        checkKeyExists(variableConditionElement, "RequiredValue", "Missing required value in variable condition");
+        String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
+        String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
+        VariableComparator comparator = getComparator(variableConditionElement);
+        return new OogaVariableCondition(name,comparator,requiredValue);
+    }
+
+    private VariableComparator getComparator(Element variableConditionElement)
+        throws OogaDataException {
+        String comparatorClassName = myComparatorsResources.getString("Equals");
+        NodeList comparatorType = variableConditionElement.getElementsByTagName("Comparison");
+        if (comparatorType.getLength() != 0) {
+            comparatorClassName = myComparatorsResources.getString(comparatorType.item(0).getTextContent());
+        }
+        try {
+            Class cls = forName(PATH_TO_CLASSES + comparatorClassName);
+            Constructor cons = cls.getConstructor();
+            return (VariableComparator)cons.newInstance();
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |InstantiationException e ) {
+            throw new OogaDataException("Unknown comparator type " + comparatorClassName + " in variable condition.");
         }
     }
 
-    private void addOneParameterConditions(Map<String, Boolean> conditionMap, NodeList verticalCollisionConditionNodes, String keyName, String valueName) {
-        for(int j=0; j<verticalCollisionConditionNodes.getLength(); j++){
-            String name = ((Element)verticalCollisionConditionNodes.item(j)).getElementsByTagName(keyName).item(0).getTextContent();
-            String requirementBoolean = ((Element)verticalCollisionConditionNodes.item(j)).getElementsByTagName(valueName).item(0).getTextContent();
+    @SuppressWarnings("SameParameterValue")
+    private void addOneParameterConditions(Map<String, Boolean> conditionMap, NodeList conditionNodes, String keyName, String valueName) {
+        for(int j=0; j<conditionNodes.getLength(); j++){
+            String name = ((Element)conditionNodes.item(j)).getElementsByTagName(keyName).item(0).getTextContent();
+            String requirementBoolean = ((Element)conditionNodes.item(j)).getElementsByTagName(valueName).item(0).getTextContent();
             conditionMap.put(name, Boolean.parseBoolean(requirementBoolean));
         }
     }
 
     private Effect makeBasicEffect(String[] effect) throws OogaDataException {
         String effectName = effect[0];
-        String effectClassName = myEffectsResources.getString(effectName);
         try {
+            String effectClassName = myEffectsResources.getString(effectName);
             Class cls = forName(PATH_TO_CLASSES + effectClassName);
             Constructor cons = cls.getConstructor(List.class);
             return (Effect)cons.newInstance(Arrays.asList(effect).subList(1, effect.length));
-        } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException e){
+        } catch(ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | MissingResourceException e) {
             throw new OogaDataException(effectName + " effect listed in game file is not recognized.");
         } catch(InvocationTargetException e){ // this should be OogaDataException but it won't work because reflection is used
             throw new OogaDataException(effectName + " effect argument list not formatted correctly");
@@ -600,17 +658,17 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public void saveGameState(String filePath) throws OogaDataException {
+    public void saveGameState(String filePath) {
 
     }
 
     @Override
-    public Game loadGameState(String filePath) throws OogaDataException {
+    public Game loadGameState(String filePath) {
         return null;
     }
 
     @Override
-    public String getEntityImage(String entityName, String gameFile) throws OogaDataException {
+    public String getEntityImage(String entityName, String gameFile) {
 
         return null;
     }

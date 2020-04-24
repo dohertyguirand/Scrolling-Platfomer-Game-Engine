@@ -3,7 +3,9 @@ package ooga.view;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
@@ -12,6 +14,8 @@ import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -22,6 +26,7 @@ import ooga.UserInputListener;
 import ooga.data.*;
 import ooga.game.OogaGame;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -29,49 +34,72 @@ import java.util.ResourceBundle;
 public class ViewerGame {
 
   private static final double MILLISECOND_DELAY = 33.33;
-  private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+  public static final int NORMAL_BUTTON_XPOS = 300;
+  public static final int ALIEN_BUTTON_XPOS = 100;
+  private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
+  private final String ALIEN_BUTTON_LOCATION = myResources.getString("alienButtonLocation");
+  private final String NORMAL_BUTTON_LOCATION = myResources.getString("normalButtonLocation");
   private final double PAUSE_BUTTON_SIZE = Double.parseDouble(myResources.getString("pauseButtonSize"));
   private final double PAUSE_BUTTON_IMAGE_SIZE = PAUSE_BUTTON_SIZE - 10;
   private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
   private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
-  private List<ViewTextEntity> myTexts = new ArrayList<>();
   private Group myEntityGroup;
   private Group myRoot;
-  private String myGameName;
+  private final String myGameName;
   private Scene myGameScene;
   private Stage myGameStage;
   private PauseMenu myPauseMenu;
   private OogaGame myGame;
   private Timeline myAnimation;
-  private String myProfileName;
-  private ParallelCamera myCamera;
+  private final ParallelCamera myCamera;
   private ViewImageEntity focus;
   private boolean cameraOn = false;
+  private final ObjectProperty<Effect> colorEffectProperty = new SimpleObjectProperty<>();
+  private Scene pauseScene;
+  private String myProfileName;
 
 
-
-  public ViewerGame(String gameName, String profileName) throws OogaDataException {
+  public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
     myGameName = gameName;
+    myProfileName = profileName;
     myCamera = new ParallelCamera();
     //TODO: Update to match the new constructors by adding the date of the save to load
-    myGame =  new OogaGame(gameName, new OogaDataReader(),profileName,"");
-
-
+    setGame(saveDate);
     //SAM added this as the way to make a Game once file loading works.
     setUpGameEntities();
     setUpGameStage();
-    myRoot.getChildren().add(setUpPauseButton());
+    myRoot.getChildren().addAll(setUpPauseButton(), setUpDarkModeButton(), setUpNormalModeButton());
     myGameScene.setCamera(myCamera);
+    colorEffectProperty.set(new ColorAdjust());
     setUpInputListeners(myGame);
-    myProfileName = profileName;
+  //  setCameraListeners();
   }
-  public ViewerGame(String gameName, String profileName, boolean camera) throws OogaDataException {
-    this(gameName,profileName);
+
+
+  public ViewerGame(String gameName, String profileName,String saveDate, boolean camera) throws OogaDataException {
+    this(gameName,profileName,saveDate);
     cameraOn = camera;
     if(focus!= null){
       myCamera.layoutXProperty().bind(focus.getXProperty());
     }
+  }
+
+  private void setCameraListeners(){
+    List<DoubleProperty> cameraShift = new ArrayList<>();
+    cameraShift.add(new SimpleDoubleProperty());
+    cameraShift.add(new SimpleDoubleProperty());
+    myGame.setCameraShiftProperties(cameraShift);
+    myCamera.layoutXProperty().bind(cameraShift.get(0));
+    myCamera.layoutYProperty().bind(cameraShift.get(1));
+    myGameScene.setCamera(myCamera);
+  }
+
+  private void setGame(String saveDate) throws OogaDataException {
+    if(saveDate.equals("")){
+      myGame = new OogaGame(myGameName, new OogaDataReader(),myProfileName);
+    }
+    else myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
   }
 
   private void setUpGameEntities(){
@@ -83,7 +111,6 @@ public class ViewerGame {
       while (c.next()) {
         if(c.wasAdded() || c.wasRemoved()){
           for (Entity removedItem : c.getRemoved()) {
-            System.out.println(removedItem.isActiveInView());
             removedItem.setActiveInView(false);
           }
           for (Entity addedItem : c.getAddedSubList()) {
@@ -99,6 +126,7 @@ public class ViewerGame {
       addToEntityGroup(entity);
     }
   }
+
 
   private void addToEntityGroup(Entity entity) {
     Node viewEntity = makeViewEntity(entity);
@@ -120,17 +148,11 @@ public class ViewerGame {
   private Node makeViewEntity(Entity entity){
     // TODO: use reflection here or something
     if(entity instanceof ImageEntity){
-      System.out.println(cameraOn);
-      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity));
-      if(entity.getName().equals("SmallMario")){
-        focus = viewImageEntity;
-        //myCamera.layoutYProperty().bind(focus.getYProperty().add(new SimpleDoubleProperty(-450.0)));
-      }
+      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty));
       return viewImageEntity.getNode();
     }
     else if(entity instanceof TextEntity){
       ViewTextEntity viewTextEntity = new ViewTextEntity((TextEntity)entity);
-      viewTextEntity.getXProperty().bind(myCamera.layoutXProperty().add(new SimpleDoubleProperty(viewTextEntity.getX())));
       return viewTextEntity.getNode();
     }
     return null;
@@ -140,27 +162,57 @@ public class ViewerGame {
 
   private Node setUpPauseButton() {
     myPauseMenu = new PauseMenu();
-    Scene pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
-    Button pauseButton = new Button();
-    pauseButton.setGraphic(getPauseButtonImage());
-    pauseButton.setOnAction(e -> {
-      myGameStage.setScene(pauseScene);
-      myPauseMenu.setResumed(false);
-      myAnimation.stop();
-    });
-    pauseButton.setLayoutX(0);
-    pauseButton.setLayoutY(0);
-    // note: need the below because buttons consume certain key press events (like arrow keys)
-    pauseButton.setOnKeyPressed(e -> {
-      pauseButton.getParent().fireEvent(e);
-    });
-    return pauseButton;
+    pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
+    return makeButton(getImage(PAUSE_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), null, 0, "pause");
   }
 
-  private ImageView getPauseButtonImage(){
-    ImageView imageView = new ImageView(PAUSE_BUTTON_LOCATION);
-    imageView.setFitHeight(PAUSE_BUTTON_IMAGE_SIZE);
-    imageView.setFitWidth(PAUSE_BUTTON_IMAGE_SIZE);
+  @SuppressWarnings("unused")
+  private void pause() {
+    myGameStage.setScene(pauseScene);
+    myPauseMenu.setResumed(false);
+    myAnimation.stop();
+  }
+
+  private Node setUpDarkModeButton() {
+    return makeButton(getImage(ALIEN_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), "Alien Mode", ALIEN_BUTTON_XPOS, "setDarkMode");
+  }
+
+  private Node setUpNormalModeButton(){
+    return makeButton(getImage(NORMAL_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), "Normal Mode", NORMAL_BUTTON_XPOS, "setNormalMode");
+  }
+
+  @SuppressWarnings("unused")
+  private void setNormalMode(){
+    colorEffectProperty.set(new ColorAdjust());
+    myGameScene.getRoot().setStyle("-fx-base: rgba(255, 255, 255, 255)");
+  }
+
+  @SuppressWarnings("unused")
+  private void setDarkMode(){
+    colorEffectProperty.set(new ColorAdjust(0.5, 0.2, 0.0 ,0.0));
+    myGameScene.getRoot().setStyle("-fx-base: rgba(60, 63, 65, 255)");
+  }
+
+  private Node makeButton(Node graphic, String text, double xPos, String methodName) {
+    Button button = new Button(text);
+    button.setGraphic(graphic);
+    button.setOnAction(e -> {
+      try {
+        this.getClass().getDeclaredMethod(methodName).invoke(this);
+      } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
+      }
+    });
+    button.setLayoutX(xPos);
+    button.setLayoutY(0);
+    // note: need the below because buttons consume certain key press events (like arrow keys)
+    button.setOnKeyPressed(e -> button.getParent().fireEvent(e));
+    return button;
+  }
+
+  private ImageView getImage(String location, double size){
+    ImageView imageView = new ImageView(location);
+    imageView.setFitHeight(size);
+    imageView.setFitWidth(size);
     return imageView;
   }
 
@@ -171,9 +223,9 @@ public class ViewerGame {
         step();
       } catch (Exception ex) {
         // note that this should ideally never be thrown
-        // TODO: remove print stack trace
+        // TODO: remove print stack trace, figure out how to make error window pop up
         ex.printStackTrace();
-        System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is" +
+        System.out.println("Animation Error, something went horribly wrong. Cannot display error window because it is " +
                 "not allowed during animation processing");
       }
     });
@@ -191,24 +243,13 @@ public class ViewerGame {
     myGameStage.show();
   }
 
-//  private Node setUpTopBar(){
-//    HBox hBox = new HBox();
-//    hBox.getChildren().add(setUpPauseButton());
-//    for(ViewTextEntity textEntity: myTexts){
-//      hBox.getChildren().add(textEntity.getNode());
-//    }
-//    hBox.layoutXProperty().bind(myCamera.layoutXProperty());
-//
-//    return hBox;
-//  }
-
   private void step() {
     myGame.doGameStep(myAnimation.getCurrentTime().toMillis());
     myRoot.requestLayout();
   }
 
+  @SuppressWarnings("unused")
   private void showError(String message) {
-    System.out.println(message);
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setContentText(message);
     alert.showAndWait();

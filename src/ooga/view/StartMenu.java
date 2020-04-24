@@ -5,7 +5,6 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -18,8 +17,9 @@ import java.util.List;
 
 public class StartMenu extends ScrollMenu{
 
-  private StringProperty optionSelected = new SimpleStringProperty();
+  private final StringProperty optionSelected = new SimpleStringProperty();
 
+  @Deprecated
   public StartMenu() {
     super();
     try {
@@ -30,7 +30,7 @@ public class StartMenu extends ScrollMenu{
     }
   }
 
-  public StartMenu(ViewProfile profile){
+  public StartMenu(ViewProfile profile, Node backButton){
     super();
     try {
       List<Thumbnail> thumbnails = myDataReader.getThumbnails();
@@ -39,6 +39,7 @@ public class StartMenu extends ScrollMenu{
       //TODO: actually show an error message
     }
     myPane.getChildren().add(setProfileData(profile));
+    myPane.getChildren().add(backButton);
   }
 
   private void addImages(List<Thumbnail> thumbnails){
@@ -54,11 +55,11 @@ public class StartMenu extends ScrollMenu{
 
   private Node setProfileData(ViewProfile profile){
     VBox vBox = new VBox();
-    vBox.setOnMouseClicked(e->{
-      showProfile(profile);
-    });
-    Text text = new Text(profile.getProfileName());
-    vBox.getChildren().add(profile.getProfilePhoto());
+    vBox.setOnMouseClicked(e-> showProfile(profile));
+    String name = profile.getProfileName();
+    Text text = new Text(name);
+    ImageView imageView = new ImageView(profile.getProfilePhotoPath());
+    vBox.getChildren().add(imageView);
     vBox.getChildren().add(text);
     return vBox;
   }

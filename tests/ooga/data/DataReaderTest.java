@@ -1,3 +1,4 @@
+
 package ooga.data;
 
 import ooga.Entity;
@@ -24,13 +25,8 @@ public class DataReaderTest {
     private ArrayList<String> ID_LIST  = new ArrayList<>(List.of("1"));
 
     @Test
-    public void testGetThumbnails(){
-        List<Thumbnail> thumbnailList = null;
-        try {
-            thumbnailList = testDataReader.getThumbnails();
-        } catch (OogaDataException e) {
-            e.printStackTrace();
-        }
+    public void testGetThumbnails() throws OogaDataException {
+        List<Thumbnail> thumbnailList = testDataReader.getThumbnails();
         for (Thumbnail t : thumbnailList) {
             System.out.println(String.format("Title: %s \nDescription: %s \nImage: %s\n", t.getTitle(), t.getDescription(), t.getImageFile()));
         }
@@ -120,3 +116,4 @@ public class DataReaderTest {
     }
 
 }
+

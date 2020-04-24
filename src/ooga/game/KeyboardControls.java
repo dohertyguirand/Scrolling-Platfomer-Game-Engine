@@ -6,7 +6,7 @@ public class KeyboardControls implements ControlsInterpreter {
 
   public static final String UNKNOWN_INPUT = "UNKNOWN";
 
-  private ResourceBundle myResources;
+  private final ResourceBundle myResources;
 
   public KeyboardControls() {
     myResources = ResourceBundle.getBundle("ooga/game/resources/inputs/keyboard");

@@ -9,15 +9,23 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class SetImageEffect extends TimeDelayedEffect {
 
-  String newImageFileName = "";
+  String newImageFileName;
 
   public SetImageEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
+  }
+
+  /**
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
+   */
+  @Override
+  public void processArgs(List<String> args) {
     newImageFileName = args.get(0);
-    if(args.size() > 1){
-      setTimeDelay(args.get(1));
-    }
   }
 
   /**
@@ -29,17 +37,15 @@ public class SetImageEffect extends TimeDelayedEffect {
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  public void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+    setImage(subject, newImageFileName, variables, this);
+  }
+
+  public static void setImage(Entity subject, String newImageFileName, Map<String, String> variables, Effect effectSource) {
     //TODO: find a better way than using instanceof
     if(subject instanceof ImageEntity){
       ImageEntity imageEntity = (ImageEntity)subject;
-      String newImageFilePath = "file:data/games-library/";
-      if(subject.getVariable(newImageFileName) != null){
-        newImageFilePath += subject.getVariable(newImageFileName);
-      } else{
-        newImageFilePath += newImageFileName;
-      }
-      imageEntity.setImageLocation(newImageFilePath);
+      imageEntity.setImageLocation("file:data/games-library/" + Effect.doVariableSubstitutions(newImageFileName, subject, variables));
     }
   }
 }

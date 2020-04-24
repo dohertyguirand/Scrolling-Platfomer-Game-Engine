@@ -11,6 +11,7 @@ import ooga.game.behaviors.Effect;
 /**
  * IndependentAction: no other entity is necessary for the effect
  */
+@SuppressWarnings("unused")
 public class IndependentAction extends Action {
 
   public IndependentAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
@@ -19,8 +20,8 @@ public class IndependentAction extends Action {
 
   @Override
   public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
-      Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
-      GameInternal gameInternal) {
+                                        Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
+                                        GameInternal gameInternal) {
     List<Entity> ret = new ArrayList<>();
     ret.add(null);
     return ret;

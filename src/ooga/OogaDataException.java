@@ -6,7 +6,7 @@ package ooga;
  * information to the user when something fails.
  */
 public class OogaDataException extends Exception {
-  private String myMessage;
+  private final String myMessage;
   public OogaDataException(String message) {
     myMessage = message;
   }
