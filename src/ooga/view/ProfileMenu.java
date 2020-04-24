@@ -3,14 +3,15 @@ package ooga.view;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import ooga.OogaDataException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileMenu extends ScrollMenu {
-    private ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
-    private List<ViewProfile> myProfiles = new ArrayList<ViewProfile>();
+    private final ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
+    private List<ViewProfile> myProfiles = new ArrayList<>();
     private String addNewProfilePhoto = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
 
 
@@ -23,7 +24,7 @@ public class ProfileMenu extends ScrollMenu {
 
 
     private void makeViewProfiles() {
-        List<OogaProfile> oogaProfiles = new ArrayList<>();
+        List<OogaProfile> oogaProfiles;
         try {
           oogaProfiles = myDataReader.getProfiles();
         }catch (OogaDataException e){
@@ -37,7 +38,7 @@ public class ProfileMenu extends ScrollMenu {
      private void addProfileImages() {
             if (myProfiles != null) {
                 for (ViewProfile profile : myProfiles) {
-                    Button button = makeButton(profile.getProfilePhoto(), profile.getProfileName());
+                    Button button = makeButton(new ImageView(profile.getProfilePhotoPath()), profile.getProfileName());
                     button.setOnAction(e -> setProfileSelected(profile));
                     myHBox.getChildren().add(button);
                 }

@@ -7,11 +7,6 @@ import ooga.game.CollisionDetector;
 
 public class OogaCollisionDetector implements CollisionDetector {
 
-  @Override
-  public boolean isColliding(Entity a, Entity b, double elapsedTime) {
-    return (makeShapeFromEntity(a).getBoundsInParent().intersects(makeShapeFromEntity(b).getBoundsInParent()));
-  }
-
   /**
    * Figure out if the entities are colliding and return the direction that a is colliding with b (e.g. a,b -> right)
    *
@@ -26,8 +21,6 @@ public class OogaCollisionDetector implements CollisionDetector {
   }
 
   private Shape makeShapeFromEntity(Entity e) {
-    Shape s = new Rectangle(e.getPosition().get(0), e.getPosition().get(1),
-            e.getWidth(), e.getHeight());
     return new Rectangle(e.getPosition().get(0), e.getPosition().get(1),
             e.getWidth(), e.getHeight());
   }

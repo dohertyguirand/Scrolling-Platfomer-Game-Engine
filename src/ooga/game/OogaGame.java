@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ooga.Entity;
@@ -15,17 +18,19 @@ import ooga.game.collisiondetection.DirectionalCollisionDetector;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
-  public static final String ID_VARIABLE_NAME = "ID";
   private List<String> myLevelIds;
   private Level currentLevel;
-  private String myName;
+  private final String myName;
   private DataReader myDataReader;
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
-  private InputManager myInputManager = new OogaInputManager();
-  private Map<String, Double> myVariables;
+  private final InputManager myInputManager = new OogaInputManager();
+  private Map<String, String> myVariables;
   private ObservableList<Entity> myEntities;
+  private List<Entity> myNewCreatedEntities = new ArrayList<>();
   Map<String, ImageEntityDefinition> myEntityDefinitions;
+  private List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
+
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
@@ -45,7 +50,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 //    }
 
     for (String key : myDataReader.getVariableMap(gameName).keySet()){
-      myVariables.put(key, Double.parseDouble(myDataReader.getVariableMap(gameName).get(key)));
+      myVariables.put(key, myDataReader.getVariableMap(gameName).get(key));
     }
   }
 
@@ -66,6 +71,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     return level;
   }
 
+  @Deprecated
   public OogaGame(Level startingLevel, CollisionDetector collisions) {
     myName = "Unnamed";
     myCollisionDetector = collisions;
@@ -76,11 +82,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public ObservableList<Entity> getEntities() {
     return myEntities;
-  }
-
-  @Override
-  public ObservableList<OogaEntity> getAbstractEntities() {
-    return null;
   }
 
   @Override
@@ -179,11 +180,11 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void doEntityCreation() {
-    List<Entity> createdEntities = new ArrayList<>();
-    for (Entity e : currentLevel.getEntities()) {
-        createdEntities.addAll(e.popCreatedEntities());
+    for (Entity created : myNewCreatedEntities) {
+      myEntities.add(created);
+      currentLevel.addEntity(created);
     }
-    currentLevel.addEntities(createdEntities);
+    myNewCreatedEntities.clear();
   }
 
   private void doEntityCleanup() {
@@ -196,21 +197,14 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     for (Entity destroyed : destroyedEntities) {
       if (destroyed.isDestroyed()) {
         currentLevel.removeEntity(destroyed);
-        for (Entity e : myEntities) {
-          System.out.println(e.getName());
-        }
-        System.out.println("destroyed.getName() = " + destroyed.getName());
         myEntities.remove(destroyed);
-        for (Entity e : myEntities) {
-          System.out.println(e.getName());
-        }
       }
     }
   }
 
   @Override
-  public UserInputListener makeUserInputListener() {
-    return this;
+  public String getCurrentLevelId() {
+    return currentLevel.getLevelId();
   }
 
   /**
@@ -231,14 +225,12 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void reactToKeyPress(String keyName) {
     String inputType = myControlsInterpreter.translateInput(keyName);
-    System.out.println(keyName + " pressed.");
     myInputManager.keyPressed(inputType);
   }
 
   @Override
   public void reactToKeyRelease(String keyName) {
     String inputType = myControlsInterpreter.translateInput(keyName);
-    System.out.println(keyName + " released.");
     myInputManager.keyReleased(inputType);
   }
 
@@ -280,15 +272,14 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public void createEntity(String type, List<Double> position) {
     ImageEntityDefinition definition = myEntityDefinitions.get(type);
     Entity created = definition.makeInstanceAt(position.get(0),position.get(1));
-    myEntities.add(created);
-    currentLevel.addEntity(created);
+    myNewCreatedEntities.add(created);
   }
 
   @Override
   public Entity getEntityWithId(String id) {
     for (Entity e : myEntities) {
-      String entityId = e.getVariable(ID_VARIABLE_NAME);
-      if (entityId.equals(id)) {
+      String entityId = e.getEntityID();
+      if (entityId != null && entityId.equals(id)) {
         return e;
       }
     }
@@ -304,5 +295,51 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
       }
     }
     return ret;
+  }
+
+  @Override
+  public void goToLevel(String levelID) {
+    try {
+      currentLevel = loadGameLevel(myName,levelID);
+      setCameraShiftValue(0,0);
+    }
+    catch (OogaDataException e) {
+      //To preserve the pristine gameplay experience, we do nothing (rather than crash).
+    }
+  }
+
+  @Override
+  public void goToNextLevel() {
+    goToLevel(currentLevel.nextLevelID());
+    setCameraShiftValue(0,0);
+  }
+
+  @Override
+  public void restartLevel() {
+    goToLevel(currentLevel.getLevelId());
+    setCameraShiftValue(0,0);
+  }
+
+  @Override
+  public void setCameraShiftProperties(List<DoubleProperty> properties){
+    for(int i = 0; i < cameraShiftProperties.size(); i ++){
+      cameraShiftProperties.get(i).bindBidirectional(properties.get(i));
+    }
+  }
+
+  public void setCameraShiftValue(double xValue, double yValue){
+    cameraShiftProperties.get(0).set(xValue);
+    cameraShiftProperties.get(1).set(yValue);
+  }
+
+
+  public List<DoubleProperty> getCameraShiftProperties() {
+    return cameraShiftProperties;
+  }
+
+  @Override
+  public List<Double> getCameraShiftValues() {
+    return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
+
   }
 }

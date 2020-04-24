@@ -5,9 +5,7 @@ import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ConditionalBehavior;
-import ooga.game.behaviors.Effect;
 
 /**
  * Represents any in-game object that has a physical place in the level.
@@ -16,6 +14,10 @@ import ooga.game.behaviors.Effect;
  * anything besides affect itself.
  */
 public interface Entity {
+
+  DoubleProperty stationaryProperty();
+
+  void setStationaryProperties(double bit);
 
   double getX();
 
@@ -30,10 +32,6 @@ public interface Entity {
   BooleanProperty activeInViewProperty();
 
   void setActiveInView(boolean activeInView);
-
-  DoubleProperty heightProperty();
-
-  DoubleProperty widthProperty();
 
   void setWidth(double width);
 
@@ -52,7 +50,7 @@ public interface Entity {
   /**
    * @return The name identifying what type of entity this is, as defined in the game file.
    */
-  public String getName();
+  String getName();
 
   /**
    * Handles updates that happen every frame, regardless of context. Can still have logic.
@@ -62,7 +60,7 @@ public interface Entity {
    * @param game
    *
    */
-  void updateSelf(double elapsedTime, Map<String, Double> variables, GameInternal game);
+  void updateSelf(double elapsedTime, Map<String, String> variables, GameInternal game);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and
@@ -116,21 +114,15 @@ public interface Entity {
   void setVelocity(double xVelocity, double yVelocity);
 
   /**
-   * Adds an entity to the buffer of entities that will be created next frame. May be removed
-   * in favor of the game making the new entity immediately.
-   * @param e
-   */
-  void createEntity(Entity e);
-
-  /**
    * @return Any entities that were created by this one this frame. This is emptied by the call.
    */
   List<Entity> popCreatedEntities();
 
   /**
    * Handles any behavior that depends on the values of variables.
+   * @param variables
    */
-  void reactToVariables(Map<String,Double> variables);
+  void reactToVariables(Map<String, String> variables);
 
   /**
    * Add a dependency to the map so that when the variable with the given name changes, the property with the given name is updated
@@ -143,7 +135,7 @@ public interface Entity {
    * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
    * assigned actions if true
    */
-  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, Double> variables,
+  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
                               Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 
   /**
@@ -151,12 +143,6 @@ public interface Entity {
    * @param conditionalBehaviors list of conditional behaviors
    */
   void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors);
-
-  /**
-   * @param entityType The type of entity to check for collision behavior with.
-   * @return True if the entity has a defined collision behavior with the type given.
-   */
-  boolean hasCollisionWith(String entityType);
 
   /**
    * change the value in this entity's blockedMovements map to the specified value
@@ -190,4 +176,15 @@ public interface Entity {
    * @param variables map of variable names to values
    */
   void setVariables(Map<String, String> variables);
+
+  String getEntityID();
+
+  Map<String,String> getVariables();
+
+  /**
+   * creates the double property stationaryProperty for the entity. 0 if false, 1 if true.
+   * @param stationary
+   */
+  void makeStationaryProperty(boolean stationary);
+
 }

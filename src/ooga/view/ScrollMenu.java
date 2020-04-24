@@ -1,7 +1,5 @@
 package ooga.view;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,27 +10,26 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ooga.data.DataReader;
 import ooga.data.OogaDataReader;
-import ooga.data.Thumbnail;
 
-import java.util.List;
 import java.util.ResourceBundle;
 
 public abstract class ScrollMenu {
 
-    protected DataReader myDataReader;
+    protected final DataReader myDataReader;
     protected HBox myHBox;
-    protected Pane myPane;
+    protected final Pane myPane;
 
-    private Scene myScene;
-    private Group myRoot;
-    private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+    private final Scene myScene;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final Group myRoot;
+    private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private final double IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
     private final double IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
     private final double IMAGE_RESIZE_FACTOR = Double.parseDouble(myResources.getString("gameImageResizeFactor"));
-    private String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
-    private String HBOX_STYLE = myResources.getString("hboxcss");
+    private final String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
+    private final String HBOX_STYLE = myResources.getString("hboxcss");
     private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
     private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
     private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));

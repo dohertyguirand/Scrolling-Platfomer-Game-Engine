@@ -8,9 +8,11 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
 //  IDDeterminedAction: executes the effect on the entity with the specified ID
+@SuppressWarnings("unused")
+@Deprecated
 public class IdDeterminedAction extends Action {
 
-  private String targetID;
+  private final String targetID;
 
   public IdDeterminedAction(List<String> args, List<Effect> effects) throws IndexOutOfBoundsException {
     super(effects);
@@ -19,8 +21,8 @@ public class IdDeterminedAction extends Action {
 
   @Override
   public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
-      Map<String, Double> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
-      GameInternal gameInternal) {
+                                        Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
+                                        GameInternal gameInternal) {
     Entity target = gameInternal.getEntityWithId(targetID);
     return List.of(target);
   }

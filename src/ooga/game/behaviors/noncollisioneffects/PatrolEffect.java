@@ -6,12 +6,12 @@ import java.util.Map;
 
 import ooga.Entity;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+@SuppressWarnings("unused")
 public class PatrolEffect extends TimeDelayedEffect {
 
-  public static double MARGIN = 20.0;
+  public static final double MARGIN = 20.0;
 
   private String accelPerFrameData;
   private String myMaxSpeedData;
@@ -22,6 +22,16 @@ public class PatrolEffect extends TimeDelayedEffect {
   private List<String> myTargetPointData;
 
   public PatrolEffect(List<String> args) throws IndexOutOfBoundsException {
+    super(args);
+  }
+
+  /**
+   * Processes the String arguments given in the data file into values used by this effect.
+   *
+   * @param args The String arguments given for this effect in the data file.
+   */
+  @Override
+  public void processArgs(List<String> args) {
     accelPerFrameData = args.get(0);
     myMaxSpeedData = args.get(1);
 
@@ -33,23 +43,18 @@ public class PatrolEffect extends TimeDelayedEffect {
     mySecondPointData.add(args.get(5));
 
     myTargetPointData = myFirstPointData;
-
-    if(args.size() > 6){
-      setTimeDelay(args.get(6));
-    }
   }
 
   /**
    * Performs the effect
-   *
-   * @param subject     The entity that owns this. This is the entity that should be modified.
+   *  @param subject     The entity that owns this. This is the entity that should be modified.
    * @param otherEntity entity we are "interacting with" in this effect
    * @param elapsedTime time between steps in ms
    * @param variables   game variables
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, Double> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     List<Double> difference = targetDifference(subject, variables);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {
@@ -65,7 +70,7 @@ public class PatrolEffect extends TimeDelayedEffect {
     }
   }
 
-  private void switchTargets(Entity subject, Map<String, Double> variables) {
+  private void switchTargets(Entity subject, Map<String, String> variables) {
     List<Double> myTargetPoint = List.of(parseData(myTargetPointData.get(0), subject, variables, 0.0),
             parseData(myTargetPointData.get(1), subject, variables, 0.0));
     List<Double> myFirstPoint = List.of(parseData(myFirstPointData.get(0), subject, variables, 0.0),
@@ -78,7 +83,7 @@ public class PatrolEffect extends TimeDelayedEffect {
     }
   }
 
-  private List<Double> targetDifference(Entity subject, Map<String, Double> variables) {
+  private List<Double> targetDifference(Entity subject, Map<String, String> variables) {
     List<Double> difference = new ArrayList<>();
     List<Double> myTargetPoint = List.of(parseData(myTargetPointData.get(0), subject, variables, 0.0),
             parseData(myTargetPointData.get(1), subject, variables, 0.0));
