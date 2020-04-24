@@ -5,6 +5,7 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.view.OogaProfile;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.ls.LSException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class DataReaderTest {
     private OogaDataReader testDataReader = new OogaDataReader();
-    //private String GAME_NAME = "Chrome Dino";
-    private String GAME_NAME = "Super Mario Bros";
-//    private String GAME_NAME = "Fireboy and Watergirl";
-
-    private ArrayList<String> ID_LIST  = new ArrayList<>(List.of("1"));
+    private List<String> GAME_NAMES = new ArrayList<>(List.of(
+            "Doodle Jump", "Chrome Dino", "Super Mario Bros", "Fireboy and Watergirl", "Flappy Bird", "VVVVVV"));
 
     @Test
     public void testGetThumbnails() throws OogaDataException {
@@ -33,16 +31,17 @@ public class DataReaderTest {
     }
     @Test
     public void testGetBasicGameInfo(){
-        List<List<String>> stringList = null;
-        try {
-            stringList = testDataReader.getBasicGameInfo(GAME_NAME);
-        } catch (OogaDataException e) {
-            // TODO: Fix this, Braeden
-            System.out.println("Test Failed");
-            e.printStackTrace();
+        for (String gameName : GAME_NAMES){
+            List<List<String>> stringList = null;
+            try {
+                stringList = testDataReader.getBasicGameInfo(gameName);
+            } catch (OogaDataException e) {
+                // TODO: Fix this, Braeden
+                e.printStackTrace();
+                fail();
+            }
+            System.out.println("List of Level IDs recieved for " + gameName + ": " + stringList + "\n");
         }
-        System.out.println("List of Level IDs recieved for " + GAME_NAME + ": " + stringList + "\n");
-        assertEquals(ID_LIST, stringList);
     }
 
     @Test

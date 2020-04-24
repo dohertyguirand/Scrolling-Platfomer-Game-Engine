@@ -186,6 +186,4 @@ public interface Entity {
    * @param stationary
    */
   void makeStationaryProperty(boolean stationary);
-
-  DoubleProperty stationaryProperty();
 }

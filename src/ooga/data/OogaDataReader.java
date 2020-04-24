@@ -75,7 +75,7 @@ public class OogaDataReader implements DataReader{
             // find the required information in the document
             checkKeyExists(doc, "Name", "Game name missing");
             checkKeyExists(doc, "Description", "Game description missing");
-            checkKeyExists(doc, "Description", "Game description missing");
+            checkKeyExists(doc, "Thumbnail", "Game thumbnail missing");
             String gameTitle = doc.getElementsByTagName("Name").item(0).getTextContent();
             String gameDescription = doc.getElementsByTagName("Description").item(0).getTextContent();
             String gameThumbnailImageName = doc.getElementsByTagName("Thumbnail").item(0).getTextContent();
@@ -179,72 +179,80 @@ public class OogaDataReader implements DataReader{
 
     @Override
     public Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException {
-        ArrayList<Entity> initialEntities = new ArrayList<>();
         File gameFile = findGame(givenGameName);
         Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
-        String nextLevelID = null;
         Document doc = getDocument(gameFile, "This error should not ever occur");
         // in the xml create a list of all 'Level' nodes
         NodeList levelNodes = doc.getElementsByTagName("Level");
         // for each check the ID
         for (int i = 0; i < levelNodes.getLength(); i++) {
             Element level = (Element) levelNodes.item(i);
-            checkKeyExists(level, "ID", "Level is missing ID");
-            String levelID = level.getElementsByTagName("ID").item(0).getTextContent();
+            String levelID = getLevelID(level);
             if(levelID.equals(givenLevelID)){
-                checkKeyExists(level, "NextLevel", "Level " + levelID + " is missing NextLevel");
-                nextLevelID = level.getElementsByTagName("NextLevel").item(0).getTextContent();
-                //TODO: refactor the below loops into a single loop
-                NodeList imageEntityNodes = level.getElementsByTagName("ImageEntityInstance");
-                // for each, save a copy of the specified instance at the specified place
-                for (int j = 0; j < imageEntityNodes.getLength(); j++) {
-                    Node currentEntity = imageEntityNodes.item(j);
-                    Element entityElement = (Element) currentEntity;
-                    checkKeyExists(entityElement, "Name", "Entity instance is missing name in level " + levelID);
-                    String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
-                    if(!entityMap.containsKey(entityName)) throw new OogaDataException("Unknown entity name: " + entityName);
-                    String[] parameterNames = new String[] {"XPos", "YPos"};
-                    List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
-                    int[] rowsColsAndGaps = getRowsColsAndGaps(entityElement);
-                    double xPos;
-                    double yPos = parameterValues.get(1);
-                    for(int row=0; row<rowsColsAndGaps[0]; row++){
-                        xPos = parameterValues.get(0);
-                        for(int col=0;col<rowsColsAndGaps[1];col++){
-                            Entity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
-                            entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
-                            entity.setVariables(getEntityVariables(entityElement));
-                            entity.makeStationaryProperty(isStationary(entityElement));
-                            initialEntities.add(entity);
-                            xPos += entityMap.get(entityName).getMyWidth()+rowsColsAndGaps[2];
-                        }
-                        yPos += entityMap.get(entityName).getMyHeight()+rowsColsAndGaps[3];
-                    }
-                }
-                NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
-                for (int j = 0; j < textEntityNodes.getLength(); j++) {
-                    Node currentEntity = textEntityNodes.item(j);
-                    Element entityElement = (Element) currentEntity;
-                    checkKeyExists(entityElement, "Text", "Text entity instance did not specify text");
-                    checkKeyExists(entityElement, "Font", "Text entity instance did not specify font");
-                    String text = entityElement.getElementsByTagName("Text").item(0).getTextContent();
-                    String font = entityElement.getElementsByTagName("Font").item(0).getTextContent();
-                    String[] parameterNames = new String[] {"XPos", "YPos", "Width", "Height"};
-                    List<Double> parameterValues = constructEntity(entityElement, text, parameterNames);
-                    int index = 0;
-                    Entity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
-                            parameterValues.get(index++),  parameterValues.get(index));
+                ArrayList<Entity> initialEntities = getInitialEntities(entityMap, level);
+                OogaLevel oogaLevel = new OogaLevel(initialEntities, givenLevelID);
+                oogaLevel.setNextLevelID(getNextLevelID(level));
+                return oogaLevel;
+            }
+        }
+        throw new OogaDataException("No level listed for the given game with the requested ID");
+    }
+
+    /**
+     * @param entityMap the map returned by getImageEntityMap
+     * @param level the requested level as an element in the .xml
+     * @return the list of Entity instances as described in the file
+     * @throws OogaDataException if file is improperly formatted and does not give the required information about the entities
+     */
+    private ArrayList<Entity> getInitialEntities(Map<String, ImageEntityDefinition> entityMap, Element level) throws OogaDataException {
+        String levelID = getLevelID(level);
+        ArrayList<Entity> initialEntities = new ArrayList<>();
+        //TODO: refactor the below loops into a single loop
+        NodeList imageEntityNodes = level.getElementsByTagName("ImageEntityInstance");
+        // for each, save a copy of the specified instance at the specified place
+        for (int j = 0; j < imageEntityNodes.getLength(); j++) {
+            Node currentEntity = imageEntityNodes.item(j);
+            Element entityElement = (Element) currentEntity;
+            checkKeyExists(entityElement, "Name", "Entity instance is missing name in level " + levelID);
+            String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+            if(!entityMap.containsKey(entityName)) throw new OogaDataException("Unknown entity name: " + entityName);
+            String[] parameterNames = new String[] {"XPos", "YPos"};
+            List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
+            int[] rowsColsAndGaps = getRowsColsAndGaps(entityElement);
+            double xPos;
+            double yPos = parameterValues.get(1);
+            for(int row=0; row<rowsColsAndGaps[0]; row++){
+                xPos = parameterValues.get(0);
+                for(int col=0;col<rowsColsAndGaps[1];col++){
+                    Entity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
                     entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                     entity.setVariables(getEntityVariables(entityElement));
                     entity.makeStationaryProperty(isStationary(entityElement));
                     initialEntities.add(entity);
+                    xPos += entityMap.get(entityName).getMyWidth()+rowsColsAndGaps[2];
                 }
-                break;
+                yPos += entityMap.get(entityName).getMyHeight()+rowsColsAndGaps[3];
             }
         }
-        OogaLevel oogaLevel = new OogaLevel(initialEntities, givenLevelID);
-        oogaLevel.setNextLevelID(nextLevelID);
-        return oogaLevel;
+        NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
+        for (int j = 0; j < textEntityNodes.getLength(); j++) {
+            Node currentEntity = textEntityNodes.item(j);
+            Element entityElement = (Element) currentEntity;
+            checkKeyExists(entityElement, "Text", "Text entity instance did not specify text");
+            checkKeyExists(entityElement, "Font", "Text entity instance did not specify font");
+            String text = entityElement.getElementsByTagName("Text").item(0).getTextContent();
+            String font = entityElement.getElementsByTagName("Font").item(0).getTextContent();
+            String[] parameterNames = new String[] {"XPos", "YPos", "Width", "Height"};
+            List<Double> parameterValues = constructEntity(entityElement, text, parameterNames);
+            int index = 0;
+            Entity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
+                    parameterValues.get(index++),  parameterValues.get(index));
+            entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
+            entity.setVariables(getEntityVariables(entityElement));
+            entity.makeStationaryProperty(isStationary(entityElement));
+            initialEntities.add(entity);
+        }
+        return initialEntities;
     }
 
     @Override
@@ -253,7 +261,7 @@ public class OogaDataReader implements DataReader{
             // create a new document to parse
             File fXmlFile = new File(String.valueOf(userFile));
             Document doc = getDocument(fXmlFile, "Could not parse document.");
-            // find the required information in the document
+            // get the name at teh top of the file
             checkKeyExists(doc, "Name", "User file missing username");
             String loadedName = doc.getElementsByTagName("Name").item(0).getTextContent();
 
@@ -272,10 +280,26 @@ public class OogaDataReader implements DataReader{
         throw new OogaDataException("No user exists with that username");
     }
 
+    /**
+     * @param loadFilePath the path to a saved level
+     * @return the loaded level based on the save file
+     */
     private Level loadLevelAtPath(String loadFilePath) {
 
         return null;
     }
+
+    private String getNextLevelID(Element level) throws OogaDataException {
+        String levelID = getLevelID(level);
+        checkKeyExists(level, "NextLevel", "Level " + levelID + " is missing NextLevel");
+        return level.getElementsByTagName("NextLevel").item(0).getTextContent();
+    }
+
+    private String getLevelID(Element level) throws OogaDataException {
+        checkKeyExists(level, "ID", "Level is missing an ID");
+        return level.getElementsByTagName("ID").item(0).getTextContent();
+    }
+
 
     private Map<String, String> getEntityVariables(Element entityElement) throws OogaDataException {
         Map<String, String> variableMap = new HashMap<>();
