@@ -40,8 +40,8 @@ public class ViewImageEntity implements ViewEntity {
    * @param entity
    */
   public void bindGenericProperties(Entity entity, List<DoubleProperty> cameraShift) {
-    imageView.layoutXProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
-    imageView.layoutYProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.stationaryProperty().multiply(cameraShift.get(1)))));
+    imageView.xProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
+    imageView.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.stationaryProperty().multiply(cameraShift.get(1)))));
     // add more properties here if needed
   }
 
@@ -50,10 +50,10 @@ public class ViewImageEntity implements ViewEntity {
   }
 
 
-  public DoubleProperty getXProperty(){return imageView.layoutXProperty();}
+  public DoubleProperty getXProperty(){return imageView.xProperty();}
 
   @SuppressWarnings("unused")
-  public DoubleProperty getYProperty(){return imageView.layoutYProperty();}
+  public DoubleProperty getYProperty(){return imageView.yProperty();}
 
 
   private void bindImageProperty(StringProperty location, ObjectProperty<Effect> colorEffect){

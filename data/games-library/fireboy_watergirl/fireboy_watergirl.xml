@@ -7,7 +7,8 @@
             <Name>Border</Name>
             <Width>100</Width>
             <Height>100</Height>
-            <Image>blueDiamond.jpg</Image>
+            <Image>blueDiamond.png</Image>
+            <Stationary>true</Stationary>
             <Behaviors>
                 <Behavior>
                 <RequiredCollisionCondition>
@@ -19,16 +20,6 @@
                     <Effect>ShiftCamera -1 0</Effect>
                 </IndependentAction>
             </Behavior>
-                <Behavior>
-                    <RequiredCollisionCondition>
-                        <Entity1>Border</Entity1>
-                        <Entity2>Fireboy</Entity2>
-                        <Direction>Left</Direction>
-                    </RequiredCollisionCondition>
-                    <IndependentAction>
-                        <Effect>ShiftCamera 1 0</Effect>
-                    </IndependentAction>
-                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -700,11 +691,11 @@
                     <XPos>800</XPos>
                     <YPos>500</YPos>
                 </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Border</Name>
-                    <XPos>50</XPos>
-                    <YPos>500</YPos>
-                </ImageEntityInstance>
+<!--                <ImageEntityInstance>-->
+<!--                    <Name>Border</Name>-->
+<!--                    <XPos>50</XPos>-->
+<!--                    <YPos>500</YPos>-->
+<!--                </ImageEntityInstance>-->
                 <ImageEntityInstance>
                     <Name>BlueDiamond</Name>
                     <XPos>500</XPos>
