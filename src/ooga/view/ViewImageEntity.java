@@ -40,8 +40,8 @@ public class ViewImageEntity implements ViewEntity {
    * @param entity
    */
   public void bindGenericProperties(Entity entity, List<DoubleProperty> cameraShift) {
-    imageView.xProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
-    imageView.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.stationaryProperty().multiply(cameraShift.get(1)))));
+    imageView.layoutXProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
+    imageView.layoutYProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.stationaryProperty().multiply(cameraShift.get(1)))));
     // add more properties here if needed
   }
 

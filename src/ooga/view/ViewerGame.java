@@ -247,8 +247,8 @@ public class ViewerGame {
 
   private void step() {
     myGame.doGameStep(myAnimation.getCurrentTime().toMillis());
-//    colorEffectProperty.set(new ColorAdjust());
-//    myGameScene.getRoot().setStyle("-fx-base: rgba(255, 255, 255, 255)");
+    colorEffectProperty.set(new ColorAdjust());
+    myGameScene.getRoot().setStyle("-fx-base: rgba(255, 255, 255, 255)");
     myGameScene.getRoot().requestLayout();
   }
 

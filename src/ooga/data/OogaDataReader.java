@@ -237,6 +237,7 @@ public class OogaDataReader implements DataReader{
                     entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                     entity.setVariables(getEntityVariables(entityElement));
                     entity.makeStationaryProperty(isStationary(entityElement));
+                    System.out.println(entity.stationaryProperty().getValue());
                     initialEntities.add(entity);
                 }
                 break;
