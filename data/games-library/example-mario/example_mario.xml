@@ -169,6 +169,17 @@
             <Effect>Gravity 0 0.1 + 10.0</Effect>
           </IndependentAction>
         </Behavior>
+<!--        Run out of lives to start the game over.-->
+        <Behavior>
+          <GameVariableCondition>
+            <VariableName>Lives</VariableName>
+            <RequiredValue>0.0</RequiredValue>
+          </GameVariableCondition>
+          <IndependentAction>
+            <Effect>GoToLevel 1</Effect>
+            <Effect>SetVariable Lives 3.0</Effect>
+          </IndependentAction>
+        </Behavior>
       </Behaviors>
     </ImageEntity>
     <ImageEntity>
@@ -506,7 +517,6 @@
     <Level>
       <ID>2</ID>
       <NextLevel>3</NextLevel>
-      <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Name>SmallMario</Name>
@@ -611,7 +621,6 @@
     <Level>
       <ID>3</ID>
       <NextLevel>1</NextLevel>
-      <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Name>SmallMario</Name>

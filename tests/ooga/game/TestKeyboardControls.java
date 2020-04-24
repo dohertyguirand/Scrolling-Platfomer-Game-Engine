@@ -9,7 +9,7 @@ public class TestKeyboardControls {
 
   @Test
   void testTranslateInput() {
-    ControlsInterpreter controls = new KeyboardControls();
+    ControlsInterpreter controls = new KeyboardControls("ooga/game/resources/inputs/keyboard");
     List<String> target = List.of("UpKey2","DownKey2","RightKey2","LeftKey2");
     List<String> input = List.of("W","S","D","A");
     for (int i = 0; i < input.size(); i ++) {

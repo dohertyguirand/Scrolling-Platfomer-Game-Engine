@@ -8,8 +8,8 @@ public class KeyboardControls implements ControlsInterpreter {
 
   private final ResourceBundle myResources;
 
-  public KeyboardControls() {
-    myResources = ResourceBundle.getBundle("ooga/game/resources/inputs/keyboard");
+  public KeyboardControls(String inputFilePath) {
+    myResources = ResourceBundle.getBundle(inputFilePath);
   }
 
   @Override

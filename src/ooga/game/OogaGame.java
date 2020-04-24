@@ -16,12 +16,14 @@ import ooga.UserInputListener;
 import ooga.data.DataReader;
 import ooga.data.ImageEntityDefinition;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
+import ooga.game.inputmanagers.OogaInputManager;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
   public static final String CLICKED_ON_CODE = "ClickedOn";
   public static final String KEY_ACTIVE_REQUIREMENT = "KeyActive";
   public static final String KEY_PRESSED_REQUIREMENT = "KeyPressed";
+  public static final String DEFAULT_INPUT_MAPPINGS = "ooga/game/resources/inputs/keyboard";
   private List<String> myLevelIds;
   private Level currentLevel;
   private String myName;
@@ -56,7 +58,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   public OogaGame(String gameName, DataReader dataReader, String profileName, String date) throws OogaDataException {
-    this(gameName, dataReader, new DirectionalCollisionDetector(), new KeyboardControls(), "");
+    this(gameName, dataReader, new DirectionalCollisionDetector(), new KeyboardControls(
+        DEFAULT_INPUT_MAPPINGS), "");
     currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 
@@ -71,7 +74,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public OogaGame(Level startingLevel, CollisionDetector collisions) {
     myName = "Unnamed";
     myCollisionDetector = collisions;
-    myControlsInterpreter = new KeyboardControls();
+    myControlsInterpreter = new KeyboardControls(DEFAULT_INPUT_MAPPINGS);
     currentLevel = startingLevel;
   }
 
@@ -118,17 +121,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void doUpdateLoop(double elapsedTime) {
-    List<String> activeKeys = myInputManager.getActiveKeys();
-    List<String> pressedKeys = myInputManager.getPressedKeys();
-    Map<String,String> allInputs = new HashMap<>();
-    for (String key : activeKeys) {
-      allInputs.put(key, KEY_ACTIVE_REQUIREMENT);
-    }
-    for (String key : pressedKeys) {
-      allInputs.put(key, KEY_PRESSED_REQUIREMENT);
-    }
     doEntityFrameUpdates(elapsedTime);
-    doEntityBehaviors(elapsedTime, allInputs);
+    doEntityBehaviors(elapsedTime);
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
@@ -142,7 +136,16 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  private void doEntityBehaviors(double elapsedTime, Map<String, String> allInputs) {
+  private void doEntityBehaviors(double elapsedTime) {
+    List<String> activeKeys = myInputManager.getActiveKeys();
+    List<String> pressedKeys = myInputManager.getPressedKeys();
+    Map<String,String> allInputs = new HashMap<>();
+    for (String key : activeKeys) {
+      allInputs.put(key, KEY_ACTIVE_REQUIREMENT);
+    }
+    for (String key : pressedKeys) {
+      allInputs.put(key, KEY_PRESSED_REQUIREMENT);
+    }
     Map<Entity, Map<String, List<Entity>>> collisionInfo = findDirectionalCollisions(elapsedTime);
     for (Entity entity : currentLevel.getEntities()) {
       Map<String,String> entityInputs = findEntityInputs(allInputs, entity);

@@ -22,17 +22,13 @@ public class OogaVariableCondition implements VariableCondition {
     if (!subjectVariables.containsKey(myVariableName)) {
       return false;
     }
-    //0. By default, pretend it's a value.
     String compareToValue = myCompareTo;
-    //1. is myCompareTo a GAME variable?
     if (gameVariables.containsKey(myCompareTo)) {
       compareToValue = gameVariables.get(myCompareTo);
     }
-    //2. is myCompareTo a variable of this Entity?
     else if (behaviorEntity.getVariable(myCompareTo) != null) {
       compareToValue = behaviorEntity.getVariable(myCompareTo);
     }
-    //3. compare directly.
     return (myComparator.compareVars(subjectVariables.get(myVariableName),compareToValue));
   }
 
