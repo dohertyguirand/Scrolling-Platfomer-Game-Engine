@@ -21,13 +21,6 @@ public interface Game {
   ObservableList<Entity> getEntities();
 
   /**
-   * Runs anything that needs to be run by the game, levels, or any entities in a level when
-   * the game is first started.
-   */
-  @Deprecated
-  void doGameStart();
-
-  /**
    * Updates things in the gaem according to how much time has passed
    * @param elapsedTime time passed in milliseconds
    */

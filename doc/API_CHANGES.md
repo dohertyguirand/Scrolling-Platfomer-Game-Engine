@@ -40,6 +40,7 @@ the game.
 - 4/16/2020 added ``doConditionalBehaviors`` to entity (and some resulting changes related to
 conditional behaviors, mainly internal game API and new behavior interfaces and classes)
 - 4/22/2020 changed game variables from map with double values to map with string values
+- 4/23/2020 removed ``doGameStart`` since this functionality can be in the constructor.
 
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.

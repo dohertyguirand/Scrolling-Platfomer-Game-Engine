@@ -9,8 +9,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.data.*;
 import ooga.UserInputListener;
+import ooga.data.DataReader;
+import ooga.data.ImageEntityDefinition;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
@@ -79,11 +80,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     return myEntities;
   }
 
-  @Override
-  public void doGameStart() {
-
-  }
-
   /**
    * Updates things in the game according to how much time has passed
    *
@@ -100,21 +96,27 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     for(Entity entity : currentLevel.getEntities()){
       Map<String, List<Entity>> collisionsByDirection = new HashMap<>();
       String[] directions = new String[]{"Up", "Down", "Left", "Right"};
-      for(String direction : directions){
-        collisionsByDirection.put(direction, new ArrayList<>());
-      }
-      for(Entity collidingWith : currentLevel.getEntities()){
-        //TODO: if needed, compare the exact objects instead of the names (allowing entities with same name to register collisions)
-        if(!entity.getName().equals(collidingWith.getName())) {
-          String collisionDirection = myCollisionDetector.getCollisionDirection(entity, collidingWith, elapsedTime);
-          if (collisionDirection != null){
-            collisionsByDirection.get(collisionDirection).add(collidingWith);
-          }
-        }
-      }
+      findEntityCollisions(elapsedTime, entity, collisionsByDirection, directions);
       collisionInfo.put(entity, collisionsByDirection);
     }
     return collisionInfo;
+  }
+
+  private void findEntityCollisions(double elapsedTime, Entity entity,
+      Map<String, List<Entity>> collisionsByDirection, String[] directions) {
+    for(String direction : directions){
+      collisionsByDirection.put(direction, new ArrayList<>());
+    }
+    for(Entity collidingWith : currentLevel.getEntities()){
+      //TODO: if needed, compare the exact objects instead of the names (allowing entities with same name to register collisions)
+      if(!entity.getName().equals(collidingWith.getName())) {
+        continue;
+      }
+      String collisionDirection = myCollisionDetector.getCollisionDirection(entity, collidingWith, elapsedTime);
+      if (collisionDirection != null){
+        collisionsByDirection.get(collisionDirection).add(collidingWith);
+      }
+    }
   }
 
   private void doUpdateLoop(double elapsedTime) {
@@ -209,7 +211,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToMouseClick(double mouseX, double mouseY) {
-
+    //TODO: Implement this method.
+    System.out.println("Mouse clicked at " + mouseX + ", " + mouseY);
   }
 
   /**
@@ -234,13 +237,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToGameSave() {
+    //TODO: Plug this into the data reader once the data reader's functionality works.
 //    myDataReader.saveGameState(String userName, myName);
-    System.out.println("GAME SAVED");
-    try {
-      currentLevel = loadGameLevel(myName, myLevelIds.get(1));
-    } catch (OogaDataException e) {
-      System.out.println("FAILED TO LOAD LEVEL 1");
-    }
   }
 
   /**
@@ -260,7 +258,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToPauseButton(boolean paused) {
-    //TODO: make this do something??
+    //Ooga games do nothing as a reaction to pausing, but other implementations could do things.
   }
 
   @Override
