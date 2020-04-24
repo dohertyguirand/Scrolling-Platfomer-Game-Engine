@@ -668,11 +668,6 @@
                     <VariableValues>180 500</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>Border</Name>
-                    <XPos>800</XPos>
-                    <YPos>500</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
                     <Name>BlueDiamond</Name>
                     <XPos>500</XPos>
                     <YPos>500</YPos>

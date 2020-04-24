@@ -49,12 +49,14 @@ public class OogaDataReader implements DataReader{
     private final String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static final String DEFAULT_LIBRARY_FILE = "data/games-library";
     private static final String DEFAULT_USERS_FILE = "data/users";
+    private static final String ENGLISH_PROPERTIES_LOCATION = "ooga/data/resources/english";
     private static final String EFFECTS_PROPERTIES_LOCATION = "ooga/data/resources/effects";
     private static final String ACTIONS_PROPERTIES_LOCATION = "ooga/data/resources/actions";
     private static final String COMPARATORS_PROPERTIES_LOCATION = "ooga/data/resources/comparators";
     private final ResourceBundle myEffectsResources = ResourceBundle.getBundle(EFFECTS_PROPERTIES_LOCATION);
     private final ResourceBundle myActionsResources = ResourceBundle.getBundle(ACTIONS_PROPERTIES_LOCATION);
     private final ResourceBundle myComparatorsResources = ResourceBundle.getBundle(COMPARATORS_PROPERTIES_LOCATION);
+    private final ResourceBundle myDataResources = ResourceBundle.getBundle(ENGLISH_PROPERTIES_LOCATION);
 
     public OogaDataReader(String givenFilePath){
         myLibraryFilePath = givenFilePath;
@@ -70,17 +72,18 @@ public class OogaDataReader implements DataReader{
         for (File gameFile : getAllXMLFiles(myLibraryFilePath)){
             // create a new document to parse
             File fXmlFile = new File(String.valueOf(gameFile));
-            Document doc = getDocument(fXmlFile, "Could not parse document.");
+            Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
 
             // find the required information in the document
-            checkKeyExists(doc, "Name", "Game name missing");
-            checkKeyExists(doc, "Description", "Game description missing");
-            checkKeyExists(doc, "Description", "Game description missing");
-            String gameTitle = doc.getElementsByTagName("Name").item(0).getTextContent();
-            String gameDescription = doc.getElementsByTagName("Description").item(0).getTextContent();
-            String gameThumbnailImageName = doc.getElementsByTagName("Thumbnail").item(0).getTextContent();
+            checkKeyExists(doc, myDataResources.getString("GameNameTag"), myDataResources.getString("MissingGameException"));
+            checkKeyExists(doc, myDataResources.getString("DescriptionTag"), myDataResources.getString("GameDescriptionException"));
+            checkKeyExists(doc, myDataResources.getString("ThumbnailTag"), myDataResources.getString("ThumbnailException"));
+            String gameTitle = doc.getElementsByTagName(myDataResources.getString("GameNameTag")).item(0).getTextContent();
+            String gameDescription = doc.getElementsByTagName(myDataResources.getString("DescriptionTag")).item(0).getTextContent();
+            String gameThumbnailImageName = doc.getElementsByTagName(myDataResources.getString("ThumbnailTag")).item(0).getTextContent();
 
-            String fullImagePath = "file:" + gameFile.getParentFile() + "/" + gameThumbnailImageName;
+            String fullImagePath = myDataResources.getString("PathPrefix") + gameFile.getParentFile() +
+                    myDataResources.getString("Slash") + gameThumbnailImageName;
             Thumbnail newThumbnail = new Thumbnail(fullImagePath, gameTitle, gameDescription);
             thumbnailList.add(newThumbnail);
         }
@@ -91,16 +94,18 @@ public class OogaDataReader implements DataReader{
     public List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
         List<List<String>> basicGameInfo = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         File gameFile = findGame(givenGameName);
-        Document doc = getDocument(gameFile, "This error should not ever occur");
-        String[] outerTagNames = new String[] {"Level", "Variable", "Variable"};
-        String[] innerTagNames = new String[] {"ID", "Name", "StartValue"};
+        Document doc = getDocument(gameFile, "");
+        String[] outerTagNames = new String[] {myDataResources.getString("LevelTag"),
+                myDataResources.getString("GameVariableTag"), myDataResources.getString("GameVariableTag")};
+        String[] innerTagNames = new String[] {myDataResources.getString("LevelIDTag"),
+                myDataResources.getString("VariableNameTag"), myDataResources.getString("GameVariableStartValueTag")};
         for(int j=0; j<outerTagNames.length; j++){
             NodeList outerList = doc.getElementsByTagName(outerTagNames[j]);
             // add all elements to the corresponding list
             for (int i = 0; i < outerList.getLength(); i++) {
                 Node currentNode = outerList.item(i);
                 Element nodeAsElement = (Element) currentNode;
-                checkKeyExists(nodeAsElement, innerTagNames[j], "Badly formatted basic game info");
+                checkKeyExists(nodeAsElement, innerTagNames[j], myDataResources.getString("GameInfoException"));
                 String newItem = nodeAsElement.getElementsByTagName(innerTagNames[j]).item(0).getTextContent();
                 basicGameInfo.get(j).add(newItem);
             }
@@ -168,9 +173,9 @@ public class OogaDataReader implements DataReader{
             // check if this game file is the correct game file
             // create a new document to parse
             File fXmlFile = new File(String.valueOf(f));
-            Document doc = getDocument(fXmlFile, "Could not parse document.");
-            checkKeyExists(doc, "Name", "Game " + givenGameName + " missing name");
-            String gameTitle = doc.getElementsByTagName("Name").item(0).getTextContent();
+            Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
+            checkKeyExists(doc, myDataResources.getString("GameNameTag"), givenGameName + myDataResources.getString("MissingGameException"));
+            String gameTitle = doc.getElementsByTagName(myDataResources.getString("GameNameTag")).item(0).getTextContent();
             if (gameTitle.equals(givenGameName)) return f;
         }
         throw new OogaDataException("Requested game name not found in Library");
