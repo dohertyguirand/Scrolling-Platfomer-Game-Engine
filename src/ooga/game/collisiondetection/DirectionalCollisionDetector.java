@@ -1,5 +1,7 @@
 package ooga.game.collisiondetection;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.shape.Rectangle;
 import ooga.Entity;
@@ -63,6 +65,11 @@ public class DirectionalCollisionDetector implements CollisionDetector {
       return UP_CODE;
     }
     return null;
+  }
+
+  @Override
+  public Collection<String> getSupportedDirections() {
+    return List.of(RIGHT_CODE,LEFT_CODE,DOWN_CODE,UP_CODE);
   }
 
   @Override

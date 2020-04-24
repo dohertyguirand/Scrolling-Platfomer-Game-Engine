@@ -24,7 +24,7 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param entityVariableConditions
    * @param inputConditions
    * @param requiredCollisionConditions conditions that must be true Map<List<String>, String> [entity 1 info, entity 2 info] : direction (or "ANY")
-*    *   entity info can be id or name, method will check for either
+   *   entity info can be id or name, method will check for either
    * @param bannedCollisionConditions conditions that must be false (see above)
    * @param actions
    */

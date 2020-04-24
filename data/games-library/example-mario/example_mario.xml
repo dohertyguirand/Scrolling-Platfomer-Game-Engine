@@ -132,7 +132,7 @@
         <Behavior>
           <InputCondition>
             <Key>UpKey2</Key>
-            <InputRequirement>Inactive</InputRequirement>
+            <InputRequirement>Pressed</InputRequirement>
           </InputCondition>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>

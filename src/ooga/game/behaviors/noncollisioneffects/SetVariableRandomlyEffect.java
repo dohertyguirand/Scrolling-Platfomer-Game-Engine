@@ -56,6 +56,5 @@ public class SetVariableRandomlyEffect extends TimeDelayedEffect {
       System.out.println("Set " + variableName + " to " + variableValue);
       subject.addVariable(variableName, Double.toString(variableValue));
     }
-    //TODO: add ability to set value of one entity variable to that of another variable?
   }
 }

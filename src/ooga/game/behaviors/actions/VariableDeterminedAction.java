@@ -48,7 +48,6 @@ public class VariableDeterminedAction extends Action {
                                         Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
                                         GameInternal gameInternal) {
     VariableComparator myComparator = determineComparator();
-    //TODO: use other comparators as well
     List<Entity> otherEntities = new ArrayList<>();
     for(Entity otherEntity : ((Game)gameInternal).getEntities()){
       VariableCondition variableCondition = new OogaVariableCondition(myVariable, myComparator, myValueData);
@@ -63,7 +62,6 @@ public class VariableDeterminedAction extends Action {
     VariableComparator myComparator;
     try {
       String comparatorClassName = myComparatorResources.getString(myComparatorData);
-      System.out.println("COMPARATOR: " + comparatorClassName);
       Class cls = forName(COMPARATOR_FILE_PATH + comparatorClassName);
       Constructor cons = cls.getConstructor();
       myComparator = (VariableComparator)cons.newInstance();

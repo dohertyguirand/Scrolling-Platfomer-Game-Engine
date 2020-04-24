@@ -95,16 +95,15 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     Map<Entity, Map<String, List<Entity>>> collisionInfo = new HashMap<>();
     for(Entity entity : currentLevel.getEntities()){
       Map<String, List<Entity>> collisionsByDirection = new HashMap<>();
-      String[] directions = new String[]{"Up", "Down", "Left", "Right"};
-      findEntityCollisions(elapsedTime, entity, collisionsByDirection, directions);
+      findEntityCollisions(elapsedTime, entity, collisionsByDirection);
       collisionInfo.put(entity, collisionsByDirection);
     }
     return collisionInfo;
   }
 
   private void findEntityCollisions(double elapsedTime, Entity entity,
-      Map<String, List<Entity>> collisionsByDirection, String[] directions) {
-    for(String direction : directions){
+      Map<String, List<Entity>> collisionsByDirection) {
+    for(String direction : myCollisionDetector.getSupportedDirections()){
       collisionsByDirection.put(direction, new ArrayList<>());
     }
     for(Entity collidingWith : currentLevel.getEntities()){
@@ -121,11 +120,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private void doUpdateLoop(double elapsedTime) {
     List<String> activeKeys = myInputManager.getActiveKeys();
     List<String> pressedKeys = myInputManager.getPressedKeys();
-//    for(String keyPressed : myInputManager.getPressedKeys()){
-//      //TODO: Smarten this up, so that it doesn't just change the String
-//      pressedKeys.add(keyPressed + "Pressed");
-//    }
-
     Map<String,String> allInputs = new HashMap<>();
     for (String key : activeKeys) {
       allInputs.put(key, KEY_ACTIVE_REQUIREMENT);
