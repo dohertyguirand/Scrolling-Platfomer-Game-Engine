@@ -87,9 +87,6 @@ public class ViewerGame {
     cameraShift.add(new SimpleDoubleProperty());
     cameraShift.add(new SimpleDoubleProperty());
     myGame.setCameraShiftProperties(cameraShift);
-    myCamera.translateXProperty().bind(cameraShift.get(0));
-    myCamera.translateYProperty().bind(cameraShift.get(1));
-    myGameScene.setCamera(myCamera);
   }
 
   private void setGame(String saveDate) throws OogaDataException {

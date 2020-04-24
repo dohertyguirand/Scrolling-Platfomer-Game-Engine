@@ -805,6 +805,7 @@
                     <YPos>0</YPos>
                     <Width>150</Width>
                     <Height>50</Height>
+                    <Stationary>true</Stationary>
                     <PropertyVariableDependency>
                         <VariableName>Score</VariableName>
                         <PropertyName>Text</PropertyName>

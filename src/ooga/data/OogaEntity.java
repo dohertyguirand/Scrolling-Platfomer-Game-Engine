@@ -319,14 +319,14 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public void setVariables(Map<String, String> variables) { myVariables.putAll(variables); }
 
   /**
-   * creates the double property stationaryProperty for the entity. 0 if false, 1 if true.
+   * creates the double property stationaryProperty for the entity. 1 if false, 0 if true.
    *
    * @param stationary
    */
   @Override
   public void makeStationaryProperty(boolean stationary) {
-    if (stationary) stationaryProperty.set(1);
-    else stationaryProperty.set(0);
+    if (stationary) stationaryProperty.set(0);
+    else stationaryProperty.set(1);
   }
 
   @Override
