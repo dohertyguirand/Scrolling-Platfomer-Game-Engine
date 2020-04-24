@@ -12,15 +12,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.data.*;
 import ooga.UserInputListener;
+import ooga.data.DataReader;
+import ooga.data.ImageEntityDefinition;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
+import ooga.game.inputmanagers.OogaInputManager;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
+  public static final String CLICKED_ON_CODE = "ClickedOn";
+  public static final String KEY_ACTIVE_REQUIREMENT = "KeyActive";
+  public static final String KEY_PRESSED_REQUIREMENT = "KeyPressed";
+  public static final String DEFAULT_INPUT_MAPPINGS = "ooga/game/resources/inputs/keyboard";
+  public static final String DEFAULT_GAME_NAME = "Unnamed";
   private List<String> myLevelIds;
   private Level currentLevel;
-  private final String myName;
+  private String myName;
   private DataReader myDataReader;
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
@@ -32,35 +39,28 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private final List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
 
 
-  public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
+  public OogaGame(String gameName, DataReader dataReader, CollisionDetector detector,
+      ControlsInterpreter controls, String profileName) throws OogaDataException {
     myDataReader = dataReader;
     myName = gameName;
-    //ist<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
     myLevelIds = myDataReader.getLevelIDs(gameName);
-    //TODO: Make the type of collision detector configurable.
-    myCollisionDetector = new DirectionalCollisionDetector();
-    //TODO: Remove dependency between controls interpreter implementation and this
-    myControlsInterpreter = new KeyboardControls();
+    myCollisionDetector = detector;
+    myControlsInterpreter = controls;
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
     myEntityDefinitions = myDataReader.getImageEntityMap(gameName);
+    initVariableMap(gameName);
+  }
 
+  private void initVariableMap(String gameName) throws OogaDataException {
     myVariables = new HashMap<>();
-//    for(int i=0; i<basicGameInfo.get(1).size(); i++){
-//      myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
-//    }
-
     for (String key : myDataReader.getVariableMap(gameName).keySet()){
       myVariables.put(key, myDataReader.getVariableMap(gameName).get(key));
     }
   }
 
-  public OogaGame(String gameName, DataReader dataReader, String profileName) throws OogaDataException {
-    this(gameName, dataReader);
-    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
-  }
-
   public OogaGame(String gameName, DataReader dataReader, String profileName, String date) throws OogaDataException {
-    this(gameName, dataReader);
+    this(gameName, dataReader, new DirectionalCollisionDetector(), new KeyboardControls(
+        DEFAULT_INPUT_MAPPINGS), "");
     currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 
@@ -73,9 +73,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   @Deprecated
   public OogaGame(Level startingLevel, CollisionDetector collisions) {
-    myName = "Unnamed";
+    myName = DEFAULT_GAME_NAME;
     myCollisionDetector = collisions;
-    myControlsInterpreter = new KeyboardControls();
+    myControlsInterpreter = new KeyboardControls(DEFAULT_INPUT_MAPPINGS);
     currentLevel = startingLevel;
   }
 
@@ -99,37 +99,31 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     Map<Entity, Map<String, List<Entity>>> collisionInfo = new HashMap<>();
     for(Entity entity : currentLevel.getEntities()){
       Map<String, List<Entity>> collisionsByDirection = new HashMap<>();
-      String[] directions = new String[]{"Up", "Down", "Left", "Right"};
-      for(String direction : directions){
-        collisionsByDirection.put(direction, new ArrayList<>());
-      }
-      for(Entity collidingWith : currentLevel.getEntities()){
-        //TODO: if needed, compare the exact objects instead of the names (allowing entities with same name to register collisions)
-        if(!entity.getName().equals(collidingWith.getName())) {
-          String collisionDirection = myCollisionDetector.getCollisionDirection(entity, collidingWith, elapsedTime);
-          if (collisionDirection != null){
-            collisionsByDirection.get(collisionDirection).add(collidingWith);
-          }
-        }
-      }
+      findEntityCollisions(elapsedTime, entity, collisionsByDirection);
       collisionInfo.put(entity, collisionsByDirection);
     }
     return collisionInfo;
   }
 
-  private void doUpdateLoop(double elapsedTime) {
-    List<String> activeKeys = myInputManager.getActiveKeys();
-    List<String> pressedKeys = new ArrayList<>();
-    for(String keyPressed : myInputManager.getPressedKeys()){
-      //TODO: Smarten this up, so that it doesn't just change the String
-      pressedKeys.add(keyPressed + "Pressed");
+  private void findEntityCollisions(double elapsedTime, Entity entity,
+      Map<String, List<Entity>> collisionsByDirection) {
+    for(String direction : myCollisionDetector.getSupportedDirections()){
+      collisionsByDirection.put(direction, new ArrayList<>());
     }
-    List<String> allInputs = new ArrayList<>(activeKeys);
-    allInputs.addAll(pressedKeys);
+    for(Entity collidingWith : currentLevel.getEntities()){
+      if(entity == (collidingWith)) {
+        continue;
+      }
+      String collisionDirection = myCollisionDetector.getCollisionDirection(entity, collidingWith, elapsedTime);
+      if (collisionDirection != null){
+        collisionsByDirection.get(collisionDirection).add(collidingWith);
+      }
+    }
+  }
 
+  private void doUpdateLoop(double elapsedTime) {
     doEntityFrameUpdates(elapsedTime);
-
-    doEntityBehaviors(elapsedTime, allInputs);
+    doEntityBehaviors(elapsedTime);
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
@@ -143,11 +137,33 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  private void doEntityBehaviors(double elapsedTime, List<String> allInputs) {
+  private void doEntityBehaviors(double elapsedTime) {
+    List<String> activeKeys = myInputManager.getActiveKeys();
+    List<String> pressedKeys = myInputManager.getPressedKeys();
+    Map<String,String> allInputs = new HashMap<>();
+    for (String key : activeKeys) {
+      allInputs.put(key, KEY_ACTIVE_REQUIREMENT);
+    }
+    for (String key : pressedKeys) {
+      allInputs.put(key, KEY_PRESSED_REQUIREMENT);
+    }
     Map<Entity, Map<String, List<Entity>>> collisionInfo = findDirectionalCollisions(elapsedTime);
     for (Entity entity : currentLevel.getEntities()) {
-      entity.doConditionalBehaviors(elapsedTime, allInputs, myVariables, collisionInfo, this);
+      Map<String,String> entityInputs = findEntityInputs(allInputs, entity);
+      entity.doConditionalBehaviors(elapsedTime, entityInputs, myVariables, collisionInfo, this);
     }
+  }
+
+  private Map<String, String> findEntityInputs(Map<String, String> allInputs, Entity entity) {
+    Map<String,String> entityInputs = allInputs;
+    for (List<Double> clickPos : myInputManager.getMouseClickPos()) {
+      if (myCollisionDetector.entityAtPoint(entity, clickPos.get(0), clickPos.get(1))) {
+        entityInputs = new HashMap<>(allInputs);
+        entityInputs.put(CLICKED_ON_CODE,KEY_PRESSED_REQUIREMENT);
+        break;
+      }
+    }
+    return entityInputs;
   }
 
   private void executeEntityMovement(double elapsedTime) {
@@ -191,7 +207,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToMouseClick(double mouseX, double mouseY) {
-
+    myInputManager.mouseClicked(mouseX,mouseY);
   }
 
   /**
@@ -216,12 +232,10 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToGameSave() {
-//    myDataReader.saveGameState(String userName, myName);
-    System.out.println("GAME SAVED");
     try {
-      currentLevel = loadGameLevel(myName, myLevelIds.get(1));
+      myDataReader.saveGameState(myName);
     } catch (OogaDataException e) {
-      System.out.println("FAILED TO LOAD LEVEL 1");
+      //if it doesn't work, just keep playing the game.
     }
   }
 
@@ -243,14 +257,26 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   @SuppressWarnings("EmptyMethod")
   public void reactToPauseButton(boolean paused) {
-
+    //Ooga games do nothing as a reaction to pausing, but other implementations could do things.
   }
 
   @Override
   public void createEntity(String type, List<Double> position) {
-    ImageEntityDefinition definition = myEntityDefinitions.get(type);
-    Entity created = definition.makeInstanceAt(position.get(0),position.get(1));
+    Entity created = makeEntityInstance(type, position);
     myNewCreatedEntities.add(created);
+  }
+
+  @Override
+  public void createEntity(String type, List<Double> position, double width, double height) {
+    Entity created = makeEntityInstance(type, position);
+    created.setHeight(height);
+    created.setWidth(width);
+    myNewCreatedEntities.add(created);
+  }
+
+  private Entity makeEntityInstance(String type, List<Double> position) {
+    ImageEntityDefinition definition = myEntityDefinitions.get(type);
+    return definition.makeInstanceAt(position.get(0), position.get(1));
   }
 
   @Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.function.Consumer;
 import javafx.beans.property.*;
@@ -14,7 +15,9 @@ import ooga.game.EntityInternal;
 
 public abstract class OogaEntity implements Entity, EntityInternal {
 
-  public static final double FRICTION_ACCELERATION = 30.0 / 1000.0;
+  public static final String CONSTANTS_FILEPATH = "ooga/data/resources/entityconstants";
+  public static final String FRICTION_CONST_LABEL = "Friction";
+  public static final double DEFAULT_FRICTION = 30.0 / 1000.0;
 
   private final BooleanProperty activeInView = new SimpleBooleanProperty(true);
   protected final DoubleProperty xPos = new SimpleDoubleProperty();
@@ -23,6 +26,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   protected final DoubleProperty height = new SimpleDoubleProperty();
   protected final DoubleProperty nonStationaryProperty = new SimpleDoubleProperty(0);
   protected String myName;
+  private double frictionAcceleration;
   protected Map<String, String> propertyVariableDependencies = new HashMap<>();
   protected final Map<String, Consumer<String>> propertyUpdaters = new HashMap<>(){{
     put("XPos", variableValue -> xPos.set(Double.parseDouble(variableValue)));
@@ -41,6 +45,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private final Map<String, String> myVariables = new HashMap<>();
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
+    ResourceBundle constants = ResourceBundle.getBundle(CONSTANTS_FILEPATH);
+    initConstant(constants,FRICTION_CONST_LABEL,DEFAULT_FRICTION);
     myVelocity = List.of(0.,0.);
     this.xPos.set(xPos);
     this.yPos.set(yPos);
@@ -51,6 +57,14 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myName = "";
     for(String direction : directions){
       blockedMovements.put(direction, false);
+    }
+  }
+
+  private void initConstant(ResourceBundle constants, String label, Double fallback) {
+    try {
+      this.frictionAcceleration = Double.parseDouble(constants.getString(label));
+    } catch (NumberFormatException e) {
+      this.frictionAcceleration = fallback;
     }
   }
 
@@ -98,21 +112,21 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   private void applyFrictionHorizontal() {
-    if (Math.abs(myVelocity.get(0)) < FRICTION_ACCELERATION) {
+    if (Math.abs(myVelocity.get(0)) < frictionAcceleration) {
       setVelocity(0,getVelocity().get(1));
     }
     else {
-      changeVelocity(FRICTION_ACCELERATION * -1 * Math.signum(myVelocity.get(0)),0);
+      changeVelocity(frictionAcceleration * -1 * Math.signum(myVelocity.get(0)),0);
     }
   }
 
   private void applyFrictionVertical() {
 
-    if (Math.abs(myVelocity.get(1)) < FRICTION_ACCELERATION) {
+    if (Math.abs(myVelocity.get(1)) < frictionAcceleration) {
       setVelocity(getVelocity().get(0),0);
     }
     else {
-      changeVelocity(0,FRICTION_ACCELERATION * -1 * Math.signum(myVelocity.get(1)));
+      changeVelocity(0, frictionAcceleration * -1 * Math.signum(myVelocity.get(1)));
     }
   }
 
@@ -241,7 +255,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    * assigned behavior if true
    */
   @Override
-  public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
+  public void doConditionalBehaviors(double elapsedTime, Map<String, String> inputs, Map<String, String> variables,
                                      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
       conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);

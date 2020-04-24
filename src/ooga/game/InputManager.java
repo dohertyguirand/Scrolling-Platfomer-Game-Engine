@@ -12,5 +12,9 @@ public interface InputManager {
 
   List<String> getPressedKeys();
 
+  void mouseClicked(double mouseX, double mouseY);
+
+  List<List<Double>> getMouseClickPos();
+
   void update();
 }

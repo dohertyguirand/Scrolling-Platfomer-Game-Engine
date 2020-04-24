@@ -1,7 +1,7 @@
 package ooga.game.behaviors;
 
 /**
- * I DID NOT WRITE THIS CODE
+ * I (CARY) DID NOT WRITE THIS CODE
  * it came from: https://stackoverflow.com/questions/3422673/how-to-evaluate-a-math-expression-given-in-string-form
  */
 public interface ExpressionEvaluator {
@@ -55,24 +55,8 @@ public interface ExpressionEvaluator {
           x = Double.parseDouble(str.substring(startPos, this.pos));
         } else if (ch >= 'a' && ch <= 'z') { // functions
           while (ch >= 'a' && ch <= 'z') nextChar();
-          String func = str.substring(startPos, this.pos);
           x = parseFactor();
-          switch (func) {
-            case "sqrt":
-              x = Math.sqrt(x);
-              break;
-            case "sin":
-              x = Math.sin(Math.toRadians(x));
-              break;
-            case "cos":
-              x = Math.cos(Math.toRadians(x));
-              break;
-            case "tan":
-              x = Math.tan(Math.toRadians(x));
-              break;
-            default:
-              throw new RuntimeException("Unknown function: " + func);
-          }
+          // removed the parts with sqrt, sin, tan, cos
         } else {
           throw new RuntimeException("Unexpected: " + (char)ch);
         }

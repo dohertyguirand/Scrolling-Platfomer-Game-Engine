@@ -1,5 +1,6 @@
 package ooga.game;
 
+import java.util.Collection;
 import ooga.Entity;
 
 /**
@@ -16,4 +17,18 @@ public interface CollisionDetector {
    * @return direction of collision, or null if no collision
    */
   String getCollisionDirection(Entity a, Entity b, double elapsedTime);
+
+  /**
+   * @return The String identifiers of directions that this collision detector can detect.
+   */
+  Collection<String> getSupportedDirections();
+
+  /**
+   * Determines whether an entity is intersecting with a specific point onscreen
+   * @param e The Entity to check for intersection with the point.
+   * @param xPos The x position of the point to check.
+   * @param yPos The y position of the point to check.
+   * @return True if the entity is intersecting the point
+   */
+  boolean entityAtPoint(Entity e, double xPos, double yPos);
 }

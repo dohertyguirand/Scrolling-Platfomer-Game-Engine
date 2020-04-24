@@ -206,13 +206,13 @@
                 </Behavior>
                 <Behavior>
                     <IndependentAction>
-                        <Effect>Gravity 0 0.1</Effect>
+                        <Effect>Gravity 0 0.1 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
-                        <Key>UpKeyPressed</Key>
-                        <InputRequirement>true</InputRequirement>
+                        <Key>UpKey</Key>
+                        <InputRequirement>Pressed</InputRequirement>
                     </InputCondition>
                     <RequiredCollisionCondition>
                         <Entity2>universalTerrain</Entity2>
@@ -223,7 +223,7 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>Jump -1.2</Effect>
+                        <Effect>Jump 0 -1.2 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
@@ -381,20 +381,20 @@
                 </Behavior>
                 <Behavior>
                     <IndependentAction>
-                        <Effect>Gravity 0 0.1</Effect>
+                        <Effect>Gravity 0 0.1 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
                     <InputCondition>
-                        <Key>UpKey2Pressed</Key>
-                        <InputRequirement>true</InputRequirement>
+                        <Key>UpKey2</Key>
+                        <InputRequirement>Pressed</InputRequirement>
                     </InputCondition>
                     <RequiredCollisionCondition>
                         <Entity2>universalTerrain</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Jump -1.2</Effect>
+                        <Effect>Jump 0 -1.2 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>

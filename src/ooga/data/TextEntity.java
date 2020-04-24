@@ -34,7 +34,4 @@ public class TextEntity extends OogaEntity {
 
   public StringProperty fontNameProperty() { return fontName; }
 
-  @SuppressWarnings({"EmptyMethod", "unused"})
-  public void updateTextProperty(double value) {
-  }
 }

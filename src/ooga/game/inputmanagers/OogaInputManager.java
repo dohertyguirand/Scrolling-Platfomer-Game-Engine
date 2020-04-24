@@ -1,16 +1,19 @@
-package ooga.game;
+package ooga.game.inputmanagers;
 
 import java.util.ArrayList;
 import java.util.List;
+import ooga.game.InputManager;
 
 public class OogaInputManager implements InputManager {
 
   private final List<String> myActiveKeys;
   private final List<String> myPressedKeys;
+  private List<List<Double>> mouseClickedPos;
 
   public OogaInputManager() {
     myActiveKeys = new ArrayList<>();
     myPressedKeys = new ArrayList<>();
+    mouseClickedPos = new ArrayList<>();
   }
 
   @Override
@@ -39,7 +42,18 @@ public class OogaInputManager implements InputManager {
   }
 
   @Override
+  public void mouseClicked(double mouseX, double mouseY) {
+    mouseClickedPos.add(List.of(mouseX,mouseY));
+  }
+
+  @Override
+  public List<List<Double>> getMouseClickPos() {
+    return new ArrayList<>(mouseClickedPos);
+  }
+
+  @Override
   public void update() {
     myPressedKeys.clear();
+    mouseClickedPos.clear();
   }
 }

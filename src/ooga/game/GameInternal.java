@@ -8,6 +8,8 @@ public interface GameInternal {
 
   void createEntity(String type, List<Double> position);
 
+  void createEntity(String type, List<Double> position, double width, double height);
+
   Entity getEntityWithId(String id);
 
   List<Entity> getEntitiesWithName(String name);

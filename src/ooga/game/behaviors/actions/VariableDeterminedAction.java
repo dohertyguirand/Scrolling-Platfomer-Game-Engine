@@ -1,9 +1,15 @@
 package ooga.game.behaviors.actions;
 
+import static java.lang.Class.forName;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import ooga.Entity;
+import ooga.OogaDataException;
 import ooga.game.Game;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
@@ -12,6 +18,7 @@ import ooga.game.behaviors.OogaVariableCondition;
 import ooga.game.behaviors.VariableCondition;
 import ooga.game.behaviors.comparators.VariableComparator;
 import ooga.game.behaviors.comparators.VariableEquals;
+import org.w3c.dom.NodeList;
 
 /**
  * VariableDeterminedAction: determined by entity variables. Action will be executed on any entity that has a matching variable
@@ -20,6 +27,10 @@ import ooga.game.behaviors.comparators.VariableEquals;
   */
 @SuppressWarnings("unused")
 public class VariableDeterminedAction extends Action {
+
+  public static final String COMPARATOR_FILE_PATH = "ooga/game/behaviors/comparators/";
+  public static final String COMPARATOR_RESOURCE_FILE = "ooga/data/resources/comparators.properties";
+  final ResourceBundle myComparatorResources = ResourceBundle.getBundle(COMPARATOR_RESOURCE_FILE);
 
   final String myVariable;
   final String myValueData;
@@ -36,8 +47,7 @@ public class VariableDeterminedAction extends Action {
   public List<Entity> findOtherEntities(Entity subject,
                                         Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
                                         GameInternal gameInternal) {
-    VariableComparator myComparator = new VariableEquals(); //Effect.doVariableSubstitutions(myComparatorData, subject, variables);
-    //TODO: use other comparators as well
+    VariableComparator myComparator = determineComparator();
     List<Entity> otherEntities = new ArrayList<>();
     for(Entity otherEntity : ((Game)gameInternal).getEntities()){
       VariableCondition variableCondition = new OogaVariableCondition(myVariable, myComparator, myValueData);
@@ -46,6 +56,19 @@ public class VariableDeterminedAction extends Action {
       }
     }
     return otherEntities;
+  }
+
+  private VariableComparator determineComparator() {
+    VariableComparator myComparator;
+    try {
+      String comparatorClassName = myComparatorResources.getString(myComparatorData);
+      Class cls = forName(COMPARATOR_FILE_PATH + comparatorClassName);
+      Constructor cons = cls.getConstructor();
+      myComparator = (VariableComparator)cons.newInstance();
+    } catch (Exception e) {
+      myComparator = new VariableEquals();
+    }
+    return myComparator;
   }
 
   @Override

@@ -21,18 +21,21 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
+import ooga.game.KeyboardControls;
 import ooga.game.OogaGame;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import ooga.game.collisiondetection.DirectionalCollisionDetector;
 
 public class ViewerGame {
 
   private static final double MILLISECOND_DELAY = 33.33;
   public static final int NORMAL_BUTTON_XPOS = 300;
   public static final int ALIEN_BUTTON_XPOS = 100;
+  public static final String KEYBOARD_INPUT_FILE = "ooga/game/resources/inputs/keyboard";
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final String ALIEN_BUTTON_LOCATION = myResources.getString("alienButtonLocation");
@@ -76,9 +79,13 @@ public class ViewerGame {
 
   private void setGame(String saveDate) throws OogaDataException {
     if(saveDate == null || saveDate.equals("")){
-      myGame = new OogaGame(myGameName, new OogaDataReader(),myProfileName);
+      myGame = new OogaGame(myGameName, new OogaDataReader(), new DirectionalCollisionDetector(), new KeyboardControls(
+          KEYBOARD_INPUT_FILE),myProfileName);
     }
-    else myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
+    else {
+      System.out.println("USING ALT GAME CONSTRUCTOR");
+      myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
+    }
   }
 
   private void setUpGameEntities(){
