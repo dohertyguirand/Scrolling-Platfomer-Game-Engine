@@ -16,7 +16,7 @@
                     <Direction>Right</Direction>
                 </RequiredCollisionCondition>
                 <IndependentAction>
-                    <Effect>ShiftCamera -1 0</Effect>
+                    <Effect>ShiftCamera 100 0</Effect>
                 </IndependentAction>
             </Behavior>
                 <Behavior>
@@ -26,7 +26,7 @@
                         <Direction>Left</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>ShiftCamera 1 0</Effect>
+                        <Effect>ShiftCamera -100 0</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
