@@ -21,6 +21,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   protected final DoubleProperty yPos = new SimpleDoubleProperty();
   protected final DoubleProperty width = new SimpleDoubleProperty();
   protected final DoubleProperty height = new SimpleDoubleProperty();
+  protected final DoubleProperty nonStationaryProperty = new SimpleDoubleProperty(0);
   protected String myName;
   protected Map<String, String> propertyVariableDependencies = new HashMap<>();
   protected final Map<String, Consumer<String>> propertyUpdaters = new HashMap<>(){{
@@ -316,4 +317,25 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    */
   @Override
   public void setVariables(Map<String, String> variables) { myVariables.putAll(variables); }
+
+  /**
+   * creates the double property nonStationaryProperty for the entity. 1 if false, 0 if true.
+   *
+   * @param stationary whether or not the entity is stationary with respect to camera moves
+   */
+  @Override
+  public void makeNonStationaryProperty(boolean stationary) {
+    if (stationary) nonStationaryProperty.set(0);
+    else nonStationaryProperty.set(1);
+  }
+
+  @Override
+  public void setNonStationaryProperty(double value){
+    this.nonStationaryProperty.setValue(value);
+  }
+
+  @Override
+  public DoubleProperty nonStationaryProperty(){
+    return nonStationaryProperty;
+  }
 }

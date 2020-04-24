@@ -206,18 +206,20 @@ public class OogaDataReader implements DataReader{
                     String[] parameterNames = new String[] {"XPos", "YPos"};
                     List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
                     int[] rowsColsAndGaps = getRowsColsAndGaps(entityElement);
+                    ImageEntityDefinition imageEntityDefinition = entityMap.get(entityName);
                     double xPos;
                     double yPos = parameterValues.get(1);
                     for(int row=0; row<rowsColsAndGaps[0]; row++){
                         xPos = parameterValues.get(0);
                         for(int col=0;col<rowsColsAndGaps[1];col++){
-                            OogaEntity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
+                            Entity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
                             entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                             entity.setVariables(getEntityVariables(entityElement));
+                            entity.makeNonStationaryProperty(isStationary(entityElement, imageEntityDefinition.getStationary()));
                             initialEntities.add(entity);
-                            xPos += entityMap.get(entityName).getMyWidth()+rowsColsAndGaps[2];
+                            xPos += imageEntityDefinition.getMyWidth()+rowsColsAndGaps[2];
                         }
-                        yPos += entityMap.get(entityName).getMyHeight()+rowsColsAndGaps[3];
+                        yPos += imageEntityDefinition.getMyHeight()+rowsColsAndGaps[3];
                     }
                 }
                 NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
@@ -231,10 +233,11 @@ public class OogaDataReader implements DataReader{
                     String[] parameterNames = new String[] {"XPos", "YPos", "Width", "Height"};
                     List<Double> parameterValues = constructEntity(entityElement, text, parameterNames);
                     int index = 0;
-                    OogaEntity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
+                    Entity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
                             parameterValues.get(index++),  parameterValues.get(index));
                     entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                     entity.setVariables(getEntityVariables(entityElement));
+                    entity.makeNonStationaryProperty(isStationary(entityElement, false));
                     initialEntities.add(entity);
                 }
                 break;
@@ -369,6 +372,7 @@ public class OogaDataReader implements DataReader{
         double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
         double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
         String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
+        boolean stationary = isStationary(entityElement, false);
 
         List<ConditionalBehavior> behaviors = new ArrayList<>();
         NodeList nodeList = entityElement.getElementsByTagName("Behavior");
@@ -385,7 +389,16 @@ public class OogaDataReader implements DataReader{
             behaviors.add(new BehaviorInstance(gameVariableConditions,entityVarConditions,inputConditions,requiredCollisionConditions,bannedCollisionConditions,getActions(behaviorElement)));
         }
 
-        return new ImageEntityDefinition(name, height, width, imagePath, behaviors);
+        ImageEntityDefinition imageEntityDefinition = new ImageEntityDefinition(name, height, width, imagePath, behaviors);
+        imageEntityDefinition.setStationary(stationary);
+        return imageEntityDefinition;
+    }
+
+    private boolean isStationary(Element entityElement, boolean defaultValue) {
+        if(entityElement.getElementsByTagName("Stationary").getLength() > 0){
+            return Boolean.parseBoolean(entityElement.getElementsByTagName("Stationary").item(0).getTextContent());
+        }
+        return defaultValue;
     }
 
     private List<VariableCondition> getGameVariableConditions(NodeList conditions)

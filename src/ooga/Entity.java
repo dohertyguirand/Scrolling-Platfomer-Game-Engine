@@ -15,6 +15,10 @@ import ooga.game.behaviors.ConditionalBehavior;
  */
 public interface Entity {
 
+  DoubleProperty nonStationaryProperty();
+
+  void setNonStationaryProperty(double bit);
+
   double getX();
 
   DoubleProperty xProperty();
@@ -176,4 +180,11 @@ public interface Entity {
   String getEntityID();
 
   Map<String,String> getVariables();
+
+  /**
+   * creates the double property stationaryProperty for the entity. 0 if false, 1 if true.
+   * @param stationary
+   */
+  void makeNonStationaryProperty(boolean stationary);
+
 }

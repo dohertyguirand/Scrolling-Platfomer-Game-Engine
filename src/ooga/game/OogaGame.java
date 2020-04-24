@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ooga.Entity;
@@ -27,6 +30,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private ObservableList<Entity> myEntities;
   private List<Entity> myNewCreatedEntities = new ArrayList<>();
   Map<String, ImageEntityDefinition> myEntityDefinitions;
+  private List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
+
 
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
@@ -306,6 +311,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public void goToLevel(String levelID) {
     try {
       currentLevel = loadGameLevel(myName,levelID);
+      setCameraShiftValue(0,0);
     }
     catch (OogaDataException e) {
       //To preserve the pristine gameplay experience, we do nothing (rather than crash).
@@ -315,10 +321,35 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void goToNextLevel() {
     goToLevel(currentLevel.nextLevelID());
+    setCameraShiftValue(0,0);
   }
 
   @Override
   public void restartLevel() {
     goToLevel(currentLevel.getLevelId());
+    setCameraShiftValue(0,0);
+  }
+
+  @Override
+  public void setCameraShiftProperties(List<DoubleProperty> properties){
+    for(int i = 0; i < cameraShiftProperties.size(); i ++){
+      cameraShiftProperties.get(i).bindBidirectional(properties.get(i));
+    }
+  }
+
+  public void setCameraShiftValue(double xValue, double yValue){
+    cameraShiftProperties.get(0).set(xValue);
+    cameraShiftProperties.get(1).set(yValue);
+  }
+
+
+  public List<DoubleProperty> getCameraShiftProperties() {
+    return cameraShiftProperties;
+  }
+
+  @Override
+  public List<Double> getCameraShiftValues() {
+    return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
+
   }
 }
