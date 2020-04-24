@@ -3,6 +3,7 @@ package ooga.data;
 
 import ooga.Entity;
 import ooga.OogaDataException;
+import ooga.game.Level;
 import ooga.view.OogaProfile;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.ls.LSException;
@@ -45,18 +46,22 @@ public class DataReaderTest {
     }
 
     @Test
-    public void testLoadLevel(){
-        boolean testPassed = true;
-        for(String id : ID_LIST){
-            try {
-                testDataReader.loadNewLevel(GAME_NAME, id);
-            } catch (OogaDataException e) {
-                // TODO: Fix this, Braeden
-                testPassed = false;
-                e.printStackTrace();
+    public void testLoadNewLevel() throws OogaDataException {
+        // for every game load and display every level
+        for (String gameName : GAME_NAMES){
+            System.out.println("Game: " + gameName);
+            List<String> idList = testDataReader.getLevelIDs(gameName);
+            // for every level, load and print every entity
+            for(String id : idList){
+                System.out.println("Level: " + id);
+                Level createdLevel = testDataReader.loadNewLevel(gameName, id);
+                // for every entity, neatly display its information (in a very clue-esque way)
+                for (Entity e : createdLevel.getEntities()){
+                    System.out.println(String.format("Entity named %s with ID %s at position %s with variables %s",
+                            e.getName(), e.getEntityID(), e.getPosition().toString(), e.getVariables().toString()));
+                }
             }
         }
-        assertTrue(testPassed);
     }
 
     @Test
@@ -67,22 +72,23 @@ public class DataReaderTest {
 
     @Test
     public void testGetEntityMap(){
-        Map<String, ImageEntityDefinition> retMap = null;
-        try {
-            //TODO: Add getEntityMap
-            retMap = testDataReader.getImageEntityMap(GAME_NAME);
-//            retMap = null;
-        } catch (OogaDataException e) {
-            e.printStackTrace();
-            fail();
+        for (String gameName : GAME_NAMES){
+            Map<String, ImageEntityDefinition> retMap = null;
+            try {
+                //TODO: Add getEntityMap
+                retMap = testDataReader.getImageEntityMap(gameName);
+            } catch (OogaDataException e) {
+                e.printStackTrace();
+                fail();
+            }
+            for(String key : retMap.keySet()){
+                Entity e = retMap.get(key).makeInstanceAt(0.0,0.0);
+                System.out.print("Name: "+ key + "   ");
+                System.out.print("Height: " + e.getHeight()+"   ");
+                System.out.println("Width: " + e.getWidth());
+            }
+            System.out.println(retMap);
         }
-        for(String key : retMap.keySet()){
-            Entity e = retMap.get(key).makeInstanceAt(0.0,0.0);
-            System.out.print("Name: "+ key + "   ");
-            System.out.print("Height: " + e.getHeight()+"   ");
-            System.out.println("Width: " + e.getWidth());
-        }
-        System.out.println(retMap);
     }
 
     @Test

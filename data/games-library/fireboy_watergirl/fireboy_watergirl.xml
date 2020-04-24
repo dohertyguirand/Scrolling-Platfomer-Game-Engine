@@ -668,9 +668,15 @@
                     <VariableValues>180 500</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
+                    <Name>Border</Name>
+                    <XPos>800</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Name>BlueDiamond</Name>
                     <XPos>500</XPos>
                     <YPos>500</YPos>
+                    <Stationary>true</Stationary>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>RedDiamond</Name>
@@ -765,6 +771,7 @@
                     <YPos>0</YPos>
                     <Width>150</Width>
                     <Height>50</Height>
+                    <Stationary>true</Stationary>
                     <PropertyVariableDependency>
                         <VariableName>Score</VariableName>
                         <PropertyName>Text</PropertyName>
@@ -886,6 +893,7 @@
             <TextEntityInstances>
                 <TextEntityInstance>
                     <Text>Lives: %.0f</Text>
+                    <Stationary>true</Stationary>
                     <Font>Times New Roman</Font>
                     <XPos>850</XPos>
                     <YPos>0</YPos>
@@ -898,6 +906,7 @@
                 </TextEntityInstance>
                 <TextEntityInstance>
                     <Text>Score: %.0f</Text>
+                    <Stationary>true</Stationary>
                     <Font>Times New Roman</Font>
                     <XPos>650</XPos>
                     <YPos>0</YPos>

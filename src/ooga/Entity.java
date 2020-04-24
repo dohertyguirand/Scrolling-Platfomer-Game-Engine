@@ -15,9 +15,9 @@ import ooga.game.behaviors.ConditionalBehavior;
  */
 public interface Entity {
 
-  DoubleProperty stationaryProperty();
+  DoubleProperty nonStationaryProperty();
 
-  void setStationaryProperty(double bit);
+  void setNonStationaryProperty(double bit);
 
   double getX();
 
@@ -185,5 +185,5 @@ public interface Entity {
    * creates the double property stationaryProperty for the entity. 0 if false, 1 if true.
    * @param stationary
    */
-  void makeStationaryProperty(boolean stationary);
+  void makeNonStationaryProperty(boolean stationary);
 }

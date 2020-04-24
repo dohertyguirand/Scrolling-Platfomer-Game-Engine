@@ -31,8 +31,8 @@ public class ViewTextEntity implements ViewEntity {
 
   public void bindGenericProperties(Entity entity, List<DoubleProperty> cameraShift) {
     text.setTextOrigin(VPos.TOP);
-    text.xProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
-    text.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET)).add(entity.stationaryProperty().multiply(cameraShift.get(1))));
+    text.layoutXProperty().bind(entity.xProperty().add(entity.nonStationaryProperty().multiply(cameraShift.get(0))));
+    text.layoutYProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET)).add(entity.nonStationaryProperty().multiply(cameraShift.get(1))));
     // add more properties here if needed
   }
 
