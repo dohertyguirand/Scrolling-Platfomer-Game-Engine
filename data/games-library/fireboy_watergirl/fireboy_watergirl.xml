@@ -223,7 +223,7 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>Jump -1.2</Effect>
+                        <Effect>Jump 0 -1.2 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
@@ -394,7 +394,7 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Jump -1.2</Effect>
+                        <Effect>Jump 0 -1.2 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
@@ -655,7 +655,7 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Fireboy</Name>
-<!--                    <XPos>130</XPos>-->
+                    <XPos>130</XPos>
                     <YPos>500</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
                     <VariableValues>130 500</VariableValues>
