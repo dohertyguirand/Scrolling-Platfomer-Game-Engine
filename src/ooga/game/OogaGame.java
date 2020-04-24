@@ -24,6 +24,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public static final String KEY_ACTIVE_REQUIREMENT = "KeyActive";
   public static final String KEY_PRESSED_REQUIREMENT = "KeyPressed";
   public static final String DEFAULT_INPUT_MAPPINGS = "ooga/game/resources/inputs/keyboard";
+  public static final String DEFAULT_GAME_NAME = "Unnamed";
   private List<String> myLevelIds;
   private Level currentLevel;
   private String myName;
@@ -72,7 +73,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   @Deprecated
   public OogaGame(Level startingLevel, CollisionDetector collisions) {
-    myName = "Unnamed";
+    myName = DEFAULT_GAME_NAME;
     myCollisionDetector = collisions;
     myControlsInterpreter = new KeyboardControls(DEFAULT_INPUT_MAPPINGS);
     currentLevel = startingLevel;
