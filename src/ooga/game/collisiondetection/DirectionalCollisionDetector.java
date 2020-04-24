@@ -6,6 +6,11 @@ import ooga.game.CollisionDetector;
 
 public class DirectionalCollisionDetector implements CollisionDetector {
 
+  public static final String RIGHT_CODE = "Right";
+  public static final String LEFT_CODE = "Left";
+  public static final String DOWN_CODE = "Down";
+  public static final String UP_CODE = "Up";
+
   /**
    * Figure out if the entities are colliding and return the direction that a is colliding with b (e.g. a,b -> right)
    * @param a entity a
@@ -42,24 +47,16 @@ public class DirectionalCollisionDetector implements CollisionDetector {
       // ignore corner collisions
       if(leftShapeRightEdge - rightShapeLeftEdge == bottomShapeTopEdge - topShapeBottomEdge) return null;
       boolean isHorizontal = leftShapeRightEdge - rightShapeLeftEdge < -(bottomShapeTopEdge - topShapeBottomEdge);
-      // if they are equal, deciding factor: check that someone actually has a nonzero velocity in the desired direction, otherwise a collision doesn't make sense
-//        boolean nonZeroVerticalVelocity = a.getVelocity().get(1) != 0 || b.getVelocity().get(1) != 0;
-//        boolean nonZeroHorizontalVelocity = a.getVelocity().get(0) != 0 || b.getVelocity().get(0) != 0;
-//        if (!mustBeVertical && !nonZeroVerticalVelocity && nonZeroHorizontalVelocity) {
-//          return true;
-//        } else if (mustBeVertical && !nonZeroHorizontalVelocity && nonZeroVerticalVelocity) {
-//          return true;
-//        }
       if(isHorizontal){
         if(leftShape == aShape){
-          return "Right";
+          return RIGHT_CODE;
         }
-        return "Left";
+        return LEFT_CODE;
       }
       if(topShape == aShape){
-        return "Down";
+        return DOWN_CODE;
       }
-      return "Up";
+      return UP_CODE;
     }
     return null;
   }
