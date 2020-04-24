@@ -307,6 +307,8 @@ public class OogaDataReader implements DataReader{
                 parameterValues.add(Double.parseDouble(entityElement.getElementsByTagName(parameterName).item(0).getTextContent()));
             } catch (IndexOutOfBoundsException | NumberFormatException e){
                 throw new OogaDataException(String.format(myDataResources.getString("EntityFormatException"), entityName));
+            } catch (NullPointerException e) {
+                throw new OogaDataException(String.format(myDataResources.getString("EntityMissingParamException"), entityName, parameterName));
             }
         }
         return parameterValues;

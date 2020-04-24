@@ -206,7 +206,7 @@
                 </Behavior>
                 <Behavior>
                     <IndependentAction>
-                        <Effect>Gravity 0 0.1</Effect>
+                        <Effect>Gravity 0 0.1 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -381,7 +381,7 @@
                 </Behavior>
                 <Behavior>
                     <IndependentAction>
-                        <Effect>Gravity 0 0.1</Effect>
+                        <Effect>Gravity 0 0.1 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -655,7 +655,7 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Fireboy</Name>
-                    <XPos>130</XPos>
+<!--                    <XPos>130</XPos>-->
                     <YPos>500</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
                     <VariableValues>130 500</VariableValues>
