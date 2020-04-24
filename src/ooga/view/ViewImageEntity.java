@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import ooga.Entity;
 import ooga.data.ImageEntity;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewImageEntity implements ViewEntity {
@@ -16,21 +17,27 @@ public class ViewImageEntity implements ViewEntity {
   private final double Y_OFFSET = Double.parseDouble(myResources.getString("pauseButtonSize"));
   private final ImageView imageView = new ImageView();
 
-  public ViewImageEntity(ImageEntity entity, ObjectProperty<Effect> colorEffect){
+  public ViewImageEntity(ImageEntity entity, ObjectProperty<Effect> colorEffect, List<DoubleProperty> cameraShift){
     bindImageProperty(entity.imageLocationProperty(), colorEffect);
-    bindGenericProperties(entity);
+    bindGenericProperties(entity, cameraShift);
     bindSizeProperties(entity);
   }
 
-  public void bindGenericProperties(Entity entity) {
-    imageView.xProperty().bind(entity.xProperty());
-    imageView.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET)));
+  /**
+   * Binds the x and y position properties to be incremented by the camera shift
+   * Multiplies the camera shift by the entity's stationary property, so entities can be marked to move/not move with camera
+   * @param entity
+   */
+  public void bindGenericProperties(Entity entity, List<DoubleProperty> cameraShift) {
+    imageView.xProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
+    imageView.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.stationaryProperty().multiply(cameraShift.get(1)))));
     // add more properties here if needed
   }
 
   public Node getNode() {
     return imageView;
   }
+
   public DoubleProperty getXProperty(){return imageView.xProperty();}
   @SuppressWarnings("unused")
   public DoubleProperty getYProperty(){return imageView.yProperty();}

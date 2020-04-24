@@ -23,7 +23,5 @@ public interface GameInternal {
 
   void setCameraShiftValue(double xShift, double yShift);
 
-  List<DoubleProperty> getCameraShiftProperties();
-
   List<Double> getCameraShiftValues();
 }

@@ -32,10 +32,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
 
 
-
-
-
-
   public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
     myDataReader = dataReader;
     myName = gameName;
@@ -330,20 +326,20 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
       cameraShiftProperties.get(i).bindBidirectional(properties.get(i));
     }
   }
-  @Override
+
   public void setCameraShiftValue(double xValue, double yValue){
     cameraShiftProperties.get(0).set(xValue);
     cameraShiftProperties.get(1).set(yValue);
   }
 
-  @Override
+
   public List<DoubleProperty> getCameraShiftProperties() {
     return cameraShiftProperties;
   }
 
   @Override
   public List<Double> getCameraShiftValues() {
-    List list = List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
-    return list;
+    return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
+
   }
 }
