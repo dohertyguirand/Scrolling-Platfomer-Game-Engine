@@ -102,11 +102,6 @@ public interface Entity {
   void changeVelocity(double xChange, double yChange);
 
   /**
-   * @param change A list with the coordinates of the change in velocity.
-   */
-  void changeVelocity(List<Double> change);
-
-  /**
    *
    * @param xVelocity The x-value of the new velocity.
    * @param yVelocity The y-value of the new velocity.

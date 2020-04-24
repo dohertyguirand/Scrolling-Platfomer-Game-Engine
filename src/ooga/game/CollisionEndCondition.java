@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * Returns true when two entities have collided with each other at least once.
  */
+@Deprecated
 public class CollisionEndCondition implements LevelEndCondition{
 
   private final String firstEntityName;

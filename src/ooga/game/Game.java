@@ -1,10 +1,13 @@
 package ooga.game;
 
+import javafx.beans.property.DoubleProperty;
 import ooga.Entity;
 import ooga.data.OogaEntity;
 
 import javafx.collections.ObservableList;
 import ooga.UserInputListener;
+
+import java.util.List;
 
 /**
  * An instance of a loaded game that holds all levels and global game data. Must be populated
@@ -37,4 +40,6 @@ public interface Game {
    * @return The String ID of the game's current level.
    */
   String getCurrentLevelId();
+
+  void setCameraShiftProperties(List<DoubleProperty> property);
 }

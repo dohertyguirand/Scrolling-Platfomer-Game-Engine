@@ -7,10 +7,7 @@ import java.util.List;
 import ooga.Entity;
 
 /**
- * This is a rough draft of a Level that will work for now. More should likely be added later.
- * As Braeden doesn't have End Conditions fully fleshed out at this momment, this is just returning false, but
- * this will obviously change once he or the team decides how we are going to represent those.
- * TODO: fully flesh this out to be a working class
+ *
  */
 public class OogaLevel implements Level{
     private final ObservableList<Entity> myEntities;
@@ -25,15 +22,6 @@ public class OogaLevel implements Level{
         //TODO: Allow assigning of an end condition
         myEndCondition = new CollisionEndCondition(List.of("SmallMario","Flagpole"));
         myId = id;
-    }
-
-    public OogaLevel(List<Entity> entities, LevelEndCondition condition){
-//        myEntities = (ObservableList<EntityAPI>) Entities;
-        myEntities = FXCollections.observableArrayList(entities);
-        myNextLevelId = "UNDEFINED_NEXT_LEVEL";
-        myNextLevelId = "1"; //TODO: REMOVE BECAUSE THIS IS A DEBUG LEVEL ID
-        //TODO: Allow assigning of an end condition
-        myEndCondition = new CollisionEndCondition(List.of("SmallMario","Flagpole"));
     }
 
     @Override
@@ -61,6 +49,7 @@ public class OogaLevel implements Level{
     }
 
     @Override
+    @Deprecated
     public boolean checkEndCondition() {
         return myEndCondition.isLevelDone();
     }

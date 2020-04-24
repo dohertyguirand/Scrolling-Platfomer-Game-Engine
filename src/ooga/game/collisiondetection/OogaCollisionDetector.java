@@ -5,6 +5,7 @@ import javafx.scene.shape.Shape;
 import ooga.Entity;
 import ooga.game.CollisionDetector;
 
+@Deprecated
 public class OogaCollisionDetector implements CollisionDetector {
 
   /**
@@ -20,8 +21,4 @@ public class OogaCollisionDetector implements CollisionDetector {
     return null;
   }
 
-  private Shape makeShapeFromEntity(Entity e) {
-    return new Rectangle(e.getPosition().get(0), e.getPosition().get(1),
-            e.getWidth(), e.getHeight());
-  }
 }

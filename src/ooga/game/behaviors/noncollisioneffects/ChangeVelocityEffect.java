@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
+import ooga.OogaDataException;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;

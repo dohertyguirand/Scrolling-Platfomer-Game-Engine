@@ -45,6 +45,7 @@ import static java.lang.Class.forName;
 public class OogaDataReader implements DataReader{
 
     //TODO: put all magic strings (especially xml related stuff) in resource file
+    //TODO: split the data reader into multiple classes
     private static final Object PATH_TO_CLASSES = "ooga.game.behaviors.";
     private final String myLibraryFilePath;   //the path to the folder in which is held every folder for every game that will be displayed and run
     private static final String DEFAULT_LIBRARY_FILE = "data/games-library";
