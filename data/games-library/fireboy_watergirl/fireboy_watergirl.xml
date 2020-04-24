@@ -17,8 +17,8 @@
                     <Direction>Right</Direction>
                 </RequiredCollisionCondition>
                 <IndependentAction>
-                    <Effect>ShiftCamera -100 0</Effect>
-                    <Effect>SetPosition 1200 800</Effect>
+                    <Effect>ShiftCamera -1 0</Effect>
+                    <Effect>ChangePosition -1 0 +</Effect>
                 </IndependentAction>
             </Behavior>
 <!--                <Behavior>-->
@@ -711,6 +711,7 @@
                     <Name>BlueDiamond</Name>
                     <XPos>500</XPos>
                     <YPos>500</YPos>
+                    <Stationary>true</Stationary>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>RedDiamond</Name>
@@ -927,6 +928,7 @@
             <TextEntityInstances>
                 <TextEntityInstance>
                     <Text>Lives: %.0f</Text>
+                    <Stationary>true</Stationary>
                     <Font>Times New Roman</Font>
                     <XPos>850</XPos>
                     <YPos>0</YPos>
@@ -939,6 +941,7 @@
                 </TextEntityInstance>
                 <TextEntityInstance>
                     <Text>Score: %.0f</Text>
+                    <Stationary>true</Stationary>
                     <Font>Times New Roman</Font>
                     <XPos>650</XPos>
                     <YPos>0</YPos>
