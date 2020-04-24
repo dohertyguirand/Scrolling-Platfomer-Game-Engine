@@ -322,4 +322,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public List<Double> getCameraShiftValues() {
     return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
   }
+
+  @Override
+  public Map<String, String> getVariables() {
+    return new HashMap<>(myVariables);
+  }
 }

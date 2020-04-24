@@ -60,20 +60,22 @@ public class BehaviorInstance implements ConditionalBehavior {
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, Map<String, String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
-    if (!checkGameVariableConditions(subject, variables)) {
-      return;
+    if (checkGameVariableConditions(subject,variables)
+    &&  checkEntityVariableConditions(subject,gameInternal,variables)
+    &&  checkInputConditions(inputs)
+    &&  !anyCollisionConditionsUnsatisfied(collisionInfo,requiredCollisionConditions,true)
+    &&  !anyCollisionConditionsUnsatisfied(collisionInfo,bannedCollisionConditions,false)) {
+      doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
     }
-    if (!checkEntityVariableConditions(subject, gameInternal, variables)) {
-      return;
-    }
-    for(Map.Entry<String, List<String>> inputCondition : inputConditions.entrySet()){
+  }
+
+  private boolean checkInputConditions(Map<String, String> inputs) {
+    for(Entry<String, List<String>> inputCondition : inputConditions.entrySet()){
       if (!inputConditionSatisfied(inputs, inputCondition)) {
-        return;
+        return false;
       }
     }
-    if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
-    if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
-    doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
+    return true;
   }
 
   private boolean inputConditionSatisfied(Map<String, String> inputs,
