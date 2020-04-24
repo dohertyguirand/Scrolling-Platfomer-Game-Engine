@@ -2,7 +2,7 @@ package ooga.data;
 
 import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.view.OggaProfile;
+import ooga.view.OogaProfile;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -25,7 +25,12 @@ public class DataReaderTest {
 
     @Test
     public void testGetThumbnails(){
-        List<Thumbnail> thumbnailList = testDataReader.getThumbnails();
+        List<Thumbnail> thumbnailList = null;
+        try {
+            thumbnailList = testDataReader.getThumbnails();
+        } catch (OogaDataException e) {
+            e.printStackTrace();
+        }
         for (Thumbnail t : thumbnailList) {
             System.out.println(String.format("Title: %s \nDescription: %s \nImage: %s\n", t.getTitle(), t.getDescription(), t.getImageFile()));
         }
@@ -49,7 +54,7 @@ public class DataReaderTest {
         boolean testPassed = true;
         for(String id : ID_LIST){
             try {
-                testDataReader.loadLevel(GAME_NAME, id);
+                testDataReader.loadNewLevel(GAME_NAME, id);
             } catch (OogaDataException e) {
                 // TODO: Fix this, Braeden
                 testPassed = false;
@@ -87,9 +92,14 @@ public class DataReaderTest {
 
     @Test
     public void testGetProfiles(){
-        List<OggaProfile>  profiles = testDataReader.getProfiles();
+        List<OogaProfile>  profiles = null;
+        try {
+            profiles = testDataReader.getProfiles();
+        } catch (OogaDataException e) {
+            e.printStackTrace();
+        }
         System.out.println(profiles.size() + " Profiles:");
-        for (OggaProfile profile : profiles){
+        for (OogaProfile profile : profiles){
             assertNotNull(profile.getProfileName(), "Profile name is null");
             assertNotNull(profile.getProfilePhotoPath(), "Profile photo is null");
             System.out.println(String.format("Name %s  Image: %s", profile.getProfileName(), profile.getProfilePhotoPath()));
@@ -98,7 +108,7 @@ public class DataReaderTest {
 
     @Test
     public void testAddNewProfile(){
-        OggaProfile testProfile = new OggaProfile();
+        OogaProfile testProfile = new OogaProfile();
         testProfile.setProfileName("Doug Rattman");
         testProfile.setProfilePhoto("data/users/Rattman.jpeg");
         try {

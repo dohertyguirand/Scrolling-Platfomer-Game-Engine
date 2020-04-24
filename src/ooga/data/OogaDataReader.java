@@ -173,7 +173,7 @@ public class OogaDataReader implements DataReader{
 
 
     @Override
-    public Level loadLevel(String givenGameName, String givenLevelID) throws OogaDataException {
+    public Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException {
         ArrayList<Entity> initialEntities = new ArrayList<>();
         File gameFile = findGame(givenGameName);
         Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
@@ -238,6 +238,36 @@ public class OogaDataReader implements DataReader{
         OogaLevel oogaLevel = new OogaLevel(initialEntities);
         oogaLevel.setNextLevelID(nextLevelID);
         return oogaLevel;
+    }
+
+    @Override
+    public Level loadSavedLevel(String UserName, String Date) throws OogaDataException {
+        for (File userFile : getAllXMLFiles(DEFAULT_USERS_FILE)){
+            // create a new document to parse
+            File fXmlFile = new File(String.valueOf(userFile));
+            Document doc = getDocument(fXmlFile, "Could not parse document.");
+            // find the required information in the document
+            checkKeyExists(doc, "Name", "User file missing username");
+            String loadedName = doc.getElementsByTagName("Name").item(0).getTextContent();
+
+            if(!loadedName.equals(UserName)) continue;
+
+            // find where the save file is stored
+            checkKeyExists(doc, "Date", "User file missing saves");
+            for(int i=0; i<doc.getElementsByTagName("Date").getLength(); i++){
+                String loadedDate = doc.getElementsByTagName("Date").item(i).getTextContent();
+                if(!loadedDate.equals(Date)) continue;
+                String loadFilePath = doc.getElementsByTagName("StateFilePath").item(i).getTextContent();
+                return loadLevelAtPath(loadFilePath);
+            }
+            throw new OogaDataException("User has no save at the given date");
+        }
+        throw new OogaDataException("No user exists with that username");
+    }
+
+    private Level loadLevelAtPath(String loadFilePath) {
+
+        return null;
     }
 
     private Map<String, String> getEntityVariables(Element entityElement) throws OogaDataException {

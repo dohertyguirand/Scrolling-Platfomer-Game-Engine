@@ -53,8 +53,17 @@ public interface DataReader {
    * data file.
    * @throws OogaDataException If the given name isn't in the library or the ID is not in the game.
    */
-  Level loadLevel(String gameName, String levelID) throws OogaDataException;
-  //Level loadLevel(String gameName, String saveFilePath) throws OogaDataException;
+  Level loadNewLevel(String gameName, String levelID) throws OogaDataException;
+
+  /**
+   *
+   * @param UserName the name of the user for whom to load the level
+   * @param Date the date of the level being loaded
+   * @return A fully loaded Level that is runnable by the game and represents the level in the
+   * data file.
+   * @throws OogaDataException If the username doesn't exist or the user doesn't have at that date and time
+   */
+  Level loadSavedLevel(String UserName, String Date) throws OogaDataException;
 
   /**
    * @param gameName: the name of the game for which a map is being requested

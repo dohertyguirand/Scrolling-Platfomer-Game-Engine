@@ -13,7 +13,7 @@
             <Name>Super Mario Bros</Name>
             <Save>
                 <Date></Date>
-                <StateFilePath>saves/mario-save.xml</StateFilePath>
+                <StateFilePath>data/users/Braeden/saves/mario-save.xml</StateFilePath>
             </Save>
             <HighScore>60</HighScore>
         </Game>
