@@ -20,6 +20,7 @@ public class ProfileMenu extends ScrollMenu {
         super();
         makeViewProfiles();
         addProfileImages();
+        makeProfileButton();
     }
 
 
@@ -39,7 +40,7 @@ public class ProfileMenu extends ScrollMenu {
             if (myProfiles != null) {
                 for (ViewProfile profile : myProfiles) {
                     Button button = makeButton(new ImageView(profile.getProfilePhotoPath()), profile.getProfileName());
-                    button.setOnAction(e -> setProfileSelected(profile));
+ //                   button.setOnAction(e -> setProfileSelected(profile));
                     myHBox.getChildren().add(button);
                 }
             }
@@ -61,4 +62,10 @@ public class ProfileMenu extends ScrollMenu {
         addProfileImages();
      }
 
+    private void makeProfileButton() {
+        Button newProfileButton = new Button("Make a new Profile");
+//        newProfileButton.setOnAction(e -> setProfileSelected(profile));
+        myHBox.getChildren().add(newProfileButton);
+
+    }
 }

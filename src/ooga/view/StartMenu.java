@@ -79,4 +79,5 @@ public class StartMenu extends ScrollMenu{
     this.optionSelected.set(null);
     this.optionSelected.set(optionSelected);
   }
+
 }
