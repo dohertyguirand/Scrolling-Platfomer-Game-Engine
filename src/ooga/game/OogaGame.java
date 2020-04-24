@@ -29,7 +29,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private ObservableList<Entity> myEntities;
   private List<Entity> myNewCreatedEntities = new ArrayList<>();
   Map<String, ImageEntityDefinition> myEntityDefinitions;
-  private List<DoubleProperty> cameraShiftProperty;
+  private List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
+
 
 
 
@@ -304,6 +305,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public void goToLevel(String levelID) {
     try {
       currentLevel = loadGameLevel(myName,levelID);
+      setCameraShiftValue(0,0);
     }
     catch (OogaDataException e) {
       //To preserve the pristine gameplay experience, we do nothing (rather than crash).
@@ -313,32 +315,35 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void goToNextLevel() {
     goToLevel(currentLevel.nextLevelID());
+    setCameraShiftValue(0,0);
   }
 
   @Override
   public void restartLevel() {
     goToLevel(currentLevel.getLevelId());
-    
+    setCameraShiftValue(0,0);
   }
 
   @Override
-  public void setCameraShiftProperty(List<DoubleProperty> property){
-    cameraShiftProperty = property;
+  public void setCameraShiftProperties(List<DoubleProperty> properties){
+    for(int i = 0; i < cameraShiftProperties.size(); i ++){
+      cameraShiftProperties.get(i).bindBidirectional(properties.get(i));
+    }
   }
   @Override
   public void setCameraShiftValue(double xValue, double yValue){
-    List<DoubleProperty> list = List.of(new SimpleDoubleProperty(xValue), new SimpleDoubleProperty(yValue));
-    cameraShiftProperty = list;
+    cameraShiftProperties.get(0).set(xValue);
+    cameraShiftProperties.get(1).set(yValue);
   }
 
   @Override
   public List<DoubleProperty> getCameraShiftProperties() {
-    return cameraShiftProperty;
+    return cameraShiftProperties;
   }
 
   @Override
   public List<Double> getCameraShiftValues() {
-    List list = List.of(cameraShiftProperty.get(0).getValue(), cameraShiftProperty.get(0).getValue());
+    List list = List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
     return list;
   }
 }
