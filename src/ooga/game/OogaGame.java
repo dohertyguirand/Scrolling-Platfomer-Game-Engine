@@ -109,7 +109,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
     for(Entity collidingWith : currentLevel.getEntities()){
       //TODO: if needed, compare the exact objects instead of the names (allowing entities with same name to register collisions)
-      if(!entity.getName().equals(collidingWith.getName())) {
+      if(entity.getName().equals(collidingWith.getName())) {
         continue;
       }
       String collisionDirection = myCollisionDetector.getCollisionDirection(entity, collidingWith, elapsedTime);
