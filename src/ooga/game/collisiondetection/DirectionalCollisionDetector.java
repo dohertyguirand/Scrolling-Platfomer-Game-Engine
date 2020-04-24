@@ -1,15 +1,19 @@
 package ooga.game.collisiondetection;
 
+import java.util.ResourceBundle;
 import javafx.scene.shape.Rectangle;
 import ooga.Entity;
 import ooga.game.CollisionDetector;
 
 public class DirectionalCollisionDetector implements CollisionDetector {
 
-  public static final String RIGHT_CODE = "Right";
-  public static final String LEFT_CODE = "Left";
-  public static final String DOWN_CODE = "Down";
-  public static final String UP_CODE = "Up";
+  public static final String RESOURCE_PATH = "ooga/game/collisiondetection/resources/collisiontypes";
+  public static final ResourceBundle directionCodes = ResourceBundle.getBundle(RESOURCE_PATH);
+
+  public static final String RIGHT_CODE = directionCodes.getString("RightCode");
+  public static final String LEFT_CODE = directionCodes.getString("LeftCode");
+  public static final String DOWN_CODE = directionCodes.getString("DownCode");
+  public static final String UP_CODE = directionCodes.getString("UpCode");
 
   /**
    * Figure out if the entities are colliding and return the direction that a is colliding with b (e.g. a,b -> right)
