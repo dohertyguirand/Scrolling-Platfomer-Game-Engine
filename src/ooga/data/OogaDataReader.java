@@ -178,7 +178,7 @@ public class OogaDataReader implements DataReader{
             String gameTitle = doc.getElementsByTagName(myDataResources.getString("GameNameTag")).item(0).getTextContent();
             if (gameTitle.equals(givenGameName)) return f;
         }
-        throw new OogaDataException("Requested game name not found in Library");
+        throw new OogaDataException(myDataResources.getString("GameNotFoundException"));
     }
 
 
@@ -188,27 +188,27 @@ public class OogaDataReader implements DataReader{
         File gameFile = findGame(givenGameName);
         Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
         String nextLevelID = null;
-        Document doc = getDocument(gameFile, "This error should not ever occur");
+        Document doc = getDocument(gameFile, "");
         // in the xml create a list of all 'Level' nodes
-        NodeList levelNodes = doc.getElementsByTagName("Level");
+        NodeList levelNodes = doc.getElementsByTagName(myDataResources.getString("LevelTag"));
         // for each check the ID
         for (int i = 0; i < levelNodes.getLength(); i++) {
             Element level = (Element) levelNodes.item(i);
-            checkKeyExists(level, "ID", "Level is missing ID");
-            String levelID = level.getElementsByTagName("ID").item(0).getTextContent();
+            checkKeyExists(level, myDataResources.getString("LevelIDTag"), myDataResources.getString("MissingIDException"));
+            String levelID = level.getElementsByTagName(myDataResources.getString("LevelIDTag")).item(0).getTextContent();
             if(levelID.equals(givenLevelID)){
-                checkKeyExists(level, "NextLevel", "Level " + levelID + " is missing NextLevel");
-                nextLevelID = level.getElementsByTagName("NextLevel").item(0).getTextContent();
+                checkKeyExists(level, myDataResources.getString("NextLevelTag"), String.format(myDataResources.getString("NextLevelException"), levelID));
+                nextLevelID = level.getElementsByTagName(myDataResources.getString("NextLevelTag")).item(0).getTextContent();
                 //TODO: refactor the below loops into a single loop
-                NodeList imageEntityNodes = level.getElementsByTagName("ImageEntityInstance");
+                NodeList imageEntityNodes = level.getElementsByTagName(myDataResources.getString("ImageEntityInstanceTag"));
                 // for each, save a copy of the specified instance at the specified place
                 for (int j = 0; j < imageEntityNodes.getLength(); j++) {
                     Node currentEntity = imageEntityNodes.item(j);
                     Element entityElement = (Element) currentEntity;
-                    checkKeyExists(entityElement, "Name", "Entity instance is missing name in level " + levelID);
-                    String entityName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
-                    if(!entityMap.containsKey(entityName)) throw new OogaDataException("Unknown entity name: " + entityName);
-                    String[] parameterNames = new String[] {"XPos", "YPos"};
+                    checkKeyExists(entityElement, myDataResources.getString("EntityNameTag"), String.format(myDataResources.getString("EntityNameException"), levelID));
+                    String entityName = entityElement.getElementsByTagName(myDataResources.getString("EntityNameTag")).item(0).getTextContent();
+                    if(!entityMap.containsKey(entityName)) throw new OogaDataException(myDataResources.getString("UnknownEntityException") + entityName);
+                    String[] parameterNames = new String[] {myDataResources.getString("XPosTag"), myDataResources.getString("YPosTag")};
                     List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
                     int[] rowsColsAndGaps = getRowsColsAndGaps(entityElement);
                     ImageEntityDefinition imageEntityDefinition = entityMap.get(entityName);
@@ -231,11 +231,13 @@ public class OogaDataReader implements DataReader{
                 for (int j = 0; j < textEntityNodes.getLength(); j++) {
                     Node currentEntity = textEntityNodes.item(j);
                     Element entityElement = (Element) currentEntity;
-                    checkKeyExists(entityElement, "Text", "Text entity instance did not specify text");
-                    checkKeyExists(entityElement, "Font", "Text entity instance did not specify font");
-                    String text = entityElement.getElementsByTagName("Text").item(0).getTextContent();
-                    String font = entityElement.getElementsByTagName("Font").item(0).getTextContent();
-                    String[] parameterNames = new String[] {"XPos", "YPos", "Width", "Height"};
+                    checkKeyExists(entityElement, myDataResources.getString("TextTag"), "Text entity instance did not specify text");
+                    checkKeyExists(entityElement, myDataResources.getString("FontTag"), "Text entity instance did not specify font");
+                    String text = entityElement.getElementsByTagName(myDataResources.getString("TextTag")).item(0).getTextContent();
+                    String font = entityElement.getElementsByTagName(myDataResources.getString("FontTag")).item(0).getTextContent();
+                    String[] parameterNames = new String[] {myDataResources.getString("XPosTag"),
+                            myDataResources.getString("YPosTag"), myDataResources.getString("WidthTag"),
+                            myDataResources.getString("HeightTag")};
                     List<Double> parameterValues = constructEntity(entityElement, text, parameterNames);
                     int index = 0;
                     Entity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
@@ -255,24 +257,20 @@ public class OogaDataReader implements DataReader{
 
     private Map<String, String> getEntityVariables(Element entityElement) throws OogaDataException {
         Map<String, String> variableMap = new HashMap<>();
-        NodeList nameNodes = entityElement.getElementsByTagName("VariableNames");
-        NodeList valueNodes = entityElement.getElementsByTagName("VariableValues");
+        NodeList nameNodes = entityElement.getElementsByTagName(myDataResources.getString("VariableNamesTag"));
+        NodeList valueNodes = entityElement.getElementsByTagName(myDataResources.getString("VariableValuesTag"));
         if(valueNodes.getLength() > 0 && nameNodes.getLength() > 0) {
             String[] variableNames = nameNodes.item(0).getTextContent().split(" ");
             String[] variableValues = valueNodes.item(0).getTextContent().split(" ");
             if(variableNames.length != variableValues.length){
-                throw new OogaDataException("Entity variable names and values lists must be same length");
+                throw new OogaDataException(myDataResources.getString("EntityVariablesLengthException"));
             }
             for(int i=0; i<variableNames.length; i++){
-                try {
-                    variableMap.put(variableNames[i], variableValues[i]);
-                } catch(NumberFormatException e){
-                    throw new OogaDataException("Entity variables values must be numeric");
-                }
+                variableMap.put(variableNames[i], variableValues[i]);
             }
         }
         else if(valueNodes.getLength() > 0 || nameNodes.getLength() > 0){
-            throw new OogaDataException("Entity cannot have only one of variable names, values");
+            throw new OogaDataException(myDataResources.getString("EntityVariablesOneMissingException"));
         }
         return variableMap;
     }
@@ -285,14 +283,16 @@ public class OogaDataReader implements DataReader{
      */
     private int[] getRowsColsAndGaps(Element entityElement) throws OogaDataException {
         int[] rowsColsAndGap = new int[]{1, 1, 0, 0};
-        String[] keys = new String[]{"Rows", "Columns", "XGap", "YGap"};
+        String[] keys = new String[]{myDataResources.getString("RowsTag"),
+                myDataResources.getString("ColumnsTag"), myDataResources.getString("XGapTag"),
+                myDataResources.getString("YGapTag")};
         for(int i=0; i<rowsColsAndGap.length; i++) {
             NodeList nodes = entityElement.getElementsByTagName(keys[i]);
             if (nodes.getLength() > 0) {
                 try {
                     rowsColsAndGap[i] = Integer.parseInt(nodes.item(0).getTextContent());
                 } catch(NumberFormatException e){
-                    throw new OogaDataException("Row/columns/gap number incorrectly formatted");
+                    throw new OogaDataException(myDataResources.getString("RowColException"));
                 }
             }
         }
@@ -305,7 +305,7 @@ public class OogaDataReader implements DataReader{
             try {
                 parameterValues.add(Double.parseDouble(entityElement.getElementsByTagName(parameterName).item(0).getTextContent()));
             } catch (IndexOutOfBoundsException | NumberFormatException e){
-                throw new OogaDataException("Badly formatted instance of " + entityName + " entity");
+                throw new OogaDataException(String.format(myDataResources.getString("EntityFormatException"), entityName));
             }
         }
         return parameterValues;
@@ -313,13 +313,13 @@ public class OogaDataReader implements DataReader{
 
     private Map<String, String> getEntityVariableDependencies(Element entityElement) throws OogaDataException {
         Map<String, String> dependencyMap = new HashMap<>();
-        NodeList dependencyList = entityElement.getElementsByTagName("PropertyVariableDependency");
+        NodeList dependencyList = entityElement.getElementsByTagName(myDataResources.getString("PropertyVariableDependencyTag"));
         for(int i=0; i<dependencyList.getLength(); i++){
             Element dependencyElement = (Element)dependencyList.item(i);
-            checkKeyExists(dependencyElement, "VariableName", "Property variable dependency variable name missing");
-            checkKeyExists(dependencyElement, "PropertyName", "Property variable dependency property name missing");
-            String variableName = dependencyElement.getElementsByTagName("VariableName").item(0).getTextContent();
-            String propertyName = dependencyElement.getElementsByTagName("PropertyName").item(0).getTextContent();
+            checkKeyExists(dependencyElement, myDataResources.getString("VariableNameTag2"), myDataResources.getString("PVDVariableMissingException"));
+            checkKeyExists(dependencyElement, myDataResources.getString("PropertyNameTag"), myDataResources.getString("PVDPropertyMissingException"));
+            String variableName = dependencyElement.getElementsByTagName(myDataResources.getString("VariableNameTag2")).item(0).getTextContent();
+            String propertyName = dependencyElement.getElementsByTagName(myDataResources.getString("PropertyNameTag")).item(0).getTextContent();
             dependencyMap.put(variableName, propertyName);
         }
         return dependencyMap;
@@ -332,7 +332,7 @@ public class OogaDataReader implements DataReader{
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(gameFile);
             // in the xml create a list of all 'Level' nodes
-            NodeList entityNodes = doc.getElementsByTagName("ImageEntity");
+            NodeList entityNodes = doc.getElementsByTagName(myDataResources.getString("ImageEntityTag"));
             // add all entities to the map
             for (int i = 0; i < entityNodes.getLength(); i++) {
                 // create a new entity
@@ -340,15 +340,15 @@ public class OogaDataReader implements DataReader{
                 // if the entity has an image, it is an imageEntity
                 Element entityElement = (Element) currentEntity;
                 // add the ImageEntity to the map
-                checkKeyExists(entityElement, "Name", "Image entity definition missing name");
-                String newName = entityElement.getElementsByTagName("Name").item(0).getTextContent();
+                checkKeyExists(entityElement, myDataResources.getString("EntityNameTag"), myDataResources.getString("IEDMissingNameException"));
+                String newName = entityElement.getElementsByTagName(myDataResources.getString("EntityNameTag")).item(0).getTextContent();
                 ImageEntityDefinition newIED = createImageEntityDefinition(entityElement, gameFile.getParentFile().getName());
                 newIED.setVariables(getEntityVariables(entityElement));
                 retMap.put(newName, newIED);
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
             // this error will never happen because it would have happened in findGame()
-            throw new OogaDataException("This error should not ever occur");
+            throw new OogaDataException("");
         }
         return retMap;
     }
@@ -370,28 +370,36 @@ public class OogaDataReader implements DataReader{
      * @return
      */
     private ImageEntityDefinition createImageEntityDefinition(Element entityElement, String gameDirectory) throws OogaDataException {
-        for(String key : new String[]{"Name", "Height", "Width", "Image"}){
-            checkKeyExists(entityElement, key, "Entity missing " + key + " data");
+        for(String key : new String[]{myDataResources.getString("EntityNameTag"),
+                myDataResources.getString("HeightTag"), myDataResources.getString("WidthTag"),
+                myDataResources.getString("ImageTag")}){
+            checkKeyExists(entityElement, key, String.format(myDataResources.getString("EntityMissingDataException"), key));
         }
-        String name = entityElement.getElementsByTagName("Name").item(0).getTextContent();
-        double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
-        double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
-        String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
+        String name = entityElement.getElementsByTagName(myDataResources.getString("EntityNameTag")).item(0).getTextContent();
+        double height = Double.parseDouble(entityElement.getElementsByTagName(myDataResources.getString("HeightTag")).item(0).getTextContent());
+        double width = Double.parseDouble(entityElement.getElementsByTagName(myDataResources.getString("WidthTag")).item(0).getTextContent());
+        String imagePath = myDataResources.getString("PathPrefix") + myLibraryFilePath +
+                myDataResources.getString("Slash") + gameDirectory + myDataResources.getString("Slash") +
+                entityElement.getElementsByTagName(myDataResources.getString("ImageTag")).item(0).getTextContent();
         boolean stationary = isStationary(entityElement, false);
 
         List<ConditionalBehavior> behaviors = new ArrayList<>();
-        NodeList nodeList = entityElement.getElementsByTagName("Behavior");
+        NodeList nodeList = entityElement.getElementsByTagName(myDataResources.getString("BehaviorTag"));
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
             Map<String, Boolean> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
-            addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName("RequiredCollisionCondition"), name);
-            addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName("BannedCollisionCondition"), name);
-            addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName("InputCondition"), "Key", "InputRequirement");
-            List<VariableCondition> gameVariableConditions = getGameVariableConditions(behaviorElement.getElementsByTagName("GameVariableCondition"));
-            Map<String,List<VariableCondition>> entityVarConditions = getEntityVariableConditions(behaviorElement.getElementsByTagName("EntityVariableCondition"));
-            behaviors.add(new BehaviorInstance(gameVariableConditions,entityVarConditions,inputConditions,requiredCollisionConditions,bannedCollisionConditions,getActions(behaviorElement)));
+            addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName(myDataResources.getString("RequiredCollisionConditionTag")), name);
+            addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName(myDataResources.getString("BannedCollisionConditionTag")), name);
+            addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName(myDataResources.getString("InputConditionTag")),
+                    myDataResources.getString("KeyTag"), myDataResources.getString("InputRequirementTag"));
+            List<VariableCondition> gameVariableConditions = getGameVariableConditions(behaviorElement.getElementsByTagName(
+                    myDataResources.getString("GameVariableConditionTag")));
+            Map<String,List<VariableCondition>> entityVarConditions = getEntityVariableConditions(behaviorElement.getElementsByTagName(
+                    myDataResources.getString("EntityVariableConditionTag")));
+            behaviors.add(new BehaviorInstance(gameVariableConditions,entityVarConditions,inputConditions,
+                    requiredCollisionConditions,bannedCollisionConditions,getActions(behaviorElement)));
         }
 
         ImageEntityDefinition imageEntityDefinition = new ImageEntityDefinition(name, height, width, imagePath, behaviors);
@@ -400,8 +408,8 @@ public class OogaDataReader implements DataReader{
     }
 
     private boolean isStationary(Element entityElement, boolean defaultValue) {
-        if(entityElement.getElementsByTagName("Stationary").getLength() > 0){
-            return Boolean.parseBoolean(entityElement.getElementsByTagName("Stationary").item(0).getTextContent());
+        if(entityElement.getElementsByTagName(myDataResources.getString("StationaryTag")).getLength() > 0){
+            return Boolean.parseBoolean(entityElement.getElementsByTagName(myDataResources.getString("StationaryTag")).item(0).getTextContent());
         }
         return defaultValue;
     }
@@ -411,8 +419,8 @@ public class OogaDataReader implements DataReader{
         List<VariableCondition> variableConditions = new ArrayList<>();
         for (int i = 0; i < conditions.getLength(); i ++) {
             Element variableConditionElement = (Element) conditions.item(i);
-            String name = variableConditionElement.getElementsByTagName("VariableName").item(0).getTextContent();
-            String requiredValue = variableConditionElement.getElementsByTagName("RequiredValue").item(0).getTextContent();
+            String name = variableConditionElement.getElementsByTagName(myDataResources.getString("VariableNameTag2")).item(0).getTextContent();
+            String requiredValue = variableConditionElement.getElementsByTagName(myDataResources.getString("RequiredValueTag")).item(0).getTextContent();
             VariableComparator comparator = getComparator(variableConditionElement);
             variableConditions.add(new OogaVariableCondition(name,comparator,requiredValue));
         }
@@ -424,12 +432,12 @@ public class OogaDataReader implements DataReader{
         for(int i=0; i<collisionConditionNodes.getLength(); i++){
             Element collisionConditionElement = (Element)collisionConditionNodes.item(i);
             String entity1Info;
-            if(collisionConditionElement.getElementsByTagName("Entity1").getLength() == 0) entity1Info = entityName;
-            else entity1Info = collisionConditionElement.getElementsByTagName("Entity1").item(0).getTextContent();
-            checkKeyExists(collisionConditionElement, "Entity2", "Missing entity2 for collision condition in " + entityName + " entity");
-            checkKeyExists(collisionConditionElement, "Direction", "Missing direction for collision condition in " + entityName + " entity");
-            String entity2Info = collisionConditionElement.getElementsByTagName("Entity2").item(0).getTextContent();
-            String direction = collisionConditionElement.getElementsByTagName("Direction").item(0).getTextContent();
+            if(collisionConditionElement.getElementsByTagName(myDataResources.getString("Entity1Tag")).getLength() == 0) entity1Info = entityName;
+            else entity1Info = collisionConditionElement.getElementsByTagName(myDataResources.getString("Entity1Tag")).item(0).getTextContent();
+            checkKeyExists(collisionConditionElement, myDataResources.getString("Entity2Tag"), myDataResources.getString("MissingEntity2Exception") + entityName);
+            checkKeyExists(collisionConditionElement, myDataResources.getString("DirectionTag"), myDataResources.getString("MissingDirectionException") + entityName );
+            String entity2Info = collisionConditionElement.getElementsByTagName(myDataResources.getString("Entity2Tag")).item(0).getTextContent();
+            String direction = collisionConditionElement.getElementsByTagName(myDataResources.getString("DirectionTag")).item(0).getTextContent();
             collisionConditionsMap.put(List.of(entity1Info, entity2Info), direction);
         }
     }
