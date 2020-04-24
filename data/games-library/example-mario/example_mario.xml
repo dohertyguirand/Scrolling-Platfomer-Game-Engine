@@ -83,7 +83,7 @@
             <Direction>Down</Direction>
           </RequiredCollisionCondition>
           <IndependentAction>
-            <Effect>Jump -1.50</Effect>
+            <Effect>Jump 0.0 -1.50 + 10.0</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Run into a brick downward to stop falling.-->
@@ -139,7 +139,7 @@
             <Direction>Down</Direction>
           </RequiredCollisionCondition>
           <IndependentAction>
-            <Effect>Jump -1.2</Effect>
+            <Effect>Jump 0.0 -1.2 + 10.0</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Run into a flagpole to go to the next level.-->
@@ -166,7 +166,7 @@
 <!--        Exist to obey gravity.-->
         <Behavior>
           <IndependentAction>
-            <Effect>Gravity 0 0.1</Effect>
+            <Effect>Gravity 0 0.1 + 10.0</Effect>
           </IndependentAction>
         </Behavior>
       </Behaviors>
@@ -187,7 +187,7 @@
 <!--      Also follows gravity, like Mario-->
       <Behavior>
         <IndependentAction>
-          <Effect>Gravity 0 0.1</Effect>
+          <Effect>Gravity 0 0.1 + 10.0</Effect>
         </IndependentAction>
       </Behavior>
 <!--      Also runs into terrain like Mario-->
@@ -262,7 +262,7 @@
         <!--      Exist to obey gravity.-->
         <Behavior>
           <IndependentAction>
-<!--            <Effect>Gravity 0 0.1</Effect>-->
+<!--            <Effect>Gravity 0 0.1 + 10.0</Effect>-->
           </IndependentAction>
         </Behavior>
         <!--Testing MoveTowardsEntity-->
