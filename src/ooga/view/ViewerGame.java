@@ -247,7 +247,6 @@ public class ViewerGame {
       }
     });
     myPauseMenu.quitProperty().addListener((o, oldVal, newVal) -> {
-      userInputListener.reactToGameQuit();
       myGameStage.close();
       myAnimation.stop();
       myGame = null;

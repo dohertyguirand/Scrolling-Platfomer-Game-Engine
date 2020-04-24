@@ -1,10 +1,10 @@
 package ooga.game.behaviors;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import ooga.Entity;
 import ooga.game.GameInternal;
-
-import java.util.*;
 
 public class BehaviorInstance implements ConditionalBehavior {
 

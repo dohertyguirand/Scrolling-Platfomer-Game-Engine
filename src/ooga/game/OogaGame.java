@@ -71,14 +71,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     return level;
   }
 
-  @Deprecated
-  public OogaGame(Level startingLevel, CollisionDetector collisions) {
-    myName = DEFAULT_GAME_NAME;
-    myCollisionDetector = collisions;
-    myControlsInterpreter = new KeyboardControls(DEFAULT_INPUT_MAPPINGS);
-    currentLevel = startingLevel;
-  }
-
   @Override
   public ObservableList<Entity> getEntities() {
     return myEntities;
@@ -237,16 +229,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     } catch (OogaDataException e) {
       //if it doesn't work, just keep playing the game.
     }
-  }
-
-  /**
-   * Handles when the command is given to quit the currently running game.
-   * This might be modified to account for identifying which game must close when
-   * there are multiple games open.
-   */
-  @Override
-  public void reactToGameQuit() {
-
   }
 
   /**
