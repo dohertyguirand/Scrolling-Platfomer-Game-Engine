@@ -31,14 +31,14 @@ public class ProfileMenu extends ScrollMenu {
           return;
         }
         for (OogaProfile oogaProfile : oogaProfiles) {
-            ViewProfile viewProfile = new ViewProfile(oogaProfile);
+            ViewProfile viewProfile = new ViewProfile(oogaProfile.getProfileName(),oogaProfile.myProfilePhotoPath);
             myProfiles.add(viewProfile);
         }
     }
      private void addProfileImages() {
             if (myProfiles != null) {
                 for (ViewProfile profile : myProfiles) {
-                    Button button = makeButton(new ImageView(profile.getProfilePhotoPath()), profile.getProfileName());
+                    Button button = makeButton(new ImageView(profile.getProfilePath()), profile.getProfileName());
                     button.setOnAction(e -> setProfileSelected(profile));
                     myHBox.getChildren().add(button);
                 }

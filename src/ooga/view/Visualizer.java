@@ -17,7 +17,7 @@ public class Visualizer extends Application {
   private String profileNameSelected;
   private Stage stage;
   private final DataReader dataReader = new OogaDataReader();
-  private String dateSelected;
+
 
   public static void main(String[] args) {
     launch(args);

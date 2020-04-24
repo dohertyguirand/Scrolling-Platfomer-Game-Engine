@@ -12,29 +12,31 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 
-public class ViewProfile extends OogaProfile {
+public class ViewProfile{
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private static final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
     private static final String DEFAULT_IMAGE_PATH = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
-    private ImageView myProfilePhoto;
-
+    private String profilePhotoPath;
+    private String profileName;
+    private Map<String, Integer> myStats;
 
 
 
     public ViewProfile(String name, String imagePath){
-        myName = name;
-        myProfilePhotoPath = imagePath;
-        setImageView();
-        myHighestScores = new HashMap<>();
+        profileName = name;
+        profilePhotoPath = imagePath;
+        verifyPhotoPath();
+        myStats = new HashMap<>();
     }
-    public ViewProfile(OogaProfile profile){
-        this(profile.getProfileName(),profile.myProfilePhotoPath);
-        myHighestScores = profile.getStats();
+    public ViewProfile(String name, String imagePath, Map<String, Integer> stats){
+        this(name,imagePath);
+        myStats = stats;
     }
 
     @Deprecated
@@ -42,13 +44,12 @@ public class ViewProfile extends OogaProfile {
       this("Testing","ooga/view/Resources/profilephotos/defaultphoto.jpg");
     }
 
-    public void setImageView(){
+    private void verifyPhotoPath(){
         try{
-            myProfilePhoto = new ImageView(myProfilePhotoPath);
+            ImageView example = new ImageView(profilePhotoPath);
         }
         catch (IllegalArgumentException | NullPointerException e){
-            myProfilePhoto = new ImageView(DEFAULT_IMAGE_PATH);
-            myProfilePhotoPath = DEFAULT_IMAGE_PATH;
+            profilePhotoPath = DEFAULT_IMAGE_PATH;
         }
     }
 
@@ -63,7 +64,7 @@ public class ViewProfile extends OogaProfile {
 
     private VBox setNameAndPhoto(){
         VBox nameAndPhoto = new VBox();
-        nameAndPhoto.getChildren().add(new ImageView(myProfilePhotoPath));
+        nameAndPhoto.getChildren().add(new ImageView(profilePhotoPath));
         nameAndPhoto.getChildren().add(setNameText());
         nameAndPhoto.setOnDragEntered(this::handleDroppedPhoto);
         nameAndPhoto.setOnDragDropped(this::handleDroppedPhoto);
@@ -90,10 +91,10 @@ public class ViewProfile extends OogaProfile {
         try {
             bufferedImage = ImageIO.read(filepath);
             if(bufferedImage == null) return;
-            String profilePhotoPath = "src/ooga/view/Resources/profilephotos/" + myName+ "profilephoto.jpg";
+            String profilePhotoPath = "src/ooga/view/Resources/profilephotos/" + profileName+ "profilephoto.jpg";
             File newFile = new File(profilePhotoPath);
             ImageIO.write(bufferedImage,"png",newFile);
-            myProfilePhotoPath = "ooga/view/Resources/profilephotos/" + myName+ "profilephoto.jpg" ;
+            profilePhotoPath = "ooga/view/Resources/profilephotos/" + profileName+ "profilephoto.jpg" ;
             //myPane.setTop(setNameAndPhoto());
             } catch (IOException | NullPointerException | IllegalArgumentException ignored) {
             }
@@ -106,9 +107,9 @@ public class ViewProfile extends OogaProfile {
 
     private void hideTextArea(TextArea textArea,HBox hBox){
         if(!textArea.getText().equals("\n")){
-            myName = textArea.getText();
+            profileName = textArea.getText();
         }
-        Text text = new Text(myName);
+        Text text = new Text(profileName);
         hBox.getChildren().clear();
         hBox.getChildren().add(text);
     }
@@ -119,7 +120,7 @@ public class ViewProfile extends OogaProfile {
     private GridPane setNameText(){
         Text nameHeader = new Text("Name:");
         GridPane gridPane = new GridPane();
-        Text name = new Text(myName);
+        Text name = new Text(profileName);
         HBox hBox = new HBox();
         TextArea textArea = new TextArea();
         textArea.setPrefHeight(25);
@@ -140,15 +141,15 @@ public class ViewProfile extends OogaProfile {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(50);
         int row = 0;
-        if(myHighestScores == null) {
-           setStats(new HashMap<>(){{
+        if(myStats == null) {
+           myStats = (new HashMap<>(){{
                 put("SuperMario", 100);
                 put("Dino", 3500);
                 put("FireBoy and Water Girl", 3000);
             }});
         }
-        for(String game: myHighestScores.keySet()){
-            Integer stat = myHighestScores.get(game);
+        for(String game: myStats.keySet()){
+            Integer stat = myStats.get(game);
             Text gameName = new Text(game);
             Text statText = new Text(stat.toString());
             gridPane.add(gameName,0,row);
@@ -159,7 +160,7 @@ public class ViewProfile extends OogaProfile {
         return gridPane;
     }
 
-
-    public ImageView getProfilePhoto(){return myProfilePhoto;}
+    public String getProfileName(){return profileName;}
+    public String getProfilePath(){return profilePhotoPath;}
 
 }
