@@ -161,7 +161,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     for (List<Double> clickPos : myInputManager.getMouseClickPos()) {
       if (myCollisionDetector.entityAtPoint(entity, clickPos.get(0), clickPos.get(1))) {
         entityInputs = new HashMap<>(allInputs);
-        entityInputs.put(CLICKED_ON_CODE,KEY_ACTIVE_REQUIREMENT);
+        entityInputs.put(CLICKED_ON_CODE,KEY_PRESSED_REQUIREMENT);
         break;
       }
     }
