@@ -10,7 +10,9 @@ public class BehaviorInstance implements ConditionalBehavior {
 
   public static final String ANY_DIRECTION = "ANY";
   public static final String SELF_IDENTIFIER = "SELF";
-  final Map<String, String> inputConditions;
+  public static final String ANY_KEY_REQUIREMENT = "KeyAny";
+  public static final String KEY_INACTIVE_REQUIREMENT = "KeyInactive";
+  final Map<String, List<String>> inputConditions;
   final Map<List<String>, String> requiredCollisionConditions;
   final Map<List<String>, String> bannedCollisionConditions;
   List<VariableCondition> gameVarConditions;
@@ -28,7 +30,7 @@ public class BehaviorInstance implements ConditionalBehavior {
    */
   public BehaviorInstance(List<VariableCondition> gameVariableConditions,
       Map<String, List<VariableCondition>> entityVariableConditions,
-      Map<String, String> inputConditions,
+      Map<String, List<String>> inputConditions,
       Map<List<String>, String> requiredCollisionConditions,
       Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
@@ -64,20 +66,29 @@ public class BehaviorInstance implements ConditionalBehavior {
     if (!checkEntityVariableConditions(subject, gameInternal, variables)) {
       return;
     }
-    System.out.println("CHECKING INPUTS");
-    for(Map.Entry<String, String> inputCondition : inputConditions.entrySet()){
-      System.out.println(inputCondition.getKey());
-      System.out.println(inputCondition.getValue());
-      System.out.println("in = " + inputs);
-      if (!inputCondition.getValue().equals(inputs.get(inputCondition.getKey()))) {
+    for(Map.Entry<String, List<String>> inputCondition : inputConditions.entrySet()){
+      if (!inputConditionSatisfied(inputs, inputCondition)) {
         return;
       }
     }
-    System.out.println("CHECKED INPUTS");
     if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
     if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
     doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
   }
+
+  private boolean inputConditionSatisfied(Map<String, String> inputs,
+      Entry<String, List<String>> inputCondition) {
+    for (String inputType : inputCondition.getValue()) {
+      String keyState = inputs.get(inputCondition.getKey());
+      if (inputType.equals(keyState) ||
+          (inputType.equals(ANY_KEY_REQUIREMENT) && keyState != null) ||
+          (inputType.equals(KEY_INACTIVE_REQUIREMENT) && keyState == null)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
   private boolean checkGameVariableConditions(Entity subject, Map<String, String> gameVariables) {
     return checkVariableConditionsList(subject, gameVariables, gameVarConditions, gameVariables);

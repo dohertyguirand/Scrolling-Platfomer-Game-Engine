@@ -211,8 +211,8 @@
                 </Behavior>
                 <Behavior>
                     <InputCondition>
-                        <Key>UpKeyPressed</Key>
-                        <InputRequirement>true</InputRequirement>
+                        <Key>UpKey</Key>
+                        <InputRequirement>Pressed</InputRequirement>
                     </InputCondition>
                     <RequiredCollisionCondition>
                         <Entity2>universalTerrain</Entity2>

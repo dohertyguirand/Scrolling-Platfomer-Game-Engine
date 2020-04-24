@@ -390,14 +390,13 @@ public class OogaDataReader implements DataReader{
         NodeList nodeList = entityElement.getElementsByTagName(myDataResources.getString("BehaviorTag"));
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
-            Map<String, String> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
             addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName(myDataResources.getString("RequiredCollisionConditionTag")), name);
             addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName(myDataResources.getString("BannedCollisionConditionTag")), name);
 //            addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName(myDataResources.getString("InputConditionTag")),
 //                    myDataResources.getString("KeyTag"), myDataResources.getString("InputRequirementTag"));
-            inputConditions = getInputConditions(behaviorElement.getElementsByTagName(myDataResources.getString("InputConditionTag")),
+            Map<String, List<String>> inputConditions = getInputConditions(behaviorElement.getElementsByTagName(myDataResources.getString("InputConditionTag")),
                     myDataResources.getString("KeyTag"), myDataResources.getString("InputRequirementTag"));
             List<VariableCondition> gameVariableConditions = getGameVariableConditions(behaviorElement.getElementsByTagName(
                     myDataResources.getString("GameVariableConditionTag")));
@@ -412,18 +411,29 @@ public class OogaDataReader implements DataReader{
         return imageEntityDefinition;
     }
 
-    private Map<String,String> getInputConditions(NodeList conditionNodes, String keyName, String valueName) {
-        Map<String,String> conditionMap = new HashMap<>();
+    private Map<String, List<String>> getInputConditions(NodeList conditionNodes, String keyName, String valueName)
+        throws OogaDataException {
+        Map<String,List<String>> conditionMap = new HashMap<>();
         for(int j=0; j<conditionNodes.getLength(); j++){
             String name = ((Element)conditionNodes.item(j)).getElementsByTagName(keyName).item(0).getTextContent();
             Element requirementElement = (Element)(conditionNodes.item(j));
+            conditionMap.putIfAbsent(name,new ArrayList<>());
             NodeList requirementList = requirementElement.getElementsByTagName(valueName);
             //TODO: REMOVE THIS HARD CODED STRING ASAP
-            String requirement = "Active";
-            if (requirementList.getLength() != 0) {
-                requirement = requirementList.item(0).getTextContent();
+            if (requirementList.getLength() == 0) {
+                String requirement = ("KeyAny");
+                conditionMap.get(name).add(requirement);
             }
-            conditionMap.put(name, requirement);
+            else {
+                for (int k = 0; k < requirementList.getLength(); k ++) {
+                    String requirement = requirementList.item(k).getTextContent();
+                    try {
+                        conditionMap.get(name).add(myDataResources.getString(requirement));
+                    } catch (Exception e) {
+                        throw new OogaDataException(String.format(myDataResources.getString("InvalidInputRequirementException"),requirement,name));
+                    }
+                }
+            }
         }
         return conditionMap;
     }

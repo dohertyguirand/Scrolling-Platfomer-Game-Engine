@@ -20,6 +20,8 @@ import ooga.game.collisiondetection.DirectionalCollisionDetector;
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
   public static final String CLICKED_ON_CODE = "ClickedOn";
+  public static final String KEY_ACTIVE_REQUIREMENT = "KeyActive";
+  public static final String KEY_PRESSED_REQUIREMENT = "KeyPressed";
   private List<String> myLevelIds;
   private Level currentLevel;
   private String myName;
@@ -126,15 +128,13 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
     Map<String,String> allInputs = new HashMap<>();
     for (String key : activeKeys) {
-      allInputs.put(key,"Active");
+      allInputs.put(key, KEY_ACTIVE_REQUIREMENT);
     }
     for (String key : pressedKeys) {
-      allInputs.put(key,"Pressed");
+      allInputs.put(key, KEY_PRESSED_REQUIREMENT);
     }
     doEntityFrameUpdates(elapsedTime);
-    System.out.println("ABOUT TO DO ENTITY BEHAVIORS");
     doEntityBehaviors(elapsedTime, allInputs);
-    System.out.println("DONE ENTITY BEHAVIORS");
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
@@ -151,11 +151,8 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private void doEntityBehaviors(double elapsedTime, Map<String, String> allInputs) {
     Map<Entity, Map<String, List<Entity>>> collisionInfo = findDirectionalCollisions(elapsedTime);
     for (Entity entity : currentLevel.getEntities()) {
-      System.out.println("ENTITY: " + entity.getName());
       Map<String,String> entityInputs = findEntityInputs(allInputs, entity);
-      System.out.println("FOUND ENTITY INPUTS");
       entity.doConditionalBehaviors(elapsedTime, entityInputs, myVariables, collisionInfo, this);
-      System.out.println("DONE CONDITIONALS");
     }
   }
 
@@ -164,7 +161,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     for (List<Double> clickPos : myInputManager.getMouseClickPos()) {
       if (myCollisionDetector.entityAtPoint(entity, clickPos.get(0), clickPos.get(1))) {
         entityInputs = new HashMap<>(allInputs);
-        entityInputs.put(CLICKED_ON_CODE,"Active");
+        entityInputs.put(CLICKED_ON_CODE,KEY_ACTIVE_REQUIREMENT);
         break;
       }
     }

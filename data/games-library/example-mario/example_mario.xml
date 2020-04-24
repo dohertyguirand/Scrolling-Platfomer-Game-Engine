@@ -27,6 +27,8 @@
         <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
+            <InputRequirement>Pressed</InputRequirement>
+            <InputRequirement>Active</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput -.1600 0 + .3200</Effect>
@@ -130,7 +132,7 @@
         <Behavior>
           <InputCondition>
             <Key>UpKey2</Key>
-            <InputRequirement>Pressed</InputRequirement>
+            <InputRequirement>Inactive</InputRequirement>
           </InputCondition>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>
