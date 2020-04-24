@@ -133,8 +133,22 @@ public class DataReaderTest {
         OogaProfile testProfile = new OogaProfile();
         testProfile.setProfileName("Doug Rattman");
         testProfile.setProfilePhoto("data/users/Rattman.jpeg");
-            testDataReader.addNewProfile(testProfile);
+        testDataReader.addNewProfile(testProfile);
     }
+
+    @Test
+    public void testLoadSavedLevel() throws OogaDataException {
+        String testName = "Braeden";
+        String testDate = "4/24/20";
+        Level returnedLevel = testDataReader.loadSavedLevel(testName, testDate);
+        System.out.println(String.format("Level: %s", returnedLevel.getLevelId()));
+        for (Entity e : returnedLevel.getEntities()){
+            System.out.println(String.format("\tEntity %s at position %s with variables %s",
+                    e.getName(), e.getPosition().toString(), e.getVariables().toString()));
+        }
+    }
+
+
 
 }
 
