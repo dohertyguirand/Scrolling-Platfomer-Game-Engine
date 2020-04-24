@@ -12,6 +12,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
@@ -59,6 +61,10 @@ public class ViewerGame {
   private Scene pauseScene;
   private String myProfileName;
   private List<DoubleProperty> cameraShift = new ArrayList<>();
+  private Canvas canvas = new Canvas();
+  protected GraphicsContext gc = canvas.getGraphicsContext2D();
+
+
 
 
   public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
@@ -72,19 +78,12 @@ public class ViewerGame {
     //SAM added this as the way to make a Game once file loading works.
     setUpGameEntities();
     myRoot.getChildren().addAll(setUpPauseButton(), setUpDarkModeButton(), setUpNormalModeButton());
-
     colorEffectProperty.set(new ColorAdjust());
+    myRoot.getChildren().add(canvas);
     setUpInputListeners(myGame);
   }
 
 
-  public ViewerGame(String gameName, String profileName,String saveDate, boolean camera) throws OogaDataException {
-    this(gameName,profileName,saveDate);
-    cameraOn = camera;
-    if(focus!= null){
-      myCamera.layoutXProperty().bind(focus.getXProperty());
-    }
-  }
 
   private void setCameraListeners(){
     cameraShift.add(new SimpleDoubleProperty());
@@ -96,11 +95,12 @@ public class ViewerGame {
   }
 
   private void setGame(String saveDate) throws OogaDataException {
-    if(saveDate.equals("")){
+    if(saveDate == null || saveDate.equals("")){
       myGame = new OogaGame(myGameName, new OogaDataReader(),myProfileName);
     }
     else myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
   }
+
 
   private void setUpGameEntities(){
     ObservableList<Entity> gameEntities = myGame.getEntities();
@@ -147,7 +147,7 @@ public class ViewerGame {
   private Node makeViewEntity(Entity entity){
     // TODO: use reflection here or something
     if(entity instanceof ImageEntity){
-      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift ));
+      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift, gc));
       return viewImageEntity.getNode();
     }
     else if(entity instanceof TextEntity){
@@ -243,8 +243,8 @@ public class ViewerGame {
   }
 
   private void step() {
-    myGame.doGameStep(myAnimation.getCurrentTime().toMillis());
     myRoot.requestLayout();
+    myGame.doGameStep(myAnimation.getCurrentTime().toMillis());
   }
 
   @SuppressWarnings("unused")

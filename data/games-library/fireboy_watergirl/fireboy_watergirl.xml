@@ -4,6 +4,34 @@
     <Description>A cooperative two-player game featuring elemental royalty.</Description>
     <Entities>
         <ImageEntity>
+            <Name>Border</Name>
+            <Width>100</Width>
+            <Height>100</Height>
+            <Image>blueDiamond.jpg</Image>
+            <Behaviors>
+                <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity1>Border</Entity1>
+                    <Entity2>Fireboy</Entity2>
+                    <Direction>Right</Direction>
+                </RequiredCollisionCondition>
+                <IndependentAction>
+                    <Effect>ShiftCamera -1 0</Effect>
+                </IndependentAction>
+            </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Border</Entity1>
+                        <Entity2>Fireboy</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ShiftCamera 1 0</Effect>
+                    </IndependentAction>
+                </Behavior>
+            </Behaviors>
+        </ImageEntity>
+        <ImageEntity>
             <Name>Fireboy</Name>
             <Width>50</Width>
             <Height>100</Height>
@@ -666,6 +694,16 @@
                     <YPos>500</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
                     <VariableValues>180 500</VariableValues>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Border</Name>
+                    <XPos>800</XPos>
+                    <YPos>500</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Border</Name>
+                    <XPos>50</XPos>
+                    <YPos>500</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>BlueDiamond</Name>

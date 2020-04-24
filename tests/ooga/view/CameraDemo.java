@@ -47,7 +47,7 @@ public class CameraDemo extends Application {
     private void startGame(String gameName, String profileName) {
         if (gameName != null) {
             try {
-                new ViewerGame(gameName, profileName, "",true);
+                new ViewerGame(gameName, profileName, "");
             } catch (OogaDataException e) {
                 //Sam added this, because he made it possible for the OogaGame constructor to throw
                 // an exception, so that the view can decide what to do when no game is found.

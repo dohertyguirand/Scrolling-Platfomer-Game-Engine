@@ -3,6 +3,8 @@ package ooga.view;
 import javafx.beans.property.*;
 import javafx.scene.Node;
 import javafx.scene.effect.Effect;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ooga.Entity;
@@ -17,7 +19,16 @@ public class ViewImageEntity implements ViewEntity {
   private final double Y_OFFSET = Double.parseDouble(myResources.getString("pauseButtonSize"));
   private final ImageView imageView = new ImageView();
 
+
   public ViewImageEntity(ImageEntity entity, ObjectProperty<Effect> colorEffect, List<DoubleProperty> cameraShift){
+    bindImageProperty(entity.imageLocationProperty(), colorEffect);
+    bindGenericProperties(entity, cameraShift);
+    bindSizeProperties(entity);
+  }
+
+
+
+  public ViewImageEntity(ImageEntity entity, ObjectProperty<Effect> colorEffect, List<DoubleProperty> cameraShift, GraphicsContext gc ){
     bindImageProperty(entity.imageLocationProperty(), colorEffect);
     bindGenericProperties(entity, cameraShift);
     bindSizeProperties(entity);
@@ -29,8 +40,8 @@ public class ViewImageEntity implements ViewEntity {
    * @param entity
    */
   public void bindGenericProperties(Entity entity, List<DoubleProperty> cameraShift) {
-    imageView.xProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
-    imageView.yProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.stationaryProperty().multiply(cameraShift.get(1)))));
+    imageView.layoutXProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
+    imageView.layoutYProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.stationaryProperty().multiply(cameraShift.get(1)))));
     // add more properties here if needed
   }
 
@@ -38,9 +49,12 @@ public class ViewImageEntity implements ViewEntity {
     return imageView;
   }
 
-  public DoubleProperty getXProperty(){return imageView.xProperty();}
+
+  public DoubleProperty getXProperty(){return imageView.layoutXProperty();}
+
   @SuppressWarnings("unused")
-  public DoubleProperty getYProperty(){return imageView.yProperty();}
+  public DoubleProperty getYProperty(){return imageView.layoutYProperty();}
+
 
   private void bindImageProperty(StringProperty location, ObjectProperty<Effect> colorEffect){
     imageView.setImage(new Image(location.getValue()));
