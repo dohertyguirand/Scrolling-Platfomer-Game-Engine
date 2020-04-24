@@ -53,12 +53,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  public OogaGame(String gameName, DataReader dataReader, CollisionDetector detector,
-      String profileName) throws OogaDataException {
-    this(gameName, dataReader, new DirectionalCollisionDetector(), new KeyboardControls(), "");
-    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
-  }
-
   public OogaGame(String gameName, DataReader dataReader, String profileName, String date) throws OogaDataException {
     this(gameName, dataReader, new DirectionalCollisionDetector(), new KeyboardControls(), "");
     currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
@@ -124,15 +118,23 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   private void doUpdateLoop(double elapsedTime) {
     List<String> activeKeys = myInputManager.getActiveKeys();
-    List<String> pressedKeys = new ArrayList<>();
-    for(String keyPressed : myInputManager.getPressedKeys()){
-      //TODO: Smarten this up, so that it doesn't just change the String
-      pressedKeys.add(keyPressed + "Pressed");
+    List<String> pressedKeys = myInputManager.getPressedKeys();
+//    for(String keyPressed : myInputManager.getPressedKeys()){
+//      //TODO: Smarten this up, so that it doesn't just change the String
+//      pressedKeys.add(keyPressed + "Pressed");
+//    }
+
+    Map<String,String> allInputs = new HashMap<>();
+    for (String key : activeKeys) {
+      allInputs.put(key,"Active");
     }
-    List<String> allInputs = new ArrayList<>(activeKeys);
-    allInputs.addAll(pressedKeys);
+    for (String key : pressedKeys) {
+      allInputs.put(key,"Pressed");
+    }
     doEntityFrameUpdates(elapsedTime);
+    System.out.println("ABOUT TO DO ENTITY BEHAVIORS");
     doEntityBehaviors(elapsedTime, allInputs);
+    System.out.println("DONE ENTITY BEHAVIORS");
     doEntityCleanup();
     executeEntityMovement(elapsedTime);
     doEntityCreation();
@@ -146,22 +148,23 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  private void doEntityBehaviors(double elapsedTime, List<String> allInputs) {
+  private void doEntityBehaviors(double elapsedTime, Map<String, String> allInputs) {
     Map<Entity, Map<String, List<Entity>>> collisionInfo = findDirectionalCollisions(elapsedTime);
-    List<Entity> mouseTargets;
-
     for (Entity entity : currentLevel.getEntities()) {
-      List<String> entityInputs = findEntityInputs(allInputs, entity);
+      System.out.println("ENTITY: " + entity.getName());
+      Map<String,String> entityInputs = findEntityInputs(allInputs, entity);
+      System.out.println("FOUND ENTITY INPUTS");
       entity.doConditionalBehaviors(elapsedTime, entityInputs, myVariables, collisionInfo, this);
+      System.out.println("DONE CONDITIONALS");
     }
   }
 
-  private List<String> findEntityInputs(List<String> allInputs, Entity entity) {
-    List<String> entityInputs = allInputs;
+  private Map<String, String> findEntityInputs(Map<String, String> allInputs, Entity entity) {
+    Map<String,String> entityInputs = allInputs;
     for (List<Double> clickPos : myInputManager.getMouseClickPos()) {
       if (myCollisionDetector.entityAtPoint(entity, clickPos.get(0), clickPos.get(1))) {
-        entityInputs = new ArrayList<>(allInputs);
-        entityInputs.add(CLICKED_ON_CODE);
+        entityInputs = new HashMap<>(allInputs);
+        entityInputs.put(CLICKED_ON_CODE,"Active");
         break;
       }
     }
@@ -234,8 +237,11 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToGameSave() {
-    //TODO: Plug this into the data reader once the data reader's functionality works.
-//    myDataReader.saveGameState(String userName, myName);
+    try {
+      myDataReader.saveGameState(myName);
+    } catch (OogaDataException e) {
+      //if it doesn't work, just keep playing the game.
+    }
   }
 
   /**

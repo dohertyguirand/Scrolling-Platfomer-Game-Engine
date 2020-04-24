@@ -27,7 +27,6 @@
         <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
-            <InputRequirement>true</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput -.1600 0 + .3200</Effect>
@@ -38,7 +37,6 @@
         <Behavior>
           <InputCondition>
             <Key>RightKey2</Key>
-            <InputRequirement>true</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput .1600 0 + .3200</Effect>
@@ -131,8 +129,8 @@
 <!--        Press Up while on the ground to jump.-->
         <Behavior>
           <InputCondition>
-            <Key>UpKey2Pressed</Key>
-            <InputRequirement>true</InputRequirement>
+            <Key>UpKey2</Key>
+            <InputRequirement>Pressed</InputRequirement>
           </InputCondition>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>

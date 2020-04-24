@@ -8,9 +8,9 @@ import java.util.*;
 
 public class BehaviorInstance implements ConditionalBehavior {
 
-  public static final String ANY = "ANY";
+  public static final String ANY_DIRECTION = "ANY";
   public static final String SELF_IDENTIFIER = "SELF";
-  final Map<String, Boolean> inputConditions;
+  final Map<String, String> inputConditions;
   final Map<List<String>, String> requiredCollisionConditions;
   final Map<List<String>, String> bannedCollisionConditions;
   List<VariableCondition> gameVarConditions;
@@ -26,21 +26,9 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param bannedCollisionConditions conditions that must be false (see above)
    * @param actions
    */
-  @SuppressWarnings("unused")
-  public BehaviorInstance(Map<String, String> gameVariableConditions,
-                          Map<String, List<Entry<String, String>>> entityVariableConditions,
-                          Map<String, Boolean> inputConditions,
-                          Map<List<String>, String> requiredCollisionConditions,
-                          Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
-    this.inputConditions = inputConditions;
-    this.requiredCollisionConditions = requiredCollisionConditions;
-    this.bannedCollisionConditions = bannedCollisionConditions;
-    this.actions = actions;
-  }
-
   public BehaviorInstance(List<VariableCondition> gameVariableConditions,
       Map<String, List<VariableCondition>> entityVariableConditions,
-      Map<String, Boolean> inputConditions,
+      Map<String, String> inputConditions,
       Map<List<String>, String> requiredCollisionConditions,
       Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
@@ -67,7 +55,7 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
+  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, Map<String, String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
     if (!checkGameVariableConditions(subject, variables)) {
@@ -76,11 +64,16 @@ public class BehaviorInstance implements ConditionalBehavior {
     if (!checkEntityVariableConditions(subject, gameInternal, variables)) {
       return;
     }
-    for(Map.Entry<String, Boolean> inputCondition : inputConditions.entrySet()){
-      if(inputs.contains(inputCondition.getKey()) != inputCondition.getValue()){
+    System.out.println("CHECKING INPUTS");
+    for(Map.Entry<String, String> inputCondition : inputConditions.entrySet()){
+      System.out.println(inputCondition.getKey());
+      System.out.println(inputCondition.getValue());
+      System.out.println("in = " + inputs);
+      if (!inputCondition.getValue().equals(inputs.get(inputCondition.getKey()))) {
         return;
       }
     }
+    System.out.println("CHECKED INPUTS");
     if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
     if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
     doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
@@ -180,7 +173,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info, String entity2Info, String direction) {
     for(Entity entity : collisionInfo.keySet()){
       if(entityMatches(entity1Info, entity)){
-        if(direction.equals(ANY)){
+        if(direction.equals(ANY_DIRECTION)){
           for(String possibleDirection : collisionInfo.get(entity).keySet()){
             if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
           }

@@ -390,12 +390,14 @@ public class OogaDataReader implements DataReader{
         NodeList nodeList = entityElement.getElementsByTagName(myDataResources.getString("BehaviorTag"));
         for (int i=0; i<nodeList.getLength(); i++){
             Element behaviorElement = (Element) nodeList.item(i);
-            Map<String, Boolean> inputConditions = new HashMap<>();
+            Map<String, String> inputConditions = new HashMap<>();
             Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
             Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
             addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName(myDataResources.getString("RequiredCollisionConditionTag")), name);
             addCollisionConditions(bannedCollisionConditions, behaviorElement.getElementsByTagName(myDataResources.getString("BannedCollisionConditionTag")), name);
-            addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName(myDataResources.getString("InputConditionTag")),
+//            addOneParameterConditions(inputConditions, behaviorElement.getElementsByTagName(myDataResources.getString("InputConditionTag")),
+//                    myDataResources.getString("KeyTag"), myDataResources.getString("InputRequirementTag"));
+            inputConditions = getInputConditions(behaviorElement.getElementsByTagName(myDataResources.getString("InputConditionTag")),
                     myDataResources.getString("KeyTag"), myDataResources.getString("InputRequirementTag"));
             List<VariableCondition> gameVariableConditions = getGameVariableConditions(behaviorElement.getElementsByTagName(
                     myDataResources.getString("GameVariableConditionTag")));
@@ -408,6 +410,22 @@ public class OogaDataReader implements DataReader{
         ImageEntityDefinition imageEntityDefinition = new ImageEntityDefinition(name, height, width, imagePath, behaviors);
         imageEntityDefinition.setStationary(stationary);
         return imageEntityDefinition;
+    }
+
+    private Map<String,String> getInputConditions(NodeList conditionNodes, String keyName, String valueName) {
+        Map<String,String> conditionMap = new HashMap<>();
+        for(int j=0; j<conditionNodes.getLength(); j++){
+            String name = ((Element)conditionNodes.item(j)).getElementsByTagName(keyName).item(0).getTextContent();
+            Element requirementElement = (Element)(conditionNodes.item(j));
+            NodeList requirementList = requirementElement.getElementsByTagName(valueName);
+            //TODO: REMOVE THIS HARD CODED STRING ASAP
+            String requirement = "Active";
+            if (requirementList.getLength() != 0) {
+                requirement = requirementList.item(0).getTextContent();
+            }
+            conditionMap.put(name, requirement);
+        }
+        return conditionMap;
     }
 
     private boolean isStationary(Element entityElement, boolean defaultValue) {

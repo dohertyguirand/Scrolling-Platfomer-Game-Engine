@@ -33,7 +33,8 @@ class GotoLevelEffectTest {
   @Test
   void testGotoLevel() throws OogaDataException {
 
-    ConditionalBehavior behavior = new BehaviorInstance(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new ArrayList<>());
+//    ConditionalBehavior behavior = new BehaviorInstance(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new ArrayList<>());
+    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new ArrayList<>());
     assertFalse(myGame.getEntities().isEmpty());
     myGame.getEntities().get(0).setConditionalBehaviors(List.of(behavior));
     myGame.doGameStep(ELAPSED_TIME);

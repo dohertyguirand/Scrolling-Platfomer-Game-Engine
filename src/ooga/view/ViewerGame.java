@@ -80,7 +80,10 @@ public class ViewerGame {
     if(saveDate == null || saveDate.equals("")){
       myGame = new OogaGame(myGameName, new OogaDataReader(), new DirectionalCollisionDetector(), new KeyboardControls(),myProfileName);
     }
-    else myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
+    else {
+      System.out.println("USING ALT GAME CONSTRUCTOR");
+      myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
+    }
   }
 
   private void setUpGameEntities(){
