@@ -13,16 +13,9 @@ import ooga.data.OogaDataReader;
 
 import java.util.ResourceBundle;
 
-public abstract class ScrollMenu {
+public abstract class ScrollMenu extends Pane{
 
-    protected final DataReader myDataReader;
-    protected HBox myHBox;
-    protected final Pane myPane;
-
-    private final Scene myScene;
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
-    @SuppressWarnings("FieldCanBeLocal")
-    private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private final double IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
     private final double IMAGE_WIDTH = Double.parseDouble(myResources.getString("gameImageWidth"));
@@ -32,31 +25,22 @@ public abstract class ScrollMenu {
     private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
     private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
     private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
+    protected final DataReader myDataReader;
+    protected HBox myHBox;
 
 
     protected ScrollMenu(){
         myDataReader = new OogaDataReader();
-        Group myRoot = new Group();
-        myPane = new Pane();
-        myPane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-
-        ImageView imgView = new ImageView(myResources.getString("menuBackgroundLocation"));
-        imgView.setFitWidth(WINDOW_WIDTH);
-        imgView.setFitHeight(WINDOW_HEIGHT);
-
-        myPane.getChildren().addAll(imgView);
-        myRoot.getChildren().addAll(myPane, horizontalScroller());
-
-        myScene = new Scene(myRoot);
+        double windowHeight = Double.parseDouble(myResources.getString("windowHeight"));
+        this.setWidth(WINDOW_WIDTH);
+        this.setHeight(windowHeight);
+//        ImageView imgView = new ImageView(myResources.getString("menuBackgroundLocation"));
+//        imgView.setFitWidth(WINDOW_WIDTH);
+//        imgView.setFitHeight(windowHeight);
+       // this.getChildren().addAll(imgView);
+        this.getChildren().addAll( horizontalScroller());
         String SCROLLBAR_CSS_LOCATION = myResources.getString("scrollBarCSSLocation");
-        myScene.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
-    }
-
-
-
-
-    public Scene getScene() {
-        return myScene;
+        this.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
     }
 
 

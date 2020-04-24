@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 
 public abstract class OptionMenu extends BorderPane {
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
-    @SuppressWarnings("FieldCanBeLocal")
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private static final String STYLESHEET = "ooga/view/Resources/PauseMenu.css";

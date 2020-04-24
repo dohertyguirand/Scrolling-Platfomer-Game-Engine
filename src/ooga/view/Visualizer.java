@@ -35,7 +35,7 @@ public class Visualizer extends Application {
 
   private Scene setUpStartMenuDisplay() {
     ProfileMenu profileMenu = new ProfileMenu();
-    Scene profileMenuScene = profileMenu.getScene();
+    Scene profileMenuScene = new Scene(profileMenu,profileMenu.getWidth(),profileMenu.getHeight());
     profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> showStartMenu(pnewVal, profileMenuScene));
     return profileMenuScene;
   }
@@ -43,7 +43,7 @@ public class Visualizer extends Application {
   private void showStartMenu(ViewProfile profile, Scene returnScene){
     Button backToProfileMenu = makeBackButton(returnScene);
     StartMenu startMenu = new StartMenu(profile,backToProfileMenu);
-    Scene gameMenuScene = startMenu.getScene();
+    Scene gameMenuScene = new Scene(startMenu,startMenu.getWidth(),startMenu.getHeight());
     profileNameSelected = profile.getProfileName();
     startMenu.selectedProperty().addListener((o, oldVal, newVal) -> showLoadMenu(newVal, gameMenuScene));
     stage.setScene(gameMenuScene);

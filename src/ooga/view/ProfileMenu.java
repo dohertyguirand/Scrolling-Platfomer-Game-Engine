@@ -12,7 +12,8 @@ import java.util.List;
 public class ProfileMenu extends ScrollMenu {
     private final ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
     private List<ViewProfile> myProfiles = new ArrayList<>();
-    private String addNewProfilePhoto = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
+    private String addNewProfilePhoto = "ooga/view/Resources/profilephotos/Makenewprofile.png";
+    private static final String ADD_PROFILE = "Add a New Profile";
 
 
 
@@ -21,7 +22,6 @@ public class ProfileMenu extends ScrollMenu {
         makeViewProfiles();
         addProfileImages();
     }
-
 
     private void makeViewProfiles() {
         List<OogaProfile> oogaProfiles;
@@ -43,10 +43,10 @@ public class ProfileMenu extends ScrollMenu {
                     myHBox.getChildren().add(button);
                 }
             }
-//         ImageView defaultImage = new ImageView(addNewProfilePhoto);
-//         Button button = makeButton(defaultImage,"Add a New Profile");
-//         button.setOnAction(e-> );
-//         myHBox.getChildren().add(button);
+         ImageView defaultImage = new ImageView(addNewProfilePhoto);
+         Button button = makeButton(defaultImage,ADD_PROFILE);
+         //button.setOnAction(e-> );
+         myHBox.getChildren().add(button);
         }
 
      private void setProfileSelected(ViewProfile profile){
@@ -56,6 +56,7 @@ public class ProfileMenu extends ScrollMenu {
 
      public ObjectProperty<ViewProfile> profileSelected(){ return profileSelected; }
 
+     @Deprecated
      public void setMyProfiles(List<ViewProfile> viewProfiles){
         myProfiles = viewProfiles;
         addProfileImages();

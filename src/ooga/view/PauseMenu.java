@@ -2,26 +2,16 @@ package ooga.view;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 import java.util.*;
 
 
 public class PauseMenu extends OptionMenu {
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
-  @SuppressWarnings("FieldCanBeLocal")
-
-
-
   private final String ICON_STYLE = myResources.getString("iconcss");
   private static final String PAUSE_MENU_TITLE = "Game Paused";
   private static final double ICON_SIZE = 50;

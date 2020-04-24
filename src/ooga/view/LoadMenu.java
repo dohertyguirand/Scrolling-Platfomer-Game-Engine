@@ -2,23 +2,11 @@ package ooga.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import ooga.data.DataReader;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class LoadMenu extends OptionMenu {
     private static final String NEWGAME = "New Game";

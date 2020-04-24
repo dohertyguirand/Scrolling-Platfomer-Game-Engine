@@ -38,8 +38,8 @@ public class StartMenu extends ScrollMenu{
     } catch (OogaDataException ignored){
       //TODO: actually show an error message
     }
-    myPane.getChildren().add(setProfileData(profile));
-    myPane.getChildren().add(backButton);
+    this.getChildren().add(setProfileData(profile));
+    this.getChildren().add(backButton);
   }
 
   private void addImages(List<Thumbnail> thumbnails){
