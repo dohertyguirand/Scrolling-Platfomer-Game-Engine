@@ -21,6 +21,16 @@
                     <Effect>ChangePosition -1 0 +</Effect>
                 </IndependentAction>
             </Behavior>
+<!--                <Behavior>-->
+<!--                    <RequiredCollisionCondition>-->
+<!--                        <Entity1>Border</Entity1>-->
+<!--                        <Entity2>Fireboy</Entity2>-->
+<!--                        <Direction>Left</Direction>-->
+<!--                    </RequiredCollisionCondition>-->
+<!--                    <IndependentAction>-->
+<!--                        <Effect>ShiftCamera -100 0</Effect>-->
+<!--                    </IndependentAction>-->
+<!--                </Behavior>-->
             </Behaviors>
         </ImageEntity>
         <ImageEntity>

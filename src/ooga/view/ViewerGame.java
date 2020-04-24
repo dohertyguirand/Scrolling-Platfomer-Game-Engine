@@ -87,8 +87,8 @@ public class ViewerGame {
     cameraShift.add(new SimpleDoubleProperty());
     cameraShift.add(new SimpleDoubleProperty());
     myGame.setCameraShiftProperties(cameraShift);
-    myCamera.layoutXProperty().bind(cameraShift.get(0));
-    myCamera.layoutYProperty().bind(cameraShift.get(1));
+    myCamera.translateXProperty().bind(cameraShift.get(0));
+    myCamera.translateYProperty().bind(cameraShift.get(1));
     myGameScene.setCamera(myCamera);
   }
 

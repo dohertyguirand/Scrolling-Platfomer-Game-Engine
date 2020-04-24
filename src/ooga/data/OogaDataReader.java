@@ -206,6 +206,7 @@ public class OogaDataReader implements DataReader{
                     String[] parameterNames = new String[] {"XPos", "YPos"};
                     List<Double> parameterValues = constructEntity(entityElement, entityName, parameterNames);
                     int[] rowsColsAndGaps = getRowsColsAndGaps(entityElement);
+                    ImageEntityDefinition imageEntityDefinition = entityMap.get(entityName);
                     double xPos;
                     double yPos = parameterValues.get(1);
                     for(int row=0; row<rowsColsAndGaps[0]; row++){
@@ -214,11 +215,11 @@ public class OogaDataReader implements DataReader{
                             Entity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
                             entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                             entity.setVariables(getEntityVariables(entityElement));
-                            entity.makeStationaryProperty(isStationary(entityElement));
+                            entity.makeStationaryProperty(isStationary(entityElement, imageEntityDefinition.getStationary()));
                             initialEntities.add(entity);
-                            xPos += entityMap.get(entityName).getMyWidth()+rowsColsAndGaps[2];
+                            xPos += imageEntityDefinition.getMyWidth()+rowsColsAndGaps[2];
                         }
-                        yPos += entityMap.get(entityName).getMyHeight()+rowsColsAndGaps[3];
+                        yPos += imageEntityDefinition.getMyHeight()+rowsColsAndGaps[3];
                     }
                 }
                 NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
@@ -236,8 +237,7 @@ public class OogaDataReader implements DataReader{
                             parameterValues.get(index++),  parameterValues.get(index));
                     entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                     entity.setVariables(getEntityVariables(entityElement));
-                    entity.makeStationaryProperty(isStationary(entityElement));
-                    System.out.println(entity.stationaryProperty().getValue());
+                    entity.makeStationaryProperty(isStationary(entityElement, false));
                     initialEntities.add(entity);
                 }
                 break;
@@ -372,7 +372,7 @@ public class OogaDataReader implements DataReader{
         double height = Double.parseDouble(entityElement.getElementsByTagName("Height").item(0).getTextContent());
         double width = Double.parseDouble(entityElement.getElementsByTagName("Width").item(0).getTextContent());
         String imagePath = "file:" + myLibraryFilePath + "/" + gameDirectory + "/" + entityElement.getElementsByTagName("Image").item(0).getTextContent();
-        boolean stationary = isStationary(entityElement);
+        boolean stationary = isStationary(entityElement, false);
 
         List<ConditionalBehavior> behaviors = new ArrayList<>();
         NodeList nodeList = entityElement.getElementsByTagName("Behavior");
@@ -394,11 +394,11 @@ public class OogaDataReader implements DataReader{
         return imageEntityDefinition;
     }
 
-    private boolean isStationary(Element entityElement) {
+    private boolean isStationary(Element entityElement, boolean defaultValue) {
         if(entityElement.getElementsByTagName("Stationary").getLength() > 0){
             return Boolean.parseBoolean(entityElement.getElementsByTagName("Stationary").item(0).getTextContent());
         }
-        return false;
+        return defaultValue;
     }
 
     private List<VariableCondition> getGameVariableConditions(NodeList conditions)
