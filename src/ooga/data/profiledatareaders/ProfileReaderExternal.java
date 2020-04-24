@@ -1,4 +1,4 @@
-package ooga.data;
+package ooga.data.profiledatareaders;
 
 import ooga.OogaDataException;
 import ooga.view.OogaProfile;

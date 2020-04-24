@@ -1,10 +1,12 @@
-package ooga.view;
+package ooga.view.menus;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import ooga.OogaDataException;
+import ooga.view.OogaProfile;
+import ooga.view.ViewProfile;
 
 import java.util.ArrayList;
 import java.util.List;

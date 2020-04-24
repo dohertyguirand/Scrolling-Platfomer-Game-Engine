@@ -1,7 +1,8 @@
-package ooga.data.xmlReaders;
+package ooga.data.profiledatareaders;
 
 import ooga.OogaDataException;
-import ooga.data.ProfileReaderExternal;
+import ooga.data.XMLDataReader;
+import ooga.data.profiledatareaders.ProfileReaderExternal;
 import ooga.view.OogaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

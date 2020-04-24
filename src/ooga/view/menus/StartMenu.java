@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.menus;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
 import ooga.data.Thumbnail;
+import ooga.view.ViewProfile;
 
 
 import java.util.List;

@@ -8,6 +8,7 @@ import ooga.game.Game;
  * Has methods that are also under the XMLGameDataReader title, since this might be a part of the
  * internal data API.
  */
+@Deprecated
 public interface GameRecorder {
   /**
    * Saves the current state of the game so it can easily be loaded from where the player

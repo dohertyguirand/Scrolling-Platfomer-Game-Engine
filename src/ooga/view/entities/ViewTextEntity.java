@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.entities;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -9,6 +9,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import ooga.Entity;
 import ooga.data.entities.TextEntity;
+import ooga.view.entities.ViewEntity;
 
 import java.util.List;
 import java.util.ResourceBundle;

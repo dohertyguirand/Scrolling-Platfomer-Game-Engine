@@ -1,4 +1,4 @@
-package ooga.data;
+package ooga.data.gamedatareaders;
 
 import ooga.OogaDataException;
 import ooga.game.behaviors.Action;

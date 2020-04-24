@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.menus;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -8,10 +8,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import ooga.data.GameDataReaderExternal;
-import ooga.data.ProfileReaderExternal;
-import ooga.data.xmlReaders.XMLGameDataReader;
-import ooga.data.xmlReaders.XMLProfileReader;
+import ooga.data.gamedatareaders.GameDataReaderExternal;
+import ooga.data.profiledatareaders.ProfileReaderExternal;
+import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.data.profiledatareaders.XMLProfileReader;
 
 import java.util.ResourceBundle;
 

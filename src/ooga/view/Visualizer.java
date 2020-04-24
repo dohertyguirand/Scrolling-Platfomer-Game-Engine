@@ -6,8 +6,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
-import ooga.data.GameDataReaderExternal;
-import ooga.data.xmlReaders.XMLGameDataReader;
+import ooga.data.gamedatareaders.GameDataReaderExternal;
+import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.view.menus.LoadMenu;
+import ooga.view.menus.ProfileMenu;
+import ooga.view.menus.StartMenu;
 
 public class Visualizer extends Application {
 

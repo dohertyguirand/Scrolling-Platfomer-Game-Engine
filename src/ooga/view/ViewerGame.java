@@ -22,8 +22,11 @@ import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.entities.ImageEntity;
 import ooga.data.entities.TextEntity;
-import ooga.data.xmlReaders.XMLGameDataReader;
+import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.game.OogaGame;
+import ooga.view.entities.ViewImageEntity;
+import ooga.view.entities.ViewTextEntity;
+import ooga.view.menus.PauseMenu;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

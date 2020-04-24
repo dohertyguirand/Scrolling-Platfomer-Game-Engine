@@ -1,4 +1,4 @@
-package ooga.data.xmlReaders;
+package ooga.data;
 
 import ooga.OogaDataException;
 import org.w3c.dom.Document;

@@ -1,4 +1,4 @@
-package ooga.data.xmlReaders;
+package ooga.data.gamedatareaders;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,10 +8,10 @@ import java.util.*;
 
 import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.data.GameDataReaderInternal;
+import ooga.data.Thumbnail;
+import ooga.data.XMLDataReader;
 import ooga.data.entities.ImageEntityDefinition;
 import ooga.data.entities.TextEntity;
-import ooga.data.Thumbnail;
 import ooga.game.Game;
 import ooga.game.Level;
 import ooga.game.OogaLevel;
