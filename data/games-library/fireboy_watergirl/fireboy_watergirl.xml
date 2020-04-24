@@ -4,36 +4,6 @@
     <Description>A cooperative two-player game featuring elemental royalty.</Description>
     <Entities>
         <ImageEntity>
-            <Name>Border</Name>
-            <Width>100</Width>
-            <Height>100</Height>
-            <Image>blueDiamond.png</Image>
-            <Stationary>true</Stationary>
-            <Behaviors>
-                <Behavior>
-                <RequiredCollisionCondition>
-                    <Entity1>Border</Entity1>
-                    <Entity2>Fireboy</Entity2>
-                    <Direction>Right</Direction>
-                </RequiredCollisionCondition>
-                <IndependentAction>
-                    <Effect>ShiftCamera -1 0</Effect>
-                    <Effect>ChangePosition -1 0 +</Effect>
-                </IndependentAction>
-            </Behavior>
-<!--                <Behavior>-->
-<!--                    <RequiredCollisionCondition>-->
-<!--                        <Entity1>Border</Entity1>-->
-<!--                        <Entity2>Fireboy</Entity2>-->
-<!--                        <Direction>Left</Direction>-->
-<!--                    </RequiredCollisionCondition>-->
-<!--                    <IndependentAction>-->
-<!--                        <Effect>ShiftCamera -100 0</Effect>-->
-<!--                    </IndependentAction>-->
-<!--                </Behavior>-->
-            </Behaviors>
-        </ImageEntity>
-        <ImageEntity>
             <Name>Fireboy</Name>
             <Width>50</Width>
             <Height>100</Height>
@@ -702,11 +672,6 @@
                     <XPos>800</XPos>
                     <YPos>500</YPos>
                 </ImageEntityInstance>
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>Border</Name>-->
-<!--                    <XPos>50</XPos>-->
-<!--                    <YPos>500</YPos>-->
-<!--                </ImageEntityInstance>-->
                 <ImageEntityInstance>
                     <Name>BlueDiamond</Name>
                     <XPos>500</XPos>

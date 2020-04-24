@@ -3,8 +3,6 @@ package ooga.view;
 import javafx.beans.property.*;
 import javafx.scene.Node;
 import javafx.scene.effect.Effect;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ooga.Entity;
@@ -26,34 +24,20 @@ public class ViewImageEntity implements ViewEntity {
     bindSizeProperties(entity);
   }
 
-
-
-  public ViewImageEntity(ImageEntity entity, ObjectProperty<Effect> colorEffect, List<DoubleProperty> cameraShift, GraphicsContext gc ){
-    bindImageProperty(entity.imageLocationProperty(), colorEffect);
-    bindGenericProperties(entity, cameraShift);
-    bindSizeProperties(entity);
-  }
-
   /**
    * Binds the x and y position properties to be incremented by the camera shift
    * Multiplies the camera shift by the entity's stationary property, so entities can be marked to move/not move with camera
    * @param entity
    */
   public void bindGenericProperties(Entity entity, List<DoubleProperty> cameraShift) {
-    imageView.layoutXProperty().bind(entity.xProperty().add(entity.stationaryProperty().multiply(cameraShift.get(0))));
-    imageView.layoutYProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.stationaryProperty().multiply(cameraShift.get(1)))));
+    imageView.layoutXProperty().bind(entity.xProperty().add(entity.nonStationaryProperty().multiply(cameraShift.get(0))));
+    imageView.layoutYProperty().bind(entity.yProperty().add(new SimpleDoubleProperty(Y_OFFSET).add(entity.nonStationaryProperty().multiply(cameraShift.get(1)))));
     // add more properties here if needed
   }
 
   public Node getNode() {
     return imageView;
   }
-
-
-  public DoubleProperty getXProperty(){return imageView.xProperty();}
-
-  @SuppressWarnings("unused")
-  public DoubleProperty getYProperty(){return imageView.yProperty();}
 
 
   private void bindImageProperty(StringProperty location, ObjectProperty<Effect> colorEffect){

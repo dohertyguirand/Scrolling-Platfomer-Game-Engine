@@ -215,7 +215,7 @@ public class OogaDataReader implements DataReader{
                             Entity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
                             entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                             entity.setVariables(getEntityVariables(entityElement));
-                            entity.makeStationaryProperty(isStationary(entityElement, imageEntityDefinition.getStationary()));
+                            entity.makeNonStationaryProperty(isStationary(entityElement, imageEntityDefinition.getStationary()));
                             initialEntities.add(entity);
                             xPos += imageEntityDefinition.getMyWidth()+rowsColsAndGaps[2];
                         }
@@ -237,7 +237,7 @@ public class OogaDataReader implements DataReader{
                             parameterValues.get(index++),  parameterValues.get(index));
                     entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
                     entity.setVariables(getEntityVariables(entityElement));
-                    entity.makeStationaryProperty(isStationary(entityElement, false));
+                    entity.makeNonStationaryProperty(isStationary(entityElement, false));
                     initialEntities.add(entity);
                 }
                 break;
