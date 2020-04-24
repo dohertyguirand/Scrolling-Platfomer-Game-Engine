@@ -1,4 +1,4 @@
-package ooga.game;
+package ooga.game.controls;
 
 public interface ControlsInterpreter {
 

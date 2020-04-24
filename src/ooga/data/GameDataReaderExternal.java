@@ -1,36 +1,40 @@
 package ooga.data;
 
-import java.util.List;
-import java.util.Map;
-
 import ooga.OogaDataException;
+import ooga.data.entities.ImageEntityDefinition;
 import ooga.game.Game;
 import ooga.game.Level;
-import ooga.view.OogaProfile;
+
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Handles the interaction with game data files, including interpretation and writing.
- * Forms the external side of data interaction so that the rest of the program doesn't
- * need to know how we're storing games.
+ *  * Forms the external side of data interaction so that the rest of the program doesn't
+ *  * need to know how we're storing games.
  */
-//TODO: make sure OogaDataReader methods are here too
-public interface DataReader {
+public interface GameDataReaderExternal {
+
+  String PATH_TO_CLASSES = "ooga.game.behaviors.";
+  String LIBRARY_FILE_PATH = "data/games-library";   //the path to the folder in which is held every folder for every game that will be displayed and run
+  String ENGLISH_PROPERTIES_LOCATION = "ooga/data/resources/english";
+  String EFFECTS_PROPERTIES_LOCATION = "ooga/data/resources/effects";
+  String ACTIONS_PROPERTIES_LOCATION = "ooga/data/resources/actions";
+  String COMPARATORS_PROPERTIES_LOCATION = "ooga/data/resources/comparators";
+  ResourceBundle myEffectsResources = ResourceBundle.getBundle(EFFECTS_PROPERTIES_LOCATION);
+  ResourceBundle myActionsResources = ResourceBundle.getBundle(ACTIONS_PROPERTIES_LOCATION);
+  ResourceBundle myComparatorsResources = ResourceBundle.getBundle(COMPARATORS_PROPERTIES_LOCATION);
+  ResourceBundle myEnglishResources = ResourceBundle.getBundle(ENGLISH_PROPERTIES_LOCATION);
+  String SLASH = myEnglishResources.getString("Slash");
 
   /**
    * Returns a list of thumbnails for all the available games.
    * Returns an empty list if there are no files containing thumbnails.
+   *
    * @return The list of thumbnails of games.
    */
   List<Thumbnail> getThumbnails() throws OogaDataException;
-
-  /**
-   * Returns the filepaths to every game file in the library folder. Doesn't guarantee
-   * that it will scan for full validity of every file, but makes basic checks.
-   * Returns an empty list if library has no game files. Filepaths start in the data folder and
-   * begin with "data/games-library/"
-   * @return A list of filepaths of game data files in the given folder.
-   */
-  List<String> getGameFilePaths();
 
   /**
    * Give a Game a list of level ID's in the order that they're listed in the .xml files
@@ -48,14 +52,13 @@ public interface DataReader {
   Map<String, String> getVariableMap(String gameName) throws OogaDataException;
 
   /**
-   * @param gameName The name of the game
-   * @param levelID  The ID of the level the game is asking for
+   * @param givenGameName The name of the game
+   * @param givenLevelID  The ID of the level the game is asking for
    * @return A fully loaded Level that is runnable by the game and represents the level in the
    * data file.
    * @throws OogaDataException If the given name isn't in the library or the ID is not in the game.
    */
-  Level loadLevel(String gameName, String levelID) throws OogaDataException;
-  //Level loadLevel(String gameName, String saveFilePath) throws OogaDataException;
+  Level loadLevel(String givenGameName, String givenLevelID) throws OogaDataException;
 
   /**
    * @param gameName: the name of the game for which a map is being requested
@@ -80,25 +83,4 @@ public interface DataReader {
    * @throws OogaDataException if there is no valid file at the given filepath.
    */
   Game loadGameState(String filePath) throws OogaDataException;
-
-  /**
-   * @param entityName The name of the entity to find the image resource for.
-   * @param gameFile The name of the game file to look for the entity inside of.
-   * @return The image file location associated with the identified entity.
-   * @throws OogaDataException If the entity doesn't exist, or there's no valid game file given,
-   * or the given entity has no associated image.
-   */
-  String getEntityImage(String entityName, String gameFile) throws OogaDataException;
-
-  /**
-   * @return A list of Profiles according to the data stored in the Users folder. Returns an empty list if there are no
-   * existing profiles
-   */
-  List<OogaProfile> getProfiles() throws OogaDataException;
-
-  /**
-   * Adds a given profile to the profile folder
-   * @param newProfile the profile to add to the saved profile folder
-   */
-  void addNewProfile(OogaProfile newProfile) throws OogaDataException;
 }

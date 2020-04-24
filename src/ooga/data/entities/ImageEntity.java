@@ -1,4 +1,4 @@
-package ooga.data;
+package ooga.data.entities;
 
 import java.util.Map;
 import javafx.beans.property.SimpleStringProperty;

@@ -20,7 +20,9 @@ import javafx.util.Duration;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
-import ooga.data.*;
+import ooga.data.entities.ImageEntity;
+import ooga.data.entities.TextEntity;
+import ooga.data.xmlReaders.XMLGameDataReader;
 import ooga.game.OogaGame;
 
 import java.lang.reflect.InvocationTargetException;
@@ -76,9 +78,9 @@ public class ViewerGame {
 
   private void setGame(String saveDate) throws OogaDataException {
     if(saveDate == null || saveDate.equals("")){
-      myGame = new OogaGame(myGameName, new OogaDataReader(),myProfileName);
+      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, myProfileName);
     }
-    else myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
+    else myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, myProfileName, saveDate);
   }
 
   private void setUpGameEntities(){

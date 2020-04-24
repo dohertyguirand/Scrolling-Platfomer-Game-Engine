@@ -17,8 +17,6 @@ import ooga.data.OogaEntity;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import org.junit.jupiter.api.Test;
 import ooga.game.behaviors.noncollisioneffects.ChangeVelocityEffect;
-import ooga.game.collisiondetection.DirectionalCollisionDetector;
-import org.junit.jupiter.api.Test;
 
 
 public class OogaGameTest {

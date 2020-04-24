@@ -14,14 +14,19 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.*;
 import ooga.UserInputListener;
+import ooga.data.entities.ImageEntityDefinition;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
+import ooga.game.controls.ControlsInterpreter;
+import ooga.game.controls.InputManager;
+import ooga.game.controls.KeyboardControls;
+import ooga.game.controls.OogaInputManager;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
   private List<String> myLevelIds;
   private Level currentLevel;
   private final String myName;
-  private DataReader myDataReader;
+  private GameDataReaderExternal myDataReader;
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
   private final InputManager myInputManager = new OogaInputManager();
@@ -32,10 +37,10 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private final List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
 
 
-  public OogaGame(String gameName, DataReader dataReader) throws OogaDataException {
-    myDataReader = dataReader;
+  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal) throws OogaDataException {
+    myDataReader = gameDataReaderExternal;
     myName = gameName;
-    //ist<List<String>> basicGameInfo = myDataReader.getBasicGameInfo(gameName);
+    //ist<List<String>> basicGameInfo = myXMLDataReader.getBasicGameInfo(gameName);
     myLevelIds = myDataReader.getLevelIDs(gameName);
     //TODO: Make the type of collision detector configurable.
     myCollisionDetector = new DirectionalCollisionDetector();
@@ -45,22 +50,19 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myEntityDefinitions = myDataReader.getImageEntityMap(gameName);
 
     myVariables = new HashMap<>();
-//    for(int i=0; i<basicGameInfo.get(1).size(); i++){
-//      myVariables.put(basicGameInfo.get(1).get(i), Double.parseDouble(basicGameInfo.get(2).get(i)));
-//    }
 
-    for (String key : myDataReader.getVariableMap(gameName).keySet()){
-      myVariables.put(key, myDataReader.getVariableMap(gameName).get(key));
+    for (String key : gameDataReaderExternal.getVariableMap(gameName).keySet()){
+      myVariables.put(key, gameDataReaderExternal.getVariableMap(gameName).get(key));
     }
   }
 
-  public OogaGame(String gameName, DataReader dataReader, String profileName) throws OogaDataException {
-    this(gameName, dataReader);
+  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, String profileName) throws OogaDataException {
+    this(gameName, gameDataReaderExternal);
     currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 
-  public OogaGame(String gameName, DataReader dataReader, String profileName, String date) throws OogaDataException {
-    this(gameName, dataReader);
+  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, String profileName, String date) throws OogaDataException {
+    this(gameName, gameDataReaderExternal);
     currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 

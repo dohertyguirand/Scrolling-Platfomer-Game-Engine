@@ -2,7 +2,7 @@ package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.Map;
 import ooga.Entity;
-import ooga.data.ImageEntity;
+import ooga.data.entities.ImageEntity;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;

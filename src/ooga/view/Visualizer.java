@@ -6,8 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
-import ooga.data.DataReader;
-import ooga.data.OogaDataReader;
+import ooga.data.GameDataReaderExternal;
+import ooga.data.xmlReaders.XMLGameDataReader;
 
 public class Visualizer extends Application {
 
@@ -15,7 +15,7 @@ public class Visualizer extends Application {
   private static final String START_MENU_TITLE = "Choose a Game";
   private String profileNameSelected;
   private Stage stage;
-  private final DataReader dataReader = new OogaDataReader();
+  private final GameDataReaderExternal myDataReader = new XMLGameDataReader() {};
   private String dateSelected;
 
   public static void main(String[] args) {
@@ -51,7 +51,7 @@ public class Visualizer extends Application {
 
   private void showLoadMenu(String gameName, Scene returnScene){
     Button backToStartMenu = makeBackButton(returnScene);
-    LoadMenu loadMenu = new LoadMenu(gameName, profileNameSelected,dataReader, backToStartMenu);
+    LoadMenu loadMenu = new LoadMenu(gameName, profileNameSelected, myDataReader, backToStartMenu);
     loadMenu.getDateSelected().addListener((d,dold,dnew)-> startGame(gameName,profileNameSelected,dnew));
     stage.setScene(loadMenu.getScene());
   }

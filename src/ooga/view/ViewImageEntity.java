@@ -6,7 +6,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ooga.Entity;
-import ooga.data.ImageEntity;
+import ooga.data.entities.ImageEntity;
 
 import java.util.List;
 import java.util.ResourceBundle;

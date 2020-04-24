@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import ooga.data.DataReader;
+import ooga.data.GameDataReaderExternal;
 
 import java.util.ResourceBundle;
 
@@ -33,15 +33,15 @@ public class LoadMenu {
     private static final double TITLE_FONT_SIZE = 70;
     private final String gameName;
     private final String profileName;
-    private final DataReader dataReader;
+    private final GameDataReaderExternal myDataReader;
     private final BorderPane root = new BorderPane();
     private final Scene myScene = new Scene(root);
     private final StringProperty dateSelected = new SimpleStringProperty();
 
-    public LoadMenu(String gameName, String profileName, DataReader reader, Node backButton){
+    public LoadMenu(String gameName, String profileName, GameDataReaderExternal reader, Node backButton){
         this.gameName = gameName;
         this.profileName = profileName;
-        dataReader = reader;
+        myDataReader = reader;
         root.getStylesheets().add(STYLESHEET);
         ImageView imgView = new ImageView(myResources.getString("menuBackgroundLocation"));
         imgView.setFitWidth(WINDOW_WIDTH);

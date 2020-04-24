@@ -1,7 +1,8 @@
-package ooga.data;
+package ooga.data.entities;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import ooga.data.entities.OogaEntity;
 
 public class TextEntity extends OogaEntity {
 

@@ -1,4 +1,4 @@
-package ooga.game;
+package ooga.game.controls;
 
 import java.util.ResourceBundle;
 
@@ -9,7 +9,7 @@ public class KeyboardControls implements ControlsInterpreter {
   private final ResourceBundle myResources;
 
   public KeyboardControls() {
-    myResources = ResourceBundle.getBundle("ooga/game/resources/inputs/keyboard");
+    myResources = ResourceBundle.getBundle("ooga/game/controls/inputs/keyboard");
   }
 
   @Override

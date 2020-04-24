@@ -28,7 +28,7 @@ public class TestVelocityCollisionDetector {
 //
 //import java.util.List;
 //import ooga.Entity;
-//import ooga.data.ImageEntity;
+//import ooga.data.entities.ImageEntity;
 //import ooga.game.collisiondetection.VelocityCollisionDetector;
 //import org.junit.jupiter.api.Test;
 //

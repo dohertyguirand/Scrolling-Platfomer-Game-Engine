@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import ooga.Entity;
-import ooga.data.TextEntity;
+import ooga.data.entities.TextEntity;
 
 import java.util.List;
 import java.util.ResourceBundle;

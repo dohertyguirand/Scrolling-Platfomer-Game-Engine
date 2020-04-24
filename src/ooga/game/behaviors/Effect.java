@@ -26,7 +26,7 @@ public interface Effect {
   /**
    * attempts to convert the given data into a double. If it can't, tries to get a value from game variables, then from entity variables.
    *  If that doesn't work, uses default value.
-   * @param data string given by DataReader
+   * @param data string given by XMLGameDataReader
    * @param subject entity the effect is taking place on
    * @param variables game variables
    * @param defaultValue what to return if no match is found
@@ -46,7 +46,7 @@ public interface Effect {
   /**
    * tries to get a value from game variables, then from entity variables.
    *  If that doesn't work, returns the original value.
-   * @param data string given by DataReader
+   * @param data string given by XMLGameDataReader
    * @param subject entity the effect is taking place on
    * @param variables game variables
    * @return the parsed value

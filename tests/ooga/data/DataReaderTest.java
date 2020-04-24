@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a class that just tests DataReader and makes sure it is working correctly.
+ * This is a class that just tests XMLGameDataReader and makes sure it is working correctly.
  * @author braedenward
  */
 public class DataReaderTest {
@@ -105,7 +105,7 @@ public class DataReaderTest {
 //import static org.junit.jupiter.api.Assertions.*;
 //
 ///**
-// * This is a class that just tests DataReader and makes sure it is working correctly.
+// * This is a class that just tests XMLGameDataReader and makes sure it is working correctly.
 // * @author braedenward
 // */
 //public class DataReaderTest {

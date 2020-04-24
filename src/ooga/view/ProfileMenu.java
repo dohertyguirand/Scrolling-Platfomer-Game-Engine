@@ -14,8 +14,6 @@ public class ProfileMenu extends ScrollMenu {
     private List<ViewProfile> myProfiles = new ArrayList<>();
     private String addNewProfilePhoto = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
 
-
-
     protected ProfileMenu(){
         super();
         makeViewProfiles();
@@ -26,7 +24,7 @@ public class ProfileMenu extends ScrollMenu {
     private void makeViewProfiles() {
         List<OogaProfile> oogaProfiles;
         try {
-          oogaProfiles = myDataReader.getProfiles();
+          oogaProfiles = myProfileReader.getProfiles();
         }catch (OogaDataException e){
           return;
         }

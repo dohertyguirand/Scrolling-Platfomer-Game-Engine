@@ -8,14 +8,17 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import ooga.data.DataReader;
-import ooga.data.OogaDataReader;
+import ooga.data.GameDataReaderExternal;
+import ooga.data.ProfileReaderExternal;
+import ooga.data.xmlReaders.XMLGameDataReader;
+import ooga.data.xmlReaders.XMLProfileReader;
 
 import java.util.ResourceBundle;
 
 public abstract class ScrollMenu {
 
-    protected final DataReader myDataReader;
+    protected final ProfileReaderExternal myProfileReader;
+    protected final GameDataReaderExternal myGameDataReader;
     protected HBox myHBox;
     protected final Pane myPane;
 
@@ -35,7 +38,8 @@ public abstract class ScrollMenu {
 
 
     protected ScrollMenu(){
-        myDataReader = new OogaDataReader();
+        myProfileReader = new XMLProfileReader() {};
+        myGameDataReader = new XMLGameDataReader() {};
         Group myRoot = new Group();
         myPane = new Pane();
         myPane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);

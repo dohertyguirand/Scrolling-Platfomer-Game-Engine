@@ -23,7 +23,7 @@ public class StartMenu extends ScrollMenu{
   public StartMenu() {
     super();
     try {
-      List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+      List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
     } catch (OogaDataException ignored){
       //TODO: actually show an error message
@@ -33,7 +33,7 @@ public class StartMenu extends ScrollMenu{
   public StartMenu(ViewProfile profile, Node backButton){
     super();
     try {
-      List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+      List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
     } catch (OogaDataException ignored){
       //TODO: actually show an error message
