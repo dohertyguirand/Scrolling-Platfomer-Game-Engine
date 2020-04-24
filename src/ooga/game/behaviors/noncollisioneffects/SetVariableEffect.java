@@ -44,8 +44,7 @@ public class SetVariableEffect extends TimeDelayedEffect {
       variables.put(variableName, Effect.doVariableSubstitutions(variableValue, subject, variables));
     }
     if(subject.getVariable(variableName) != null){
-      subject.addVariable(variableName, variableValue);
+      subject.addVariable(variableName, Effect.doVariableSubstitutions(variableValue, subject, variables));
     }
-    //TODO: add ability to set value of one entity variable to that of another variable?
   }
 }

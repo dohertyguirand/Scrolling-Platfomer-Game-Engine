@@ -1,50 +1,46 @@
 package ooga.view;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import ooga.data.DataReader;
 
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class LoadMenu {
-    private ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+    private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
+    @SuppressWarnings("FieldCanBeLocal")
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private static final String STYLESHEET = "ooga/view/Resources/PauseMenu.css";
-    private  String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
-    private  String TITLE_STYLE = myResources.getString("titlecss");
+    private final String SCROLL_PANE_STYLE = myResources.getString("scrollpanecss");
+    private final String TITLE_STYLE = myResources.getString("titlecss");
     private  String ICON_STYLE = myResources.getString("iconcss");
     private static final String PAUSE_MENU_TITLE_KEY = "pauseMenuTitle";
     private static final double SPACING = 30;
     private static final double ICON_SIZE = 50;
     private static final double TITLE_FONT_SIZE = 70;
-    private String gameName;
-    private String profileName;
-    private DataReader dataReader;
-    private BorderPane root = new BorderPane();
-    private Scene myScene = new Scene(root);
-    private StringProperty dateSelected = new SimpleStringProperty();
+    private final String gameName;
+    private final String profileName;
+    private final DataReader dataReader;
+    private final BorderPane root = new BorderPane();
+    private final Scene myScene = new Scene(root);
+    private final StringProperty dateSelected = new SimpleStringProperty();
 
-    public LoadMenu(String gamename, String profilename, DataReader reader, Node backButton){
-        gameName = gamename;
-        profileName = profilename;
+    public LoadMenu(String gameName, String profileName, DataReader reader, Node backButton){
+        this.gameName = gameName;
+        this.profileName = profileName;
         dataReader = reader;
         root.getStylesheets().add(STYLESHEET);
         ImageView imgView = new ImageView(myResources.getString("menuBackgroundLocation"));
@@ -61,6 +57,7 @@ public class LoadMenu {
     }
     public Scene getScene() {return myScene;}
     private Button makeButton(String date, String text){
+        //TODO: refactor this
         Button button = new Button(text);
        // ImageView icon = new ImageView();
        // icon.setStyle(ICON_STYLE);

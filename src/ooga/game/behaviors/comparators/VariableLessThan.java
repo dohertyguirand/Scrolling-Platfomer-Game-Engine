@@ -1,6 +1,6 @@
 package ooga.game.behaviors.comparators;
 
-
+@SuppressWarnings("unused")
 public class VariableLessThan implements VariableComparator {
 
   @Override

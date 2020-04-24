@@ -15,7 +15,7 @@ public class Visualizer extends Application {
   private static final String START_MENU_TITLE = "Choose a Game";
   private String profileNameSelected;
   private Stage stage;
-  private DataReader dataReader = new OogaDataReader();
+  private final DataReader dataReader = new OogaDataReader();
   private String dateSelected;
 
   public static void main(String[] args) {
@@ -52,9 +52,7 @@ public class Visualizer extends Application {
   private void showLoadMenu(String gameName, Scene returnScene){
     Button backToStartMenu = makeBackButton(returnScene);
     LoadMenu loadMenu = new LoadMenu(gameName, profileNameSelected,dataReader, backToStartMenu);
-    loadMenu.getDateSelected().addListener((d,dold,dnew)->{
-        startGame(gameName,profileNameSelected,dnew);
-    });
+    loadMenu.getDateSelected().addListener((d,dold,dnew)-> startGame(gameName,profileNameSelected,dnew));
     stage.setScene(loadMenu.getScene());
   }
 

@@ -133,12 +133,7 @@ public class DataReaderTest {
         OogaProfile testProfile = new OogaProfile();
         testProfile.setProfileName("Doug Rattman");
         testProfile.setProfilePhoto("data/users/Rattman.jpeg");
-        try {
             testDataReader.addNewProfile(testProfile);
-        } catch (OogaDataException e) {
-            e.printStackTrace();
-            fail();
-        }
     }
 
 }

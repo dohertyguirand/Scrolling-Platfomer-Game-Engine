@@ -33,7 +33,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   private List<Double> myVelocity;
   private final Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
-
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private List<Entity> myCreatedEntities = new ArrayList<>();
@@ -59,19 +58,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public String getName() { return myName; }
 
   @Override
-  public double getX() { return xPos.get(); }
-
-  @Override
   public DoubleProperty xProperty() { return xPos; }
 
   @Override
-  public double getY() { return yPos.get(); }
-
-  @Override
   public DoubleProperty yProperty() { return yPos; }
-
-  @Override
-  public boolean isActiveInView() { return activeInView.get();}
 
   @Override
   public BooleanProperty activeInViewProperty() { return activeInView; }
@@ -102,13 +92,12 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public void updateSelf(double elapsedTime, Map<String, String> variables,
-                         GameInternal game) {
-    applyFrictionHorizontal(elapsedTime);
-    applyFrictionVertical(elapsedTime);
+  public void updateSelf(double elapsedTime) {
+    applyFrictionHorizontal();
+    applyFrictionVertical();
   }
 
-  private void applyFrictionHorizontal(double elapsedTime) {
+  private void applyFrictionHorizontal() {
     if (Math.abs(myVelocity.get(0)) < FRICTION_ACCELERATION) {
       setVelocity(0,getVelocity().get(1));
     }
@@ -117,7 +106,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     }
   }
 
-  private void applyFrictionVertical(double elapsedTime) {
+  private void applyFrictionVertical() {
 
     if (Math.abs(myVelocity.get(1)) < FRICTION_ACCELERATION) {
       setVelocity(getVelocity().get(0),0);
@@ -136,12 +125,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       double[] newVelocity = new double[]{myVelocity.get(0), myVelocity.get(1)};
       newVelocity[velocityIndexes[i]] = 0.0;
       if(blockedMovements.get(directions[i]) && directionalVelocities[i] > 0) {
-//        System.out.println("blocked info");
-//        System.out.println(blockedMovements.toString());
         setVelocity(newVelocity[0], newVelocity[1]);
       }
     }
-    moveByVelocity(elapsedTime);
+    changePosition(myVelocity,elapsedTime);
   }
 
   /**
@@ -161,6 +148,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public List<Double> getVelocity() {
+    //TODO: fix or remove this method
     List<Double> ret = new ArrayList<>(myVelocity);
     for (List<Double> vector : myVelocityVectors) {
       ret.set(0,ret.get(0)+vector.get(0));
@@ -179,14 +167,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     isDestroyed = true;
   }
 
-  private void moveByVelocity(double elapsedTime) {
-//    move(myVelocity.get(0) * elapsedTime,myVelocity.get(1) * elapsedTime);
-    changePosition(myVelocity,elapsedTime);
-//    while (!myVelocityVectors.isEmpty()) {
-//      changePosition(myVelocityVectors.pop(),elapsedTime);
-//      myVelocityVectors.pop();
-  }
-
   private void changePosition(List<Double> velocity, double elapsedTime) {
     xPos.set(xPos.get() + (velocity.get(0) * elapsedTime));
     yPos.set(yPos.get() + (velocity.get(1) * elapsedTime));
@@ -195,11 +175,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void changeVelocity(double xChange, double yChange) {
     setVelocity(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
-  }
-
-  @Override
-  public void changeVelocity(List<Double> change) {
-    changeVelocity(change.get(0),change.get(1));
   }
 
   @Override
@@ -268,9 +243,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
                                      Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    //System.out.println(getName() + " is updating!");
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
-      //System.out.println("\tbehavior: " + conditionalBehavior.getClass().toString());
       conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);
     }
   }
@@ -327,11 +300,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public void makeNonStationaryProperty(boolean stationary) {
     if (stationary) nonStationaryProperty.set(0);
     else nonStationaryProperty.set(1);
-  }
-
-  @Override
-  public void setNonStationaryProperty(double value){
-    this.nonStationaryProperty.setValue(value);
   }
 
   @Override
