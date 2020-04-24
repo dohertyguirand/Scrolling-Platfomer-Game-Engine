@@ -241,8 +241,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    * @param paused whether or not the button clicked was pause or resume
    */
   @Override
+  @SuppressWarnings("EmptyMethod")
   public void reactToPauseButton(boolean paused) {
-    //TODO: make this do something??
+
   }
 
   @Override

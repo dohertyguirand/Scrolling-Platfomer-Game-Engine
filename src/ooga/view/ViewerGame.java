@@ -115,7 +115,7 @@ public class ViewerGame {
   }
 
   private Node makeViewEntity(Entity entity){
-    // TODO: use reflection here or something
+    // TODO: use reflection here?
     if(entity instanceof ImageEntity){
       ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift));
       return viewImageEntity.getNode();
