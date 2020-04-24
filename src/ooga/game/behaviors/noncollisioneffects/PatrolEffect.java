@@ -1,5 +1,8 @@
 package ooga.game.behaviors.noncollisioneffects;
 
+import static ooga.game.behaviors.BehaviorUtil.getDotProduct;
+import static ooga.game.behaviors.BehaviorUtil.getMagnitude;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -93,11 +96,5 @@ public class PatrolEffect extends TimeDelayedEffect {
     return difference;
   }
 
-  private double getMagnitude(List<Double> vector) {
-    return Math.sqrt(Math.pow(vector.get(0),2) + Math.pow(vector.get(1),2));
-  }
 
-  private double getDotProduct(List<Double> a, List<Double> b) {
-    return (a.get(0) * b.get(0)) + (a.get(1) * b.get(1));
-  }
 }

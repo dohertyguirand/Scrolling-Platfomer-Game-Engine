@@ -262,8 +262,15 @@
         <!--      Exist to obey gravity.-->
         <Behavior>
           <IndependentAction>
-            <Effect>Gravity 0 0.1</Effect>
+<!--            <Effect>Gravity 0 0.1</Effect>-->
           </IndependentAction>
+        </Behavior>
+        <!--Testing MoveTowardsEntity-->
+        <Behavior>
+          <NameDeterminedAction>
+            <Args>SmallMario</Args>
+            <Effect>MoveTowardEntity 0.1300 15.0</Effect>
+          </NameDeterminedAction>
         </Behavior>
         <!--      Also runs into terrain like Mario-->
         <Behavior>
@@ -320,7 +327,7 @@
 <!--        Moves right every frame-->
         <Behavior>
           <IndependentAction>
-            <Effect>VelocityInput 0.1300 0.0 + 0.2600</Effect>
+<!--            <Effect>VelocityInput 0.1300 0.0 + 0.2600</Effect>-->
           </IndependentAction>
         </Behavior>
       </Behaviors>
@@ -358,7 +365,7 @@
       </EntityVariableCondition>
         <IndependentAction>
 <!--          <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>-->
-          <Effect>CreateEntitySize Mushroom 0.0 -100.0 10.0 11.0</Effect>
+          <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>
           <Effect>SetVariable empty true</Effect>
         </IndependentAction>
       </Behavior>

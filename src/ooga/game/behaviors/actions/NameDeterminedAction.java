@@ -24,6 +24,7 @@ public class NameDeterminedAction extends Action {
   public List<Entity> findOtherEntities(double elapsedTime, Entity subject,
                                         Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
                                         GameInternal gameInternal) {
+    System.out.println("FOUND" + gameInternal.getEntitiesWithName(myTargetName).get(0).getName());
     return gameInternal.getEntitiesWithName(myTargetName);
   }
 }
