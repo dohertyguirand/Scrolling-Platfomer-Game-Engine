@@ -65,6 +65,13 @@ public class DirectionalCollisionDetector implements CollisionDetector {
     return null;
   }
 
+  @Override
+  public boolean entityAtPoint(Entity e, double xPos, double yPos) {
+    Rectangle eShape = makeShapeFromEntity(e,0.0,0.0);
+    Rectangle point = new Rectangle(xPos,yPos,1.0,1.0);
+    return eShape.intersects(point.getBoundsInParent());
+  }
+
   private Rectangle makeShapeFromEntity(Entity e, double xChange, double yChange) {
     double xPos = e.getPosition().get(0) + xChange;
     double yPos = e.getPosition().get(1) + yChange;

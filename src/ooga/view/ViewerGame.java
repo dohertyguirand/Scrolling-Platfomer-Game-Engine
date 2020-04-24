@@ -21,12 +21,14 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.*;
+import ooga.game.KeyboardControls;
 import ooga.game.OogaGame;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import ooga.game.collisiondetection.DirectionalCollisionDetector;
 
 public class ViewerGame {
 
@@ -76,7 +78,7 @@ public class ViewerGame {
 
   private void setGame(String saveDate) throws OogaDataException {
     if(saveDate == null || saveDate.equals("")){
-      myGame = new OogaGame(myGameName, new OogaDataReader(),myProfileName);
+      myGame = new OogaGame(myGameName, new OogaDataReader(), new DirectionalCollisionDetector(), new KeyboardControls(),myProfileName);
     }
     else myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
   }
