@@ -346,7 +346,6 @@ public class OogaDataReader implements DataReader{
         return level.getElementsByTagName("ID").item(0).getTextContent();
     }
 
-
     private Map<String, String> getEntityVariables(Element entityElement) throws OogaDataException {
         Map<String, String> variableMap = new HashMap<>();
         NodeList nameNodes = entityElement.getElementsByTagName("VariableNames");

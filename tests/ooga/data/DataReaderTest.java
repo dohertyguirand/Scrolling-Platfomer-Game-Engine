@@ -46,22 +46,43 @@ public class DataReaderTest {
     }
 
     @Test
-    public void testLoadNewLevel() throws OogaDataException {
+    public void testLoadNewLevel() {
+        boolean testPassed = true;
         // for every game load and display every level
         for (String gameName : GAME_NAMES){
             System.out.println("Game: " + gameName);
-            List<String> idList = testDataReader.getLevelIDs(gameName);
-            // for every level, load and print every entity
-            for(String id : idList){
-                System.out.println("Level: " + id);
-                Level createdLevel = testDataReader.loadNewLevel(gameName, id);
-                // for every entity, neatly display its information (in a very clue-esque way)
-                for (Entity e : createdLevel.getEntities()){
-                    System.out.println(String.format("Entity named %s with ID %s at position %s with variables %s",
-                            e.getName(), e.getEntityID(), e.getPosition().toString(), e.getVariables().toString()));
-                }
+            List<String> idList = null;
+            try {
+                idList = testDataReader.getLevelIDs(gameName);
+            } catch (OogaDataException e) {
+                // if there's an error finding the game, recognize it and move on to the next game
+                e.printStackTrace();
+                testPassed = false;
+                continue;
             }
+
+            // for every level, load it and print every entity
+            for(String id : idList){
+                System.out.println("\tLevel: " + id);
+                Level createdLevel = null;
+                try {
+                    createdLevel = testDataReader.loadNewLevel(gameName, id);
+                } catch (OogaDataException e) {
+                    // if there's an error loading the level, recognize it and move on to the next level
+                    e.printStackTrace();
+                    testPassed = false;
+                    continue;
+                }
+                // for every entity, neatly display its information (in a very Clue-esque way)
+                for (Entity e : createdLevel.getEntities()){
+                    System.out.println(String.format("\t\tEntity %s at position %s with variables %s",
+                            e.getName(), e.getPosition().toString(), e.getVariables().toString()));
+                }
+                System.out.print("\n");
+            }
+            System.out.print("\n");
         }
+        assertTrue(testPassed);
     }
 
     @Test
