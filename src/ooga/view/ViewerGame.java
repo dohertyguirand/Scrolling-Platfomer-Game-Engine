@@ -8,16 +8,14 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.ParallelCamera;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -54,7 +52,7 @@ public class ViewerGame {
   private PauseMenu myPauseMenu;
   private OogaGame myGame;
   private Timeline myAnimation;
-  private final ParallelCamera myCamera;
+  private final PerspectiveCamera myCamera;
   private ViewImageEntity focus;
   private boolean cameraOn = false;
   private final ObjectProperty<Effect> colorEffectProperty = new SimpleObjectProperty<>();
@@ -70,7 +68,7 @@ public class ViewerGame {
   public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
     myGameName = gameName;
     myProfileName = profileName;
-    myCamera = new ParallelCamera();
+    myCamera = new PerspectiveCamera();
     //TODO: Update to match the new constructors by adding the date of the save to load
     setGame(saveDate);
     setUpGameStage();
@@ -89,8 +87,8 @@ public class ViewerGame {
     cameraShift.add(new SimpleDoubleProperty());
     cameraShift.add(new SimpleDoubleProperty());
     myGame.setCameraShiftProperties(cameraShift);
-    myCamera.layoutXProperty().bind(cameraShift.get(0));
-    myCamera.layoutYProperty().bind(cameraShift.get(1));
+    myCamera.translateXProperty().bind(cameraShift.get(0));
+    myCamera.translateYProperty().bind(cameraShift.get(1));
     myGameScene.setCamera(myCamera);
   }
 
@@ -135,6 +133,11 @@ public class ViewerGame {
       else myEntityGroup.getChildren().remove(viewEntity);
     });
   }
+
+  private void testing() {
+    gc.drawImage(new Image("ooga/view/Resources/profilephotos/defaultphoto.jpg"), 250, 500);
+  }
+
 
 //  private DoubleProperty getOutOfBounds(){
 //    if(myCamera.getBoundsInParent().intersects(focus.getNode().getBoundsInParent())){
@@ -243,8 +246,10 @@ public class ViewerGame {
   }
 
   private void step() {
-    myRoot.requestLayout();
     myGame.doGameStep(myAnimation.getCurrentTime().toMillis());
+//    colorEffectProperty.set(new ColorAdjust());
+//    myGameScene.getRoot().setStyle("-fx-base: rgba(255, 255, 255, 255)");
+    myGameScene.getRoot().requestLayout();
   }
 
   @SuppressWarnings("unused")
