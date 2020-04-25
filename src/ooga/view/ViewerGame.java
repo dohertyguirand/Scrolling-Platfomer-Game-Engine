@@ -36,6 +36,11 @@ public class ViewerGame {
   public static final int NORMAL_BUTTON_XPOS = 300;
   public static final int ALIEN_BUTTON_XPOS = 100;
   public static final String KEYBOARD_INPUT_FILE = "ooga/game/resources/inputs/keyboard";
+  public static final String NORMAL_MODE = "NormalMode";
+  public static final String DARK_MODE = "DarkMode";
+  public static final String SET_DARK_MODE = "setDarkMode";
+  public static final String SET_NORMAL_MODE = "setNormalMode";
+  public static final int START_X = 0;
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final String ALIEN_BUTTON_LOCATION = myResources.getString("alienButtonLocation");
@@ -57,6 +62,7 @@ public class ViewerGame {
   private final String myProfileName;
   private final List<DoubleProperty> cameraShift = new ArrayList<>();
   private Exception currentError = null;
+  private ResourceBundle languageResources;
 
 
   /**
@@ -66,7 +72,8 @@ public class ViewerGame {
    * @param saveDate - save date of game being played, an empty string if playing a new game
    * @throws OogaDataException if there is an error in reading game file
    */
-  public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
+  public ViewerGame(String gameName, String profileName, String saveDate, ResourceBundle languageresources) throws OogaDataException {
+    languageResources = languageresources;
     myGameName = gameName;
     myProfileName = profileName;
     //TODO: Update to match the new constructors by adding the date of the save to load
@@ -143,7 +150,7 @@ public class ViewerGame {
   }
 
   private Node setUpPauseButton() {
-    myPauseMenu = new PauseMenu();
+    myPauseMenu = new PauseMenu(languageResources);
     pauseScene = new Scene(myPauseMenu, myGameScene.getWidth(), myGameScene.getHeight());
     return makeButton(getImage(PAUSE_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), null, 0, "pause");
   }
@@ -156,11 +163,11 @@ public class ViewerGame {
   }
 
   private Node setUpDarkModeButton() {
-    return makeButton(getImage(ALIEN_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), "Alien Mode", ALIEN_BUTTON_XPOS, "setDarkMode");
+    return makeButton(getImage(ALIEN_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), languageResources.getString(NORMAL_MODE), ALIEN_BUTTON_XPOS, SET_DARK_MODE);
   }
 
   private Node setUpNormalModeButton(){
-    return makeButton(getImage(NORMAL_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), "Normal Mode", NORMAL_BUTTON_XPOS, "setNormalMode");
+    return makeButton(getImage(NORMAL_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), languageResources.getString(DARK_MODE), NORMAL_BUTTON_XPOS, SET_NORMAL_MODE);
   }
 
   @SuppressWarnings("unused")
@@ -219,7 +226,7 @@ public class ViewerGame {
 
     myRoot = new Group();
     myRoot.getChildren().add(myEntityGroup);
-    myRoot.getChildren().add(new Line(0, PAUSE_BUTTON_SIZE, WINDOW_WIDTH, PAUSE_BUTTON_SIZE));
+    myRoot.getChildren().add(new Line(START_X, PAUSE_BUTTON_SIZE, WINDOW_WIDTH, PAUSE_BUTTON_SIZE));
     myGameScene = new Scene(myRoot, WINDOW_WIDTH , WINDOW_HEIGHT);
     myGameStage.setScene(myGameScene);
     myGameStage.setTitle(myGameName);

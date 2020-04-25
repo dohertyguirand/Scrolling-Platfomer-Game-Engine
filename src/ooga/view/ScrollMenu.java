@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 
 public abstract class ScrollMenu extends Pane{
 
+
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private final double IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
@@ -28,12 +29,14 @@ public abstract class ScrollMenu extends Pane{
     private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
     protected final DataReader myDataReader;
     protected HBox myHBox;
+    protected ResourceBundle languageResources;
 
     /**
      * This type of menu has a horizontal scrollPane that allows users to scroll through a list of options.
      * Styled by the css file specified in constants
      */
-    protected ScrollMenu(){
+    protected ScrollMenu(ResourceBundle languageresources){
+        languageResources = languageresources;
         myDataReader = new OogaDataReader();
         double windowHeight = Double.parseDouble(myResources.getString("windowHeight"));
         this.setWidth(WINDOW_WIDTH);
