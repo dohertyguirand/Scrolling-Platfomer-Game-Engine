@@ -40,6 +40,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private final List<Entity> myNewCreatedEntities = new ArrayList<>();
   Map<String, ImageEntityDefinition> myEntityDefinitions;
   private final List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
+  private String myProfileName;
 
 
   public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, CollisionDetector detector,
@@ -50,6 +51,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myLevelIds = myGameDataReader.getLevelIDs(gameName);
     myCollisionDetector = detector;
     myControlsInterpreter = controls;
+    myProfileName = profileName;
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
     myEntityDefinitions = myGameDataReader.getImageEntityMap(gameName);
     initVariableMap(gameName);
@@ -242,7 +244,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void reactToGameSave() {
-    myGameRecorder.saveLevel(myName);
+    myGameRecorder.saveLevel(myProfileName,myName,currentLevel);
   }
 
   /**
