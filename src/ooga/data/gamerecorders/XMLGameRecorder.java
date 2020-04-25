@@ -100,9 +100,13 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
       DOMSource domSource = new DOMSource(document);
       StreamResult streamResult = new StreamResult(new File(filepath));
       transformer.transform(domSource, streamResult);
-    } catch (ParserConfigurationException | TransformerException e) {
+    } catch (ParserConfigurationException | TransformerException ignored) {
       //Don't save the level if it can't be made into a valid file.
     }
+    saveUserFile(userName, gameName, filepath);
+  }
+
+  private void saveUserFile(String userName, String gameName, String filepath) {
     // go to user file
     try {
       Document userDoc = getDocForUserName(userName);
@@ -122,7 +126,7 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
       Element newSaveFileElement = userDoc.createElement("StateFilePath");
       newSaveFileElement.setTextContent(filepath);
       newGameSaveElement.appendChild(newSaveFileElement);
-    } catch (OogaDataException e) {
+    } catch (OogaDataException ignored) {
       //If we can't make a document out of it, don't make the document
     }
   }
