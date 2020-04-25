@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.ConditionalBehavior;
 
@@ -80,38 +81,9 @@ public interface Entity {
   List<Double> getVelocity();
 
   /**
-   * @param newPosition The new position for the entity to have in the level.
-   */
-  void setPosition(List<Double> newPosition);
-
-  /**
-   * Marks this entity for removal by the next frame, and prevents it from taking further actions.
-   */
-  void destroySelf();
-
-  /**
    * @return True if this entity has been destroyed and should be removed.
    */
   boolean isDestroyed();
-
-  /**
-   *
-   * @param xChange The x-value of the change in velocity.
-   * @param yChange The y-value of the change in velocity.
-   */
-  void changeVelocity(double xChange, double yChange);
-
-  /**
-   *
-   * @param xVelocity The x-value of the new velocity.
-   * @param yVelocity The y-value of the new velocity.
-   */
-  void setVelocity(double xVelocity, double yVelocity);
-
-  /**
-   * @return Any entities that were created by this one this frame. This is emptied by the call.
-   */
-  List<Entity> popCreatedEntities();
 
   /**
    * Handles any behavior that depends on the values of variables.
@@ -131,7 +103,7 @@ public interface Entity {
    * assigned actions if true
    */
   void doConditionalBehaviors(double elapsedTime, Map<String, String> inputs, Map<String, String> variables,
-                              Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
+                              Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal);
 
   /**
    * assigns the conditional behaviors of this entity
@@ -158,13 +130,6 @@ public interface Entity {
    * @param value value of the variable
    */
   void addVariable(String name, String value);
-
-  /**
-   * returns the value of entity variable mapped to name
-   * @param name key
-   * @return value
-   */
-  String getVariable(String name);
 
   /**
    * set myVariables to the specified map

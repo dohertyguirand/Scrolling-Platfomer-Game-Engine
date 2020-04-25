@@ -19,7 +19,7 @@ public class OogaLevelTest {
 
   @Test
   void testRemoveEntity() {
-    Entity removable = createDummyEntity("placeholder",0.0,0.0);
+    EntityInternal removable = createDummyEntity("placeholder",0.0,0.0);
     Level level = new OogaLevel(List.of(removable),"1");
     assertEquals(1,level.getEntities().size());
     level.removeEntity(removable);
@@ -28,7 +28,7 @@ public class OogaLevelTest {
 
   @Test
   void testAddEntity() {
-    Entity addable = createDummyEntity("placeholder",0.0,0.0);
+    EntityInternal addable = createDummyEntity("placeholder",0.0,0.0);
     Level level = new OogaLevel(new ArrayList<>(),"1");
     assertEquals(0,level.getEntities().size());
     level.addEntity(addable);
@@ -51,7 +51,7 @@ public class OogaLevelTest {
     assertEquals(randString,level.nextLevelID());
   }
 
-  private Entity createDummyEntity(String name, double xPos, double yPos) {
+  private EntityInternal createDummyEntity(String name, double xPos, double yPos) {
     return new ImageEntity(name,"",xPos,yPos,1.0,1.0);
   }
 }

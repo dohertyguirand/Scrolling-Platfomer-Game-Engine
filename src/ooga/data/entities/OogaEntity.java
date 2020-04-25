@@ -200,13 +200,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public List<Entity> popCreatedEntities() {
-    List<Entity> ret = myCreatedEntities;
-    myCreatedEntities = new ArrayList<>();
-    return ret;
-  }
-
-  @Override
   public void reactToVariables(Map<String, String> variables) {
     //TODO: make this work for entity variables?
     for (String varName : variables.keySet()) {
@@ -263,7 +256,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    */
   @Override
   public void doConditionalBehaviors(double elapsedTime, Map<String, String> inputs, Map<String, String> variables,
-                                     Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+                                     Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
       conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);
     }

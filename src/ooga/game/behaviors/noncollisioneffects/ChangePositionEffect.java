@@ -1,6 +1,6 @@
 package ooga.game.behaviors.noncollisioneffects;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;
@@ -31,14 +31,14 @@ public class ChangePositionEffect extends TimeDelayedEffect {
 
     /**
      * Performs the effect
-     *  @param subject     The entity that owns this. This is the entity that should be modified.
+     * @param subject     The entity that owns this. This is the entity that should be modified.
      * @param otherEntity
      * @param elapsedTime
      * @param variables
      * @param game
      */
     @Override
-    protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+    protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
         String operator = Effect.doVariableSubstitutions(operatorData, subject, variables);
         String formattedXVelocity = BigDecimal.valueOf(subject.getPosition().get(0)).toPlainString();
         String formattedYVelocity = BigDecimal.valueOf(subject.getPosition().get(1)).toPlainString();
