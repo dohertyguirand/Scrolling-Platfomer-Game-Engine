@@ -103,7 +103,7 @@ class NonCollisionEffectTest {
   }
 
   @Test
-  void testGotoLevel() throws OogaDataException {
+  void testGotoLevel() {
     createBehaviorWithEffect(new GotoLevelEffect(List.of(TARGET_LEVEL)));
     assertEquals("1",myGame.getCurrentLevelId());
     myGame.doGameStep(ELAPSED_TIME);

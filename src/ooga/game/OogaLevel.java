@@ -3,7 +3,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
-import ooga.Entity;
 
 /**
  *
@@ -24,7 +23,7 @@ public class OogaLevel implements Level{
     }
 
     @Override
-    public void removeEntity(Entity e) {
+    public void removeEntity(EntityInternal e) {
         myEntities.removeAll(List.of(e));
     }
 

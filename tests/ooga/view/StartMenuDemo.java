@@ -1,10 +1,7 @@
 package ooga.view;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import ooga.OogaDataException;
 
 import java.io.IOException;
 

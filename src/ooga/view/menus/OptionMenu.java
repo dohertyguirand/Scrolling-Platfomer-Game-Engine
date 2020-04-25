@@ -11,7 +11,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.util.List;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public abstract class OptionMenu extends BorderPane {
@@ -23,7 +22,7 @@ public abstract class OptionMenu extends BorderPane {
     private final String TITLE_STYLE = myResources.getString("titlecss");
     private static final double TITLE_FONT_SIZE = 70;
     private static final double SPACING = 30;
-    protected ResourceBundle languageResources;
+    protected final ResourceBundle languageResources;
 
     /**
      * This type of menu has a vertial scrollpane that allows user to select from a list of options

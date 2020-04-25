@@ -8,8 +8,6 @@ import javafx.stage.Stage;
 import ooga.OogaDataException;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.gamedatareaders.XMLGameDataReader;
-import ooga.game.Game;
-import ooga.game.Level;
 import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.view.menus.GameMenu;
 import ooga.view.menus.LoadMenu;
@@ -67,6 +65,7 @@ public class Visualizer extends Application {
     LoadMenu loadMenu = new LoadMenu(GAME_LANGUAGE,gameRecorder,gameName, profileNameSelected,myDataReader, backToStartMenu);
     Scene loadScene = new Scene(loadMenu, loadMenu.getWidth(),loadMenu.getHeight());
     loadMenu.getDateSelected().addListener((d,dold,dnew)-> {
+      if(dnew == null) System.out.println("null");
       if(dnew != null) startGame(gameName,profileNameSelected,dnew);
     });
     stage.setScene(loadScene);

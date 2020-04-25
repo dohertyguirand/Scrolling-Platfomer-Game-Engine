@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import ooga.game.EntityInternal;
-import ooga.game.GameInternal;
-import ooga.game.behaviors.ConditionalBehavior;
 
 /**
  * Represents any in-game object that has a physical place in the level.
