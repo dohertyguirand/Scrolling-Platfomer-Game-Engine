@@ -40,7 +40,7 @@ public class ProfileMenu extends ScrollMenu {
             if (myProfiles != null) {
                 for (ViewProfile profile : myProfiles) {
                     Button button = makeButton(new ImageView(profile.getProfilePhotoPath()), profile.getProfileName());
- //                   button.setOnAction(e -> setProfileSelected(profile));
+                    button.setOnAction(e -> setProfileSelected(profile));
                     myHBox.getChildren().add(button);
                 }
             }
