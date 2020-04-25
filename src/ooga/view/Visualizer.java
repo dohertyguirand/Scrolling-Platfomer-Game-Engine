@@ -6,10 +6,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
-import ooga.data.XMLGameRecorder;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.gamedatareaders.XMLGameDataReader;
-import ooga.game.Game;
+import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.view.menus.GameMenu;
 import ooga.view.menus.LoadMenu;
 import ooga.view.menus.ProfileMenu;
@@ -24,23 +23,8 @@ public class Visualizer extends Application {
   private final String BACK_BUTTON_TEXT = GAME_LANGUAGE.getString("Back");
   private String profileNameSelected;
   private Stage stage;
-  private final GameDataReaderExternal myDataReader = new XMLGameDataReader() {};
-  private XMLGameRecorder gameRecorder = new XMLGameRecorder() {
-    @Override
-    public void saveGameState(String filePath) throws OogaDataException {
-
-    }
-
-    @Override
-    public Game loadGameState(String filePath) throws OogaDataException {
-      return null;
-    }
-
-    @Override
-    public String getLevelFilePath(String UserName, String Date) throws OogaDataException {
-      return null;
-    }
-  };
+  private final GameDataReaderExternal myDataReader = new XMLGameDataReader();
+  private final XMLGameRecorder gameRecorder = new XMLGameRecorder();
   private String dateSelected;
 
   public static void main(String[] args) {

@@ -25,6 +25,8 @@ import ooga.UserInputListener;
 import ooga.data.entities.ImageEntity;
 import ooga.data.entities.TextEntity;
 import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.data.gamerecorders.GameRecorderExternal;
+import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.game.OogaGame;
 import ooga.game.controls.KeyboardControls;
 import ooga.view.entities.ViewEntity;
@@ -101,13 +103,13 @@ public class ViewerGame {
 
   private void setGame(String saveDate, String keyInputFilePath) throws OogaDataException {
     if(saveDate == null || saveDate.equals("")){
-      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-              keyInputFilePath),myProfileName);
+      myGame = new OogaGame(myGameName, new XMLGameDataReader(), new DirectionalCollisionDetector(), new KeyboardControls(
+              keyInputFilePath), myProfileName, new XMLGameRecorder());
     }
     else {
       System.out.println("USING ALT GAME CONSTRUCTOR");
       myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-              keyInputFilePath), myProfileName,saveDate);
+              keyInputFilePath), myProfileName,new XMLGameRecorder(), saveDate);
     }
   }
 
@@ -217,7 +219,7 @@ public class ViewerGame {
       try {
         step();
       } catch (Exception ex) {
-        ex.printStackTrace();
+        //ex.printStackTrace();
         // note that this should ideally never be thrown
         if(currentError == null || !ex.getClass().equals(currentError.getClass())) {
           myAnimation.stop();

@@ -1,4 +1,4 @@
-package ooga.data;
+package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
 import ooga.game.Game;
@@ -10,7 +10,7 @@ import java.util.List;
  * Has methods that are also under the XMLGameDataReader title, since this might be a part of the
  * internal data API.
  */
-public interface GameRecorder {
+public interface GameRecorderExternal {
   /**
    * Saves the current state of the game so it can easily be loaded from where the player
    * left off.
@@ -18,15 +18,6 @@ public interface GameRecorder {
    * @throws OogaDataException if the filepath is invalid, or if no game is loaded.
    */
   void saveGameState(String filePath) throws OogaDataException;
-
-  /**
-   * Loads a file that contains a saved game state, and returns a runnable game that picks up
-   * where it left off.
-   * @param filePath The filepath of the file to load.
-   * @return A runnable Game that matches with how the game was when saved.
-   * @throws OogaDataException if there is no valid file at the given filepath.
-   */
-  Game loadGameState(String filePath) throws OogaDataException;
 
   /**
    * returns information about all of the saves for a given game and user name

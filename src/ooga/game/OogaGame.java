@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
+import ooga.data.gamerecorders.GameRecorderExternal;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import ooga.data.entities.ImageEntityDefinition;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
@@ -29,9 +30,10 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private List<String> myLevelIds;
   private Level currentLevel;
   private final String myName;
-  private GameDataReaderExternal myGameDataReader;
-  private CollisionDetector myCollisionDetector;
-  private ControlsInterpreter myControlsInterpreter;
+  private final GameDataReaderExternal myGameDataReader;
+  private final GameRecorderExternal myGameRecorder;
+  private final CollisionDetector myCollisionDetector;
+  private final ControlsInterpreter myControlsInterpreter;
   private final InputManager myInputManager = new OogaInputManager();
   private Map<String, String> myVariables;
   private ObservableList<Entity> myEntities;
@@ -41,8 +43,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
 
   public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, CollisionDetector detector,
-      ControlsInterpreter controls, String profileName) throws OogaDataException {
+                  ControlsInterpreter controls, String profileName, GameRecorderExternal gameRecorderExternal) throws OogaDataException {
     myGameDataReader = gameDataReaderExternal;
+    myGameRecorder = gameRecorderExternal;
     myName = gameName;
     myLevelIds = myGameDataReader.getLevelIDs(gameName);
     myCollisionDetector = detector;
@@ -61,8 +64,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal,  CollisionDetector detector,
-                  ControlsInterpreter controls, String profileName, String date) throws OogaDataException {
-    this(gameName, gameDataReaderExternal, new DirectionalCollisionDetector(), controls, profileName);
+                  ControlsInterpreter controls, String profileName, GameRecorderExternal gameRecorderExternal,
+                  String date) throws OogaDataException {
+    this(gameName, gameDataReaderExternal, new DirectionalCollisionDetector(), controls, profileName, gameRecorderExternal);
     for (String key : gameDataReaderExternal.getVariableMap(gameName).keySet()){
       myVariables.put(key, gameDataReaderExternal.getVariableMap(gameName).get(key));
     }
@@ -239,7 +243,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void reactToGameSave() {
     try {
-      myGameDataReader.saveGameState(myName);
+      myGameRecorder.saveGameState(myName);
     } catch (OogaDataException e) {
       //if it doesn't work, just keep playing the game.
     }
