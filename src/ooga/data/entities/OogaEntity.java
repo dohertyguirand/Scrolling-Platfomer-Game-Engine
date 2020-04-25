@@ -39,10 +39,8 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }};
 
   private List<Double> myVelocity;
-  private final Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
-  private List<Entity> myCreatedEntities = new ArrayList<>();
   private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
   private final Map<String, Boolean> blockedMovements = new HashMap<>();
   private final Map<String, String> myVariables = new HashMap<>();
@@ -56,7 +54,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.width.set(width);
     this.height.set(height);
     myConditionalBehaviors = new ArrayList<>();
-    myVelocityVectors = new Stack<>();
     myName = "";
     for(String direction : directions){
       blockedMovements.put(direction, false);
@@ -165,13 +162,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public List<Double> getVelocity() {
-    //TODO: fix or remove this method
-    List<Double> ret = new ArrayList<>(myVelocity);
-    for (List<Double> vector : myVelocityVectors) {
-      ret.set(0,ret.get(0)+vector.get(0));
-      ret.set(1,ret.get(1)+vector.get(1));
-    }
-    return ret;
+    return new ArrayList<>(myVelocity);
   }
 
   @Override

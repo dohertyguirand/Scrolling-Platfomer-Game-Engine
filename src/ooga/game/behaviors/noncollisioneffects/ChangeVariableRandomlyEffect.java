@@ -62,7 +62,7 @@ public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
     if(entityVariableValue != null){
       try {
         subject.addVariable(variableName, evaluateOperation(entityVariableValue, changeValueData, operator));
-      } catch (NumberFormatException | ScriptException ignored){
+      } catch (NumberFormatException ignored){
         //If the change can't happen, don't change the variable.
       }
     }
@@ -72,12 +72,12 @@ public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
       String operator) {
     try {
       variables.put(variableName, evaluateOperation(variables.get(variableName), changeValueData, operator));
-    }catch (NumberFormatException | ScriptException ignored){
+    }catch (NumberFormatException ignored){
       //If the change can't happen, don't change the variable.
     }
   }
 
-  private String evaluateOperation(String varValue, double changeValue, String operator) throws NumberFormatException, ScriptException {
+  private String evaluateOperation(String varValue, double changeValue, String operator) throws NumberFormatException {
     String formattedVarValue = BigDecimal.valueOf(Double.parseDouble(varValue)).toPlainString();
     return String.valueOf(ExpressionEvaluator.eval(formattedVarValue + operator + changeValue));
   }

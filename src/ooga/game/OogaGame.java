@@ -188,13 +188,13 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void doEntityCleanup() {
-    List<Entity> destroyedEntities = new ArrayList<>();
-    for (Entity e : currentLevel.getEntities()) {
+    List<EntityInternal> destroyedEntities = new ArrayList<>();
+    for (EntityInternal e : currentLevel.getEntities()) {
       if (e.isDestroyed()) {
         destroyedEntities.add(e);
       }
     }
-    for (Entity destroyed : destroyedEntities) {
+    for (EntityInternal destroyed : destroyedEntities) {
       if (destroyed.isDestroyed()) {
         currentLevel.removeEntity(destroyed);
         removeEntity(destroyed);
@@ -202,7 +202,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  private void removeEntity(Entity destroyed) {
+  private void removeEntity(EntityInternal destroyed) {
     myEntities.remove(destroyed);
     myEntitiesInternal.remove(destroyed);
   }
