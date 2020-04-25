@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
@@ -19,10 +20,10 @@ public class IndependentAction extends Action {
   }
 
   @Override
-  public List<Entity> findOtherEntities(Entity subject,
-                                        Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo,
+  public List<EntityInternal> findOtherEntities(EntityInternal subject,
+                                        Map<String, String> variables, Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo,
                                         GameInternal gameInternal) {
-    List<Entity> otherEntities = new ArrayList<>();
+    List<EntityInternal> otherEntities = new ArrayList<>();
     otherEntities.add(null);
     return otherEntities;
   }

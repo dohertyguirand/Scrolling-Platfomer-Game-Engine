@@ -3,7 +3,7 @@ package ooga.game.behaviors.noncollisioneffects;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
@@ -33,14 +33,14 @@ public class SetVariableRandomlyEffect extends TimeDelayedEffect {
 
   /**
    * Performs the effect
-   *  @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param subject     The entity that owns this. This is the entity that should be modified.
    * @param otherEntity entity we are "interacting with" in this effect
    * @param elapsedTime time between steps in ms
    * @param variables   game variables
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     double randomMinValue = parseData(randomRangeMin, subject, variables, 0.0);
     double randomMaxValue = parseData(randomRangeMax, subject, variables, 1.0);

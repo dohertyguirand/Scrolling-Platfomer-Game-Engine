@@ -200,30 +200,27 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }
 
   @Override
-  public List<Entity> popCreatedEntities() {
-    List<Entity> ret = myCreatedEntities;
-    myCreatedEntities = new ArrayList<>();
-    return ret;
-  }
-
-  @Override
   public void reactToVariables(Map<String, String> variables) {
     //TODO: make this work for entity variables?
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
         String propertyName = propertyVariableDependencies.get(varName);
-        if (propertyUpdaters.containsKey(propertyName)) {
-          try{
-            propertyUpdaters.get(propertyName).accept(variables.get(varName));
-          } catch (NumberFormatException e){
-            System.out.println("Could not set variable property dependency because variable could not be parsed to double");
-          }
-        } else {
-          System.out.println("no method defined for setting " + propertyName + " property to a variable");
-        }
+        updateProperty(propertyName, variables.get(varName));
       }
     }
     updateAutomaticEntityVariables();
+  }
+
+  private void updateProperty(String propertyName, String variableValue) {
+    if (propertyUpdaters.containsKey(propertyName)) {
+      try{
+        propertyUpdaters.get(propertyName).accept(variableValue);
+      } catch (NumberFormatException e){
+        System.out.println("Could not set variable property dependency because variable could not be parsed to double");
+      }
+    } else {
+      System.out.println("no method defined for setting " + propertyName + " property to a variable");
+    }
   }
 
   /**
@@ -259,7 +256,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
    */
   @Override
   public void doConditionalBehaviors(double elapsedTime, Map<String, String> inputs, Map<String, String> variables,
-                                     Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+                                     Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
     for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
       conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);
     }

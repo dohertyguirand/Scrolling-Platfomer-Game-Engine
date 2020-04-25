@@ -19,18 +19,7 @@ public class ImageEntity extends OogaEntity {
     propertyUpdaters.put("imageLocation", this::setImageLocation);
   }
 
-  @Deprecated
-  public ImageEntity(String name) {
-    //TODO: fix tests and remove this
-    this(name, null, 0, 0, 100, 100);
-  }
-
-  @Deprecated
-  public ImageEntity() {
-    //TODO: fix tests and remove this
-    this("Unnamed", null, 0, 0, 10.0, 10.0);
-  }
-
+  @Override
   public void setImageLocation(String filePath){imageLocation.set(filePath);}
 
   public StringProperty imageLocationProperty() {

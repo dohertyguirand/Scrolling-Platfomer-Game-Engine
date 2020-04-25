@@ -1,6 +1,6 @@
 package ooga.game.behaviors.noncollisioneffects;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 
@@ -37,7 +37,7 @@ public class BlinkImageEffect implements Effect {
   /**
    * Requires the effect to have a reference to the
    * instance that uses it in order to have an effect on that instance.
-   *  @param subject     The entity that owns this controls behavior. This is the entity that should
+   * @param subject     The entity that owns this controls behavior. This is the entity that should
    *                    be modified.
    * @param otherEntity
    * @param elapsedTime
@@ -45,7 +45,7 @@ public class BlinkImageEffect implements Effect {
    * @param game
    */
   @Override
-  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  public void doEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     double blinkTimeDelay = parseData(blinkTimeDelayData, subject, variables, 0.0);
     double totalBlinkTime = parseData(totalBlinkTimeData, subject, variables, 0.0);
     String finalImage = Effect.doVariableSubstitutions(finalImageData, subject, variables);

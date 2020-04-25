@@ -3,7 +3,6 @@ package ooga.game;
 import java.util.List;
 
 import java.util.Map;
-import ooga.Entity;
 
 public interface GameInternal {
 
@@ -11,9 +10,9 @@ public interface GameInternal {
 
   void createEntity(String type, List<Double> position, double width, double height);
 
-  Entity getEntityWithId(String id);
+  EntityInternal getEntityWithId(String id);
 
-  List<Entity> getEntitiesWithName(String name);
+  List<EntityInternal> getEntitiesWithName(String name);
 
   void goToLevel(String levelID);
 
@@ -36,4 +35,9 @@ public interface GameInternal {
    * @param value The String to set the variable equal to.
    */
   void setVariable(String var, String value);
+
+  /**
+   * @return A list of the entities that are currently in play.
+   */
+  List<EntityInternal> getInternalEntities();
 }
