@@ -327,4 +327,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public Map<String, String> getVariables() {
     return new HashMap<>(myVariables);
   }
+
+  @Override
+  public void setVariable(String var, String value) {
+    myVariables.put(var,value);
+  }
 }
