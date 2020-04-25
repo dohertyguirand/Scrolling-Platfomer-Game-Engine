@@ -43,11 +43,10 @@ public interface DataReader {
   /**
    * gets the document (I'm assuming document is not xml specific)
    * @param file file
-   * @param errorMessageKey properties file key for error message
    * @return desired document
    * @throws OogaDataException if the document could not be parsed
    */
-  Document getDocument(File file, String errorMessageKey) throws OogaDataException;
+  Document getDocument(File file) throws OogaDataException;
 
   /**
    * @param UserName the name of the user whose document we need

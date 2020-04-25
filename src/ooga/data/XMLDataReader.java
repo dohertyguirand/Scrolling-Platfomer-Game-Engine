@@ -28,12 +28,12 @@ public interface XMLDataReader extends DataReader {
   default String getFileType(){return fileType;}
 
   @Override
-  default Document getDocument(File fXmlFile, String errorMessageKey) throws OogaDataException {
+  default Document getDocument(File fXmlFile) throws OogaDataException {
     Document doc;
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
     } catch (SAXException | ParserConfigurationException | IOException e) {
-      throw new OogaDataException(myDataResources.getString(errorMessageKey));
+      throw new OogaDataException(myDataResources.getString("DocumentParseException"));
     }
     return doc;
   }
@@ -47,7 +47,7 @@ public interface XMLDataReader extends DataReader {
   default Document getDocForUserName(String UserName) throws OogaDataException {
     for (File userFile : getAllFiles(DEFAULT_USERS_FILE)) {
       File fXmlFile = new File(String.valueOf(userFile));
-      Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
+      Document doc = getDocument(fXmlFile);
       String loadedName = getFirstElementByTag(doc, "UserNameTag", myDataResources.getString("MissingUserNameException"));
       if (loadedName.equals(UserName)) return doc;
     }
