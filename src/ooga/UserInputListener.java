@@ -32,14 +32,6 @@ public interface UserInputListener {
   void reactToGameSave();
 
   /**
-   * Handles when the command is given to quit the currently running game.
-   * This might be modified to account for identifying which game must close when
-   * there are multiple games open.
-   */
-  @SuppressWarnings("EmptyMethod")
-  void reactToGameQuit();
-
-  /**
    * indicates the pause button was clicked in the ui
    * @param paused whether or not the button clicked was pause or resume
    */
