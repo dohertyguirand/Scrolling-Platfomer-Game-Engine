@@ -47,72 +47,54 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
   public void saveLevel(String userName, String gameName, Level level, Map<String, String> variables) {
     String directory = DEFAULT_USERS_FILE+"/"+userName + "/saves";
     String filepath = directory + "/"+ gameName + "-save.xml";
-    // create a new .xml file with name gameName + "-save.xml"
     try {
       Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-
       Element root = document.createElement("Save");
       document.appendChild(root);
-
       Element nameElement = document.createElement("Name");
       nameElement.appendChild(document.createTextNode(gameName));
       root.appendChild(nameElement);
-
       Element variablesElement = document.createElement("Variables");
       root.appendChild(variablesElement);
       //add all the current values of variables
       for (String variableName : variables.keySet()){
         Element singleVariable = document.createElement("Variable");
         variablesElement.appendChild(singleVariable);
-
         Element varNameElement = document.createElement("Name");
         varNameElement.appendChild(document.createTextNode(variableName));
         Element varValueElement = document.createElement("StartValue");
         varValueElement.appendChild(document.createTextNode(variables.get(variableName)));
-
         singleVariable.appendChild(varNameElement);
         singleVariable.appendChild(varValueElement);
       }
-
-      // add the current level
       Element currentLevelElement = document.createElement("CurrentLevel");
       root.appendChild(currentLevelElement);
-
       Element IDElement = document.createElement("ID");
       currentLevelElement.appendChild(IDElement);
       IDElement.appendChild(document.createTextNode(level.getLevelId()));
-
-      //add all image entity instances to the current level
       Element ImageInstancesElement = document.createElement("ImageEntityInstances");
       currentLevelElement.appendChild(ImageInstancesElement);
       for(Entity e : level.getEntities()){
         Element singleImageInstanceElement = document.createElement("ImageEntityInstance");
         ImageInstancesElement.appendChild(singleImageInstanceElement);
-
         Element entNameElement = document.createElement("Name");
         entNameElement.appendChild(document.createTextNode(e.getName()));
         Element entXPosElement = document.createElement("XPos");
         entXPosElement.appendChild(document.createTextNode(e.getPosition().get(0).toString()));
         Element entYPosElement = document.createElement("YPos");
         entYPosElement.appendChild(document.createTextNode(e.getPosition().get(1).toString()));
-
         singleImageInstanceElement.appendChild(entNameElement);
         singleImageInstanceElement.appendChild(entXPosElement);
         singleImageInstanceElement.appendChild(entYPosElement);
-
-        //add all the variables
         Element varNamesElement = document.createElement("VariableNames");
         singleImageInstanceElement.appendChild(varNamesElement);
         Element varValuesElement = document.createElement("VariableValues");
         singleImageInstanceElement.appendChild(varValuesElement);
-//          <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-//          <VariableValues>0 300</VariableValues>
         for(String var : e.getVariables().keySet()){
           varNamesElement.setTextContent(varNamesElement.getTextContent() + " " + var);
           varValuesElement.setTextContent(varValuesElement.getTextContent() + " " + e.getVariables().get(var));
         }
       }
-
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       DOMSource domSource = new DOMSource(document);
@@ -121,7 +103,6 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
     } catch (ParserConfigurationException | TransformerException e) {
       //Don't save the level if it can't be made into a valid file.
     }
-
     // go to user file
     try {
       Document userDoc = getDocForUserName(userName);
@@ -130,26 +111,20 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
       // create a new save at that location with the the correct information
       Element newGameElement = userDoc.createElement("Game");
       saveGameStatesElement.appendChild(newGameElement);
-
       Element newGameNameElement = userDoc.createElement("Name");
       newGameElement.setTextContent(gameName);
       newGameElement.appendChild(newGameNameElement);
-
       Element newGameSaveElement = userDoc.createElement("Save");
       newGameElement.appendChild(newGameSaveElement);
-
       //TODO: Add date
       Element newSaveDateElement = userDoc.createElement("Date");
       newGameSaveElement.appendChild(newSaveDateElement);
-
       Element newSaveFileElement = userDoc.createElement("StateFilePath");
       newSaveFileElement.setTextContent(filepath);
       newGameSaveElement.appendChild(newSaveFileElement);
-
     } catch (OogaDataException e) {
       //If we can't make a document out of it, don't make the document
     }
-
   }
 
   /**
