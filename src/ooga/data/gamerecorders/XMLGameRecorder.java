@@ -39,7 +39,7 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
         String loadFilePath = getFirstElementByTag(gameElement, "UserFileSaveFilePathTag", myDataResources.getString("UserFileSaveMissingFilePaths"));
         File levelFile = new File(loadFilePath);
         Document levelDoc = getDocument(levelFile);
-        checkKeyExists(levelDoc, myDataResources.getString("SaveFileLevelTag"), myDataResources.getString("SaveFileMissingLevel"));
+        checkKeyExists(levelDoc, "SaveFileLevelTag", myDataResources.getString("SaveFileMissingLevel"));
         Element savedLevelElement = (Element) levelDoc.getElementsByTagName(myDataResources.getString("SaveFileLevelTag")).item(0);
         String id = getFirstElementByTag(savedLevelElement, "LevelIDTag", myDataResources.getString("SaveFileLevelMissingID"));
         gameSaveInfo.add(List.of(id, date));
