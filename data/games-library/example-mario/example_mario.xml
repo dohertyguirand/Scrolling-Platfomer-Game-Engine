@@ -477,6 +477,11 @@
           <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
+          <Name>Koopa</Name>
+          <XPos>800</XPos>
+          <YPos>400</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
           <Name>Flagpole</Name>
           <XPos>800</XPos>
           <YPos>200</YPos>

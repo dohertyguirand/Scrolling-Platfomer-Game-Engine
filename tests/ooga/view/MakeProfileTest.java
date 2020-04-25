@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-public class MakeProfileDemo extends Application {
+public class MakeProfileTest extends Application {
 
     private GridPane myGridpane;
     private Scene myScene;
