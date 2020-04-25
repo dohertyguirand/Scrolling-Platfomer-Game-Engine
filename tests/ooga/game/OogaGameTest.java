@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import ooga.OogaDataException;
 import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import ooga.game.controls.KeyboardControls;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public class OogaGameTest {
   @BeforeEach
   void setUp() throws OogaDataException {
     OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(){},new DirectionalCollisionDetector(),
-        new KeyboardControls(KEYBOARD_INPUT_FILE),"");
+        new KeyboardControls(KEYBOARD_INPUT_FILE),"", new XMLGameRecorder());
     myGame = game;
     myGameInternal = game;
   }
