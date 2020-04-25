@@ -136,7 +136,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void doEntityFrameUpdates(double elapsedTime) {
-    for (Entity entity : currentLevel.getEntities()) {
+    for (EntityInternal entity : currentLevel.getEntities()) {
       entity.blockInAllDirections(false);
       entity.updateSelf(elapsedTime);
       entity.reactToVariables(myVariables);
@@ -154,7 +154,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
       allInputs.put(key, KEY_PRESSED_REQUIREMENT);
     }
     Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo = findDirectionalCollisions(elapsedTime);
-    for (Entity entity : currentLevel.getEntities()) {
+    for (EntityInternal entity : currentLevel.getEntities()) {
       Map<String,String> entityInputs = findEntityInputs(allInputs, entity);
       entity.doConditionalBehaviors(elapsedTime, entityInputs, myVariables, collisionInfo, this);
     }
@@ -173,7 +173,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void executeEntityMovement(double elapsedTime) {
-    for (Entity e : currentLevel.getEntities()) {
+    for (EntityInternal e : currentLevel.getEntities()) {
       e.executeMovement(elapsedTime);
     }
   }
@@ -346,7 +346,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   @Override
-  public List<EntityInternal> getInternalEntiites() {
+  public List<EntityInternal> getInternalEntities() {
     return new ArrayList<>(myEntitiesInternal);
   }
 }

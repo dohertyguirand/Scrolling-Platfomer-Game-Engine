@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import ooga.Entity;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
@@ -46,7 +45,7 @@ public class VariableDeterminedAction extends Action {
                                         GameInternal gameInternal) {
     VariableComparator myComparator = determineComparator();
     List<EntityInternal> otherEntities = new ArrayList<>();
-    for(EntityInternal otherEntity : gameInternal.getInternalEntiites()){
+    for(EntityInternal otherEntity : gameInternal.getInternalEntities()){
       VariableCondition variableCondition = new OogaVariableCondition(myVariable, myComparator, myValueData);
       if(variableCondition.isSatisfied(subject, variables, subject.getVariables())){
         otherEntities.add(otherEntity);
