@@ -6,7 +6,6 @@ import java.util.Map;
 import ooga.OogaDataException;
 import ooga.game.Game;
 import ooga.game.Level;
-import ooga.view.OogaProfile;
 
 /**
  * Handles the interaction with game data files, including interpretation and writing.

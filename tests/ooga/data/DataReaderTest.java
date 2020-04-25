@@ -4,7 +4,7 @@ package ooga.data;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.game.Level;
-import ooga.view.OogaProfile;
+import ooga.data.OogaProfile;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.ls.LSException;
 
@@ -129,10 +129,8 @@ public class DataReaderTest {
     }
 
     @Test
-    public void testAddNewProfile(){
-        OogaProfile testProfile = new OogaProfile();
-        testProfile.setProfileName("Doug Rattman");
-        testProfile.setProfilePhoto("data/users/Rattman.jpeg");
+    public void testAddNewProfile() throws OogaDataException {
+        OogaProfile testProfile = new OogaProfile("Doug Rattman", "data/users/Rattman.jpeg");
         testDataReader.addNewProfile(testProfile);
     }
 

@@ -58,6 +58,14 @@ public class ViewerGame {
   private final List<DoubleProperty> cameraShift = new ArrayList<>();
   private Exception currentError = null;
 
+
+  /**
+   * This class handles the animation and viewing of each game, sets on input listeners
+   * @param gameName - name of game to be played
+   * @param profileName - name of profile user is on
+   * @param saveDate - save date of game being played, an empty string if playing a new game
+   * @throws OogaDataException if there is an error in reading game file
+   */
   public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
     myGameName = gameName;
     myProfileName = profileName;

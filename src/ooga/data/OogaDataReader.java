@@ -12,7 +12,6 @@ import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.OogaVariableCondition;
 import ooga.game.behaviors.VariableCondition;
 import ooga.game.behaviors.comparators.VariableComparator;
-import ooga.view.OogaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -727,9 +726,9 @@ public class OogaDataReader implements DataReader{
             String userImage = doc.getElementsByTagName("Image").item(0).getTextContent();
 
             String fullImagePath = "file:" + userFile.getParentFile() + "/" + userImage;
-            OogaProfile newProfile = new OogaProfile();
-            newProfile.setProfileName(userName);
-            newProfile.setProfilePhoto(fullImagePath);
+            OogaProfile newProfile = new OogaProfile(userName,fullImagePath);
+//            newProfile.setProfileName(userName);
+//            newProfile.setProfilePhoto(fullImagePath);
 
 
             profileList.add(newProfile);
@@ -748,7 +747,7 @@ public class OogaDataReader implements DataReader{
     }
 
     @Override
-    public void addNewProfile(OogaProfile newProfile) {
+    public void addNewProfile(OogaProfile newProfile) throws OogaDataException{
         //TODO: make sure profile doesn't already exist
         String newProfileName = newProfile.getProfileName();
         try {
@@ -809,7 +808,7 @@ public class OogaDataReader implements DataReader{
             transformer.transform(domSource, streamResult);
 
         } catch (ParserConfigurationException | TransformerException | IOException pce) {
-            pce.printStackTrace();
+            throw new OogaDataException("Cannot Create Profile");
         }
     }
 
