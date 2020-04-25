@@ -78,7 +78,7 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
     ArrayList<OogaProfile> profileList = new ArrayList<>();
     for (File userFile : getAllFiles(DEFAULT_USERS_FILE)){
       File fXmlFile = new File(String.valueOf(userFile));
-      Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
+      Document doc = getDocument(fXmlFile);
       String userName = getFirstElementByTag(doc, "ProfileNameTag", myDataResources.getString("MissingUserNameException"));
       String userImage = getFirstElementByTag(doc, "ProfileImageTag", myDataResources.getString("MissingUserImageException"));
       String fullImagePath = myDataResources.getString("PathPrefix") + userFile.getParentFile() +

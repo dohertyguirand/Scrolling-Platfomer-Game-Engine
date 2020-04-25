@@ -28,12 +28,12 @@ public interface XMLDataReader extends DataReader {
   default String getFileType(){return fileType;}
 
   @Override
-  default Document getDocument(File fXmlFile, String errorMessageKey) throws OogaDataException {
+  default Document getDocument(File fXmlFile) throws OogaDataException {
     Document doc;
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
     } catch (SAXException | ParserConfigurationException | IOException e) {
-      throw new OogaDataException(myDataResources.getString(errorMessageKey));
+      throw new OogaDataException(myDataResources.getString("DocumentParseException"));
     }
     return doc;
   }
@@ -46,20 +46,10 @@ public interface XMLDataReader extends DataReader {
   @Override
   default Document getDocForUserName(String UserName) throws OogaDataException {
     for (File userFile : getAllFiles(DEFAULT_USERS_FILE)) {
-      try{
-        // create a new document to parse
-        File fXmlFile = new File(String.valueOf(userFile));
-        Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
-        // get the name at the top of the file
-        checkKeyExists(doc, "Name", "User file missing username");
-        String loadedName = doc.getElementsByTagName("Name").item(0).getTextContent();
-
-        if (loadedName.equals(UserName)) return doc;
-      } catch (OogaDataException e) {
-        // this field is meant to be empty
-        // right now we're just looking for a user,
-        // it's not a problem if one of the other documents is improperly formatted
-      }
+      File fXmlFile = new File(String.valueOf(userFile));
+      Document doc = getDocument(fXmlFile);
+      String loadedName = getFirstElementByTag(doc, "UserNameTag", myDataResources.getString("MissingUserNameException"));
+      if (loadedName.equals(UserName)) return doc;
     }
     throw new OogaDataException(myDataResources.getString("UserFolderMissingRequestedUsername"));
   }

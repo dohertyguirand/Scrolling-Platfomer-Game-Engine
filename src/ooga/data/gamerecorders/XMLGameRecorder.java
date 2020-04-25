@@ -20,34 +20,16 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
     // loop through all of the games saves in the user file and find the right games
     for (int i = 0; i < doc.getElementsByTagName(myDataResources.getString("UserFileGameTag")).getLength(); i++) {
       Element gameElement = (Element) doc.getElementsByTagName(myDataResources.getString("UserFileGameTag")).item(i);
-      try {
-        checkKeyExists(gameElement, myDataResources.getString("UserFileGameNameTag"), "");
-      } catch (OogaDataException e) {
-        // meant to be empty
-        // skip games that don't have names
-        continue;
-      }
       String foundGameName = gameElement.getElementsByTagName(myDataResources.getString("UserFileGameNameTag")).item(0).getTextContent();
       if (foundGameName.equals(gameName)) {
-        // add the Level ID and date to the list
-        checkKeyExists(gameElement, myDataResources.getString("UserFileSaveDateTag"), myDataResources.getString("UserFileSaveMissingDates"));
-        checkKeyExists(gameElement, myDataResources.getString("UserFileSaveFilePathTag"), myDataResources.getString("UserFileSaveMissingFilePaths"));
-
-        String date = gameElement.getElementsByTagName(myDataResources.getString("UserFileSaveDateTag")).item(0).getTextContent();
-
-        // get the level ID from the level file
-        String loadFilePath = gameElement.getElementsByTagName(myDataResources.getString(myDataResources.getString("UserFileSaveFilePathTag"))).item(0).getTextContent();
+        String date = getFirstElementByTag(gameElement, "UserFileSaveDateTag", myDataResources.getString("UserFileSaveMissingDates"));
+        String loadFilePath = getFirstElementByTag(gameElement, "UserFileSaveFilePathTag", myDataResources.getString("UserFileSaveMissingFilePaths"));
         File levelFile = new File(loadFilePath);
-        Document levelDoc = getDocument(levelFile, myDataResources.getString("DocumentParseException"));
-
+        Document levelDoc = getDocument(levelFile);
         checkKeyExists(levelDoc, myDataResources.getString("SaveFileLevelTag"), myDataResources.getString("SaveFileMissingLevel"));
         Element savedLevelElement = (Element) levelDoc.getElementsByTagName(myDataResources.getString("SaveFileLevelTag")).item(0);
-
-        checkKeyExists(savedLevelElement, myDataResources.getString("LevelIDTag"), myDataResources.getString("SaveFileLevelMissingID"));
-        String id = savedLevelElement.getElementsByTagName(myDataResources.getString("LevelIDTag")).item(0).getTextContent();
-
-        ArrayList<String> entry = new ArrayList<>(List.of(id, date));
-        gameSaveInfo.add(entry);
+        String id = getFirstElementByTag(savedLevelElement, "LevelIDTag", myDataResources.getString("SaveFileLevelMissingID"));
+        gameSaveInfo.add(List.of(id, date));
       }
     }
     return gameSaveInfo;

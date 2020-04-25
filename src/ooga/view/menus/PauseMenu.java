@@ -13,7 +13,7 @@ import java.util.*;
 public class PauseMenu extends OptionMenu {
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String ICON_STYLE = myResources.getString("iconcss");
-  private static final String PAUSE_MENU_TITLE = "Game Paused";
+  private static final String PAUSE_MENU_TITLE = "GamePaused";
   private static final double ICON_SIZE = 50;
 
   private final BooleanProperty resumed = new SimpleBooleanProperty(true);

@@ -42,8 +42,8 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
     ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
     for (File gameFile : getAllFiles(LIBRARY_FILE_PATH)){
       File fXmlFile = new File(String.valueOf(gameFile));
-      Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
-      String gameTitle = getFirstElementByTag(doc, "GameNameTag", myDataResources.getString("MissingGameException"));
+      Document doc = getDocument(fXmlFile);
+      String gameTitle = getGameName(doc);
       String gameDescription = getFirstElementByTag(doc, "DescriptionTag", myDataResources.getString("GameDescriptionException"));
       String gameThumbnailImageName = getFirstElementByTag(doc, "ThumbnailTag", myDataResources.getString("ThumbnailException"));
       String fullImagePath = myDataResources.getString("PathPrefix") + gameFile.getParentFile() + SLASH + gameThumbnailImageName;
@@ -66,7 +66,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
     File gameFile = findGame(givenGameName);
     Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
     String nextLevelID = null;
-    Document doc = getDocument(gameFile, "");
+    Document doc = getDocument(gameFile);
     // in the xml create a list of all 'Level' nodes
     NodeList levelNodes = doc.getElementsByTagName(myDataResources.getString("LevelTag"));
     // for each check the ID
@@ -120,7 +120,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
   public List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
     List<List<String>> basicGameInfo = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     File gameFile = findGame(givenGameName);
-    Document doc = getDocument(gameFile, "");
+    Document doc = getDocument(gameFile);
     String[] outerTagNames = new String[] {myDataResources.getString("LevelTag"),
             myDataResources.getString("GameVariableTag"), myDataResources.getString("GameVariableTag")};
     String[] innerTagNames = new String[] {"LevelIDTag", "VariableNameTag", "GameVariableStartValueTag"};
@@ -210,8 +210,8 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
   private Level loadLevelAtPath(String loadFilePath) throws OogaDataException {
     //get the name of the game
     File levelFile = new File(loadFilePath);
-    Document doc = getDocument(levelFile, myDataResources.getString("DocumentParseException"));
-    String gameName = getFirstElementByTag(doc, "GameNameTag", myDataResources.getString("MissingGameException"));
+    Document doc = getDocument(levelFile);
+    String gameName = getGameName(doc);
     Map<String, ImageEntityDefinition> imageEntityMap = getImageEntityMap(gameName);
     checkKeyExists(doc, myDataResources.getString("SaveFileLevelTag"), myDataResources.getString("SaveFileMissingLevel"));
     Element savedLevelElement = (Element) doc.getElementsByTagName(myDataResources.getString("SaveFileLevelTag")).item(0);
@@ -460,10 +460,14 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
       // check if this game file is the correct game file
       // create a new document to parse
       File fXmlFile = new File(String.valueOf(f));
-      Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
+      Document doc = getDocument(fXmlFile);
       String gameTitle = getFirstElementByTag(doc, "GameNameTag", givenGameName + myDataResources.getString("MissingGameException"));
       if (gameTitle.equals(givenGameName)) return f;
     }
     throw new OogaDataException(myDataResources.getString("GameNotFoundException"));
+  }
+
+  private String getGameName(Document doc) throws OogaDataException {
+    return getFirstElementByTag(doc, "GameNameTag", myDataResources.getString("MissingGameException"));
   }
 }

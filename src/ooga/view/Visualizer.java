@@ -6,11 +6,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
-import ooga.data.XMLGameRecorder;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.game.Game;
 import ooga.game.Level;
+import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.view.menus.GameMenu;
 import ooga.view.menus.LoadMenu;
 import ooga.view.menus.ProfileMenu;
@@ -18,30 +18,15 @@ import ooga.view.menus.ProfileMenu;
 import java.util.ResourceBundle;
 
 public class Visualizer extends Application {
-  private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.English");
+  private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.French");
   private final String KEYBOARD_INPUTS_FILE_PATH = "ooga/game/controls/inputs/keyboard";
   private final String ERROR_MESSAGE = GAME_LANGUAGE.getString("ErrorMessage");
   private final String START_MENU_TITLE = GAME_LANGUAGE.getString("StageTitle");
   private final String BACK_BUTTON_TEXT = GAME_LANGUAGE.getString("Back");
   private String profileNameSelected;
   private Stage stage;
-  private final GameDataReaderExternal myDataReader = new XMLGameDataReader() {};
-  private XMLGameRecorder gameRecorder = new XMLGameRecorder() {
-    @Override
-    public void saveLevel(Level level) {
-
-    }
-
-    @Override
-    public Game loadGameState(String filePath) throws OogaDataException {
-      return null;
-    }
-
-    @Override
-    public String getLevelFilePath(String UserName, String Date) throws OogaDataException {
-      return null;
-    }
-  };
+  private final GameDataReaderExternal myDataReader = new XMLGameDataReader();
+  private final XMLGameRecorder gameRecorder = new XMLGameRecorder();
   private String dateSelected;
 
   public static void main(String[] args) {

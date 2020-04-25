@@ -171,11 +171,11 @@ public class ViewerGame {
   }
 
   private Node setUpDarkModeButton() {
-    return makeButton(getImage(ALIEN_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), languageResources.getString(NORMAL_MODE), ALIEN_BUTTON_XPOS, SET_DARK_MODE);
+    return makeButton(getImage(ALIEN_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), languageResources.getString(DARK_MODE), ALIEN_BUTTON_XPOS, SET_DARK_MODE);
   }
 
   private Node setUpNormalModeButton(){
-    return makeButton(getImage(NORMAL_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), languageResources.getString(DARK_MODE), NORMAL_BUTTON_XPOS, SET_NORMAL_MODE);
+    return makeButton(getImage(NORMAL_BUTTON_LOCATION, PAUSE_BUTTON_IMAGE_SIZE), languageResources.getString(NORMAL_MODE), NORMAL_BUTTON_XPOS, SET_NORMAL_MODE);
   }
 
   @SuppressWarnings("unused")
@@ -219,7 +219,7 @@ public class ViewerGame {
       try {
         step();
       } catch (Exception ex) {
-        ex.printStackTrace();
+        //ex.printStackTrace();
         // note that this should ideally never be thrown
         if(currentError == null || !ex.getClass().equals(currentError.getClass())) {
           myAnimation.stop();

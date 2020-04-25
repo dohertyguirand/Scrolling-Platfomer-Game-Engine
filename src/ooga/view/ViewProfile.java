@@ -11,10 +11,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class ViewProfile{
@@ -30,7 +27,7 @@ public class ViewProfile{
     private String profilePhotoPath;
     private String profileName;
     private Map<String, Integer> myStats;
-    private BorderPane pane = new BorderPane();
+    private List<Node> extraNodes = new ArrayList<>();
 
     /**
      * View's version of a profile, stores a photo, name, and stats, allows user to add a new profile
@@ -62,7 +59,7 @@ public class ViewProfile{
      */
     public ViewProfile(ResourceBundle resourceBundle,Node submitButton){
       this(resourceBundle, CLICK_TO_ADD_NAME, DEFAULT_IMAGE_PATH);
-      pane.setBottom(submitButton);
+      extraNodes.add(submitButton);
     }
 
     /**
@@ -83,9 +80,15 @@ public class ViewProfile{
      * @return Pane
      */
     public Pane getPane(){
+        BorderPane pane = new BorderPane();
         pane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
         pane.setTop(setNameAndPhoto());
         pane.setCenter(setStatsBox());
+        HBox hBox = new HBox();
+        for(Node node : extraNodes){
+            hBox.getChildren().add(node);
+        }
+        pane.setBottom(hBox);
         pane.getStylesheets().add(STYLESHEET);
         return pane;
     }
@@ -132,7 +135,7 @@ public class ViewProfile{
             File newFile = new File(profilePhotoPath);
             ImageIO.write(bufferedImage,"png",newFile);
             profilePhotoPath = "ooga/view/Resources/profilephotos/" + profileName+ "profilephoto.jpg" ;
-            pane.setTop(setNameAndPhoto());
+            //pane.setTop(setNameAndPhoto());
             } catch (NullPointerException | IllegalArgumentException | IOException ignored) {
             }
     }
