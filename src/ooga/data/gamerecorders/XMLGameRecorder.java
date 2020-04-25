@@ -50,8 +50,14 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
 
   @Override
   public void saveLevel(String userName, String gameName, Level level, Map<String, String> variables) {
-    String directory = DEFAULT_USERS_FILE+"/"+userName + "/saves";
-    String filepath = directory + "/"+ gameName + "-save.xml";
+    String userDirectory = DEFAULT_USERS_FILE+"/"+userName;
+    File userDirectoryFile = new File(userDirectory);
+    String savesDirectory = DEFAULT_USERS_FILE+"/"+userName + "/saves";
+    if(!List.of(userDirectoryFile.listFiles()).contains(new File(savesDirectory))){
+      File savesDirectoryFile = new File(savesDirectory);
+      savesDirectoryFile.mkdir();
+    }
+    String filepath = savesDirectory + "/"+ gameName + "-save.xml";
     // create a new .xml file with name gameName + "-save.xml"
     try {
       Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
@@ -154,7 +160,6 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
     } catch (OogaDataException e) {
       e.printStackTrace();
     }
-
   }
 
   /**

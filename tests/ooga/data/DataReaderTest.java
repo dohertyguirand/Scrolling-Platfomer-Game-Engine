@@ -10,6 +10,7 @@ import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.data.gamerecorders.GameRecorderExternal;
 import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.data.profiledatareaders.XMLProfileReader;
+import ooga.game.EntityInternal;
 import ooga.game.Level;
 import ooga.data.OogaProfile;
 import ooga.game.OogaLevel;
@@ -292,22 +293,20 @@ public class DataReaderTest {
 //        }
 //    }
 
-//    @Test
-//    public void testSaveLevel(){
-//        List<Entity> entityList = new ArrayList<Entity>();
-//        Entity entity = new ImageEntity();
-//        entity.setPosition(List.of(0.0, 0.1));
-//        Map<String, String> entityVars = new HashMap<>();
+    @Test
+    public void testSaveLevel(){
+        List<EntityInternal> entityList = new ArrayList<>();
+        Entity entity = new ImageEntity("testName", "testImage", 0.0, 0.1, 400, 500){};
+        Map<String, String> entityVars = new HashMap<>();
 //        entityVars.put("And he's singin'", "wayo wayo wayo wayo");
 //        entityVars.put("ooAAAAooo", "WAAyo Wayo");
-//        entity.setVariables(entityVars);
-//        entityList.add(entity);
-//        Level testLevel = new OogaLevel(entityList, "1");
-//        XMLGameRecorder testGameRecorder = new XMLGameRecorder();
-//        Map<String, String > vars = new HashMap<>();
-//        vars.put("Lives", "2");
-//        vars.put("Deaths", "30");
-//        testGameRecorder.saveLevel("Braeden", "Super Mario Bros", testLevel, vars);
-//    }
+
+        Level testLevel = new OogaLevel(entityList, "1");
+        XMLGameRecorder testGameRecorder = new XMLGameRecorder();
+        Map<String, String > vars = new HashMap<>();
+        vars.put("Lives", "2");
+        vars.put("Deaths", "30");
+        testGameRecorder.saveLevel("Doherty", "Super Mario Bros", testLevel, vars);
+    }
 }
 
