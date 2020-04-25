@@ -1,4 +1,4 @@
-package ooga.data;
+package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
 import org.w3c.dom.Document;

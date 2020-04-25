@@ -1,6 +1,7 @@
-package ooga.data;
+package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
+import ooga.data.XMLDataReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -8,7 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface XMLGameRecorder extends GameRecorder, XMLDataReader, GameRecorderInternal {
+public interface XMLGameRecorder extends GameRecorderExternal, XMLDataReader, GameRecorderInternal {
 
   String DEFAULT_USERS_FILE = "data/users";
 

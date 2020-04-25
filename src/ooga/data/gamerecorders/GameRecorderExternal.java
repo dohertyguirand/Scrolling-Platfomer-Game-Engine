@@ -1,4 +1,4 @@
-package ooga.data;
+package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
 import ooga.game.Game;
@@ -10,7 +10,7 @@ import java.util.List;
  * Has methods that are also under the XMLGameDataReader title, since this might be a part of the
  * internal data API.
  */
-public interface GameRecorder {
+public interface GameRecorderExternal {
   /**
    * Saves the current state of the game so it can easily be loaded from where the player
    * left off.
