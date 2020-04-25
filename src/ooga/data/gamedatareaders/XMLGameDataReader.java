@@ -64,15 +64,10 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
   public Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException{
     List<EntityInternal> initialEntities = new ArrayList<>();
     File gameFile = findGame(givenGameName);
-    System.out.println("CP1");
     Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
     String nextLevelID = null;
     Document doc = getDocument(gameFile);
-    System.out.println("CP2");
-    // in the xml create a list of all 'Level' nodes
     NodeList levelNodes = doc.getElementsByTagName(myDataResources.getString("LevelTag"));
-    // for each check the ID
-    System.out.println("CP3");
     for (int i = 0; i < levelNodes.getLength(); i++) {
       Element level = (Element) levelNodes.item(i);
       String levelID = getFirstElementByTag(level, "LevelIDTag", myDataResources.getString("MissingIDException"));

@@ -34,13 +34,6 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
       Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       String directory = DEFAULT_USERS_FILE+"/"+newProfileName;
       String filepath = directory+"/"+newProfileName+".xml";
-      File file = new File(directory);
-      boolean bool = file.mkdir();
-      if(bool){
-        System.out.println("Directory created successfully");
-      }else{
-        System.out.println("Sorry could not create specified directory");
-      }
       Element root = document.createElement("User");
       document.appendChild(root);
       Element nameElement = document.createElement(myDataResources.getString("ProfileNameTag"));

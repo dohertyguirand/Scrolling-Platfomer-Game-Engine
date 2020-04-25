@@ -25,7 +25,6 @@ import ooga.UserInputListener;
 import ooga.data.entities.ImageEntity;
 import ooga.data.entities.TextEntity;
 import ooga.data.gamedatareaders.XMLGameDataReader;
-import ooga.data.gamerecorders.GameRecorderExternal;
 import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.game.OogaGame;
 import ooga.game.controls.KeyboardControls;
@@ -144,7 +143,7 @@ public class ViewerGame {
   }
 
   private Node makeViewEntity(Entity entity){
-    ViewEntity viewEntity = null;
+    ViewEntity viewEntity;
     if(entity.getEntityType().equals(Entity.imageEntityType)){
       viewEntity = new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift);
     }
