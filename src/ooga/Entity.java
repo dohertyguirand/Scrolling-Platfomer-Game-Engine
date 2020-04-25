@@ -35,10 +35,6 @@ public interface Entity {
 
   void setActiveInView(boolean activeInView);
 
-  void setWidth(double width);
-
-  void setHeight(double height);
-
   /**
    * @return The width of the entity.
    */
@@ -112,24 +108,10 @@ public interface Entity {
   void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors);
 
   /**
-   * change the value in this entity's blockedMovements map to the specified value
-   * @param direction up, down, left, or right
-   * @param isBlocked true if the entity is blocked in the direction, otherwise false
-   */
-  void blockInDirection(String direction, boolean isBlocked);
-
-  /**
    * change every value in this entity's blockedMovements map to the specified value
    * @param isBlocked true if the entity is blocked in the direction, otherwise false
    */
   void blockInAllDirections(boolean isBlocked);
-
-  /**
-   * Adds (or sets) a variable to this entity's variable map
-   * @param name name of the variable
-   * @param value value of the variable
-   */
-  void addVariable(String name, String value);
 
   /**
    * set myVariables to the specified map
