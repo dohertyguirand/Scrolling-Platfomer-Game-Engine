@@ -35,17 +35,6 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
 
   @Override
   public void saveLevel(String userName, String gameName, Level level) {
-    // go to user folder
-    File file = new File(DEFAULT_USERS_FILE + "/" + userName);
-    for(File f : file.listFiles()){
-      System.out.println(f.getPath());
-    }
-    // go to user's save folder
-    // create a new .xml file with name gameName + "-save.xml"
-    // add the required information to that xml
-    // go to user file
-    // go to saved game states
-    // create a new save at that location with the the correct information
     level.getEntities();
     level.getLevelId();
   }

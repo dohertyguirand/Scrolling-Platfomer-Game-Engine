@@ -47,13 +47,10 @@ public class SetVariableRandomlyEffect extends TimeDelayedEffect {
 
     double variableValue = (new Random().nextDouble()) * (randomMaxValue-randomMinValue);
 
-    System.out.println("variableValue = " + variableValue);
     if (variables.containsKey(variableName)) {
-      System.out.println("Set " + variableName + " to " + variableValue);
       variables.put(variableName, Effect.doVariableSubstitutions(Double.toString(variableValue), subject, variables));
     }
     if(subject.getVariable(variableName) != null){
-      System.out.println("Set " + variableName + " to " + variableValue);
       subject.addVariable(variableName, Double.toString(variableValue));
     }
   }
