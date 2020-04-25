@@ -19,6 +19,7 @@ public interface XMLDataReader extends DataReader {
   String ENGLISH_PROPERTIES_LOCATION = "ooga/data/resources/english";
   ResourceBundle myDataResources = ResourceBundle.getBundle(ENGLISH_PROPERTIES_LOCATION);
   String fileType = "xml";
+  String DEFAULT_USERS_FILE = "data/users";
 
   /**
    * @return the file type of the data reader sub-interface (e.g. xml)
@@ -27,14 +28,31 @@ public interface XMLDataReader extends DataReader {
   default String getFileType(){return fileType;}
 
   @Override
-  default Document getDocument(File fXmlFile, String errorMessageKey) throws OogaDataException {
+
+  default Document getDocument(File fXmlFile) throws OogaDataException {
     Document doc;
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
     } catch (SAXException | ParserConfigurationException | IOException e) {
-      throw new OogaDataException(myDataResources.getString(errorMessageKey));
+
+      throw new OogaDataException(myDataResources.getString("DocumentParseException"));
     }
     return doc;
+  }
+  /**
+   * @param UserName the name of the user whose document we need
+   * @return The Document for the user with the given username
+   * @throws OogaDataException if the document has no user with that username
+   */
+  @Override
+  default Document getDocForUserName(String UserName) throws OogaDataException {
+    for (File userFile : getAllFiles(DEFAULT_USERS_FILE)) {
+      File fXmlFile = new File(String.valueOf(userFile));
+      Document doc = getDocument(fXmlFile);
+      String loadedName = getFirstElementByTag(doc, "UserNameTag", myDataResources.getString("MissingUserNameException"));
+      if (loadedName.equals(UserName)) return doc;
+    }
+    throw new OogaDataException(myDataResources.getString("UserFolderMissingRequestedUsername"));
   }
 
   default String getFirstElementByTag(Element element, String tagKey, String errorMessage) throws OogaDataException {

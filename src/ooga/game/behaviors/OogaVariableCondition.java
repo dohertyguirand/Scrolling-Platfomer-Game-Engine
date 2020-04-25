@@ -1,7 +1,7 @@
 package ooga.game.behaviors;
 
 import java.util.Map;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.behaviors.comparators.VariableComparator;
 
 public class OogaVariableCondition implements VariableCondition {
@@ -17,7 +17,7 @@ public class OogaVariableCondition implements VariableCondition {
   }
 
   @Override
-  public boolean isSatisfied(Entity behaviorEntity, Map<String, String> gameVariables,
+  public boolean isSatisfied(EntityInternal behaviorEntity, Map<String, String> gameVariables,
       Map<String, String> subjectVariables) {
     if (!subjectVariables.containsKey(myVariableName)) {
       return false;

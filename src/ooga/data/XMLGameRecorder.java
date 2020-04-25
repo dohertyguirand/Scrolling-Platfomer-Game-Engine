@@ -77,4 +77,6 @@ public interface XMLGameRecorder extends GameRecorder, XMLDataReader, GameRecord
     }
     throw new OogaDataException(myDataResources.getString("UserFolderMissingRequestedUsername"));
   }
+
+  Document getDocument(File fXmlFile, String documentParseException);
 }

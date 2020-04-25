@@ -2,7 +2,7 @@ package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.List;
 import java.util.Map;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
@@ -21,14 +21,14 @@ public class DestroySelfEffect extends TimeDelayedEffect {
 
     /**
      * Performs the effect
-     *  @param subject     The entity that owns this. This is the entity that should be modified.
+     * @param subject     The entity that owns this. This is the entity that should be modified.
      * @param otherEntity
      * @param elapsedTime
      * @param variables
      * @param game
      */
     @Override
-    protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+    protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
         subject.destroySelf();
     }
 }

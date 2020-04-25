@@ -3,16 +3,24 @@ package ooga.view.menus;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import ooga.OogaDataException;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
-
+import ooga.data.gamerecorders.GameRecorderExternal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class LoadMenu extends OptionMenu {
-    private static final String NEWGAME = "New Game";
-    private StringProperty dateSelected = new SimpleStringProperty();
 
+    public static final String NEW_GAME = "NewGame";
+    public static final String SAVED_GAME_ERROR = "SavedGameError";
+    private StringProperty dateSelected = new SimpleStringProperty();
+    private String ERROR_MESSAGE;
+    private String NEWGAME;
+    private List<List<String>> pastSaves;
     /**
      * View where user can decide to load a saved game or a new game
      * @param gamename - name of game selected, used to find past saves
@@ -20,8 +28,17 @@ public class LoadMenu extends OptionMenu {
      * @param reader - DataReader used to get past saves from data
      * @param backButton - button that allows user to get back to startmenu screen
      */
-    public LoadMenu(String gamename, String profilename, GameDataReaderExternal reader, Node backButton){
-        super(gamename);
+    public LoadMenu(ResourceBundle languageResources, GameRecorderExternal gamerecorder, String gamename,
+                    String profilename, GameDataReaderExternal reader, Node backButton){
+        super(languageResources, gamename);
+        try {
+            pastSaves = gamerecorder.getGameSaves(profilename,gamename);
+        } catch (OogaDataException | MissingResourceException e) {
+            showError(languageResources.getString("SavesErrorMessage"));
+            pastSaves = new ArrayList<>(new ArrayList<>());
+        }
+        NEWGAME = languageResources.getString(NEW_GAME);
+        ERROR_MESSAGE = languageResources.getString(SAVED_GAME_ERROR);
         this.setLeft(setMenuItems(createButtons(backButton, reader,profilename,gamename)));
     }
 
@@ -49,10 +66,17 @@ public class LoadMenu extends OptionMenu {
         Button button = new Button(NEWGAME);
         button.setOnAction(e-> setDateSelected("  "));
         buttons.add(button);
-//        for(List<String> dates: dataReader.getAllPreviousSaves(profileName,gameName) ){
-//           buttons.add(makeButton(dates.get(1), dates.get(0) + " -  " + dates.get(1)));
-//        }
+        for(List<String> dates: pastSaves){
+            buttons.add(makeButton(dates.get(1), dates.get(0) + "- " + dates.get(1)));
+        }
         buttons.add(backButton);
         return buttons;
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(ERROR_MESSAGE);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

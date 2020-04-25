@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ooga.Entity;
 import ooga.data.entities.ImageEntity;
+import ooga.game.EntityInternal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +13,10 @@ class DirectionalCollisionDetectorTest {
   final double ELAPSED_TIME = 1.0;
 
   DirectionalCollisionDetector detector;
-  Entity a;
-  Entity b;
-  Entity c;
-  Entity d;
+  EntityInternal a;
+  EntityInternal b;
+  EntityInternal c;
+  EntityInternal d;
 
   @BeforeEach
   void setUp() {

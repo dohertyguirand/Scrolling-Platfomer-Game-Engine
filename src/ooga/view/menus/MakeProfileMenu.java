@@ -1,67 +1,51 @@
 package ooga.view.menus;
 
-import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import org.junit.jupiter.api.Test;
 
-import java.io.File;
+import java.awt.*;
+import java.util.ResourceBundle;
 
 public class MakeProfileMenu extends ScrollMenu {
-
-    private Scene myScene;
-    protected Pane myPane;
-    private GridPane myGrid = new GridPane();
-    protected Group myRoot;
-    private FileChooser myFileChooser = new FileChooser();
-    private ImageView mv = new ImageView();
-    private final int HEADERSIZE  = 24;
-    private final int INSETSIZE  = 40;
-    private final int GAPSIZE = 10;
-    private final int COLUMN1WIDTH = 100;
-    private final int COLUMN2WIDTH = 200;
-    private final int INSETMARGIN = 20;
-    private final int HEADERCOLUMNSPAN = 2;
-    private final int HEADERROWSPAN = 1;
-    private final int WIDTHCOLUMNSPAN = 1;
-    private final int SUBMITMARGIN = 20;
-    private final int SUBMITWIDTH = 100;
-    private final int SUBMITROWINDEX = 4;
-    private final int SUBMITHEIGHT = 40;
-    private final int TEXTFIELDHEIGHT = 40;
-
-    protected MakeProfileMenu() {
-        super();
-        myGrid = createRegistrationFormPane();
-        addUIControls(myGrid);
-        myPane.getChildren().addAll(myGrid);
+    public MakeProfileMenu() {
+        super(ResourceBundle.getBundle("ooga/view/Resources.English"), "Create a Profile");
     }
-
     private GridPane createRegistrationFormPane() {
-
+        // Instantiate a new Grid Pane
         GridPane gridPane = new GridPane();
+
+        // Position the pane at the center of the screen, both vertically and horizontally
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setPadding(new Insets(INSETSIZE, INSETSIZE, INSETSIZE, INSETSIZE));
-        gridPane.setHgap(GAPSIZE);
-        gridPane.setVgap(GAPSIZE);
-        ColumnConstraints columnOneConstraints = new ColumnConstraints(COLUMN1WIDTH, COLUMN1WIDTH, Double.MAX_VALUE);
+
+        // Set a padding of 20px on each side
+        gridPane.setPadding(new Insets(40, 40, 40, 40));
+
+        // Set the horizontal gap between columns
+        gridPane.setHgap(10);
+
+        // Set the vertical gap between rows
+        gridPane.setVgap(10);
+
+        // Add Column Constraints
+
+        // columnOneConstraints will be applied to all the nodes placed in column one.
+        ColumnConstraints columnOneConstraints = new ColumnConstraints(100, 100, Double.MAX_VALUE);
         columnOneConstraints.setHalignment(HPos.RIGHT);
-        ColumnConstraints columnTwoConstrains = new ColumnConstraints(COLUMN2WIDTH, COLUMN2WIDTH, Double.MAX_VALUE);
+
+        // columnTwoConstraints will be applied to all the nodes placed in column two.
+        ColumnConstraints columnTwoConstrains = new ColumnConstraints(200,200, Double.MAX_VALUE);
         columnTwoConstrains.setHgrow(Priority.ALWAYS);
+
         gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
 
         return gridPane;
@@ -69,38 +53,48 @@ public class MakeProfileMenu extends ScrollMenu {
 
     private void addUIControls(GridPane gridPane) {
         // Add Header
-        Label headerLabel = new Label("Make your profile");
-        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, HEADERSIZE));
-        gridPane.add(headerLabel, 0, 0, HEADERCOLUMNSPAN, WIDTHCOLUMNSPAN);
+        Label headerLabel = new Label("Registration Form");
+        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        gridPane.add(headerLabel, 0,0,2,1);
         GridPane.setHalignment(headerLabel, HPos.CENTER);
-        GridPane.setMargin(headerLabel, new Insets(INSETMARGIN, 0, INSETMARGIN, 0));
-        Label nameLabel = new Label("Username : ");
-        gridPane.add(nameLabel, 0, 1);
+        GridPane.setMargin(headerLabel, new Insets(20, 0,20,0));
 
+        // Add Name Label
+        Label nameLabel = new Label("Full Name : ");
+        gridPane.add(nameLabel, 0,1);
+
+        // Add Name Text Field
         TextField nameField = new TextField();
-        nameField.setPrefHeight(TEXTFIELDHEIGHT);
-        gridPane.add(nameField, 1, 1);
+        nameField.setPrefHeight(40);
+        gridPane.add(nameField, 1,1);
 
-        Label picLabel = new Label("Select picture : ");
-        gridPane.add(picLabel, 0, 2);
 
-        Button browse = new Button("Browse");
-        gridPane.add(browse, 1, 2);
+        // Add Email Label
+        Label emailLabel = new Label("Email ID : ");
+        gridPane.add(emailLabel, 0, 2);
 
+        // Add Email Text Field
+        TextField emailField = new TextField();
+        emailField.setPrefHeight(40);
+        gridPane.add(emailField, 1, 2);
+
+        // Add Password Label
+        Label passwordLabel = new Label("Password : ");
+        gridPane.add(passwordLabel, 0, 3);
+
+        // Add Password Field
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPrefHeight(40);
+        gridPane.add(passwordField, 1, 3);
+
+        // Add Submit Button
         Button submitButton = new Button("Submit");
-        submitButton.setPrefHeight(SUBMITHEIGHT);
+        submitButton.setPrefHeight(40);
         submitButton.setDefaultButton(true);
-        submitButton.setPrefWidth(SUBMITWIDTH);
-        gridPane.add(submitButton, 0, SUBMITROWINDEX, HEADERCOLUMNSPAN, HEADERROWSPAN);
+        submitButton.setPrefWidth(100);
+        gridPane.add(submitButton, 0, 4, 2, 1);
         GridPane.setHalignment(submitButton, HPos.CENTER);
-        GridPane.setMargin(submitButton, new Insets(SUBMITMARGIN, 0, SUBMITMARGIN, 0));
-    }
-
-    private void configureFileChooser() {
-        myFileChooser.setTitle("View Pictures");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
-        myFileChooser.getExtensionFilters().add(extFilter);
-    }
+        GridPane.setMargin(submitButton, new Insets(20, 0,20,0));
 }
 
-
+}

@@ -21,15 +21,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface XMLProfileReader extends XMLDataReader, ProfileReaderExternal, ProfileReaderInternal {
 
-  String DEFAULT_USERS_FILE = "data/users";
+public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, ProfileReaderInternal {
 
   /**
    * Adds a given profile to the profile folder
    * @param newProfile the profile to add to the saved profile folder
    */
-  default void addNewProfile(OogaProfile newProfile) throws OogaDataException {
+  public void addNewProfile(OogaProfile newProfile) throws OogaDataException {
     //TODO: make sure profile doesn't already exist
     String newProfileName = newProfile.getProfileName();
     try {
@@ -76,12 +75,12 @@ public interface XMLProfileReader extends XMLDataReader, ProfileReaderExternal, 
    * @return A list of Profiles according to the data stored in the Users folder. Returns an empty list if there are no
    * existing profiles
    */
-  default List<OogaProfile> getProfiles() throws OogaDataException{
-    // TODO: when OogaDataReader is constructed, check that libraryFile is a directory and isn't empty and that the gameDirectories aren't empty
+
+  public List<OogaProfile> getProfiles() throws OogaDataException{
     ArrayList<OogaProfile> profileList = new ArrayList<>();
     for (File userFile : getAllFiles(DEFAULT_USERS_FILE)){
       File fXmlFile = new File(String.valueOf(userFile));
-      Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
+      Document doc = getDocument(fXmlFile);
       String userName = getFirstElementByTag(doc, "ProfileNameTag", myDataResources.getString("MissingUserNameException"));
       String userImage = getFirstElementByTag(doc, "ProfileImageTag", myDataResources.getString("MissingUserImageException"));
       String fullImagePath = myDataResources.getString("PathPrefix") + userFile.getParentFile() +

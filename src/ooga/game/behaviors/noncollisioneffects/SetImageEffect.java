@@ -3,6 +3,7 @@ package ooga.game.behaviors.noncollisioneffects;
 import java.util.Map;
 import ooga.Entity;
 import ooga.data.entities.ImageEntity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
@@ -12,6 +13,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class SetImageEffect extends TimeDelayedEffect {
 
+  public static final String GAMES_LIBRARY_IMAGE_PATH = "file:data/games-library/";
   String newImageFileName;
 
   public SetImageEffect(List<String> args) throws IndexOutOfBoundsException {
@@ -37,15 +39,17 @@ public class SetImageEffect extends TimeDelayedEffect {
    * @param game        game instance
    */
   @Override
-  public void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  public void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     setImage(subject, newImageFileName, variables, this);
   }
 
-  public static void setImage(Entity subject, String newImageFileName, Map<String, String> variables, Effect effectSource) {
-    if(subject.getEntityType().equals(Entity.imageEntityType)){
-      ImageEntity imageEntity = (ImageEntity)subject;
-      //TODO: add the specfic game directory to the path here
-      imageEntity.setImageLocation("file:data/games-library/" + Effect.doVariableSubstitutions(newImageFileName, subject, variables));
-    }
+
+  public static void setImage(EntityInternal subject, String newImageFileName, Map<String, String> variables, Effect effectSource) {
+//    if(subject.getEntityType().equals(Entity.imageEntityType)){
+//      ImageEntity imageEntity = (ImageEntity)subject;
+//      //TODO: add the specfic game directory to the path here
+//      imageEntity.setImageLocation("file:data/games-library/" + Effect.doVariableSubstitutions(newImageFileName, subject, variables));
+//    }
+    subject.setImageLocation(GAMES_LIBRARY_IMAGE_PATH + Effect.doVariableSubstitutions(newImageFileName, subject, variables));
   }
 }

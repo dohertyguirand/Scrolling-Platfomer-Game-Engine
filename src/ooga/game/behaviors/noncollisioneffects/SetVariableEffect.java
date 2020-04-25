@@ -1,9 +1,8 @@
 package ooga.game.behaviors.noncollisioneffects;
 
-import ooga.Entity;
-
 import java.util.List;
 import java.util.Map;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
@@ -31,14 +30,14 @@ public class SetVariableEffect extends TimeDelayedEffect {
 
   /**
    * Performs the effect
-   *  @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param subject     The entity that owns this. This is the entity that should be modified.
    * @param otherEntity entity we are "interacting with" in this effect
    * @param elapsedTime time between steps in ms
    * @param variables   game variables
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     if (variables.containsKey(variableName)) {
       game.setVariable(variableName, Effect.doVariableSubstitutions(variableValue, subject, variables));
     }

@@ -1,5 +1,6 @@
 package ooga.view.menus;
 
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -7,16 +8,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.profiledatareaders.ProfileReaderExternal;
 import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.data.profiledatareaders.XMLProfileReader;
-
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public abstract class ScrollMenu extends Pane{
+public abstract class ScrollMenu extends BorderPane {
 
     protected final ProfileReaderExternal myProfileReader;
     protected final GameDataReaderExternal myGameDataReader;
@@ -30,19 +36,24 @@ public abstract class ScrollMenu extends Pane{
     private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
     private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
     private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
+    private final String TITLE_STYLE = myResources.getString("titlecss");
+    private static final double TITLE_FONT_SIZE = 65;
     protected HBox myHBox;
+    protected ResourceBundle languageResources;
 
     /**
      * This type of menu has a horizontal scrollPane that allows users to scroll through a list of options.
      * Styled by the css file specified in constants
      */
-    protected ScrollMenu(){
+    protected ScrollMenu(ResourceBundle languageresources, String titleKey){
+        languageResources = languageresources;
         myProfileReader = new XMLProfileReader() {};
         myGameDataReader = new XMLGameDataReader() {};
         double windowHeight = Double.parseDouble(myResources.getString("windowHeight"));
         this.setWidth(WINDOW_WIDTH);
         this.setHeight(windowHeight);
-        this.getChildren().addAll( horizontalScroller());
+        this.setTop(makeTitle(titleKey));
+        this.setBottom(horizontalScroller());
         String SCROLLBAR_CSS_LOCATION = myResources.getString("scrollBarCSSLocation");
         this.getStylesheets().add(SCROLLBAR_CSS_LOCATION);
     }
@@ -77,7 +88,7 @@ public abstract class ScrollMenu extends Pane{
         myHBox.setStyle(HBOX_STYLE);
         myHBox.setLayoutY(HBOX_Y_LAYOUT);
         myHBox.setSpacing(HBOX_SPACING);
-       ScrollPane scrollPane = new ScrollPane();
+        ScrollPane scrollPane = new ScrollPane();
         scrollPane.setStyle(SCROLL_PANE_STYLE);
         scrollPane.setLayoutY(SCROLLBAR_Y);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -86,5 +97,22 @@ public abstract class ScrollMenu extends Pane{
         scrollPane.setContent(myHBox);
         return scrollPane;
     }
-
+    private HBox makeTitle(String titleKey){
+        String title;
+        try {
+            title = languageResources.getString(titleKey);
+        }catch (MissingResourceException e){
+            title = titleKey;
+        }
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setAlignment(Pos.CENTER);
+        Text text = new Text(title);
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setStyle(TITLE_STYLE);
+        text.setFont(Font.font(TITLE_FONT_SIZE));
+        text.setFill(Color.WHITE);
+        hbox.getChildren().add(text);
+        return hbox;
+    }
 }

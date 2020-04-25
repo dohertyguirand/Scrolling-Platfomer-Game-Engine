@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.script.ScriptException;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;
@@ -37,14 +37,14 @@ public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
 
   /**
    * Performs the effect
-   *  @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param subject     The entity that owns this. This is the entity that should be modified.
    * @param otherEntity entity we are "interacting with" in this effect
    * @param elapsedTime time between steps in ms
    * @param variables   game variables
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     double randomMinValue = parseData(randomRangeMin, subject, variables, 0.0);
     double randomMaxValue = parseData(randomRangeMax, subject, variables, 1.0);
     double changeValueData = (new Random().nextDouble()) * (randomMaxValue-randomMinValue);
@@ -57,7 +57,7 @@ public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
     }
   }
 
-  private void modifyEntityVariable(Entity subject, double changeValueData, String operator) {
+  private void modifyEntityVariable(EntityInternal subject, double changeValueData, String operator) {
     String entityVariableValue = subject.getVariable(variableName);
     if(entityVariableValue != null){
       try {

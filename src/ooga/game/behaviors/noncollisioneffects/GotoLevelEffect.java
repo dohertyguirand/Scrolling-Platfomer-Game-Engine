@@ -7,20 +7,22 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 @SuppressWarnings("unused")
-public class RestartLevelEffect extends TimeDelayedEffect {
+public class GotoLevelEffect extends TimeDelayedEffect {
 
-  public RestartLevelEffect(List<String> args) {
+  private String myLevelId;
+
+  public GotoLevelEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
 
   @Override
   public void processArgs(List<String> args) {
-    //has no arguments.
+    myLevelId = args.get(0);
   }
 
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime,
-      Map<String, String> variables, GameInternal game) {
-    game.restartLevel();
+                                     Map<String, String> variables, GameInternal game) {
+    game.goToLevel(myLevelId);
   }
 }

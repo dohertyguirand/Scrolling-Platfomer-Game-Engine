@@ -1,6 +1,7 @@
 package ooga.game.behaviors.noncollisioneffects;
 
 import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
@@ -33,6 +34,11 @@ public class GetEntityPositionEffect extends TimeDelayedEffect {
         desiredLocation.add(args.get(1));
     }
 
+    @Override
+    protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+
+    }
+
     /**
      * Sets the location to the stored location. If stored location is variable dependent, attempts to find a matching game variable.
      * If there is none, attempts to find a matching entity variable. If there is none, defaults to 0.0.
@@ -42,12 +48,4 @@ public class GetEntityPositionEffect extends TimeDelayedEffect {
      * @param variables   game variables
      * @param game        game instance
      */
-    @Override
-    protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
-        List<Double> newLocation = new ArrayList<>();
-        for(String coordinateData : desiredLocation){
-            newLocation.add(parseData(coordinateData, subject, variables, 0.0));
-        }
-        subject.setPosition(newLocation);
-    }
 }
