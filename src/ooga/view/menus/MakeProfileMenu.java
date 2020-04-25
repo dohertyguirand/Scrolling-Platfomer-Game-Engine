@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 public class MakeProfileMenu extends ScrollMenu {
     public MakeProfileMenu() {
-        super(ResourceBundle.getBundle("ooga/view/Resources.English"));
+        super(ResourceBundle.getBundle("ooga/view/Resources.English"), "Create a Profile");
     }
     private GridPane createRegistrationFormPane() {
         // Instantiate a new Grid Pane

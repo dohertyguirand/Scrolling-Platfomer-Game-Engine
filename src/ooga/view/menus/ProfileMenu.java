@@ -23,12 +23,13 @@ public class ProfileMenu extends ScrollMenu {
     private static final String ADD_PROFILE = "Add a New Profile";
     private static final String SUBMIT = "Submit";
     private static final String ERROR_MESSAGE = "Could Not Create New Profile";
+    private static final String PROFILE_MENU_TITLE_KEY = "ProfileMenuTitle";
 
     /**
      * Shows profile options for user to choose, user can also add a new profile
      */
     public ProfileMenu(ResourceBundle languageResources){
-        super(languageResources);
+        super(languageResources,PROFILE_MENU_TITLE_KEY );
         makeViewProfiles();
         addProfileImages();
     }

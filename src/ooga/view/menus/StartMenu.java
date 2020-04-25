@@ -24,7 +24,7 @@ public class StartMenu extends ScrollMenu{
 
   @Deprecated
   public StartMenu() {
-    super(ResourceBundle.getBundle("ooga/view/Resources/languages.French"));
+    super(ResourceBundle.getBundle("ooga/view/Resources/languages.French"),"Select a game");
     try {
       List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
@@ -34,7 +34,7 @@ public class StartMenu extends ScrollMenu{
   }
 
   public StartMenu(ViewProfile profile, Node backButton){
-    super(ResourceBundle.getBundle("ooga/view/Resources/languages.French"));
+    super(ResourceBundle.getBundle("ooga/view/Resources/languages.French"),"select a game");
     try {
       List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -23,17 +24,19 @@ public class GameMenu extends ScrollMenu{
   public static final String PROFILE_VIEW_TITLE = "ProfileViewTitle";
   private final StringProperty optionSelected = new SimpleStringProperty();
   private final String ERROR_MESSAGE = languageResources.getString("ThumbnailError");
+  private static final String GAME_MENU_TITLE_KEY = "GameMenuTitle";
+  private static final String BACK_BUTTON_STYLE = ".backButton";
 
-  @Deprecated
-  public GameMenu(ResourceBundle languageResources) {
-    super(languageResources);
-    try {
-      List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
-      addImages(thumbnails);
-    } catch (OogaDataException e){
-      showError(e.getMessage());
-    }
-  }
+//  @Deprecated
+////  public GameMenu(ResourceBundle languageResources, String titleKey) {
+////    super(languageResources, titleKey);
+////    try {
+////      List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
+////      addImages(thumbnails);
+////    } catch (OogaDataException e){
+////      showError(e.getMessage());
+////    }
+////  }
 
   /**
    * A screen that allows the user to select a game to be played
@@ -41,15 +44,14 @@ public class GameMenu extends ScrollMenu{
    * @param backButton - button that allows user to go back to previous screen
    */
   public GameMenu(ResourceBundle languageResources, ViewProfile profile, Node backButton){
-    super(languageResources);
+    super(languageResources, GAME_MENU_TITLE_KEY);
     try {
       List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
     } catch (OogaDataException e){
       showError(e.getMessage());
     }
-    this.getChildren().add(setProfileData(profile));
-    this.getChildren().add(backButton);
+    this.setCenter(addProfileDataAndBackButton(profile,backButton));
   }
 
   /**
@@ -59,6 +61,7 @@ public class GameMenu extends ScrollMenu{
   public StringProperty selectedProperty() {
     return optionSelected;
   }
+
 
   private void addImages(List<Thumbnail> thumbnails){
     for (Thumbnail thumbnail : thumbnails) {
@@ -70,6 +73,12 @@ public class GameMenu extends ScrollMenu{
     }
   }
 
+  private Node addProfileDataAndBackButton(ViewProfile profile, Node backButton){
+    HBox bottomBox = new HBox();
+    bottomBox.getChildren().add(setProfileData(profile));
+    bottomBox.getChildren().add(backButton);
+    return bottomBox;
+  }
 
   private Node setProfileData(ViewProfile profile){
     VBox vBox = new VBox();
@@ -101,5 +110,6 @@ public class GameMenu extends ScrollMenu{
     alert.setTitle(ERROR_MESSAGE);
     alert.setContentText(message);
     alert.showAndWait();
+    System.out.println("IN GAME MENU");
   }
 }
