@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 
 public class GameMenu extends ScrollMenu{
 
+  public static final String PROFILE_VIEW_TITLE = "ProfileViewTitle";
   private final StringProperty optionSelected = new SimpleStringProperty();
   private final String ERROR_MESSAGE = languageResources.getString("ThumbnailError");
 
@@ -84,7 +85,7 @@ public class GameMenu extends ScrollMenu{
   private void showProfile(ViewProfile profile){
     Stage stage  = new Stage();
     Scene scene = new Scene(profile.getPane());
-    stage.setTitle(profile.getProfileName() + "'s Profile");
+    stage.setTitle(languageResources.getString(PROFILE_VIEW_TITLE));
     stage.setScene(scene);
     stage.show();
   }
