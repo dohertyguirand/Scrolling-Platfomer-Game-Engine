@@ -1,7 +1,7 @@
 package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
-import ooga.game.Game;
+import ooga.game.Level;
 
 import java.util.List;
 
@@ -14,10 +14,11 @@ public interface GameRecorderExternal {
   /**
    * Saves the current state of the game so it can easily be loaded from where the player
    * left off.
-   * @param filePath The filepath at which to save the game.
-   * @throws OogaDataException if the filepath is invalid, or if no game is loaded.
+   * @param gameName the name of the game the level applies to
+   * @param level The filepath at which to save the game.
+   * @param userName the name of the user asking for the save
    */
-  void saveGameState(String filePath) throws OogaDataException;
+  void saveLevel(String userName, String gameName, Level level);
 
   /**
    * returns information about all of the saves for a given game and user name

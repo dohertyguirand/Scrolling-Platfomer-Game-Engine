@@ -5,9 +5,12 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.entities.ImageEntityDefinition;
 import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.data.gamerecorders.GameRecorderExternal;
+import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.data.profiledatareaders.XMLProfileReader;
 import ooga.game.Level;
 import ooga.data.OogaProfile;
+import ooga.game.OogaLevel;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.ls.LSException;
 
@@ -258,6 +261,13 @@ public class DataReaderTest {
 //            }
             assertTrue(testPassed);
         }
+    }
+
+    @Test
+    public void testSaveLevel(){
+        Level fakeLevel = new OogaLevel(new ArrayList<>(), "");
+        XMLGameRecorder testGameRecorder = new XMLGameRecorder();
+        testGameRecorder.saveLevel("Braeden", "Super Mario Bros", fakeLevel);
     }
 }
 

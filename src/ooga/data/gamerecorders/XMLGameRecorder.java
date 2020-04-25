@@ -2,11 +2,13 @@ package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
 import ooga.data.XMLDataReader;
+import ooga.game.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
@@ -33,14 +35,21 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
     return gameSaveInfo;
   }
 
-  /**
-   * Saves the current state of the game so it can easily be loaded from where the player
-   * left off.
-   *
-   * @param filePath The filepath at which to save the game.
-   */
   @Override
-  public void saveGameState(String filePath) {}
+  public void saveLevel(String userName, String gameName, Level level) {
+    // go to user folder
+    File file = new File(DEFAULT_USERS_FILE + "/" + userName);
+    file.listFiles();
+    System.out.println(Arrays.toString(file.listFiles()));
+    // go to user's save folder
+    // create a new .xml file with name gameName + "-save.xml"
+    // add the required information to that xml
+    // go to user file
+    // go to saved game states
+    // create a new save at that location with the the correct information
+    level.getEntities();
+    level.getLevelId();
+  }
 
   /**
    * Looks through the user files and finds the path of the save file by the requested user at the requested date
