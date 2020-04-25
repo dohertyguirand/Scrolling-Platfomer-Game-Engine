@@ -1,4 +1,5 @@
 package ooga.view;
+import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -25,23 +26,64 @@ public class ViewProfile{
     private String profilePhotoPath;
     private String profileName;
     private Map<String, Integer> myStats;
+    private BorderPane pane = new BorderPane();
 
-
-
+    /**
+     * View's version of a profile, stores a photo, name, and stats, allows user to add a new profile
+     * and update an existing profile, can support some user interaction such as drag and drop photo to replace existing photo,
+     * double clicking on photo, and changing profile name by clicking on name
+     * @param name - String to be used as profile name
+     * @param imagePath - path to a photo to be used as profile photo -- if not an actual path, profile photo is set to default
+     */
     public ViewProfile(String name, String imagePath){
         profileName = name;
         profilePhotoPath = imagePath;
         verifyPhotoPath();
         myStats = new HashMap<>();
     }
+    /**
+     * This constructor is used it the profile already as stats, used in ViewerGame when making viewProfiles from backend Profiles
+     * @param name - String to be used as profile name
+     * @param imagePath - path to a photo to be used a profile photo -- if not an actual path, profile photo is set to default
+     * @param stats - Map of String, Integer that stores users game statistics
+     */
     public ViewProfile(String name, String imagePath, Map<String, Integer> stats){
         this(name,imagePath);
         myStats = stats;
     }
+    /**
+     * This constructor is used when user is creating a new profile, used by profileMenu
+     * @param submitButton - button that tells profileMenu that the user is ready to submit name and photo
+     * added. Name and photo saved in data
+     */
+    public ViewProfile(Node submitButton){
+      this("Click_To_Add_Name","ooga/view/Resources/profilephotos/defaultphoto.jpg");
+      pane.setBottom(submitButton);
+    }
 
-    @Deprecated
-    public ViewProfile(){
-      this("Testing","ooga/view/Resources/profilephotos/defaultphoto.jpg");
+    /**
+     *
+     * @return Return's profilename
+     */
+    public String getProfileName(){return profileName;}
+
+    /**
+     * returns path to profilephoto
+     * @return
+     */
+    public String getProfilePath(){return profilePhotoPath;}
+
+
+    /**
+     * Creates and returns a pane that displays the profile's name, photo and stats
+     * @return Pane
+     */
+    public Pane getPane(){
+        pane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+        pane.setTop(setNameAndPhoto());
+        pane.setCenter(setStatsBox());
+        pane.getStylesheets().add(STYLESHEET);
+        return pane;
     }
 
     private void verifyPhotoPath(){
@@ -51,15 +93,6 @@ public class ViewProfile{
         catch (IllegalArgumentException | NullPointerException e){
             profilePhotoPath = DEFAULT_IMAGE_PATH;
         }
-    }
-
-    public Pane getPane(){
-        BorderPane pane = new BorderPane();
-        pane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-        pane.setTop(setNameAndPhoto());
-        pane.setCenter(setStatsBox());
-        pane.getStylesheets().add(STYLESHEET);
-        return pane;
     }
 
     private VBox setNameAndPhoto(){
@@ -95,8 +128,8 @@ public class ViewProfile{
             File newFile = new File(profilePhotoPath);
             ImageIO.write(bufferedImage,"png",newFile);
             profilePhotoPath = "ooga/view/Resources/profilephotos/" + profileName+ "profilephoto.jpg" ;
-            //myPane.setTop(setNameAndPhoto());
-            } catch (IOException | NullPointerException | IllegalArgumentException ignored) {
+            pane.setTop(setNameAndPhoto());
+            } catch (NullPointerException | IllegalArgumentException | IOException ignored) {
             }
     }
     private void handleExitPressed(TextArea textArea, HBox hBox, KeyEvent e){
@@ -107,7 +140,7 @@ public class ViewProfile{
 
     private void hideTextArea(TextArea textArea,HBox hBox){
         if(!textArea.getText().equals("\n")){
-            profileName = textArea.getText();
+            profileName = textArea.getText().replace("\n", "");
         }
         Text text = new Text(profileName);
         hBox.getChildren().clear();
@@ -141,13 +174,13 @@ public class ViewProfile{
         GridPane gridPane = new GridPane();
         gridPane.setHgap(50);
         int row = 0;
-        if(myStats == null) {
-           myStats = (new HashMap<>(){{
-                put("SuperMario", 100);
-                put("Dino", 3500);
-                put("FireBoy and Water Girl", 3000);
-            }});
-        }
+//        if(myStats == null) {
+//           myStats = (new HashMap<>(){{
+//                put("SuperMario", 100);
+//                put("Dino", 3500);
+//                put("FireBoy and Water Girl", 3000);
+//            }});
+//        }
         for(String game: myStats.keySet()){
             Integer stat = myStats.get(game);
             Text gameName = new Text(game);
@@ -160,7 +193,6 @@ public class ViewProfile{
         return gridPane;
     }
 
-    public String getProfileName(){return profileName;}
-    public String getProfilePath(){return profilePhotoPath;}
+
 
 }

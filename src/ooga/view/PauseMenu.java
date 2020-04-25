@@ -26,29 +26,48 @@ public class PauseMenu extends OptionMenu {
   }};
 
 
+  /**
+   * Menu that appears when game has been paused
+   */
   public PauseMenu(){
     super(PAUSE_MENU_TITLE);
     this.setLeft(setMenuItems(createButtons()));
   }
 
+  /**
+   * used by ViewerGame to tell if user has selected to resume game
+   * @return true if resumed false if not
+   */
   public BooleanProperty resumedProperty() {
     return resumed;
   }
 
+  /**
+   * Sets resumed Property
+   * @param resumed - a boolean that states if game is in play
+   */
   public void setResumed(boolean resumed) {
     this.resumed.set(resumed);
   }
 
+  /**
+   * Used by ViewerGame to tell if game as been exited by user
+   * @return true if exited, false if not
+   */
   public BooleanProperty quitProperty() {
     return quit;
   }
 
+  /**
+   * Used by ViewGame to tell is game as been saved by user
+   * @return true if saved
+   */
   public BooleanProperty saveProperty() {
     return save;
   }
 
 
-  private Button makeButton(BooleanProperty statusProperty, String text){
+  private Node makeButton(BooleanProperty statusProperty, String text){
     Button button = new Button(text);
     ImageView icon = new ImageView(new Image(myResources.getString(text)));
     icon.setStyle(ICON_STYLE);

@@ -23,15 +23,25 @@ public abstract class OptionMenu extends BorderPane {
     private static final double TITLE_FONT_SIZE = 70;
     private static final double SPACING = 30;
 
-    public OptionMenu(String type){
+    /**
+     * This type of menu has a vertial scrollpane that allows user to select from a list of options
+     * Styled by css file specified in constants
+     * @param title String that is used to create title of menu
+     */
+    public OptionMenu(String title){
         this.getStylesheets().add(STYLESHEET);
         this.setWidth(WINDOW_WIDTH);
         this.setHeight(WINDOW_HEIGHT);
-        this.setTop(makeMenuTitle(type));
+        this.setTop(makeMenuTitle(title));
         this.setCenterShape(true);
     }
 
-    protected ScrollPane setMenuItems(List<Node> buttonList){
+    /**
+     * Adds menu items to vertical scrollpane,
+     * @param menuItems a list of Menu items to be added to menu
+     * @return - a Node that contains all of the menu items
+     */
+    protected Node setMenuItems(List<Node> menuItems){
         VBox buttonVBox = new VBox(SPACING);
         buttonVBox.setAlignment(Pos.CENTER);
         ScrollPane scrollPane = new ScrollPane();
@@ -41,8 +51,8 @@ public abstract class OptionMenu extends BorderPane {
         scrollPane.setStyle(SCROLL_PANE_STYLE);
         scrollPane.setContent(buttonVBox);
         scrollPane.setFitToWidth(true);
-        for(Node button: buttonList){
-            buttonVBox.getChildren().add(button);
+        for(Node item: menuItems){
+            buttonVBox.getChildren().add(item);
         }
         return scrollPane;
     }

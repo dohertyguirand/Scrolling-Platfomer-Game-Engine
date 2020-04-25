@@ -19,6 +19,8 @@ public class Visualizer extends Application {
   private final DataReader dataReader = new OogaDataReader();
 
 
+
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -26,26 +28,27 @@ public class Visualizer extends Application {
   @Override
   public void start(Stage primaryStage) {
     stage = primaryStage;
-    Scene display = setUpStartMenuDisplay();
-    primaryStage.setScene(display);
+    showProfileMenu();
     primaryStage.setTitle(START_MENU_TITLE);
     primaryStage.show();
     primaryStage.setResizable(false);
   }
 
-  private Scene setUpStartMenuDisplay() {
+  private void showProfileMenu() {
     ProfileMenu profileMenu = new ProfileMenu();
     Scene profileMenuScene = new Scene(profileMenu,profileMenu.getWidth(),profileMenu.getHeight());
-    profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> showStartMenu(pnewVal, profileMenuScene));
-    return profileMenuScene;
+    profileMenu.profileSelected().addListener((p, poldVal, pnewVal) ->{
+      profileNameSelected = pnewVal.getProfileName();
+      showStartMenu(pnewVal, profileMenuScene);
+    });
+    stage.setScene(profileMenuScene);
   }
 
   private void showStartMenu(ViewProfile profile, Scene returnScene){
     Button backToProfileMenu = makeBackButton(returnScene);
-    StartMenu startMenu = new StartMenu(profile,backToProfileMenu);
-    Scene gameMenuScene = new Scene(startMenu,startMenu.getWidth(),startMenu.getHeight());
-    profileNameSelected = profile.getProfileName();
-    startMenu.selectedProperty().addListener((o, oldVal, newVal) -> showLoadMenu(newVal, gameMenuScene));
+    GameMenu gameMenu = new GameMenu(profile,backToProfileMenu);
+    Scene gameMenuScene = new Scene(gameMenu, gameMenu.getWidth(), gameMenu.getHeight());
+    gameMenu.selectedProperty().addListener((o, oldVal, newVal) -> showLoadMenu(newVal, gameMenuScene));
     stage.setScene(gameMenuScene);
   }
 

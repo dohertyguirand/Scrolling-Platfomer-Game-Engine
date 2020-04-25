@@ -2,6 +2,7 @@ package ooga.view;
 
 import ooga.Profile;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class OogaProfile implements Profile {
@@ -10,7 +11,15 @@ public class OogaProfile implements Profile {
     protected Map<String, Integer> myHighestScores;
     protected String myDefaultImagePath;
 
-    public OogaProfile(){
+    public OogaProfile(String profileName, String imagePath, Map<String, Integer> stats){
+        this(profileName,imagePath);
+        myHighestScores = stats;
+    }
+
+    public OogaProfile(String profilename, String imagePath){
+        myName = profilename;
+        myProfilePhotoPath = imagePath;
+        myHighestScores = new HashMap<>();
     }
 
     @Override
