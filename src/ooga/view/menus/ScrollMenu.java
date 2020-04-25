@@ -31,12 +31,14 @@ public abstract class ScrollMenu extends Pane{
     private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
     private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
     protected HBox myHBox;
+    protected ResourceBundle languageResources;
 
     /**
      * This type of menu has a horizontal scrollPane that allows users to scroll through a list of options.
      * Styled by the css file specified in constants
      */
-    protected ScrollMenu(){
+    protected ScrollMenu(ResourceBundle languageresources){
+        languageResources = languageresources;
         myProfileReader = new XMLProfileReader() {};
         myGameDataReader = new XMLGameDataReader() {};
         double windowHeight = Double.parseDouble(myResources.getString("windowHeight"));

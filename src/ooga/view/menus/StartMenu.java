@@ -15,6 +15,7 @@ import ooga.view.ViewProfile;
 
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Deprecated
 public class StartMenu extends ScrollMenu{
@@ -23,7 +24,7 @@ public class StartMenu extends ScrollMenu{
 
   @Deprecated
   public StartMenu() {
-    super();
+    super(ResourceBundle.getBundle("ooga/view/Resources/languages.French"));
     try {
       List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
@@ -33,7 +34,7 @@ public class StartMenu extends ScrollMenu{
   }
 
   public StartMenu(ViewProfile profile, Node backButton){
-    super();
+    super(ResourceBundle.getBundle("ooga/view/Resources/languages.French"));
     try {
       List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);

@@ -9,6 +9,7 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.entities.ImageEntity;
 import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.game.EntityInternal;
 import ooga.game.Game;
 import ooga.game.GameInternal;
@@ -35,7 +36,7 @@ class NonCollisionEffectTest {
 
   @BeforeEach
   void setUp() throws OogaDataException {
-    OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(){},new DirectionalCollisionDetector(),new KeyboardControls(KEYBOARD_INPUT_FILE),"");
+    OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(),new DirectionalCollisionDetector(),new KeyboardControls(KEYBOARD_INPUT_FILE),"", new XMLGameRecorder());
     myGame = game;
     myGameInternal = game;
   }

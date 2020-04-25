@@ -99,12 +99,6 @@ public class DataReaderTest {
     }
 
     @Test
-    public void testGetGameFilePaths() {
-        List<String> pathList = testDataReader.getGameFilePaths();
-        System.out.println(pathList);
-    }
-
-    @Test
     public void testGetEntityMap() {
         for (String gameName : GAME_NAMES) {
             Map<String, ImageEntityDefinition> retMap = null;

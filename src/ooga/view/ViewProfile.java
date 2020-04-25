@@ -18,11 +18,15 @@ import java.util.ResourceBundle;
 
 
 public class ViewProfile{
+    public static final int ZERO_INDEX = 0;
+    public static final int FIRST_INDEX = 1;
+    public static final String CLICK_TO_ADD_NAME = "Click_To_Add_Name";
+    public static final String DEFAULT_IMAGE_PATH = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private static final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
-    private static final String DEFAULT_IMAGE_PATH = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
+    private static final String GRID_PANE_STYLE = ".grid-pane";
     private String profilePhotoPath;
     private String profileName;
     private Map<String, Integer> myStats;
@@ -35,7 +39,7 @@ public class ViewProfile{
      * @param name - String to be used as profile name
      * @param imagePath - path to a photo to be used as profile photo -- if not an actual path, profile photo is set to default
      */
-    public ViewProfile(String name, String imagePath){
+    public ViewProfile(ResourceBundle resourceBundle, String name, String imagePath){
         profileName = name;
         profilePhotoPath = imagePath;
         verifyPhotoPath();
@@ -47,8 +51,8 @@ public class ViewProfile{
      * @param imagePath - path to a photo to be used a profile photo -- if not an actual path, profile photo is set to default
      * @param stats - Map of String, Integer that stores users game statistics
      */
-    public ViewProfile(String name, String imagePath, Map<String, Integer> stats){
-        this(name,imagePath);
+    public ViewProfile(ResourceBundle resourceBundle,String name, String imagePath, Map<String, Integer> stats){
+        this(resourceBundle,name,imagePath);
         myStats = stats;
     }
     /**
@@ -56,8 +60,8 @@ public class ViewProfile{
      * @param submitButton - button that tells profileMenu that the user is ready to submit name and photo
      * added. Name and photo saved in data
      */
-    public ViewProfile(Node submitButton){
-      this("Click_To_Add_Name","ooga/view/Resources/profilephotos/defaultphoto.jpg");
+    public ViewProfile(ResourceBundle resourceBundle,Node submitButton){
+      this(resourceBundle, CLICK_TO_ADD_NAME, DEFAULT_IMAGE_PATH);
       pane.setBottom(submitButton);
     }
 
@@ -162,7 +166,7 @@ public class ViewProfile{
         textArea.setOnKeyPressed(e->handleExitPressed(textArea,hBox,e));
         //myPane.setOnMouseClicked(m->handleMouseClicked(m, textArea,hBox));
         hBox.getChildren().add(name);
-        gridPane.setStyle(".grid-pane");
+        gridPane.setStyle(GRID_PANE_STYLE);
         gridPane.add(nameHeader,0,0);
         gridPane.add(hBox,1,0);
         return gridPane;
@@ -185,11 +189,11 @@ public class ViewProfile{
             Integer stat = myStats.get(game);
             Text gameName = new Text(game);
             Text statText = new Text(stat.toString());
-            gridPane.add(gameName,0,row);
-            gridPane.add(statText,1,row);
+            gridPane.add(gameName, ZERO_INDEX,row);
+            gridPane.add(statText, FIRST_INDEX,row);
             row++;
         }
-        gridPane.setStyle(".grid-pane");
+        gridPane.setStyle(GRID_PANE_STYLE);
         return gridPane;
     }
 

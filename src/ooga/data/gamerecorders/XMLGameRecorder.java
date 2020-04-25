@@ -1,6 +1,7 @@
-package ooga.data;
+package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
+import ooga.data.XMLDataReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -8,12 +9,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface XMLGameRecorder extends GameRecorder, XMLDataReader, GameRecorderInternal {
-
-  String DEFAULT_USERS_FILE = "data/users";
+public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
 
   @Override
-  default List<List<String>> getGameSaves(String userName, String gameName) throws OogaDataException {
+  public List<List<String>> getGameSaves(String userName, String gameName) throws OogaDataException {
     Document doc = getDocForUserName(userName);
     List<List<String>> gameSaveInfo = new ArrayList<>();
     // loop through all of the games saves in the user file and find the right games
@@ -53,28 +52,21 @@ public interface XMLGameRecorder extends GameRecorder, XMLDataReader, GameRecord
   }
 
   /**
-   * @param UserName the name of the user whose document we need
-   * @return The Document for the user with the given username
-   * @throws OogaDataException if the document has no user with that username
+   * Saves the current state of the game so it can easily be loaded from where the player
+   * left off.
+   *
+   * @param filePath The filepath at which to save the game.
    */
   @Override
-  default Document getDocForUserName(String UserName) throws OogaDataException {
-    for (File userFile : getAllFiles(DEFAULT_USERS_FILE)) {
-      try{
-        // create a new document to parse
-        File fXmlFile = new File(String.valueOf(userFile));
-        Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
-        // get the name at the top of the file
-        checkKeyExists(doc, "Name", "User file missing username");
-        String loadedName = doc.getElementsByTagName("Name").item(0).getTextContent();
+  public void saveGameState(String filePath) {}
 
-        if (loadedName.equals(UserName)) return doc;
-      } catch (OogaDataException e) {
-        // this field is meant to be empty
-        // right now we're just looking for a user,
-        // it's not a problem if one of the other documents is improperly formatted
-      }
-    }
-    throw new OogaDataException(myDataResources.getString("UserFolderMissingRequestedUsername"));
-  }
+  /**
+   * Looks through the user files and finds the path of the save file by the requested user at the requested date
+   *
+   * @param UserName : Name of the user who made the save file
+   *                 if the requested username isn't listed in the file or doesn't have a save at the given time
+   * @param Date
+   */
+  @Override
+  public String getLevelFilePath(String UserName, String Date) {return null;}
 }

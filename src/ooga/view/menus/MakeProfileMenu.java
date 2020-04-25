@@ -13,9 +13,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.awt.*;
+import java.util.ResourceBundle;
+
 public class MakeProfileMenu extends ScrollMenu {
     public MakeProfileMenu() {
-        super();
+        super(ResourceBundle.getBundle("ooga/view/Resources.English"));
     }
     private GridPane createRegistrationFormPane() {
         // Instantiate a new Grid Pane

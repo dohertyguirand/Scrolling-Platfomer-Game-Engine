@@ -16,15 +16,17 @@ import ooga.view.ViewProfile;
 
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class GameMenu extends ScrollMenu{
 
+  public static final String PROFILE_VIEW_TITLE = "ProfileViewTitle";
   private final StringProperty optionSelected = new SimpleStringProperty();
-  private final String ERROR_MESSAGE = "Error in Reading thumbnails";
+  private final String ERROR_MESSAGE = languageResources.getString("ThumbnailError");
 
   @Deprecated
-  public GameMenu() {
-    super();
+  public GameMenu(ResourceBundle languageResources) {
+    super(languageResources);
     try {
       List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
@@ -38,8 +40,8 @@ public class GameMenu extends ScrollMenu{
    * @param profile - ViewProfile of profile selected by user
    * @param backButton - button that allows user to go back to previous screen
    */
-  public GameMenu(ViewProfile profile, Node backButton){
-    super();
+  public GameMenu(ResourceBundle languageResources, ViewProfile profile, Node backButton){
+    super(languageResources);
     try {
       List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
@@ -84,7 +86,7 @@ public class GameMenu extends ScrollMenu{
   private void showProfile(ViewProfile profile){
     Stage stage  = new Stage();
     Scene scene = new Scene(profile.getPane());
-    stage.setTitle(profile.getProfileName() + "'s Profile");
+    stage.setTitle(languageResources.getString(PROFILE_VIEW_TITLE));
     stage.setScene(scene);
     stage.show();
   }
