@@ -82,13 +82,25 @@ public class BehaviorInstance implements ConditionalBehavior {
       Entry<String, List<String>> inputCondition) {
     for (String inputType : inputCondition.getValue()) {
       String keyState = inputs.get(inputCondition.getKey());
-      if (inputType.equals(keyState) ||
-          (inputType.equals(ANY_KEY_REQUIREMENT) && keyState != null) ||
-          (inputType.equals(KEY_INACTIVE_REQUIREMENT) && keyState == null)) {
+      if (keyRequirementSatisfied(inputType, keyState)) {
         return true;
       }
     }
     return false;
+  }
+
+  private boolean keyRequirementSatisfied(String inputType, String keyState) {
+    return inputType.equals(keyState) ||
+        keyAnySatisfied(inputType, keyState) ||
+        keyInactiveSatisfied(inputType, keyState);
+  }
+
+  private boolean keyAnySatisfied(String inputType, String keyState) {
+    return inputType.equals(ANY_KEY_REQUIREMENT) && keyState != null;
+  }
+
+  private boolean keyInactiveSatisfied(String inputType, String keyState) {
+    return inputType.equals(KEY_INACTIVE_REQUIREMENT) && keyState == null;
   }
 
 
@@ -166,12 +178,30 @@ public class BehaviorInstance implements ConditionalBehavior {
 
   private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info, String entity2Info, String direction) {
     for(Entity entity : collisionInfo.keySet()){
-      if(entityMatches(entity1Info, entity)){
-        if(direction.equals(ANY_DIRECTION)){
-          for(String possibleDirection : collisionInfo.get(entity).keySet()){
-            if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
-          }
-        } else if (hasCollisionInDirection(collisionInfo, entity2Info, direction, entity)) return true;
+      if (entityMatches(entity1Info, entity) && satisfiesCollision(collisionInfo, entity2Info, direction, entity)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean satisfiesCollision(Map<Entity, Map<String, List<Entity>>> collisionInfo,
+      String entity2Info, String direction, Entity entity) {
+    if(direction.equals(ANY_DIRECTION)){
+      if (hasAnyCollisionDirection(collisionInfo, entity2Info, entity)) {
+        return true;
+      }
+    } else if (hasCollisionInDirection(collisionInfo, entity2Info, direction, entity)) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean hasAnyCollisionDirection(Map<Entity, Map<String, List<Entity>>> collisionInfo,
+      String entity2Info, Entity entity) {
+    for(String possibleDirection : collisionInfo.get(entity).keySet()){
+      if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) {
+        return true;
       }
     }
     return false;

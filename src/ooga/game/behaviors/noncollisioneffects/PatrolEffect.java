@@ -1,7 +1,7 @@
 package ooga.game.behaviors.noncollisioneffects;
 
-import static ooga.game.behaviors.BehaviorUtil.getDotProduct;
-import static ooga.game.behaviors.BehaviorUtil.getMagnitude;
+import static ooga.game.behaviors.EffectUtil.getDotProduct;
+import static ooga.game.behaviors.EffectUtil.getMagnitude;
 
 import java.util.ArrayList;
 import java.util.List;
