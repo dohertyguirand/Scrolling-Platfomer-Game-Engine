@@ -217,11 +217,11 @@ class NonCollisionEffectTest {
     }
   }
 
-  private Entity createBehaviorWithEffect(Effect effect) {
+  private EntityInternal createBehaviorWithEffect(Effect effect) {
     IndependentAction action = new IndependentAction(new ArrayList<>(),List.of(effect));
     ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action));
-    myGame.getEntities().get(0).setConditionalBehaviors(List.of(behavior));
-    return myGame.getEntities().get(0);
+    myGameInternal.getInternalEntities().get(0).setConditionalBehaviors(List.of(behavior));
+    return myGameInternal.getInternalEntities().get(0);
   }
 
   private EntityInternal createDummyEntity(String name, double xPos, double yPos) {
