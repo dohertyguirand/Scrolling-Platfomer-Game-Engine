@@ -21,7 +21,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public static final String CONSTANTS_FILEPATH = "ooga/data/resources/entityconstants";
   public static final String FRICTION_CONST_LABEL = "Friction";
   public static final double DEFAULT_FRICTION = 30.0 / 1000.0;
-
   private final BooleanProperty activeInView = new SimpleBooleanProperty(true);
   protected final DoubleProperty xPos = new SimpleDoubleProperty();
   protected final DoubleProperty yPos = new SimpleDoubleProperty();
@@ -42,7 +41,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private final Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
-  private List<Entity> myCreatedEntities = new ArrayList<>();
   private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
   private final Map<String, Boolean> blockedMovements = new HashMap<>();
   private final Map<String, String> myVariables = new HashMap<>();
