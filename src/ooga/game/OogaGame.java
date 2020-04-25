@@ -245,6 +245,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void reactToGameSave() {
     myGameRecorder.saveLevel(myProfileName,myName,currentLevel);
+    System.out.println("oogagame");
   }
 
   /**

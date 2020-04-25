@@ -2,10 +2,9 @@ package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
 import ooga.data.XMLDataReader;
-import ooga.game.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
+import ooga.game.Level;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;

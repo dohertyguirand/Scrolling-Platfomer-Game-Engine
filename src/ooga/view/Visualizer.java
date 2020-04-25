@@ -18,7 +18,7 @@ import ooga.view.menus.ProfileMenu;
 import java.util.ResourceBundle;
 
 public class Visualizer extends Application {
-  private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.French");
+  private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.English");
   private final String KEYBOARD_INPUTS_FILE_PATH = "ooga/game/controls/inputs/keyboard";
   private final String ERROR_MESSAGE = GAME_LANGUAGE.getString("ErrorMessage");
   private final String START_MENU_TITLE = GAME_LANGUAGE.getString("StageTitle");
@@ -27,7 +27,7 @@ public class Visualizer extends Application {
   private Stage stage;
   private final GameDataReaderExternal myDataReader = new XMLGameDataReader();
   private final XMLGameRecorder gameRecorder = new XMLGameRecorder();
-  private String dateSelected;
+
 
   public static void main(String[] args) {
     launch(args);
@@ -46,7 +46,7 @@ public class Visualizer extends Application {
     ProfileMenu profileMenu = new ProfileMenu(GAME_LANGUAGE);
     Scene profileMenuScene = new Scene(profileMenu,profileMenu.getWidth(),profileMenu.getHeight());
     profileMenu.profileSelected().addListener((p, poldVal, pnewVal) ->{
-      profileNameSelected = pnewVal.getProfileName();
+      if(pnewVal != null)profileNameSelected = pnewVal.getProfileName();
       showStartMenu(pnewVal, profileMenuScene);
     });
     stage.setScene(profileMenuScene);
@@ -56,7 +56,9 @@ public class Visualizer extends Application {
     Button backToProfileMenu = makeBackButton(returnScene);
     GameMenu gameMenu = new GameMenu(GAME_LANGUAGE,profile,backToProfileMenu);
     Scene gameMenuScene = new Scene(gameMenu, gameMenu.getWidth(), gameMenu.getHeight());
-    gameMenu.selectedProperty().addListener((o, oldVal, newVal) -> showLoadMenu(newVal, gameMenuScene));
+    gameMenu.selectedProperty().addListener((o, oldVal, newVal) -> {
+      if(newVal != null)showLoadMenu(newVal, gameMenuScene);
+    });
     stage.setScene(gameMenuScene);
   }
 
@@ -64,7 +66,9 @@ public class Visualizer extends Application {
     Button backToStartMenu = makeBackButton(returnScene);
     LoadMenu loadMenu = new LoadMenu(GAME_LANGUAGE,gameRecorder,gameName, profileNameSelected,myDataReader, backToStartMenu);
     Scene loadScene = new Scene(loadMenu, loadMenu.getWidth(),loadMenu.getHeight());
-    loadMenu.getDateSelected().addListener((d,dold,dnew)-> startGame(gameName,profileNameSelected,dnew));
+    loadMenu.getDateSelected().addListener((d,dold,dnew)-> {
+      if(dnew != null) startGame(gameName,profileNameSelected,dnew);
+    });
     stage.setScene(loadScene);
   }
 
