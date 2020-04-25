@@ -1,11 +1,7 @@
 package ooga.view;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import ooga.OogaDataException;
 
 public class CameraDemo extends Application {
     private static final String ERROR_MESSAGE = "Error: Internal Data Error";

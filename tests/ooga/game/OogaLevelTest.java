@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import ooga.Entity;
+
 import ooga.data.entities.ImageEntity;
 import org.junit.jupiter.api.Test;
 

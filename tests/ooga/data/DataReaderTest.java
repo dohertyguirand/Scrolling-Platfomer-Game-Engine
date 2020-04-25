@@ -1,28 +1,6 @@
 
 package ooga.data;
 
-import ooga.Entity;
-import ooga.OogaDataException;
-import ooga.data.entities.ImageEntity;
-import ooga.data.entities.ImageEntityDefinition;
-import ooga.data.entities.OogaEntity;
-import ooga.data.gamedatareaders.XMLGameDataReader;
-import ooga.data.gamerecorders.GameRecorderExternal;
-import ooga.data.gamerecorders.XMLGameRecorder;
-import ooga.data.profiledatareaders.XMLProfileReader;
-import ooga.game.Level;
-import ooga.data.OogaProfile;
-import ooga.game.OogaLevel;
-import org.junit.jupiter.api.Test;
-import org.w3c.dom.ls.LSException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * This is a class that just tests XMLGameDataReader and makes sure it is working correctly.
  * @author braedenward
