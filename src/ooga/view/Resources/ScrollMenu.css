@@ -4,6 +4,10 @@
 .scroll-bar:horizontal.track {
 
 }
+.title{
+    -fx-text-fill: white;
+    -fx-font-size: 70px;
+}
 .hbox{
     -fx-background-color: transparent;
 }
