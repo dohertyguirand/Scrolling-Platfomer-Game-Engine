@@ -103,13 +103,13 @@ public class ViewerGame {
 
   private void setGame(String saveDate, String keyInputFilePath) throws OogaDataException {
     if(saveDate == null || saveDate.equals("")){
-      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-              keyInputFilePath), myProfileName, new XMLGameRecorder() {});
+      myGame = new OogaGame(myGameName, new XMLGameDataReader(), new DirectionalCollisionDetector(), new KeyboardControls(
+              keyInputFilePath), myProfileName, new XMLGameRecorder());
     }
     else {
       System.out.println("USING ALT GAME CONSTRUCTOR");
       myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-              keyInputFilePath), myProfileName,new XMLGameRecorder() {}, saveDate);
+              keyInputFilePath), myProfileName,new XMLGameRecorder(), saveDate);
     }
   }
 

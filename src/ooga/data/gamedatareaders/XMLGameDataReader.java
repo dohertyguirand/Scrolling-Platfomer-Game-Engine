@@ -30,7 +30,7 @@ import static java.lang.Class.forName;
 /**
  * XML specific data reader
  */
-public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader {
+public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader {
 
   /**
    * Returns a list of thumbnails for all the available games.
@@ -38,7 +38,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
    * @return The list of thumbnails of games.
    */
   @Override
-  default List<Thumbnail> getThumbnails() throws OogaDataException{
+  public List<Thumbnail> getThumbnails() throws OogaDataException{
     ArrayList<Thumbnail> thumbnailList = new ArrayList<>();
     for (File gameFile : getAllFiles(LIBRARY_FILE_PATH)){
       File fXmlFile = new File(String.valueOf(gameFile));
@@ -54,22 +54,6 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
   }
 
   /**
-   * Returns the filepaths to every game file in the library folder. Doesn't guarantee
-   * that it will scan for full validity of every file, but makes basic checks.
-   * Returns an empty list if library has no game files. Filepaths start in the data folder and
-   * begin with "data/games-library/"
-   * @return A list of filepaths of game data files in the given folder.
-   */
-  @Deprecated
-  default List<String> getGameFilePaths(){
-    ArrayList<String> FilePaths = new ArrayList<>();
-    for(File f : getAllFiles(LIBRARY_FILE_PATH)){
-      FilePaths.add(f.getPath());
-    }
-    return FilePaths;
-  }
-
-  /**
    * @param givenGameName The name of the game
    * @param givenLevelID  The ID of the level the game is asking for
    * @return A fully loaded Level that is runnable by the game and represents the level in the
@@ -77,7 +61,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
    * @throws OogaDataException If the given name isn't in the library or the ID is not in the game.
    */
   @Override
-  default Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException{
+  public Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException{
     List<Entity> initialEntities = new ArrayList<>();
     File gameFile = findGame(givenGameName);
     Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
@@ -106,7 +90,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
    * It maps from the entities' names to their definitions.
    */
   @Override
-  default Map<String, ImageEntityDefinition> getImageEntityMap(String gameName) throws OogaDataException{
+  public Map<String, ImageEntityDefinition> getImageEntityMap(String gameName) throws OogaDataException{
     Map<String, ImageEntityDefinition> imageEntityMap = new HashMap<>();
     File gameFile = findGame(gameName);
     try {
@@ -133,7 +117,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
    * @throws OogaDataException
    */
   @Override
-  default List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
+  public List<List<String>> getBasicGameInfo(String givenGameName) throws OogaDataException {
     List<List<String>> basicGameInfo = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     File gameFile = findGame(givenGameName);
     Document doc = getDocument(gameFile, "");
@@ -154,7 +138,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
   }
 
   @Override
-  default Level loadSavedLevel(String UserName, String Date) throws OogaDataException {
+  public Level loadSavedLevel(String UserName, String Date) throws OogaDataException {
     String levelFilePath = getLevelFilePath(UserName, Date);
     return loadLevelAtPath(levelFilePath);
   }
@@ -341,7 +325,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
     NodeList nodeList = entityElement.getElementsByTagName(myDataResources.getString("BehaviorTag"));
     for (int i=0; i<nodeList.getLength(); i++){
       Element behaviorElement = (Element) nodeList.item(i);
-      Map<String, List<String>> inputConditions = new HashMap<>();
+      Map<String, List<String>> inputConditions;
       Map<List<String>, String> requiredCollisionConditions = new HashMap<>();
       Map<List<String>, String> bannedCollisionConditions = new HashMap<>();
       addCollisionConditions(requiredCollisionConditions, behaviorElement.getElementsByTagName(myDataResources.getString("RequiredCollisionConditionTag")), name);

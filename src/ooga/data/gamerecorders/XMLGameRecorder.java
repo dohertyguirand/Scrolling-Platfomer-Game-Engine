@@ -9,12 +9,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface XMLGameRecorder extends GameRecorderExternal, XMLDataReader, GameRecorderInternal {
-
-  String DEFAULT_USERS_FILE = "data/users";
+public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
 
   @Override
-  default List<List<String>> getGameSaves(String userName, String gameName) throws OogaDataException {
+  public List<List<String>> getGameSaves(String userName, String gameName) throws OogaDataException {
     Document doc = getDocForUserName(userName);
     List<List<String>> gameSaveInfo = new ArrayList<>();
     // loop through all of the games saves in the user file and find the right games
@@ -60,7 +58,7 @@ public interface XMLGameRecorder extends GameRecorderExternal, XMLDataReader, Ga
    * @param filePath The filepath at which to save the game.
    */
   @Override
-  default void saveGameState(String filePath) {}
+  public void saveGameState(String filePath) {}
 
   /**
    * Looks through the user files and finds the path of the save file by the requested user at the requested date
@@ -70,5 +68,5 @@ public interface XMLGameRecorder extends GameRecorderExternal, XMLDataReader, Ga
    * @param Date
    */
   @Override
-  default String getLevelFilePath(String UserName, String Date) {return null;}
+  public String getLevelFilePath(String UserName, String Date) {return null;}
 }

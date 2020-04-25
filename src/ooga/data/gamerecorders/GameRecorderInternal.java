@@ -3,7 +3,7 @@ package ooga.data.gamerecorders;
 import ooga.OogaDataException;
 import org.w3c.dom.Document;
 
-public interface GameRecorderInternal {
+public interface GameRecorderInternal extends GameRecorderExternal {
 
   /**
    * Looks through the user files and finds the path of the save file by the requested user at the requested date
