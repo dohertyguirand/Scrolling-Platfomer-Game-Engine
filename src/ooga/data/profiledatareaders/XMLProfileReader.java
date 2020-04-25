@@ -23,8 +23,6 @@ import java.util.List;
 
 public interface XMLProfileReader extends XMLDataReader, ProfileReaderExternal, ProfileReaderInternal {
 
-  String DEFAULT_USERS_FILE = "data/users";
-
   /**
    * Adds a given profile to the profile folder
    * @param newProfile the profile to add to the saved profile folder

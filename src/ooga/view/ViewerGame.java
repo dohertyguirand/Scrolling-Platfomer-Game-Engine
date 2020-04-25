@@ -23,6 +23,8 @@ import ooga.UserInputListener;
 import ooga.data.entities.ImageEntity;
 import ooga.data.entities.TextEntity;
 import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.data.gamerecorders.GameRecorderExternal;
+import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.game.OogaGame;
 import ooga.game.controls.KeyboardControls;
 import ooga.view.entities.ViewEntity;
@@ -93,13 +95,14 @@ public class ViewerGame {
 
   private void setGame(String saveDate) throws OogaDataException {
     if(saveDate == null || saveDate.equals("")){
-      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-          KEYBOARD_INPUT_FILE),myProfileName);
+      myGame = new OogaGame(myGameName, new XMLGameDataReader() {
+      }, new DirectionalCollisionDetector(), new KeyboardControls(
+              KEYBOARD_INPUT_FILE), myProfileName, new XMLGameRecorder() {});
     }
     else {
       System.out.println("USING ALT GAME CONSTRUCTOR");
       myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-              KEYBOARD_INPUT_FILE), myProfileName,saveDate);
+              KEYBOARD_INPUT_FILE), myProfileName,new XMLGameRecorder() {}, saveDate);
     }
   }
 

@@ -48,4 +48,11 @@ public interface DataReader {
    * @throws OogaDataException if the document could not be parsed
    */
   Document getDocument(File file, String errorMessageKey) throws OogaDataException;
+
+  /**
+   * @param UserName the name of the user whose document we need
+   * @return The Document for the user with the given username
+   * @throws OogaDataException if the document has no user with that username
+   */
+  Document getDocForUserName(String UserName) throws OogaDataException;
 }

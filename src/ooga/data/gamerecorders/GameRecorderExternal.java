@@ -20,15 +20,6 @@ public interface GameRecorderExternal {
   void saveGameState(String filePath) throws OogaDataException;
 
   /**
-   * Loads a file that contains a saved game state, and returns a runnable game that picks up
-   * where it left off.
-   * @param filePath The filepath of the file to load.
-   * @return A runnable Game that matches with how the game was when saved.
-   * @throws OogaDataException if there is no valid file at the given filepath.
-   */
-  Game loadGameState(String filePath) throws OogaDataException;
-
-  /**
    * returns information about all of the saves for a given game and user name
    * @param userName the name of the user who made the save file
    * @param gameName the name of the game for which the save was made
