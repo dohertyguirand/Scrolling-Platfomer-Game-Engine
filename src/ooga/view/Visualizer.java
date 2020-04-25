@@ -65,6 +65,7 @@ public class Visualizer extends Application {
     LoadMenu loadMenu = new LoadMenu(GAME_LANGUAGE,gameRecorder,gameName, profileNameSelected,myDataReader, backToStartMenu);
     Scene loadScene = new Scene(loadMenu, loadMenu.getWidth(),loadMenu.getHeight());
     loadMenu.getDateSelected().addListener((d,dold,dnew)-> {
+      if(dnew == null) System.out.println("null");
       if(dnew != null) startGame(gameName,profileNameSelected,dnew);
     });
     stage.setScene(loadScene);

@@ -34,7 +34,7 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
         String loadFilePath = getFirstElementByTag(gameElement, "UserFileSaveFilePathTag", myDataResources.getString("UserFileSaveMissingFilePaths"));
         File levelFile = new File(loadFilePath);
         Document levelDoc = getDocument(levelFile);
-        checkKeyExists(levelDoc, myDataResources.getString("SaveFileLevelTag"), myDataResources.getString("SaveFileMissingLevel"));
+        checkKeyExists(levelDoc, "SaveFileLevelTag", myDataResources.getString("SaveFileMissingLevel"));
         Element savedLevelElement = (Element) levelDoc.getElementsByTagName(myDataResources.getString("SaveFileLevelTag")).item(0);
         String id = getFirstElementByTag(savedLevelElement, "LevelIDTag", myDataResources.getString("SaveFileLevelMissingID"));
         gameSaveInfo.add(List.of(id, date));
@@ -45,8 +45,15 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
 
   @Override
   public void saveLevel(String userName, String gameName, Level level, Map<String, String> variables) {
-    String directory = DEFAULT_USERS_FILE+"/"+userName + "/saves";
-    String filepath = directory + "/"+ gameName + "-save.xml";
+    String userDirectory = DEFAULT_USERS_FILE+"/"+userName;
+    File userDirectoryFile = new File(userDirectory);
+    String savesDirectory = DEFAULT_USERS_FILE+"/"+userName + "/saves";
+    if(!List.of(userDirectoryFile.listFiles()).contains(new File(savesDirectory))){
+      File savesDirectoryFile = new File(savesDirectory);
+      savesDirectoryFile.mkdir();
+    }
+    String filepath = savesDirectory + "/"+ gameName + "-save.xml";
+    // create a new .xml file with name gameName + "-save.xml"
     try {
       Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       Element root = document.createElement("Save");

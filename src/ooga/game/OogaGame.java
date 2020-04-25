@@ -63,6 +63,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     initVariableMap(gameName);
     try {
       loadGameLevel(myGameDataReader.loadSavedLevel(myProfileName, date));
+      System.out.println("GOT HERE");
     } catch (OogaDataException e) {
       loadGameLevel(myGameDataReader.loadNewLevel(myName, myLevelIds.get(0)));
     }
