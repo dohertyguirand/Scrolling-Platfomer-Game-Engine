@@ -29,9 +29,10 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
    */
   @Override
   public void processArgs(List<String> args) {
-    variableName = args.get(0);
-    operatorData = args.get(1);
-    changeValueData = args.get(2);
+    int index = 0;
+    variableName = args.get(index++);
+    operatorData = args.get(index++);
+    changeValueData = args.get(index);
   }
 
   /**

@@ -23,10 +23,11 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
 
   @Override
   public void processArgs(List<String> args) {
-    xAccelerationPerFrameData = args.get(0);
-    yAccelerationPerFrameData = args.get(1);
-    operatorData = args.get(2);
-    myMaxSpeedData = args.get(3);
+    int index = 0;
+    xAccelerationPerFrameData = args.get(index++);
+    yAccelerationPerFrameData = args.get(index++);
+    operatorData = args.get(index++);
+    myMaxSpeedData = args.get(index);
   }
 
   /**
