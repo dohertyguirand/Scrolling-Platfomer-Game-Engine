@@ -1,6 +1,6 @@
 package ooga.game.behaviors;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
 import java.util.List;
@@ -14,18 +14,18 @@ public abstract class Action {
     myEffects = effects;
   }
 
-  public void doAction(double elapsedTime, Entity subject, Map<String, String> variables,
-                       Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    List<Entity> otherEntities = findOtherEntities(subject,variables,collisionInfo,gameInternal);
-    for (Entity e : otherEntities) {
+  public void doAction(double elapsedTime, EntityInternal subject, Map<String, String> variables,
+                       Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
+    List<EntityInternal> otherEntities = findOtherEntities(subject,variables,collisionInfo,gameInternal);
+    for (EntityInternal e : otherEntities) {
       doEffects(elapsedTime,subject,e,variables,gameInternal);
     }
   }
 
-  public abstract List<Entity> findOtherEntities(Entity subject, Map<String, String> variables,
-                                                 Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
+  public abstract List<EntityInternal> findOtherEntities(EntityInternal subject, Map<String, String> variables,
+                                                 Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal);
 
-  protected void doEffects(double elapsedTime, Entity subject, Entity otherEntity, Map<String, String> variables, GameInternal gameInternal){
+  protected void doEffects(double elapsedTime, EntityInternal subject, EntityInternal otherEntity, Map<String, String> variables, GameInternal gameInternal){
     for(Effect effect : myEffects){
       effect.doEffect(subject, otherEntity, elapsedTime, variables, gameInternal);
     }

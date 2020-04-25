@@ -1,6 +1,5 @@
 package ooga.game;
 
-import java.util.Collection;
 import javafx.collections.ObservableList;
 import ooga.Entity;
 
@@ -12,7 +11,7 @@ public interface Level {
   /**
    * @return A List of all Entities in the level.
    */
-  ObservableList<Entity> getEntities();
+  ObservableList<EntityInternal> getEntities();
 
   /**
    * Removes an entity from the level, if it is in the level.
@@ -23,7 +22,7 @@ public interface Level {
    * Adds an entity to the level, if it is not in the level.
    * @param e The entity to add.
    */
-  void addEntity(Entity e);
+  void addEntity(EntityInternal e);
 
   /**
    * @return The ID in the game file of the level that comes after this one.

@@ -3,19 +3,18 @@ package ooga.data.gamerecorders;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.XMLDataReader;
-import ooga.game.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.print.Doc;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import ooga.game.Level;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,7 +31,6 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
   public List<List<String>> getGameSaves(String userName, String gameName) throws OogaDataException {
     Document doc = getDocForUserName(userName);
     List<List<String>> gameSaveInfo = new ArrayList<>();
-    // loop through all of the games saves in the user file and find the right games
     for (int i = 0; i < doc.getElementsByTagName(myDataResources.getString("UserFileGameTag")).getLength(); i++) {
       Element gameElement = (Element) doc.getElementsByTagName(myDataResources.getString("UserFileGameTag")).item(i);
       String foundGameName = gameElement.getElementsByTagName(myDataResources.getString("UserFileGameNameTag")).item(0).getTextContent();
@@ -156,6 +154,7 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
     } catch (OogaDataException e) {
       e.printStackTrace();
     }
+
   }
 
   /**

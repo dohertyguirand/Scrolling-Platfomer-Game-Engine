@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;
@@ -37,14 +37,14 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
 
   /**
    * Performs the effect
-   *  @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param subject     The entity that owns this. This is the entity that should be modified.
    * @param otherEntity entity we are "interacting with" in this effect
    * @param elapsedTime time between steps in ms
    * @param variables   game variables
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     //in the variable map, increment variableName by variableValue
     double changeValue = parseData(changeValueData, subject, variables, 1.0);
     String operator = Effect.doVariableSubstitutions(operatorData, subject, variables);
@@ -53,7 +53,7 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
         variables.put(variableName, evaluateOperation(variables.get(variableName), changeValue, operator));
         return;
       }catch (NumberFormatException | ScriptException ignored){
-        System.out.println("Couldn't increment the game variable " + variableName);
+        //if this doesn't work, then look elsewhere for the var definition.
       }
     }
     String entityVariableValue = subject.getVariable(variableName);
@@ -61,7 +61,7 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
       try {
         subject.addVariable(variableName, evaluateOperation(entityVariableValue, changeValue, operator));
       } catch (NumberFormatException | ScriptException ignored){
-        System.out.println("Couldn't increment the entity variable of " + subject.getName());
+        //If the operation is invalid, don't do anything.
       }
     }
   }

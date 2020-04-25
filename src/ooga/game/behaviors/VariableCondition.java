@@ -2,9 +2,9 @@ package ooga.game.behaviors;
 
 import java.util.Map;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 
 public interface VariableCondition {
 
-  boolean isSatisfied(Entity behaviorEntity, Map<String, String> gameVariables, Map<String, String> subjectVariables);
+  boolean isSatisfied(EntityInternal behaviorEntity, Map<String, String> gameVariables, Map<String, String> subjectVariables);
 }

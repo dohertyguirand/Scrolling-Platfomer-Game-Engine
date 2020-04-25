@@ -28,14 +28,14 @@ public abstract class OptionMenu extends BorderPane {
     /**
      * This type of menu has a vertial scrollpane that allows user to select from a list of options
      * Styled by css file specified in constants
-     * @param titleKey key to find string that is used to create title of menu, does not use language resource because title of game
+     * @param title does not use language resource because title of game
      */
-    public OptionMenu(ResourceBundle languageresources, String titleKey){
+    public OptionMenu(ResourceBundle languageresources, String title){
         languageResources = languageresources;
         this.getStylesheets().add(STYLESHEET);
         this.setWidth(WINDOW_WIDTH);
         this.setHeight(WINDOW_HEIGHT);
-        this.setTop(makeMenuTitle(titleKey));
+        this.setTop(makeMenuTitle(title));
         this.setCenterShape(true);
     }
 
@@ -60,13 +60,7 @@ public abstract class OptionMenu extends BorderPane {
         return scrollPane;
     }
 
-    private HBox makeMenuTitle(String titleKey){
-        String title;
-        try {
-            title = languageResources.getString(titleKey);
-        }catch (MissingResourceException e){
-            title = titleKey;
-        }
+    private HBox makeMenuTitle(String title){
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
         Text text = new Text(title);

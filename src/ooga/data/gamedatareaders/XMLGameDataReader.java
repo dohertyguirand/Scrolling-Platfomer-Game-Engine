@@ -6,12 +6,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.data.Thumbnail;
 import ooga.data.XMLDataReader;
 import ooga.data.entities.ImageEntityDefinition;
 import ooga.data.entities.TextEntity;
+import ooga.game.EntityInternal;
 import ooga.game.Level;
 import ooga.game.OogaLevel;
 import ooga.game.behaviors.*;
@@ -62,14 +62,12 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
    */
   @Override
   public Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException{
-    List<Entity> initialEntities = new ArrayList<>();
+    List<EntityInternal> initialEntities = new ArrayList<>();
     File gameFile = findGame(givenGameName);
     Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
     String nextLevelID = null;
     Document doc = getDocument(gameFile);
-    // in the xml create a list of all 'Level' nodes
     NodeList levelNodes = doc.getElementsByTagName(myDataResources.getString("LevelTag"));
-    // for each check the ID
     for (int i = 0; i < levelNodes.getLength(); i++) {
       Element level = (Element) levelNodes.item(i);
       String levelID = getFirstElementByTag(level, "LevelIDTag", myDataResources.getString("MissingIDException"));
@@ -143,14 +141,14 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
     return loadLevelAtPath(levelFilePath);
   }
 
-  private List<Entity> getInitialEntities(Map<String, ImageEntityDefinition> entityMap, Element level) throws OogaDataException {
-    List<Entity> initialEntities = new ArrayList<>(getImageEntities(entityMap, level));
+  private List<EntityInternal> getInitialEntities(Map<String, ImageEntityDefinition> entityMap, Element level) throws OogaDataException {
+    List<EntityInternal> initialEntities = new ArrayList<>(getImageEntities(entityMap, level));
     initialEntities.addAll(getTextEntities(level));
     return initialEntities;
   }
 
-  private List<Entity> getTextEntities(Element level) throws OogaDataException {
-    List<Entity> textEntities = new ArrayList<>();
+  private List<EntityInternal> getTextEntities(Element level) throws OogaDataException {
+    List<EntityInternal> textEntities = new ArrayList<>();
     NodeList textEntityNodes = level.getElementsByTagName("TextEntityInstance");
     for (int j = 0; j < textEntityNodes.getLength(); j++) {
       Node currentEntity = textEntityNodes.item(j);
@@ -160,15 +158,15 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
       String[] parameterNames = new String[] {"XPosTag", "YPosTag","WidthTag", "HeightTag"};
       List<Double> parameterValues = constructEntity(entityElement, text, parameterNames);
       int index = 0;
-      Entity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
+      EntityInternal entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
               parameterValues.get(index++),  parameterValues.get(index));
       textEntities.add(setAdditionalEntityState(entityElement, entity, false));
     }
     return textEntities;
   }
 
-  private List<Entity> getImageEntities(Map<String, ImageEntityDefinition> entityMap, Element level) throws OogaDataException {
-    List<Entity> imageEntities = new ArrayList<>();
+  private List<EntityInternal> getImageEntities(Map<String, ImageEntityDefinition> entityMap, Element level) throws OogaDataException {
+    List<EntityInternal> imageEntities = new ArrayList<>();
     NodeList imageEntityNodes = level.getElementsByTagName(myDataResources.getString("ImageEntityInstanceTag"));
     // for each, save a copy of the specified instance at the specified place
     for (int j = 0; j < imageEntityNodes.getLength(); j++) {
@@ -186,17 +184,17 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
       for(int row=0; row<rowsColsAndGaps[0]; row++){
         xPos = parameterValues.get(0);
         for(int col=0;col<rowsColsAndGaps[1];col++){
-          Entity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
+          EntityInternal entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
           imageEntities.add(setAdditionalEntityState(entityElement, entity, imageEntityDefinition.getStationary()));
-          xPos += imageEntityDefinition.getMyWidth()+rowsColsAndGaps[2];
+          xPos += imageEntityDefinition.getWidth()+rowsColsAndGaps[2];
         }
-        yPos += imageEntityDefinition.getMyHeight()+rowsColsAndGaps[3];
+        yPos += imageEntityDefinition.getHeight()+rowsColsAndGaps[3];
       }
     }
     return imageEntities;
   }
 
-  private Entity setAdditionalEntityState(Element entityElement, Entity entity, boolean stationary) throws OogaDataException {
+  private EntityInternal setAdditionalEntityState(Element entityElement, EntityInternal entity, boolean stationary) throws OogaDataException {
     entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
     entity.setVariables(getEntityVariables(entityElement));
     entity.makeNonStationaryProperty(isStationary(entityElement, stationary));
@@ -213,10 +211,10 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
     Document doc = getDocument(levelFile);
     String gameName = getGameName(doc);
     Map<String, ImageEntityDefinition> imageEntityMap = getImageEntityMap(gameName);
-    checkKeyExists(doc, myDataResources.getString("SaveFileLevelTag"), myDataResources.getString("SaveFileMissingLevel"));
+    checkKeyExists(doc, "SaveFileLevelTag","SaveFileMissingLevel");
     Element savedLevelElement = (Element) doc.getElementsByTagName(myDataResources.getString("SaveFileLevelTag")).item(0);
-    List<Entity> entities = getInitialEntities(imageEntityMap, savedLevelElement);
-    String id = getFirstElementByTag(savedLevelElement, myDataResources.getString("LevelIDTag"), myDataResources.getString("SaveFileLevelMissingID"));
+    List<EntityInternal> entities = getInitialEntities(imageEntityMap, savedLevelElement);
+    String id = getFirstElementByTag(savedLevelElement,"LevelIDTag", "SaveFileLevelMissingID");
     return new OogaLevel(entities, id);
   }
 
@@ -230,7 +228,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
    */
   private String getLevelFilePath(String UserName, String Date) throws OogaDataException {
     Document userDoc = getDocForUserName(UserName);// find where the save file is stored
-    checkKeyExists(userDoc, myDataResources.getString("UserFileSaveDateTag"), myDataResources.getString("UserFileHasNoSaves"));
+    checkKeyExists(userDoc, "UserFileSaveDateTag", "UserFileHasNoSaves");
     for(int i=0; i<userDoc.getElementsByTagName(myDataResources.getString("UserFileSaveDateTag")).getLength(); i++){
       String loadedDate = userDoc.getElementsByTagName(myDataResources.getString("UserFileSaveDateTag")).item(i).getTextContent();
       if(!loadedDate.equals(Date)) continue;
@@ -357,7 +355,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
       Element requirementElement = (Element)(conditionNodes.item(j));
       conditionMap.putIfAbsent(name,new ArrayList<>());
       NodeList requirementList = requirementElement.getElementsByTagName(valueName);
-      if (requirementList.getLength() == 0) { conditionMap.get(name).add(myDataResources.getString("Any")); }
+      if (requirementList.getLength() == 0) conditionMap.get(name).add(myDataResources.getString("Any"));
       else {
         addKeyRequirements(conditionMap, name, requirementList);
       }

@@ -5,6 +5,7 @@ import ooga.data.OogaProfile;
 import ooga.data.XMLDataReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,8 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, ProfileReaderInternal {
 
@@ -34,13 +34,6 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
       Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       String directory = DEFAULT_USERS_FILE+"/"+newProfileName;
       String filepath = directory+"/"+newProfileName+".xml";
-      File file = new File(directory);
-      boolean bool = file.mkdir();
-      if(bool){
-        System.out.println("Directory created successfully");
-      }else{
-        System.out.println("Sorry could not create specified directory");
-      }
       Element root = document.createElement("User");
       document.appendChild(root);
       Element nameElement = document.createElement(myDataResources.getString("ProfileNameTag"));
@@ -81,9 +74,21 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
       Document doc = getDocument(fXmlFile);
       String userName = getFirstElementByTag(doc, "ProfileNameTag", myDataResources.getString("MissingUserNameException"));
       String userImage = getFirstElementByTag(doc, "ProfileImageTag", myDataResources.getString("MissingUserImageException"));
+      NodeList gameNodes = doc.getElementsByTagName("Game");
+      Map<String, Integer> statMap = new HashMap<>();
+      for(int i = 0; i < gameNodes.getLength(); i++){
+        Element game = (Element) gameNodes.item(i);
+        String gameName = getFirstElementByTag(game, "GameNameTag", myDataResources.getString("MissingNameException"));
+        NodeList highScores = game.getElementsByTagName(myDataResources.getString("HighScoreTag"));
+        int highscore = 0;
+        if(highScores.getLength() != 0) {
+          highscore = Integer.parseInt(highScores.item(0).getTextContent());
+        }
+        statMap.put(gameName,highscore);
+      }
       String fullImagePath = myDataResources.getString("PathPrefix") + userFile.getParentFile() +
               myDataResources.getString("Slash") + userImage;
-      OogaProfile newProfile = new OogaProfile(userName,fullImagePath);
+      OogaProfile newProfile = new OogaProfile(userName,fullImagePath,statMap);
       profileList.add(newProfile);
     }
     return profileList;

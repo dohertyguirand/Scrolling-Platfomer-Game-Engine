@@ -31,6 +31,11 @@
       </ImageEntityInstance>
       <ImageEntityInstance>
         <Name>Brick</Name>
+        <XPos>400</XPos>
+        <YPos>300</YPos>
+      </ImageEntityInstance>
+      <ImageEntityInstance>
+        <Name>Brick</Name>
         <XPos>500</XPos>
         <YPos>500</YPos>
         <Size>2.0</Size>

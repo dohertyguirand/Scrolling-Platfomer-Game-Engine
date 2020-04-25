@@ -3,7 +3,7 @@ package ooga.game.behaviors;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
 public class BehaviorInstance implements ConditionalBehavior {
@@ -57,14 +57,14 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, Map<String, String> inputs,
-                                  Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+  public void doConditionalUpdate(double elapsedTime, EntityInternal subject, Map<String, String> variables, Map<String, String> inputs,
+                                  Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
     if (checkGameVariableConditions(subject,variables)
     &&  checkEntityVariableConditions(subject,gameInternal,variables)
     &&  checkInputConditions(inputs)
-    &&  !anyCollisionConditionsUnsatisfied(collisionInfo,requiredCollisionConditions,true)
-    &&  !anyCollisionConditionsUnsatisfied(collisionInfo,bannedCollisionConditions,false)) {
+    && allCollisionConditionsSatisfied(collisionInfo, requiredCollisionConditions, true, subject, gameInternal)
+    && allCollisionConditionsSatisfied(collisionInfo, bannedCollisionConditions, false, subject, gameInternal)) {
       doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
     }
   }
@@ -82,21 +82,33 @@ public class BehaviorInstance implements ConditionalBehavior {
       Entry<String, List<String>> inputCondition) {
     for (String inputType : inputCondition.getValue()) {
       String keyState = inputs.get(inputCondition.getKey());
-      if (inputType.equals(keyState) ||
-          (inputType.equals(ANY_KEY_REQUIREMENT) && keyState != null) ||
-          (inputType.equals(KEY_INACTIVE_REQUIREMENT) && keyState == null)) {
+      if (keyRequirementSatisfied(inputType, keyState)) {
         return true;
       }
     }
     return false;
   }
 
+  private boolean keyRequirementSatisfied(String inputType, String keyState) {
+    return inputType.equals(keyState) ||
+        keyAnySatisfied(inputType, keyState) ||
+        keyInactiveSatisfied(inputType, keyState);
+  }
 
-  private boolean checkGameVariableConditions(Entity subject, Map<String, String> gameVariables) {
+  private boolean keyAnySatisfied(String inputType, String keyState) {
+    return inputType.equals(ANY_KEY_REQUIREMENT) && keyState != null;
+  }
+
+  private boolean keyInactiveSatisfied(String inputType, String keyState) {
+    return inputType.equals(KEY_INACTIVE_REQUIREMENT) && keyState == null;
+  }
+
+
+  private boolean checkGameVariableConditions(EntityInternal subject, Map<String, String> gameVariables) {
     return checkVariableConditionsList(subject, gameVariables, gameVarConditions, gameVariables);
   }
 
-  private boolean checkVariableConditionsList(Entity subject, Map<String, String> gameVariables,
+  private boolean checkVariableConditionsList(EntityInternal subject, Map<String, String> gameVariables,
       List<VariableCondition> varConditions,
       Map<String, String> targetEntityVars) {
     for (VariableCondition condition : varConditions) {
@@ -107,10 +119,10 @@ public class BehaviorInstance implements ConditionalBehavior {
     return true;
   }
 
-  private boolean checkEntityVariableConditions(Entity subject, GameInternal gameInternal,
+  private boolean checkEntityVariableConditions(EntityInternal subject, GameInternal gameInternal,
       Map<String, String> gameVariables) {
     for (Entry<String ,List<VariableCondition>> conditionEntry : entityVarConditions.entrySet()) {
-      Entity identified = identifyEntityVariableSubject(subject,gameInternal,conditionEntry.getKey());
+      EntityInternal identified = identifyEntityVariableSubject(subject,gameInternal,conditionEntry.getKey());
       if (identified == null) {
         return false;
       }
@@ -121,7 +133,7 @@ public class BehaviorInstance implements ConditionalBehavior {
     return true;
   }
 
-  private Entity identifyEntityVariableSubject(Entity subject, GameInternal gameInternal, String label) {
+  private EntityInternal identifyEntityVariableSubject(EntityInternal subject, GameInternal gameInternal, String label) {
     if (label.equals(SELF_IDENTIFIER)) {
       return subject;
     }
@@ -130,10 +142,10 @@ public class BehaviorInstance implements ConditionalBehavior {
     }
   }
 
-  private Entity otherEntitySubject(Entity subject, GameInternal gameInternal, String label) {
+  private EntityInternal otherEntitySubject(EntityInternal subject, GameInternal gameInternal, String label) {
     String subjectVariable = subject.getVariable(label);
     if (subjectVariable != null) {
-      Entity e = gameInternal.getEntityWithId(subject.getVariable(label));
+      EntityInternal e = gameInternal.getEntityWithId(subject.getVariable(label));
       if (e != null) {
         return e;
       }
@@ -142,44 +154,52 @@ public class BehaviorInstance implements ConditionalBehavior {
         return e;
       }
     }
-    Entity e = gameInternal.getEntityWithId(label);
+    EntityInternal e = gameInternal.getEntityWithId(label);
     if (e != null) {
       return e;
     }
-    List<Entity> entitiesWithName = gameInternal.getEntitiesWithName(label);
+    List<EntityInternal> entitiesWithName = gameInternal.getEntitiesWithName(label);
     if (!entitiesWithName.isEmpty()) {
       return entitiesWithName.get(0);
     }
     return null;
   }
 
-  private boolean anyCollisionConditionsUnsatisfied(Map<Entity, Map<String, List<Entity>>> collisionInfo,
-                                                    Map<List<String>, String> collisionConditions, boolean required) {
+  private boolean allCollisionConditionsSatisfied(Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo,
+                                                  Map<List<String>, String> collisionConditions, boolean required,
+                                                  EntityInternal subject, GameInternal gameInternal) {
     for(Map.Entry<List<String>, String> collisionConditionEntry : collisionConditions.entrySet()){
       String entity1Info = collisionConditionEntry.getKey().get(0);
       String entity2Info = collisionConditionEntry.getKey().get(1);
       String direction = collisionConditionEntry.getValue();
-      if(checkCollisionCondition(collisionInfo, entity1Info, entity2Info, direction) != required) return true;
+      if(checkCollisionCondition(collisionInfo, entity1Info, entity2Info, direction, subject, gameInternal) != required) return false;
+    }
+    return true;
+  }
+
+  private boolean checkCollisionCondition(Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, String entity1Info,
+                                          String entity2Info, String direction, EntityInternal subject, GameInternal gameInternal) {
+    EntityInternal entity1 = identifyEntityVariableSubject(subject, gameInternal, entity1Info);
+    if(collisionInfo.containsKey(entity1)) {
+      return checkCollisionConditionForEntity(collisionInfo, entity2Info, direction, entity1);
     }
     return false;
   }
 
-  private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info, String entity2Info, String direction) {
-    for(Entity entity : collisionInfo.keySet()){
-      if(entityMatches(entity1Info, entity)){
-        if(direction.equals(ANY_DIRECTION)){
-          for(String possibleDirection : collisionInfo.get(entity).keySet()){
-            if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
-          }
-        } else if (hasCollisionInDirection(collisionInfo, entity2Info, direction, entity)) return true;
+  private boolean checkCollisionConditionForEntity(Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo,
+                                                   String entity2Info, String direction, EntityInternal entity) {
+    if(direction.equals(ANY_DIRECTION)){
+      for(String possibleDirection : collisionInfo.get(entity).keySet()){
+        if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
       }
-    }
+    } else return hasCollisionInDirection(collisionInfo, entity2Info, direction, entity);
     return false;
   }
 
-  private boolean hasCollisionInDirection(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity2Info, String direction, Entity entity) {
-    List<Entity> collidingWithInDirection = collisionInfo.get(entity).get(direction);
-    for(Entity collidingEntity : collidingWithInDirection){
+  private boolean hasCollisionInDirection(Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo,
+                                          String entity2Info, String direction, EntityInternal entity) {
+    List<EntityInternal> collidingWithInDirection = collisionInfo.get(entity).get(direction);
+    for(EntityInternal collidingEntity : collidingWithInDirection){
       if(entityMatches(entity2Info, collidingEntity)){
         return true;
       }
@@ -193,7 +213,7 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param entity
    * @return
    */
-  private boolean entityMatches(String entity1Info, Entity entity) {
+  private boolean entityMatches(String entity1Info, EntityInternal entity) {
     return entity.getName().equals(entity1Info) ||
             (entity.getVariable("TerrainID") != null && entity.getVariable("TerrainID").equals(entity1Info));
   }
@@ -207,8 +227,8 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doActions(double elapsedTime, Entity subject, Map<String, String> variables,
-                        Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
+  public void doActions(double elapsedTime, EntityInternal subject, Map<String, String> variables,
+                        Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
     for(Action action : actions){
       action.doAction(elapsedTime, subject, variables, collisionInfo, gameInternal);
     }
