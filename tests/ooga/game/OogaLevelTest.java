@@ -4,12 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import ooga.Entity;
-import ooga.data.ImageEntity;
-import org.junit.jupiter.api.BeforeEach;
+import ooga.data.entities.ImageEntity;
 import org.junit.jupiter.api.Test;
 
 public class OogaLevelTest {

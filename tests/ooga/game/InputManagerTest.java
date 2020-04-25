@@ -7,7 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import ooga.game.inputmanagers.OogaInputManager;
+import ooga.game.controls.InputManager;
+import ooga.game.controls.inputmanagers.OogaInputManager;
 import org.junit.jupiter.api.Test;
 
 public class InputManagerTest {

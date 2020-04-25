@@ -7,8 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.data.ImageEntity;
-import ooga.data.OogaDataReader;
+import ooga.data.XMLDataReader;
+import ooga.data.entities.ImageEntity;
+import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.game.Game;
 import ooga.game.GameInternal;
 import ooga.game.Level;
@@ -19,6 +20,7 @@ import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.actions.IndependentAction;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
+import ooga.game.controls.KeyboardControls;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,13 +30,14 @@ class NonCollisionEffectTest {
   public static final double ELAPSED_TIME = 1.0;
   public static final String TARGET_LEVEL = "2";
   public static final String INVALID_LEVEL_NAME = "INVALIDLEVEL";
+  public static final String KEYBOARD_INPUT_FILE = "ooga/game/controls/inputs/keyboard";
 
   private Game myGame;
   private GameInternal myGameInternal;
 
   @BeforeEach
   void setUp() throws OogaDataException {
-    OogaGame game = new OogaGame(GAME_NAME, new OogaDataReader(),"","");
+    OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(){},new DirectionalCollisionDetector(),new KeyboardControls(KEYBOARD_INPUT_FILE),"");
     myGame = game;
     myGameInternal = game;
   }
