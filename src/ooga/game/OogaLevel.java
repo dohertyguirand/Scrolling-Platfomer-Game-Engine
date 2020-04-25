@@ -9,17 +9,17 @@ import ooga.Entity;
  *
  */
 public class OogaLevel implements Level{
-    private final ObservableList<Entity> myEntities;
+    private final ObservableList<EntityInternal> myEntities;
     private String myNextLevelId;
     private final String myId;
 
-    public OogaLevel(List<Entity> entities, String id){
+    public OogaLevel(List<EntityInternal> entities, String id){
         myEntities = FXCollections.observableArrayList(entities);
         myId = id;
     }
 
     @Override
-    public ObservableList<Entity> getEntities() {
+    public ObservableList<EntityInternal> getEntities() {
         return myEntities;
     }
 
@@ -29,7 +29,7 @@ public class OogaLevel implements Level{
     }
 
     @Override
-    public void addEntity(Entity e) {
+    public void addEntity(EntityInternal e) {
         if (!myEntities.contains(e)) {
             myEntities.add(e);
         }

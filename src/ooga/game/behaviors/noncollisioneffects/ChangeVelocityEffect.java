@@ -1,12 +1,12 @@
 package ooga.game.behaviors.noncollisioneffects;
 
-import static ooga.game.behaviors.BehaviorUtil.getDotProduct;
-import static ooga.game.behaviors.BehaviorUtil.getMagnitude;
+import static ooga.game.behaviors.EffectUtil.getDotProduct;
+import static ooga.game.behaviors.EffectUtil.getMagnitude;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;
@@ -36,14 +36,14 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
 
   /**
    * Performs the effect
-   *  @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param subject     The entity that owns this. This is the entity that should be modified.
    * @param otherEntity
    * @param elapsedTime
    * @param variables
    * @param game
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     double myMaxSpeed = parseData(myMaxSpeedData, subject, variables, MAX_SPEED_DEFAULT);
     double xAccel = parseData(xAccelerationPerFrameData,subject,variables, DEFAULT_ACCELERATION);
     double yAccel = parseData(yAccelerationPerFrameData,subject,variables,DEFAULT_ACCELERATION);

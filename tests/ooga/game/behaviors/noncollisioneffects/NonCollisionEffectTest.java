@@ -7,15 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.data.XMLDataReader;
 import ooga.data.entities.ImageEntity;
 import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.data.gamerecorders.XMLGameRecorder;
+import ooga.game.EntityInternal;
 import ooga.game.Game;
 import ooga.game.GameInternal;
-import ooga.game.Level;
 import ooga.game.OogaGame;
-import ooga.game.OogaLevel;
 import ooga.game.behaviors.BehaviorInstance;
 import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.Effect;
@@ -122,8 +120,8 @@ class NonCollisionEffectTest {
   @Test
   void testMoveTowardsEntityEffect() {
     List<String> args = List.of("10.0","100.0");
-    Entity a = createDummyEntity("a",0.0,0.0);
-    Entity b = createDummyEntity("b",100.0,0.0);
+    EntityInternal a = createDummyEntity("a",0.0,0.0);
+    EntityInternal b = createDummyEntity("b",100.0,0.0);
     Effect testEffect = new MoveTowardsEntityEffect(args);
     testEffect.doEffect(a,b,1.0,new HashMap<>(), myGameInternal);
     assertEquals(List.of(10.0,0.0),a.getVelocity());
@@ -170,7 +168,7 @@ class NonCollisionEffectTest {
   void testSetPosition() {
     List<String> args = List.of("100.0","400.0");
     Effect reposition = new SetPositionEffect(args);
-    Entity subj = createDummyEntity("subject",0.0,0.0);
+    EntityInternal subj = createDummyEntity("subject",0.0,0.0);
     assertEquals(List.of(0.0,0.0),subj.getPosition());
     reposition.doEffect(subj,null,ELAPSED_TIME,new HashMap<>(),myGameInternal);
     assertEquals(List.of(100.0,400.0),subj.getPosition());
@@ -179,7 +177,7 @@ class NonCollisionEffectTest {
   @Test
   void testSetVariable() {
     List<String> argsFirst = List.of("var1","100.0");
-    Entity subj = createDummyEntity("subject",0.0,0.0);
+    EntityInternal subj = createDummyEntity("subject",0.0,0.0);
     Effect varSetter = new SetVariableEffect(argsFirst);
     myGameInternal.setVariable("var1","0.0");
     assertEquals("0.0",myGameInternal.getVariables().get("var1"));
@@ -190,7 +188,7 @@ class NonCollisionEffectTest {
   @Test
   void testSetVelocity() {
     List<String> args = List.of("10.0","111.0");
-    Entity subj = createDummyEntity("subj",0.0,0.0);
+    EntityInternal subj = createDummyEntity("subj",0.0,0.0);
     assertEquals(List.of(0.0,0.0),subj.getVelocity());
     Effect velocitySetter = new SetVelocityEffect(args);
     velocitySetter.doEffect(subj,null,ELAPSED_TIME,new HashMap<>(),myGameInternal);
@@ -226,7 +224,7 @@ class NonCollisionEffectTest {
     return myGame.getEntities().get(0);
   }
 
-  private Entity createDummyEntity(String name, double xPos, double yPos) {
+  private EntityInternal createDummyEntity(String name, double xPos, double yPos) {
     return new ImageEntity(name,"",xPos,yPos,1.0,1.0);
   }
 

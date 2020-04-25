@@ -2,7 +2,13 @@ package ooga.game.behaviors;
 
 import java.util.List;
 
-public class BehaviorUtil {
+public class EffectUtil {
+
+  private EffectUtil() {
+    //A private constructor exists to prevent an implicit public constructor,
+    // since this is a utility class.
+  }
+
   public static double getMagnitude(List<Double> vector) {
     return Math.sqrt(Math.pow(vector.get(0),2) + Math.pow(vector.get(1),2));
   }

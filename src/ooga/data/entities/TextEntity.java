@@ -50,4 +50,9 @@ public class TextEntity extends OogaEntity {
   public String getEntityType() {
     return type;
   }
+
+  @Override
+  public void setImageLocation(String filepath) {
+    //Does nothing, since it doesn't have an image.
+  }
 }

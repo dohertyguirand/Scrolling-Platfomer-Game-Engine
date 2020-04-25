@@ -2,7 +2,7 @@ package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.List;
 import java.util.Map;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
@@ -19,7 +19,7 @@ public class RestartLevelEffect extends TimeDelayedEffect {
   }
 
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime,
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime,
       Map<String, String> variables, GameInternal game) {
     game.restartLevel();
   }

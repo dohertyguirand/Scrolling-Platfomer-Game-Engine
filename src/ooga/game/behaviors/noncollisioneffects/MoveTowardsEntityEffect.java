@@ -1,11 +1,11 @@
 package ooga.game.behaviors.noncollisioneffects;
 
-import static ooga.game.behaviors.BehaviorUtil.getDotProduct;
-import static ooga.game.behaviors.BehaviorUtil.getMagnitude;
+import static ooga.game.behaviors.EffectUtil.getDotProduct;
+import static ooga.game.behaviors.EffectUtil.getMagnitude;
 
 import java.util.List;
 import java.util.Map;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
@@ -27,18 +27,16 @@ public class MoveTowardsEntityEffect extends TimeDelayedEffect {
   }
 
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime,
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime,
       Map<String, String> variables, GameInternal game) {
-    System.out.println(subject.getName());
-    System.out.println(otherEntity.getName());
     double maxSpeed = parseData(myMaxSpeed,subject,variables, LARGE_DOUBLE_VALUE);
-    double acceleration = parseData(myAcceleration,subject,variables, DEFAULT_ACCELERATION);
     double xDiff =  otherEntity.getPosition().get(0) - subject.getPosition().get(0);
     double yDiff = otherEntity.getPosition().get(1) - subject.getPosition().get(1);
-    double magnitude = getMagnitude(List.of(xDiff,yDiff));
     if (getDotProduct(List.of(xDiff,yDiff),subject.getVelocity()) > Math.pow(maxSpeed,2)) {
       return;
     }
+    double magnitude = getMagnitude(List.of(xDiff,yDiff));
+    double acceleration = parseData(myAcceleration,subject,variables, DEFAULT_ACCELERATION);
     subject.changeVelocity((xDiff / magnitude) * acceleration, (yDiff / magnitude) * acceleration);
   }
 }

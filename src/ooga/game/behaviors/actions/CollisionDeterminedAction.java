@@ -1,6 +1,6 @@
 package ooga.game.behaviors.actions;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
@@ -29,9 +29,9 @@ public class CollisionDeterminedAction extends Action {
   }
 
   @Override
-  public List<Entity> findOtherEntities(Entity subject, Map<String, String> variables, Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    List<Entity> otherEntities = new ArrayList<>();
-    Map<String, List<Entity>> myCollisionInfo = collisionInfo.get(subject);
+  public List<EntityInternal> findOtherEntities(EntityInternal subject, Map<String, String> variables, Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
+    List<EntityInternal> otherEntities = new ArrayList<>();
+    Map<String, List<EntityInternal>> myCollisionInfo = collisionInfo.get(subject);
     if(direction.equals(ANY)){
       for(String possibleDirection : myCollisionInfo.keySet()){
         otherEntities.addAll(getCollidingEntities(myCollisionInfo.get(possibleDirection)));
@@ -42,9 +42,9 @@ public class CollisionDeterminedAction extends Action {
     return otherEntities;
   }
 
-  private List<Entity> getCollidingEntities(List<Entity> collidingWithList) {
-    List<Entity> otherEntities = new ArrayList<>();
-    for(Entity collidingWith : collidingWithList){
+  private List<EntityInternal> getCollidingEntities(List<EntityInternal> collidingWithList) {
+    List<EntityInternal> otherEntities = new ArrayList<>();
+    for(EntityInternal collidingWith : collidingWithList){
       if(entityMatches(collidingEntityInfo, collidingWith)){
         otherEntities.add(collidingWith);
       }
@@ -52,7 +52,7 @@ public class CollisionDeterminedAction extends Action {
     return otherEntities;
   }
 
-  private boolean entityMatches(String entity1Info, Entity entity) {
+  private boolean entityMatches(String entity1Info, EntityInternal entity) {
     return entity.getName().equals(entity1Info) ||
             (entity.getVariable("TerrainID") != null && entity.getVariable("TerrainID").equals(entity1Info));
   }

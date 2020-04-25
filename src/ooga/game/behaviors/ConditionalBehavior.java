@@ -1,6 +1,6 @@
 package ooga.game.behaviors;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
 import java.util.List;
@@ -38,8 +38,8 @@ public interface ConditionalBehavior {
    * @param collisionInfo Map of maps, direction name : map of collisions for that direction. map of collisions is entity : list of entities
    * @param gameInternal what game this is run from
    */
-  void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, Map<String, String> inputs,
-                           Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
+  void doConditionalUpdate(double elapsedTime, EntityInternal subject, Map<String, String> variables, Map<String, String> inputs,
+                           Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal);
 
 
   /**
@@ -50,6 +50,6 @@ public interface ConditionalBehavior {
    * @param collisionInfo current collision info
    * @param gameInternal what game this is run from
    */
-  void doActions(double elapsedTime, Entity subject, Map<String, String> variables,
-                 Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
+  void doActions(double elapsedTime, EntityInternal subject, Map<String, String> variables,
+                 Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal);
 }
