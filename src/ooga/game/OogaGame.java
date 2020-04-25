@@ -78,11 +78,20 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   private Level loadGameLevel(String gameName, String id) throws OogaDataException {
     Level level = myGameDataReader.loadNewLevel(gameName,id);
+    clearEntities();
+    addAllEntities(level.getEntities());
+    return level;
+  }
+
+  private void addAllEntities(List<EntityInternal> entities) {
+    for (EntityInternal e : entities) {
+      addEntity(e);
+    }
+  }
+
+  private void clearEntities() {
     myEntities.clear();
     myEntitiesInternal.clear();
-    myEntities.addAll(level.getEntities());
-    myEntitiesInternal.addAll(level.getEntities());
-    return level;
   }
 
   @Override
@@ -180,11 +189,15 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   private void doEntityCreation() {
     for (EntityInternal created : myNewCreatedEntities) {
-      myEntities.add(created);
-      myEntitiesInternal.add(created);
+      addEntity(created);
       currentLevel.addEntity(created);
     }
     myNewCreatedEntities.clear();
+  }
+
+  private void addEntity(EntityInternal created) {
+    myEntities.add(created);
+    myEntitiesInternal.add(created);
   }
 
   private void doEntityCleanup() {
@@ -197,10 +210,14 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     for (Entity destroyed : destroyedEntities) {
       if (destroyed.isDestroyed()) {
         currentLevel.removeEntity(destroyed);
-        myEntities.remove(destroyed);
-        myEntitiesInternal.remove(destroyed);
+        removeEntity(destroyed);
       }
     }
+  }
+
+  private void removeEntity(Entity destroyed) {
+    myEntities.remove(destroyed);
+    myEntitiesInternal.remove(destroyed);
   }
 
   @Override
