@@ -1,7 +1,6 @@
 package ooga.game;
 
 import javafx.collections.ObservableList;
-import ooga.Entity;
 
 /**
  * Represents one in-game level, including its end conditions and list of entities.
@@ -15,8 +14,9 @@ public interface Level {
 
   /**
    * Removes an entity from the level, if it is in the level.
+   * @param e
    */
-  void removeEntity(Entity e);
+  void removeEntity(EntityInternal e);
 
   /**
    * Adds an entity to the level, if it is not in the level.

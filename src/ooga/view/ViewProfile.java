@@ -128,7 +128,7 @@ public class ViewProfile{
     }
 
     private void setNewProfilePhoto(File filepath){
-        BufferedImage bufferedImage = null;
+        BufferedImage bufferedImage;
         try {
             bufferedImage = ImageIO.read(filepath);
             String path = "src/ooga/view/Resources/profilephotos/" +System.currentTimeMillis()+".jpg";
