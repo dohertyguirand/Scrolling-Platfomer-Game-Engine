@@ -1,7 +1,7 @@
 package ooga;
 
 /**
- * Represents every exception that occurs in the outward-facing DataReader interface.
+ * Represents every exception that occurs in the outward-facing XMLGameDataReader interface.
  * Contains an immutable, readable String field so that the program can display meaningful
  * information to the user when something fails.
  */

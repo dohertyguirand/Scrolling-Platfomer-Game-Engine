@@ -13,22 +13,23 @@ import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
-import ooga.data.DataReader;
-import ooga.data.ImageEntityDefinition;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
-import ooga.game.inputmanagers.OogaInputManager;
+import ooga.data.entities.ImageEntityDefinition;
+import ooga.data.gamedatareaders.GameDataReaderExternal;
+import ooga.game.collisiondetection.CollisionDetector;
+import ooga.game.controls.ControlsInterpreter;
+import ooga.game.controls.InputManager;
+import ooga.game.controls.inputmanagers.OogaInputManager;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
   public static final String CLICKED_ON_CODE = "ClickedOn";
   public static final String KEY_ACTIVE_REQUIREMENT = "KeyActive";
   public static final String KEY_PRESSED_REQUIREMENT = "KeyPressed";
-  public static final String DEFAULT_INPUT_MAPPINGS = "ooga/game/resources/inputs/keyboard";
-  public static final String DEFAULT_GAME_NAME = "Unnamed";
   private List<String> myLevelIds;
   private Level currentLevel;
-  private String myName;
-  private DataReader myDataReader;
+  private final String myName;
+  private GameDataReaderExternal myGameDataReader;
   private CollisionDetector myCollisionDetector;
   private ControlsInterpreter myControlsInterpreter;
   private final InputManager myInputManager = new OogaInputManager();
@@ -39,44 +40,49 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private final List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
 
 
-  public OogaGame(String gameName, DataReader dataReader, CollisionDetector detector,
+  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, CollisionDetector detector,
       ControlsInterpreter controls, String profileName) throws OogaDataException {
-    myDataReader = dataReader;
+    myGameDataReader = gameDataReaderExternal;
     myName = gameName;
-    myLevelIds = myDataReader.getLevelIDs(gameName);
+    myLevelIds = myGameDataReader.getLevelIDs(gameName);
     myCollisionDetector = detector;
     myControlsInterpreter = controls;
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
-    myEntityDefinitions = myDataReader.getImageEntityMap(gameName);
+    myEntityDefinitions = myGameDataReader.getImageEntityMap(gameName);
     initVariableMap(gameName);
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 
   private void initVariableMap(String gameName) throws OogaDataException {
     myVariables = new HashMap<>();
-    for (String key : myDataReader.getVariableMap(gameName).keySet()){
-      myVariables.put(key, myDataReader.getVariableMap(gameName).get(key));
+    for (String key : myGameDataReader.getVariableMap(gameName).keySet()){
+      myVariables.put(key, myGameDataReader.getVariableMap(gameName).get(key));
     }
   }
 
-  public OogaGame(String gameName, DataReader dataReader, String profileName, String date) throws OogaDataException {
-    this(gameName, dataReader, new DirectionalCollisionDetector(), new KeyboardControls(
-        DEFAULT_INPUT_MAPPINGS), "");
-    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
+  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal,  CollisionDetector detector,
+                  ControlsInterpreter controls, String profileName, String date) throws OogaDataException {
+    this(gameName, gameDataReaderExternal, new DirectionalCollisionDetector(), controls, profileName);
+    for (String key : gameDataReaderExternal.getVariableMap(gameName).keySet()){
+      myVariables.put(key, gameDataReaderExternal.getVariableMap(gameName).get(key));
+    }
   }
 
+//  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, String profileName) throws OogaDataException {
+//    this(gameName, gameDataReaderExternal);
+//    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
+//  }
+//
+//  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, String profileName, String date) throws OogaDataException {
+//    this(gameName, gameDataReaderExternal);
+//    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
+//  }
+
   private Level loadGameLevel(String gameName, String id) throws OogaDataException {
-    Level level = myDataReader.loadLevel(gameName,id);
+    Level level = myGameDataReader.loadNewLevel(gameName,id);
     myEntities.clear();
     myEntities.addAll(level.getEntities());
     return level;
-  }
-
-  @Deprecated
-  public OogaGame(Level startingLevel, CollisionDetector collisions) {
-    myName = DEFAULT_GAME_NAME;
-    myCollisionDetector = collisions;
-    myControlsInterpreter = new KeyboardControls(DEFAULT_INPUT_MAPPINGS);
-    currentLevel = startingLevel;
   }
 
   @Override
@@ -233,20 +239,10 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void reactToGameSave() {
     try {
-      myDataReader.saveGameState(myName);
+      myGameDataReader.saveGameState(myName);
     } catch (OogaDataException e) {
       //if it doesn't work, just keep playing the game.
     }
-  }
-
-  /**
-   * Handles when the command is given to quit the currently running game.
-   * This might be modified to account for identifying which game must close when
-   * there are multiple games open.
-   */
-  @Override
-  public void reactToGameQuit() {
-
   }
 
   /**
@@ -339,5 +335,15 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public List<Double> getCameraShiftValues() {
     return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
+  }
+
+  @Override
+  public Map<String, String> getVariables() {
+    return new HashMap<>(myVariables);
+  }
+
+  @Override
+  public void setVariable(String var, String value) {
+    myVariables.put(var,value);
   }
 }

@@ -1,7 +1,7 @@
 package ooga.data;
 
 /**
- * This class encapsulates the initial representation of a Game on the home screen. It is everything the DataReader needs
+ * This class encapsulates the initial representation of a Game on the home screen. It is everything the XMLGameDataReader needs
  * to give initially including but not limited to the thumbnail image, the game's title, and the game's description.
  */
 public class Thumbnail {
