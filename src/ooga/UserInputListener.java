@@ -30,11 +30,4 @@ public interface UserInputListener {
    * Handles when the command is given to save the game to a file.
    */
   void reactToGameSave();
-
-  /**
-   * indicates the pause button was clicked in the ui
-   * @param paused whether or not the button clicked was pause or resume
-   */
-  @SuppressWarnings("EmptyMethod")
-  void reactToPauseButton(boolean paused);
 }

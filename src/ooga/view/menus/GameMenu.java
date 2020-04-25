@@ -110,6 +110,5 @@ public class GameMenu extends ScrollMenu{
     alert.setTitle(ERROR_MESSAGE);
     alert.setContentText(message);
     alert.showAndWait();
-    System.out.println("IN GAME MENU");
   }
 }

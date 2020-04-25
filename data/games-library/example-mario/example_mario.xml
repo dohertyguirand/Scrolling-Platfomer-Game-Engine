@@ -532,13 +532,18 @@
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>300</XPos>
+          <XPos>100</XPos>
+          <YPos>500</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>200</XPos>
           <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
           <XPos>300</XPos>
-          <YPos>200</YPos>
+          <YPos>500</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
@@ -554,31 +559,36 @@
         <ImageEntityInstance>
           <Name>Brick</Name>
           <XPos>500</XPos>
-          <YPos>600</YPos>
+          <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
           <XPos>600</XPos>
-          <YPos>600</YPos>
+          <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
           <XPos>700</XPos>
-          <YPos>600</YPos>
+          <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
           <XPos>800</XPos>
-          <YPos>600</YPos>
+          <YPos>500</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Koopa</Name>
           <XPos>800</XPos>
-          <YPos>500</YPos>
+          <YPos>400</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Koopa</Name>
+          <XPos>500</XPos>
+          <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Flagpole</Name>

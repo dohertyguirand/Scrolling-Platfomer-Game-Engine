@@ -28,6 +28,7 @@ public class ViewProfile{
     private String profileName;
     private Map<String, Integer> myStats;
     private List<Node> extraNodes = new ArrayList<>();
+    private File fileChosen;
 
     /**
      * View's version of a profile, stores a photo, name, and stats, allows user to add a new profile
@@ -127,18 +128,21 @@ public class ViewProfile{
     }
 
     private void setNewProfilePhoto(File filepath){
-        BufferedImage bufferedImage;
+        BufferedImage bufferedImage = null;
         try {
             bufferedImage = ImageIO.read(filepath);
-            if(bufferedImage == null) return;
-            String profilePhotoPath = "src/ooga/view/Resources/profilephotos/" + profileName+ "profilephoto.jpg";
-            File newFile = new File(profilePhotoPath);
-            ImageIO.write(bufferedImage,"png",newFile);
-            profilePhotoPath = "ooga/view/Resources/profilephotos/" + profileName+ "profilephoto.jpg" ;
-            //pane.setTop(setNameAndPhoto());
-            } catch (NullPointerException | IllegalArgumentException | IOException ignored) {
-            }
+            String path = "src/ooga/view/Resources/profilephotos/" +System.currentTimeMillis()+".jpg";
+            String copiedProfileImage = path;
+            File newFile = new File(copiedProfileImage);
+            ImageIO.write(bufferedImage,"jpg",newFile);
+            fileChosen = filepath;
+            profilePhotoPath = path;
+        } catch (IOException e) {
+            profilePhotoPath = DEFAULT_IMAGE_PATH;
+            fileChosen = new File(DEFAULT_IMAGE_PATH);
+        }
     }
+
     private void handleExitPressed(TextArea textArea, HBox hBox, KeyEvent e){
         if(e.getCode() ==  KeyCode.ENTER){
             hideTextArea(textArea,hBox);
@@ -157,6 +161,8 @@ public class ViewProfile{
         hBox.getChildren().clear();
         hBox.getChildren().add(textArea);
     }
+
+
     private GridPane setNameText(){
         Text nameHeader = new Text("Name:");
         GridPane gridPane = new GridPane();
@@ -181,13 +187,6 @@ public class ViewProfile{
         GridPane gridPane = new GridPane();
         gridPane.setHgap(50);
         int row = 0;
-//        if(myStats == null) {
-//           myStats = (new HashMap<>(){{
-//                put("SuperMario", 100);
-//                put("Dino", 3500);
-//                put("FireBoy and Water Girl", 3000);
-//            }});
-//        }
         for(String game: myStats.keySet()){
             Integer stat = myStats.get(game);
             Text gameName = new Text(game);
@@ -199,6 +198,8 @@ public class ViewProfile{
         gridPane.setStyle(GRID_PANE_STYLE);
         return gridPane;
     }
+
+    public File getFileChosen(){return fileChosen;}
 
 
 

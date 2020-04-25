@@ -216,11 +216,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       try{
         propertyUpdaters.get(propertyName).accept(variableValue);
       } catch (NumberFormatException e){
-        System.out.println("Could not set variable property dependency because variable could not be parsed to double");
+        //can't set dependency; continue.
       }
-    } else {
-      System.out.println("no method defined for setting " + propertyName + " property to a variable");
-    }
+      }
   }
 
   /**

@@ -53,7 +53,7 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
         variables.put(variableName, evaluateOperation(variables.get(variableName), changeValue, operator));
         return;
       }catch (NumberFormatException | ScriptException ignored){
-        System.out.println("Couldn't increment the game variable " + variableName);
+        //if this doesn't work, then look elsewhere for the var definition.
       }
     }
     String entityVariableValue = subject.getVariable(variableName);
@@ -61,7 +61,7 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
       try {
         subject.addVariable(variableName, evaluateOperation(entityVariableValue, changeValue, operator));
       } catch (NumberFormatException | ScriptException ignored){
-        System.out.println("Couldn't increment the entity variable of " + subject.getName());
+        //If the operation is invalid, don't do anything.
       }
     }
   }
