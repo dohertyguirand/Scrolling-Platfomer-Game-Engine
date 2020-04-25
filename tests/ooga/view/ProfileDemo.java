@@ -1,11 +1,8 @@
 package ooga.view;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
 
 public class ProfileDemo extends Application {
 

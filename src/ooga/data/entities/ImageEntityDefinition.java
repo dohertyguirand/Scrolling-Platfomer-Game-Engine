@@ -35,11 +35,11 @@ public class ImageEntityDefinition {
         return myName + ": (" + myHeight + " x " + myWidth + ")";
     }
 
-    public double getMyHeight() {
+    public double getHeight() {
         return myHeight;
     }
 
-    public double getMyWidth() {
+    public double getWidth() {
         return myWidth;
     }
 

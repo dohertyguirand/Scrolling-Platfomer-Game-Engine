@@ -36,7 +36,8 @@ class NonCollisionEffectTest {
 
   @BeforeEach
   void setUp() throws OogaDataException {
-    OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(){},new DirectionalCollisionDetector(),new KeyboardControls(KEYBOARD_INPUT_FILE),"",new XMLGameRecorder());
+    OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(){},new DirectionalCollisionDetector(),
+        new KeyboardControls(KEYBOARD_INPUT_FILE),"",new XMLGameRecorder(),"");
     myGame = game;
     myGameInternal = game;
   }
@@ -102,7 +103,7 @@ class NonCollisionEffectTest {
   }
 
   @Test
-  void testGotoLevel() throws OogaDataException {
+  void testGotoLevel() {
     createBehaviorWithEffect(new GotoLevelEffect(List.of(TARGET_LEVEL)));
     assertEquals("1",myGame.getCurrentLevelId());
     myGame.doGameStep(ELAPSED_TIME);

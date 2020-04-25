@@ -13,7 +13,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.awt.*;
 import java.util.ResourceBundle;
 
 public class MakeProfileMenu extends ScrollMenu {

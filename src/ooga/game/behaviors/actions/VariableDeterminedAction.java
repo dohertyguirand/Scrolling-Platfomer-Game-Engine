@@ -58,8 +58,8 @@ public class VariableDeterminedAction extends Action {
     VariableComparator myComparator;
     try {
       String comparatorClassName = myComparatorResources.getString(myComparatorData);
-      Class cls = forName(COMPARATOR_FILE_PATH + comparatorClassName);
-      Constructor cons = cls.getConstructor();
+      Class<?> cls = forName(COMPARATOR_FILE_PATH + comparatorClassName);
+      Constructor<?> cons = cls.getConstructor();
       myComparator = (VariableComparator)cons.newInstance();
     } catch (Exception e) {
       myComparator = new VariableEquals();

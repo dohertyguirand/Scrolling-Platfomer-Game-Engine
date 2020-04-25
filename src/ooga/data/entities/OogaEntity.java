@@ -38,7 +38,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   }};
 
   private List<Double> myVelocity;
-  private final Stack<List<Double>> myVelocityVectors; //keeps track of one-frame movements.
   private List<ConditionalBehavior> myConditionalBehaviors;
   private boolean isDestroyed;
   private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
@@ -54,7 +53,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     this.width.set(width);
     this.height.set(height);
     myConditionalBehaviors = new ArrayList<>();
-    myVelocityVectors = new Stack<>();
     myName = "";
     for(String direction : directions){
       blockedMovements.put(direction, false);
@@ -163,13 +161,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
 
   @Override
   public List<Double> getVelocity() {
-    //TODO: fix or remove this method
-    List<Double> ret = new ArrayList<>(myVelocity);
-    for (List<Double> vector : myVelocityVectors) {
-      ret.set(0,ret.get(0)+vector.get(0));
-      ret.set(1,ret.get(1)+vector.get(1));
-    }
-    return ret;
+    return new ArrayList<>(myVelocity);
   }
 
   @Override
@@ -200,10 +192,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void reactToVariables(Map<String, String> variables) {
     //TODO: make this work for entity variables?
-    for (String varName : variables.keySet()) {
-      if (propertyVariableDependencies.containsKey(varName)) {
-        String propertyName = propertyVariableDependencies.get(varName);
-        updateProperty(propertyName, variables.get(varName));
+    for (Map.Entry<String, String> varNameEntry : variables.entrySet()) {
+      if (propertyVariableDependencies.containsKey(varNameEntry.getKey())) {
+        String propertyName = propertyVariableDependencies.get(varNameEntry.getKey());
+        updateProperty(propertyName, varNameEntry.getValue());
       }
     }
     updateAutomaticEntityVariables();
@@ -214,11 +206,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
       try{
         propertyUpdaters.get(propertyName).accept(variableValue);
       } catch (NumberFormatException e){
-        System.out.println("Could not set variable property dependency because variable could not be parsed to double");
+        //can't set dependency; continue.
       }
-    } else {
-      System.out.println("no method defined for setting " + propertyName + " property to a variable");
-    }
+      }
   }
 
   /**

@@ -27,8 +27,8 @@ public class MakeProfileTest extends Application {
     private Scene myScene;
     protected Pane myPane;
     protected Group myRoot;
-    private FileChooser myFileChooser = new FileChooser();
-    private ImageView mv = new ImageView();
+    private final FileChooser myFileChooser = new FileChooser();
+    private final ImageView mv = new ImageView();
     private Stage myStage;
 
     @Test

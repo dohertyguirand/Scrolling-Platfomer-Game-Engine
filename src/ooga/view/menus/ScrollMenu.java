@@ -1,16 +1,13 @@
 package ooga.view.menus;
 
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -39,7 +36,7 @@ public abstract class ScrollMenu extends BorderPane {
     private final String TITLE_STYLE = myResources.getString("titlecss");
     private static final double TITLE_FONT_SIZE = 65;
     protected HBox myHBox;
-    protected ResourceBundle languageResources;
+    protected final ResourceBundle languageResources;
 
     /**
      * This type of menu has a horizontal scrollPane that allows users to scroll through a list of options.

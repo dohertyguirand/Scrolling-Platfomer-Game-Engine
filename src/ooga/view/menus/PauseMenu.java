@@ -19,14 +19,14 @@ public class PauseMenu extends OptionMenu {
   private final BooleanProperty resumed = new SimpleBooleanProperty(true);
   private final BooleanProperty quit = new SimpleBooleanProperty(false);
   private final BooleanProperty save = new SimpleBooleanProperty(false);
-  private Map<BooleanProperty, String> buttonPropertiesAndNames;
+  private final Map<BooleanProperty, String> buttonPropertiesAndNames;
 
 
   /**
    * Menu that appears when game has been paused
    */
   public PauseMenu(ResourceBundle languageresources){
-    super(languageresources,PAUSE_MENU_TITLE);
+    super(languageresources,languageresources.getString(PAUSE_MENU_TITLE));
     buttonPropertiesAndNames = new HashMap<>(){{
       put(resumed, languageresources.getString("Play"));
       put(quit, languageresources.getString("Quit"));

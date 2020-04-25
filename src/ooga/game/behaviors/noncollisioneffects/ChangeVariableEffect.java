@@ -52,21 +52,21 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
       try {
         variables.put(variableName, evaluateOperation(variables.get(variableName), changeValue, operator));
         return;
-      }catch (NumberFormatException | ScriptException ignored){
-        System.out.println("Couldn't increment the game variable " + variableName);
+      }catch (NumberFormatException ignored){
+        //if this doesn't work, then look elsewhere for the var definition.
       }
     }
     String entityVariableValue = subject.getVariable(variableName);
     if(entityVariableValue != null){
       try {
         subject.addVariable(variableName, evaluateOperation(entityVariableValue, changeValue, operator));
-      } catch (NumberFormatException | ScriptException ignored){
-        System.out.println("Couldn't increment the entity variable of " + subject.getName());
+      } catch (NumberFormatException ignored){
+        //If the operation is invalid, don't do anything.
       }
     }
   }
 
-  private String evaluateOperation(String varValue, double changeValue, String operator) throws NumberFormatException, ScriptException {
+  private String evaluateOperation(String varValue, double changeValue, String operator) throws NumberFormatException {
     String formattedVarValue = BigDecimal.valueOf(Double.parseDouble(varValue)).toPlainString();
     return String.valueOf(ExpressionEvaluator.eval(formattedVarValue + operator + changeValue));
   }

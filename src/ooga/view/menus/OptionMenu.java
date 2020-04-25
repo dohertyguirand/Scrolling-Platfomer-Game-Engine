@@ -11,7 +11,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.util.List;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public abstract class OptionMenu extends BorderPane {
@@ -23,19 +22,19 @@ public abstract class OptionMenu extends BorderPane {
     private final String TITLE_STYLE = myResources.getString("titlecss");
     private static final double TITLE_FONT_SIZE = 70;
     private static final double SPACING = 30;
-    protected ResourceBundle languageResources;
+    protected final ResourceBundle languageResources;
 
     /**
      * This type of menu has a vertial scrollpane that allows user to select from a list of options
      * Styled by css file specified in constants
-     * @param titleKey key to find string that is used to create title of menu, does not use language resource because title of game
+     * @param title does not use language resource because title of game
      */
-    public OptionMenu(ResourceBundle languageresources, String titleKey){
+    public OptionMenu(ResourceBundle languageresources, String title){
         languageResources = languageresources;
         this.getStylesheets().add(STYLESHEET);
         this.setWidth(WINDOW_WIDTH);
         this.setHeight(WINDOW_HEIGHT);
-        this.setTop(makeMenuTitle(titleKey));
+        this.setTop(makeMenuTitle(title));
         this.setCenterShape(true);
     }
 
@@ -60,13 +59,7 @@ public abstract class OptionMenu extends BorderPane {
         return scrollPane;
     }
 
-    private HBox makeMenuTitle(String titleKey){
-        String title;
-        try {
-            title = languageResources.getString(titleKey);
-        }catch (MissingResourceException e){
-            title = titleKey;
-        }
+    private HBox makeMenuTitle(String title){
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
         Text text = new Text(title);

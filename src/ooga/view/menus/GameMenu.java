@@ -63,7 +63,7 @@ public class GameMenu extends ScrollMenu{
 
   private Node addProfileDataAndBackButton(ViewProfile profile, Node backButton){
     HBox bottomBox = new HBox();
-    bottomBox.getChildren().add(setProfileData(profile));
+    if(profile != null) bottomBox.getChildren().add(setProfileData(profile));
     bottomBox.getChildren().add(backButton);
     return bottomBox;
   }
@@ -98,6 +98,5 @@ public class GameMenu extends ScrollMenu{
     alert.setTitle(ERROR_MESSAGE);
     alert.setContentText(message);
     alert.showAndWait();
-    System.out.println("IN GAME MENU");
   }
 }

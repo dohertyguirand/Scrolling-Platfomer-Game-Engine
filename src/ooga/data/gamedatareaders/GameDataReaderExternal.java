@@ -3,7 +3,6 @@ package ooga.data.gamedatareaders;
 import ooga.OogaDataException;
 import ooga.data.Thumbnail;
 import ooga.data.entities.ImageEntityDefinition;
-import ooga.game.Game;
 import ooga.game.Level;
 
 import java.util.List;

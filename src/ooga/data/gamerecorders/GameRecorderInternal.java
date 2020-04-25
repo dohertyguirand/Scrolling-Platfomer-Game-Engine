@@ -1,7 +1,6 @@
 package ooga.data.gamerecorders;
 
 import ooga.OogaDataException;
-import org.w3c.dom.Document;
 
 public interface GameRecorderInternal extends GameRecorderExternal {
 
