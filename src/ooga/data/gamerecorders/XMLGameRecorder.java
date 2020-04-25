@@ -119,7 +119,7 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
       StreamResult streamResult = new StreamResult(new File(filepath));
       transformer.transform(domSource, streamResult);
     } catch (ParserConfigurationException | TransformerException e) {
-      e.printStackTrace();
+      //Don't save the level if it can't be made into a valid file.
     }
 
     // go to user file
@@ -147,7 +147,7 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
       newGameSaveElement.appendChild(newSaveFileElement);
 
     } catch (OogaDataException e) {
-      e.printStackTrace();
+      //If we can't make a document out of it, don't make the document
     }
 
   }
