@@ -16,7 +16,7 @@ import ooga.view.menus.ProfileMenu;
 import java.util.ResourceBundle;
 
 public class Visualizer extends Application {
-  private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.French");
+  private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.English");
   private final String KEYBOARD_INPUTS_FILE_PATH = "ooga/game/controls/inputs/keyboard";
   private final String ERROR_MESSAGE = GAME_LANGUAGE.getString("ErrorMessage");
   private final String START_MENU_TITLE = GAME_LANGUAGE.getString("StageTitle");

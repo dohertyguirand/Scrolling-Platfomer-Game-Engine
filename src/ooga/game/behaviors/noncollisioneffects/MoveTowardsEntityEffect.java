@@ -29,8 +29,6 @@ public class MoveTowardsEntityEffect extends TimeDelayedEffect {
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime,
       Map<String, String> variables, GameInternal game) {
-    System.out.println(subject.getName());
-    System.out.println(otherEntity.getName());
     double maxSpeed = parseData(myMaxSpeed,subject,variables, LARGE_DOUBLE_VALUE);
     double xDiff =  otherEntity.getPosition().get(0) - subject.getPosition().get(0);
     double yDiff = otherEntity.getPosition().get(1) - subject.getPosition().get(1);
