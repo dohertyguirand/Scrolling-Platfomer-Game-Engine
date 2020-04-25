@@ -14,6 +14,7 @@ import ooga.view.ViewProfile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ProfileMenu extends ScrollMenu {
     private final ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
@@ -26,8 +27,8 @@ public class ProfileMenu extends ScrollMenu {
     /**
      * Shows profile options for user to choose, user can also add a new profile
      */
-    public ProfileMenu(){
-        super();
+    public ProfileMenu(ResourceBundle languageResources){
+        super(languageResources);
         makeViewProfiles();
         addProfileImages();
     }
@@ -48,7 +49,7 @@ public class ProfileMenu extends ScrollMenu {
           return;
         }
         for (OogaProfile oogaProfile : oogaProfiles) {
-            ViewProfile viewProfile = new ViewProfile(oogaProfile.getProfileName(),oogaProfile.getProfilePhotoPath(), oogaProfile.getStats());
+            ViewProfile viewProfile = new ViewProfile(languageResources,oogaProfile.getProfileName(),oogaProfile.getProfilePhotoPath(), oogaProfile.getStats());
             myProfiles.add(viewProfile);
         }
      }
@@ -69,7 +70,7 @@ public class ProfileMenu extends ScrollMenu {
 
      private void showNewProfileScreen(){
          Button submit = new Button(SUBMIT);
-         ViewProfile profile = new ViewProfile(submit);
+         ViewProfile profile = new ViewProfile(languageResources,submit);
          Stage stage = new Stage();
          submit.setOnAction(e-> {
              stage.hide();

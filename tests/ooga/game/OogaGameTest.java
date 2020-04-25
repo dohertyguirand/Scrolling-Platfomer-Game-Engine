@@ -1,76 +1,52 @@
 package ooga.game;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.UserInputListener;
-import ooga.data.ImageEntity;
-import ooga.data.OogaDataReader;
-import ooga.data.OogaEntity;
+import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
+import ooga.game.controls.KeyboardControls;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ooga.game.behaviors.noncollisioneffects.ChangeVelocityEffect;
-
 
 public class OogaGameTest {
 
-//  @Test
-//  void testGameInitialize() throws OogaDataException {
-//
-//  }
-//
-//  @Test
-//  void testDoUpdateLoop() {
-//    Entity moveForwardEntity = new ImageEntity();
-////    moveForwardEntity.setMovementBehaviors(List.of(new MoveForwardBehavior(10.0,20.0)));
-//    Level level = new OogaLevel(List.of(moveForwardEntity), "");
-//    OogaGame game = new OogaGame(level, new DirectionalCollisionDetector());
-//    double expectedX = 0;
-//    double expectedY = 0;
-//    for (int i = 0; i < 5; i ++) {
-//      double elapsedTime = (0.1 * (i));
-//      expectedX += elapsedTime * 10.0;
-//      expectedY += elapsedTime * 20.0;
-//      game.doGameStep(elapsedTime);
-//      Entity targetEntity = game.getEntities().get(0);
-//      targetEntity.setVelocity(1.0,2.0);
-//    }
-//  }
-//
-//  @Test
-//  void testDoCollisionLoop() {
-//  }
-//
-//  @Test
-//  void testInputHandling() {
-//    double startingHeight = 400;
-//    double highJumpHeight = 50.0;
-//    Entity highJumpEntity = new ImageEntity("high");
-//    highJumpEntity.setPosition(List.of(0.0,startingHeight));
-////    highJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new ChangeVelocityEffect(new ArrayList<>()));
-////    highJumpEntity.setControlsBehaviors(Map.of("DownKey",List.of(new JumpBehavior(highJumpHeight))));
-//    double lowJumpHeight = 10.0;
-//    Entity lowJumpEntity = new ImageEntity("low");
-//    lowJumpEntity.setPosition(List.of(0.0,startingHeight));
-////    lowJumpEntity.setControlsBehaviors(Map.of("UpKey",List.of(new JumpEffect(lowJumpHeight))));
-//
-//    double elapsedTime = 1.0;
-//    Level testLevel = new OogaLevel(List.of(lowJumpEntity,highJumpEntity), "");
-//    Game testGame = new OogaGame(testLevel,new DirectionalCollisionDetector());
-//    UserInputListener listener = testGame.makeUserInputListener();
-//    listener.reactToKeyPress("W");
-//    testGame.doGameStep(elapsedTime);
-//    double expectedHighHeight = elapsedTime * highJumpHeight;
-//    double expectedLowHeight = elapsedTime * lowJumpHeight;
-//    assertEquals(List.of(0.0,startingHeight+expectedHighHeight),highJumpEntity.getPosition());
-//    assertEquals(List.of(0.0,startingHeight+expectedLowHeight),lowJumpEntity.getPosition());
-//
-//  }
+  public static final String GAME_NAME = "Super Mario Bros";
+  public static final double ELAPSED_TIME = 1.0;
+  public static final String TARGET_LEVEL = "2";
+  public static final String INVALID_LEVEL_NAME = "INVALIDLEVEL";
+  public static final String KEYBOARD_INPUT_FILE = "ooga/game/controls/inputs/keyboard";
+
+  private Game myGame;
+  private GameInternal myGameInternal;
+
+  @BeforeEach
+  void setUp() throws OogaDataException {
+    OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(){},new DirectionalCollisionDetector(),
+        new KeyboardControls(KEYBOARD_INPUT_FILE),"");
+    myGame = game;
+    myGameInternal = game;
+  }
+
+  @Test
+  void testCurrentLevelId() {
+    assertEquals("1", myGame.getCurrentLevelId());
+  }
+
+  @Test
+  void testGoToNextLevel() {
+    assertEquals("1", myGame.getCurrentLevelId());
+    myGameInternal.goToNextLevel();
+    assertEquals("2", myGame.getCurrentLevelId());
+  }
+
+  @Test
+  void testCreateEntity() {
+    double numEntities = myGame.getEntities().size();
+    myGameInternal.createEntity("Mushroom", List.of(0.0, 0.0));
+    assertEquals(numEntities, myGame.getEntities().size(), 0.5);
+    myGame.doGameStep(ELAPSED_TIME);
+    assertEquals(numEntities + 1, myGame.getEntities().size(), 0.5);
+  }
 }

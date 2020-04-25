@@ -250,16 +250,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   /**
-   * Handles when the command is given to quit the currently running game.
-   * This might be modified to account for identifying which game must close when
-   * there are multiple games open.
-   */
-  @Override
-  public void reactToGameQuit() {
-
-  }
-
-  /**
    * indicates the pause button was clicked in the ui
    *
    * @param paused whether or not the button clicked was pause or resume
@@ -349,5 +339,15 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public List<Double> getCameraShiftValues() {
     return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
+  }
+
+  @Override
+  public Map<String, String> getVariables() {
+    return new HashMap<>(myVariables);
+  }
+
+  @Override
+  public void setVariable(String var, String value) {
+    myVariables.put(var,value);
   }
 }

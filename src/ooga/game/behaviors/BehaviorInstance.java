@@ -1,10 +1,10 @@
 package ooga.game.behaviors;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import ooga.Entity;
 import ooga.game.GameInternal;
-
-import java.util.*;
 
 public class BehaviorInstance implements ConditionalBehavior {
 
@@ -60,20 +60,22 @@ public class BehaviorInstance implements ConditionalBehavior {
   public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, Map<String, String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
-    if (!checkGameVariableConditions(subject, variables)) {
-      return;
+    if (checkGameVariableConditions(subject,variables)
+    &&  checkEntityVariableConditions(subject,gameInternal,variables)
+    &&  checkInputConditions(inputs)
+    &&  !anyCollisionConditionsUnsatisfied(collisionInfo,requiredCollisionConditions,true)
+    &&  !anyCollisionConditionsUnsatisfied(collisionInfo,bannedCollisionConditions,false)) {
+      doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
     }
-    if (!checkEntityVariableConditions(subject, gameInternal, variables)) {
-      return;
-    }
-    for(Map.Entry<String, List<String>> inputCondition : inputConditions.entrySet()){
+  }
+
+  private boolean checkInputConditions(Map<String, String> inputs) {
+    for(Entry<String, List<String>> inputCondition : inputConditions.entrySet()){
       if (!inputConditionSatisfied(inputs, inputCondition)) {
-        return;
+        return false;
       }
     }
-    if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
-    if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
-    doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
+    return true;
   }
 
   private boolean inputConditionSatisfied(Map<String, String> inputs,
@@ -119,50 +121,31 @@ public class BehaviorInstance implements ConditionalBehavior {
     return true;
   }
 
-  @Deprecated
-  private boolean entityVariableConditionSatisfied(Entity subject, GameInternal gameInternal,
-      Entry<String, List<Entry<String, String>>> variableConditionsEntry) {
-    //Map: ((Variable containing Entity ID) OR (Variable Containing EntityName) OR (EntityID) OR (EntityName) ) -> ((VariableName),(Value))
-    Entity labelledEntity = identifyEntityVariableSubject(subject, gameInternal, variableConditionsEntry.getKey());
-    //once we've resolved WHERE to check, we check that each variable matches each value.
-    if(labelledEntity == null){
-      return false;
-    }
-    for(Entry<String, String> variableCondition : variableConditionsEntry.getValue()){
-      if(labelledEntity.getVariable(variableCondition.getKey()) == null ||
-              !labelledEntity.getVariable(variableCondition.getKey()).equals(variableCondition.getValue())){
-        return false;
-      }
-    }
-    return true;
-  }
-
   private Entity identifyEntityVariableSubject(Entity subject, GameInternal gameInternal, String label) {
-    //1. Check if label is a constant that represents "SELF"
     if (label.equals(SELF_IDENTIFIER)) {
       return subject;
     }
-    //2. Check if label is a variable...
-    Entity e;
+    else {
+      return otherEntitySubject(subject, gameInternal, label);
+    }
+  }
+
+  private Entity otherEntitySubject(Entity subject, GameInternal gameInternal, String label) {
     String subjectVariable = subject.getVariable(label);
     if (subjectVariable != null) {
-      //  -  with an entity ID
-      e = gameInternal.getEntityWithId(subject.getVariable(label));
+      Entity e = gameInternal.getEntityWithId(subject.getVariable(label));
       if (e != null) {
         return e;
       }
-      //  -  with an entity name
       e = gameInternal.getEntitiesWithName(subjectVariable).get(0);
       if (e != null) {
         return e;
       }
     }
-    //3. Check if label is an entity ID
-    e = gameInternal.getEntityWithId(label);
+    Entity e = gameInternal.getEntityWithId(label);
     if (e != null) {
       return e;
     }
-    //4. Check if label is an entity name (definition type)
     List<Entity> entitiesWithName = gameInternal.getEntitiesWithName(label);
     if (!entitiesWithName.isEmpty()) {
       return entitiesWithName.get(0);

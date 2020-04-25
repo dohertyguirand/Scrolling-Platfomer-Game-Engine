@@ -3,6 +3,8 @@ package ooga.game;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+import ooga.game.controls.ControlsInterpreter;
+import ooga.game.controls.KeyboardControls;
 import org.junit.jupiter.api.Test;
 
 public class TestKeyboardControls {

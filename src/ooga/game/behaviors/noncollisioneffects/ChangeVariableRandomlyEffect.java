@@ -45,29 +45,35 @@ public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
    */
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
-    //in the variable map, increment variableName by variableValue
     double randomMinValue = parseData(randomRangeMin, subject, variables, 0.0);
     double randomMaxValue = parseData(randomRangeMax, subject, variables, 1.0);
-
     double changeValueData = (new Random().nextDouble()) * (randomMaxValue-randomMinValue);
     String operator = Effect.doVariableSubstitutions(operatorData, subject, variables);
     if (variables.containsKey(variableName)) {
-      try {
-        variables.put(variableName, evaluateOperation(variables.get(variableName), changeValueData, operator));
-        System.out.println("Changed " + variableName + " by (" + operator + ") " + changeValueData);
-        return;
-      }catch (NumberFormatException | ScriptException ignored){
-        System.out.println("Couldn't increment the game variable " + variableName);
-      }
+      modifyGameVariable(variables, changeValueData, operator);
     }
+    else {
+      modifyEntityVariable(subject, changeValueData, operator);
+    }
+  }
+
+  private void modifyEntityVariable(Entity subject, double changeValueData, String operator) {
     String entityVariableValue = subject.getVariable(variableName);
     if(entityVariableValue != null){
       try {
         subject.addVariable(variableName, evaluateOperation(entityVariableValue, changeValueData, operator));
-        System.out.println("Changed " + variableName + " by (" + operator + ") " + changeValueData);
       } catch (NumberFormatException | ScriptException ignored){
-        System.out.println("Couldn't increment the entity variable of " + subject.getName());
+        //If the change can't happen, don't change the variable.
       }
+    }
+  }
+
+  private void modifyGameVariable(Map<String, String> variables, double changeValueData,
+      String operator) {
+    try {
+      variables.put(variableName, evaluateOperation(variables.get(variableName), changeValueData, operator));
+    }catch (NumberFormatException | ScriptException ignored){
+      //If the change can't happen, don't change the variable.
     }
   }
 

@@ -22,13 +22,15 @@ public abstract class OptionMenu extends BorderPane {
     private final String TITLE_STYLE = myResources.getString("titlecss");
     private static final double TITLE_FONT_SIZE = 70;
     private static final double SPACING = 30;
+    protected ResourceBundle languageResources;
 
     /**
      * This type of menu has a vertial scrollpane that allows user to select from a list of options
      * Styled by css file specified in constants
-     * @param title String that is used to create title of menu
+     * @param title key to find string that is used to create title of menu, does not use language resource because title of game
      */
-    public OptionMenu(String title){
+    public OptionMenu(ResourceBundle languageresources, String title){
+        languageResources = languageresources;
         this.getStylesheets().add(STYLESHEET);
         this.setWidth(WINDOW_WIDTH);
         this.setHeight(WINDOW_HEIGHT);

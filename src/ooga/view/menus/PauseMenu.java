@@ -19,18 +19,19 @@ public class PauseMenu extends OptionMenu {
   private final BooleanProperty resumed = new SimpleBooleanProperty(true);
   private final BooleanProperty quit = new SimpleBooleanProperty(false);
   private final BooleanProperty save = new SimpleBooleanProperty(false);
-  final Map<BooleanProperty, String> buttonPropertiesAndNames = new HashMap<>(){{
-    put(resumed, "Play");
-    put(quit, "Quit");
-    put(save, "Save");
-  }};
+  private Map<BooleanProperty, String> buttonPropertiesAndNames;
 
 
   /**
    * Menu that appears when game has been paused
    */
-  public PauseMenu(){
-    super(PAUSE_MENU_TITLE);
+  public PauseMenu(ResourceBundle languageresources){
+    super(languageresources,PAUSE_MENU_TITLE);
+    buttonPropertiesAndNames = new HashMap<>(){{
+      put(resumed, languageresources.getString("Play"));
+      put(quit, languageresources.getString("Quit"));
+      put(save, languageresources.getString("Save"));
+    }};
     this.setLeft(setMenuItems(createButtons()));
   }
 
@@ -69,7 +70,7 @@ public class PauseMenu extends OptionMenu {
 
   private Node makeButton(BooleanProperty statusProperty, String text){
     Button button = new Button(text);
-    ImageView icon = new ImageView(new Image(myResources.getString(text)));
+    ImageView icon = new ImageView(new Image(myResources.getString(languageResources.getString(text))));
     icon.setStyle(ICON_STYLE);
     icon.setFitHeight(ICON_SIZE);
     icon.setFitWidth(ICON_SIZE);

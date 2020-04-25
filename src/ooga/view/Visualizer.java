@@ -6,20 +6,41 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
+import ooga.data.XMLGameRecorder;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.game.Game;
 import ooga.view.menus.GameMenu;
 import ooga.view.menus.LoadMenu;
 import ooga.view.menus.ProfileMenu;
 
-public class Visualizer extends Application {
+import java.util.ResourceBundle;
 
-  private static final String ERROR_MESSAGE = "Error: Internal Data Error";
-  private static final String START_MENU_TITLE = "Choose a Game";
-  private static final String BACK_BUTTON_TEXT = "Back";
+public class Visualizer extends Application {
+  private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.English");
+  private final String KEYBOARD_INPUTS_FILE_PATH = "ooga/game/controls/inputs/keyboard";
+  private final String ERROR_MESSAGE = GAME_LANGUAGE.getString("ErrorMessage");
+  private final String START_MENU_TITLE = GAME_LANGUAGE.getString("StageTitle");
+  private final String BACK_BUTTON_TEXT = GAME_LANGUAGE.getString("Back");
   private String profileNameSelected;
   private Stage stage;
   private final GameDataReaderExternal myDataReader = new XMLGameDataReader() {};
+  private XMLGameRecorder gameRecorder = new XMLGameRecorder() {
+    @Override
+    public void saveGameState(String filePath) throws OogaDataException {
+
+    }
+
+    @Override
+    public Game loadGameState(String filePath) throws OogaDataException {
+      return null;
+    }
+
+    @Override
+    public String getLevelFilePath(String UserName, String Date) throws OogaDataException {
+      return null;
+    }
+  };
   private String dateSelected;
 
   public static void main(String[] args) {
@@ -36,7 +57,7 @@ public class Visualizer extends Application {
   }
 
   private void showProfileMenu() {
-    ProfileMenu profileMenu = new ProfileMenu();
+    ProfileMenu profileMenu = new ProfileMenu(GAME_LANGUAGE);
     Scene profileMenuScene = new Scene(profileMenu,profileMenu.getWidth(),profileMenu.getHeight());
     profileMenu.profileSelected().addListener((p, poldVal, pnewVal) ->{
       profileNameSelected = pnewVal.getProfileName();
@@ -47,7 +68,7 @@ public class Visualizer extends Application {
 
   private void showStartMenu(ViewProfile profile, Scene returnScene){
     Button backToProfileMenu = makeBackButton(returnScene);
-    GameMenu gameMenu = new GameMenu(profile,backToProfileMenu);
+    GameMenu gameMenu = new GameMenu(GAME_LANGUAGE,profile,backToProfileMenu);
     Scene gameMenuScene = new Scene(gameMenu, gameMenu.getWidth(), gameMenu.getHeight());
     gameMenu.selectedProperty().addListener((o, oldVal, newVal) -> showLoadMenu(newVal, gameMenuScene));
     stage.setScene(gameMenuScene);
@@ -55,7 +76,7 @@ public class Visualizer extends Application {
 
   private void showLoadMenu(String gameName, Scene returnScene){
     Button backToStartMenu = makeBackButton(returnScene);
-    LoadMenu loadMenu = new LoadMenu(gameName, profileNameSelected,myDataReader, backToStartMenu);
+    LoadMenu loadMenu = new LoadMenu(GAME_LANGUAGE,gameRecorder,gameName, profileNameSelected,myDataReader, backToStartMenu);
     Scene loadScene = new Scene(loadMenu, loadMenu.getWidth(),loadMenu.getHeight());
     loadMenu.getDateSelected().addListener((d,dold,dnew)-> startGame(gameName,profileNameSelected,dnew));
     stage.setScene(loadScene);
@@ -64,7 +85,7 @@ public class Visualizer extends Application {
   private void startGame(String gameName, String profileName, String date) {
     if (gameName != null) {
       try {
-        new ViewerGame(gameName,profileName,date);
+        new ViewerGame(gameName,profileName,date, GAME_LANGUAGE, KEYBOARD_INPUTS_FILE_PATH);
       } catch (OogaDataException e) {
         //Sam added this, because he made it possible for the OogaGame constructor to throw
         // an exception, so that the view can decide what to do when no game is found.
