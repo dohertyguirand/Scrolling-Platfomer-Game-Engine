@@ -6,8 +6,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import ooga.OogaDataException;
-import ooga.data.XMLGameRecorder;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
+import ooga.data.gamerecorders.GameRecorderExternal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -28,7 +29,8 @@ public class LoadMenu extends OptionMenu {
      * @param reader - DataReader used to get past saves from data
      * @param backButton - button that allows user to get back to startmenu screen
      */
-    public LoadMenu(ResourceBundle languageResources, XMLGameRecorder gamerecorder,String gamename, String profilename, GameDataReaderExternal reader, Node backButton){
+    public LoadMenu(ResourceBundle languageResources, GameRecorderExternal gamerecorder, String gamename,
+                    String profilename, GameDataReaderExternal reader, Node backButton){
         super(languageResources, gamename);
         try {
             pastSaves = gamerecorder.getGameSaves(profilename,gamename);
