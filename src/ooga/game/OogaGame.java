@@ -78,11 +78,20 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   private Level loadGameLevel(String gameName, String id) throws OogaDataException {
     Level level = myGameDataReader.loadNewLevel(gameName,id);
+    clearEntities();
+    addAllEntities(level.getEntities());
+    return level;
+  }
+
+  private void addAllEntities(List<EntityInternal> entities) {
+    for (EntityInternal e : entities) {
+      addEntity(e);
+    }
+  }
+
+  private void clearEntities() {
     myEntities.clear();
     myEntitiesInternal.clear();
-    myEntities.addAll(level.getEntities());
-    myEntitiesInternal.addAll(level.getEntities());
-    return level;
   }
 
   @Override
@@ -136,7 +145,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void doEntityFrameUpdates(double elapsedTime) {
-    for (Entity entity : currentLevel.getEntities()) {
+    for (EntityInternal entity : currentLevel.getEntities()) {
       entity.blockInAllDirections(false);
       entity.updateSelf(elapsedTime);
       entity.reactToVariables(myVariables);
@@ -154,7 +163,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
       allInputs.put(key, KEY_PRESSED_REQUIREMENT);
     }
     Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo = findDirectionalCollisions(elapsedTime);
-    for (Entity entity : currentLevel.getEntities()) {
+    for (EntityInternal entity : currentLevel.getEntities()) {
       Map<String,String> entityInputs = findEntityInputs(allInputs, entity);
       entity.doConditionalBehaviors(elapsedTime, entityInputs, myVariables, collisionInfo, this);
     }
@@ -173,18 +182,22 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   private void executeEntityMovement(double elapsedTime) {
-    for (Entity e : currentLevel.getEntities()) {
+    for (EntityInternal e : currentLevel.getEntities()) {
       e.executeMovement(elapsedTime);
     }
   }
 
   private void doEntityCreation() {
     for (EntityInternal created : myNewCreatedEntities) {
-      myEntities.add(created);
-      myEntitiesInternal.add(created);
+      addEntity(created);
       currentLevel.addEntity(created);
     }
     myNewCreatedEntities.clear();
+  }
+
+  private void addEntity(EntityInternal created) {
+    myEntities.add(created);
+    myEntitiesInternal.add(created);
   }
 
   private void doEntityCleanup() {
@@ -197,10 +210,14 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     for (Entity destroyed : destroyedEntities) {
       if (destroyed.isDestroyed()) {
         currentLevel.removeEntity(destroyed);
-        myEntities.remove(destroyed);
-        myEntitiesInternal.remove(destroyed);
+        removeEntity(destroyed);
       }
     }
+  }
+
+  private void removeEntity(Entity destroyed) {
+    myEntities.remove(destroyed);
+    myEntitiesInternal.remove(destroyed);
   }
 
   @Override
@@ -346,7 +363,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   }
 
   @Override
-  public List<EntityInternal> getInternalEntiites() {
+  public List<EntityInternal> getInternalEntities() {
     return new ArrayList<>(myEntitiesInternal);
   }
 }

@@ -3,16 +3,13 @@ package ooga.game;
 import java.util.List;
 import java.util.Map;
 import ooga.Entity;
+import ooga.game.behaviors.ConditionalBehavior;
 
 /**
- * (PROPOSED) The side of an entity that can be accessed by behaviors.
+ * The side of an entity that behaviors can see. Provides tools to modify or destroy
+ * the entity.
  */
 public interface EntityInternal extends Entity {
-
-  /**
-   * @return The X and Y position of the Entity, in that order.
-   */
-  List<Double> getPosition();
 
   /**
    * @param newPosition The new position for the entity to have in the level.
@@ -39,14 +36,21 @@ public interface EntityInternal extends Entity {
   void setVelocity(double xVelocity, double yVelocity);
 
   /**
-   * @return The name of this Entity. Is often not unique.
+   * Handles updates that happen every frame, regardless of context. Can still have logic.
+   * Example: An enemy might move forward every frame.
+   * @param elapsedTime
+   *
+   *
    */
-  String getName();
+  void updateSelf(double elapsedTime);
 
   /**
-   * @return The velocity of this entity as a list of two doubles.
+   * Actually moves the entity in space by its velocity. Should happen after all movement and
+   * collision logic.
+   * @param elapsedTime Time in milliseconds since last step.
    */
-  List<Double> getVelocity();
+  void executeMovement(double elapsedTime);
+
 
   /**
    * Sets the variable with the specified name to the specified value.
@@ -63,14 +67,42 @@ public interface EntityInternal extends Entity {
   String getVariable(String variableName);
 
   /**
-   * @return The width of this entity.
+   * Handles any behavior that depends on the values of variables.
+   * @param variables
    */
-  double getWidth();
+  void reactToVariables(Map<String, String> variables);
 
   /**
-   * @return The height of this entity.
+   * Add a dependency to the map so that when the variable with the given name changes, the property with the given name is updated
+   * @param propertyVariableDependencies
    */
-  double getHeight();
+  void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies);
+
+  /**
+   * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
+   * assigned actions if true
+   */
+  void doConditionalBehaviors(double elapsedTime, Map<String, String> inputs, Map<String, String> variables,
+      Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal);
+
+  /**
+   * assigns the conditional behaviors of this entity
+   * @param conditionalBehaviors list of conditional behaviors
+   */
+  void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors);
+
+  /**
+   * change every value in this entity's blockedMovements map to the specified value
+   * @param isBlocked true if the entity is blocked in the direction, otherwise false
+   */
+  void blockInAllDirections(boolean isBlocked);
+
+  /**
+   * set myVariables to the specified map
+   * @param variables map of variable names to values
+   */
+  void setVariables(Map<String, String> variables);
+
 
   /**
    * @param width The width to set the entity's width to.
@@ -88,13 +120,9 @@ public interface EntityInternal extends Entity {
   void setImageLocation(String filepath);
 
   /**
-   * @param direction The direction in which to modify movement blocking.
-   * @param blocked True if movement should be blocked, false if it should be unblocked.
+   * change the value in this entity's blockedMovements map to the specified value
+   * @param direction up, down, left, or right
+   * @param blocked true if the entity is blocked in the direction, otherwise false
    */
   void blockInDirection(String direction, boolean blocked);
-
-  /**
-   * @return A copy of this entity's internal variables, as String-String name-value pairs.
-   */
-  Map<String,String> getVariables();
 }

@@ -39,5 +39,5 @@ public interface GameInternal {
   /**
    * @return A list of the entities that are currently in play.
    */
-  List<EntityInternal> getInternalEntiites();
+  List<EntityInternal> getInternalEntities();
 }
