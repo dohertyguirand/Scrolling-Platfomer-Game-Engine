@@ -42,8 +42,7 @@ public class SetImageEffect extends TimeDelayedEffect {
   }
 
   public static void setImage(Entity subject, String newImageFileName, Map<String, String> variables, Effect effectSource) {
-    //TODO: find a better way than using instanceof
-    if(subject instanceof ImageEntity){
+    if(subject.getEntityType().equals(Entity.imageEntityType)){
       ImageEntity imageEntity = (ImageEntity)subject;
       //TODO: add the specfic game directory to the path here
       imageEntity.setImageLocation("file:data/games-library/" + Effect.doVariableSubstitutions(newImageFileName, subject, variables));
