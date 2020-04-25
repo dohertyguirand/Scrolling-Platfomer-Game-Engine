@@ -3,13 +3,6 @@
     <Image>DefaultAvatar.png</Image>
     <SavedGameStates>
         <Game>
-            <Name>Chrome Dino</Name>
-            <Save>
-                <Date></Date>
-                <StateFilePath></StateFilePath>
-            </Save>
-        </Game>
-        <Game>
             <Name>Super Mario Bros</Name>
             <Save>
                 <Date>4/24/20</Date>

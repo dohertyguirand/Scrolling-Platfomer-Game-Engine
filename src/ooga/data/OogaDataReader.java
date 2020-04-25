@@ -19,6 +19,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.naming.Name;
+import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
@@ -209,6 +211,46 @@ public class OogaDataReader implements DataReader{
         return loadLevelAtPath(levelFilePath);
     }
 
+    @Override
+    public List<List<String>> getGameSaves(String userName, String gameName) throws OogaDataException {
+        Document doc = getDocForUserName(userName);
+        List<List<String>> gameSaveInfo = new ArrayList<>();
+        // loop through all of the games saves in the user file and find the right games
+        for(int i=0; i<doc.getElementsByTagName(myDataResources.getString("UserFileGameTag")).getLength(); i++){
+            Element gameElement = (Element) doc.getElementsByTagName(myDataResources.getString("UserFileGameTag")).item(i);
+            try {
+                checkKeyExists(gameElement, myDataResources.getString("UserFileGameNameTag"), "");
+            }catch (OogaDataException e){
+                // meant to be empty
+                // skip games that don't have names
+                continue;
+            }
+            String foundGameName = gameElement.getElementsByTagName(myDataResources.getString("UserFileGameNameTag")).item(0).getTextContent();
+            if(foundGameName.equals(gameName)){
+                // add the Level ID and date to the list
+                checkKeyExists(gameElement, myDataResources.getString("UserFileSaveDateTag"), myDataResources.getString("UserFileSaveMissingDates"));
+                checkKeyExists(gameElement, myDataResources.getString("UserFileSaveFilePathTag"), myDataResources.getString("UserFileSaveMissingFilePaths"));
+
+                String date =  gameElement.getElementsByTagName(myDataResources.getString("UserFileSaveDateTag")).item(0).getTextContent();
+
+                // get the level ID from the level file
+                String loadFilePath =  gameElement.getElementsByTagName(myDataResources.getString(myDataResources.getString("UserFileSaveFilePathTag"))).item(0).getTextContent();
+                File levelFile = new File(loadFilePath);
+                Document levelDoc = getDocument(levelFile, myDataResources.getString("DocumentParseException"));
+
+                checkKeyExists(levelDoc, myDataResources.getString("SaveFileLevelTag"), myDataResources.getString("SaveFileMissingLevel"));
+                Element savedLevelElement = (Element) levelDoc.getElementsByTagName(myDataResources.getString("SaveFileLevelTag")).item(0);
+
+                checkKeyExists(savedLevelElement, myDataResources.getString("LevelIDTag"), myDataResources.getString("SaveFileLevelMissingID"));
+                String id = savedLevelElement.getElementsByTagName(myDataResources.getString("LevelIDTag")).item(0).getTextContent();
+
+                ArrayList<String> entry = new ArrayList<>(List.of(id, date));
+                gameSaveInfo.add(entry);
+            }
+        }
+        return gameSaveInfo;
+    }
+
     /**
      * Looks through the user files and finds the path of the save file by the requested user at the requested date
      * @param UserName: Name of the user who made the save file
@@ -218,27 +260,39 @@ public class OogaDataReader implements DataReader{
      * if the requested username isn't listed in the file or doesn't have a save at the given time
      */
     private String getLevelFilePath(String UserName, String Date) throws OogaDataException {
-        for (File userFile : getAllXMLFiles(DEFAULT_USERS_FILE)){
-            // create a new document to parse
-            File fXmlFile = new File(String.valueOf(userFile));
-            Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
-            // get the name at teh top of the file
-            checkKeyExists(doc, "Name", "User file missing username");
-            String loadedName = doc.getElementsByTagName("Name").item(0).getTextContent();
-
-            if(!loadedName.equals(UserName)) continue;
-
-            // find where the save file is stored
-            checkKeyExists(doc, "Date", "User file missing saves");
-            for(int i=0; i<doc.getElementsByTagName("Date").getLength(); i++){
-                String loadedDate = doc.getElementsByTagName("Date").item(i).getTextContent();
-                if(!loadedDate.equals(Date)) continue;
-                String loadFilePath = doc.getElementsByTagName("StateFilePath").item(i).getTextContent();
-                return loadFilePath;
-            }
-            throw new OogaDataException("User has no save at the given date");
+        Document userDoc = getDocForUserName(UserName);// find where the save file is stored
+        checkKeyExists(userDoc, myDataResources.getString("UserFileSaveDateTag"), myDataResources.getString("UserFileHasNoSaves"));
+        for(int i=0; i<userDoc.getElementsByTagName(myDataResources.getString("UserFileSaveDateTag")).getLength(); i++){
+            String loadedDate = userDoc.getElementsByTagName(myDataResources.getString("UserFileSaveDateTag")).item(i).getTextContent();
+            if(!loadedDate.equals(Date)) continue;
+            return userDoc.getElementsByTagName(myDataResources.getString("UserFileSaveFilePathTag")).item(i).getTextContent();
         }
-        throw new OogaDataException("No user exists with that username");
+        throw new OogaDataException("User has no save at the given date");
+    }
+
+    /**
+     * @param UserName the name of the user whose document we need
+     * @return The Document for the user with the given username
+     * @throws OogaDataException if the document has no user with that username
+     */
+    private Document getDocForUserName(String UserName) throws OogaDataException {
+        for (File userFile : getAllXMLFiles(DEFAULT_USERS_FILE)){
+            try {
+                // create a new document to parse
+                File fXmlFile = new File(String.valueOf(userFile));
+                Document doc = getDocument(fXmlFile, myDataResources.getString("DocumentParseException"));
+                // get the name at the top of the file
+                checkKeyExists(doc, "Name", "User file missing username");
+                String loadedName = doc.getElementsByTagName("Name").item(0).getTextContent();
+
+                if (loadedName.equals(UserName)) return doc;
+            }catch (OogaDataException e){
+                // this field is meant to be empty
+                // right now we're just looking for a user,
+                // it's not a problem if one of the other documents is improperly formatted
+            }
+        }
+        throw new OogaDataException(myDataResources.getString("UserFolderMissingRequestedUsername"));
     }
 
     /**
@@ -248,7 +302,6 @@ public class OogaDataReader implements DataReader{
     private Level loadLevelAtPath(String loadFilePath) throws OogaDataException {
         //get the name of the game
         File levelFile = new File(loadFilePath);
-        System.out.println(levelFile.getName());
         Document doc = getDocument(levelFile, myDataResources.getString("DocumentParseException"));
         String gameName = doc.getElementsByTagName(myDataResources.getString("GameNameTag")).item(0).getTextContent();
         // get the image entity map of the main game

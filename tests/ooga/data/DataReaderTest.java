@@ -148,6 +148,23 @@ public class DataReaderTest {
         }
     }
 
+    @Test
+    public void testGetGameSaves() {
+        boolean testPassed = true;
+        for(String game : GAME_NAMES){
+            System.out.println("Game: " + game);
+            try{
+                String testName = "Braeden";
+                List<List<String>> result = testDataReader.getGameSaves(testName, game);
+                System.out.println(result);
+            }catch (OogaDataException e){
+                e.printStackTrace();
+                testPassed = false;
+            }
+        }
+        assertTrue(testPassed);
+    }
+
 
 
 }
