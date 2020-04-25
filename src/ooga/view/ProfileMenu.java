@@ -47,7 +47,7 @@ public class ProfileMenu extends ScrollMenu {
           return;
         }
         for (OogaProfile oogaProfile : oogaProfiles) {
-            ViewProfile viewProfile = new ViewProfile(oogaProfile.getProfileName(),oogaProfile.myProfilePhotoPath, oogaProfile.getStats());
+            ViewProfile viewProfile = new ViewProfile(oogaProfile.getProfileName(),oogaProfile.getProfilePhotoPath(), oogaProfile.getStats());
             myProfiles.add(viewProfile);
         }
      }
