@@ -53,7 +53,9 @@ public class LoadMenu extends OptionMenu {
 
     private Node makeButton(String date, String text){
         Button button = new Button(text);
-        button.setOnAction(e-> setDateSelected(date));
+        button.setOnAction(e-> {
+            setDateSelected(button.getText());
+        });
         return new Button(text);
     }
 
@@ -63,12 +65,16 @@ public class LoadMenu extends OptionMenu {
     }
 
     private List<Node> createButtons(Node backButton, GameDataReaderExternal dataReader, String profileName, String gameName) {
-        List<Node> buttons = new ArrayList<>();
+       List<Node> buttons = new ArrayList<>();
         Button button = new Button(NEWGAME);
         button.setOnAction(e-> setDateSelected("  "));
         buttons.add(button);
         for(List<String> dates: pastSaves){
-            buttons.add(makeButton(dates.get(1), dates.get(0) + "- " + dates.get(1)));
+            Button saved = new Button();
+            saved.setText(dates.get(0) + "-" + dates.get(1));
+            saved.setOnAction(e-> setDateSelected(dates.get(1)));
+            buttons.add(saved);
+       //    buttons.add(makeButton(dates.get(1), dates.get(1)));
         }
         buttons.add(backButton);
         return buttons;
