@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.menus;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -9,13 +9,17 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import ooga.data.DataReader;
-import ooga.data.OogaDataReader;
+import ooga.data.gamedatareaders.GameDataReaderExternal;
+import ooga.data.profiledatareaders.ProfileReaderExternal;
+import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.data.profiledatareaders.XMLProfileReader;
 
 import java.util.ResourceBundle;
 
 public abstract class ScrollMenu extends Pane{
 
+    protected final ProfileReaderExternal myProfileReader;
+    protected final GameDataReaderExternal myGameDataReader;
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private final double IMAGE_HEIGHT = Double.parseDouble(myResources.getString("gameImageHeight"));
@@ -26,7 +30,6 @@ public abstract class ScrollMenu extends Pane{
     private final double SCROLLBAR_Y = Double.parseDouble(myResources.getString("scrollbarY"));
     private final double HBOX_SPACING = Double.parseDouble(myResources.getString("hboxspacing"));
     private final double HBOX_Y_LAYOUT = Double.parseDouble(myResources.getString("hboxy"));
-    protected final DataReader myDataReader;
     protected HBox myHBox;
 
     /**
@@ -34,7 +37,8 @@ public abstract class ScrollMenu extends Pane{
      * Styled by the css file specified in constants
      */
     protected ScrollMenu(){
-        myDataReader = new OogaDataReader();
+        myProfileReader = new XMLProfileReader() {};
+        myGameDataReader = new XMLGameDataReader() {};
         double windowHeight = Double.parseDouble(myResources.getString("windowHeight"));
         this.setWidth(WINDOW_WIDTH);
         this.setHeight(windowHeight);

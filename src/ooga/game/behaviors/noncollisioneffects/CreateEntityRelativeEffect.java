@@ -21,10 +21,11 @@ public class CreateEntityRelativeEffect extends TimeDelayedEffect {
 
   @Override
   public void processArgs(List<String> args) {
-    createdEntityType = args.get(0);
+    int index = 0;
+    createdEntityType = args.get(index++);
     relativeEntityLocation = new ArrayList<>(2);
-    relativeEntityLocation.add(args.get(1));
-    relativeEntityLocation.add(args.get(2));
+    relativeEntityLocation.add(args.get(index++));
+    relativeEntityLocation.add(args.get(index));
 
   }
 

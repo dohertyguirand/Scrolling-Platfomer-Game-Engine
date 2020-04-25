@@ -1,8 +1,8 @@
-package ooga.game.inputmanagers;
+package ooga.game.controls.inputmanagers;
 
 import java.util.ArrayList;
 import java.util.List;
-import ooga.game.InputManager;
+import ooga.game.controls.InputManager;
 
 public class OogaInputManager implements InputManager {
 

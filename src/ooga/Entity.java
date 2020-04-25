@@ -15,6 +15,15 @@ import ooga.game.behaviors.ConditionalBehavior;
  */
 public interface Entity {
 
+  String textEntityType = "text";
+  String imageEntityType = "image";
+
+  /**
+   * is it an image entity or text entity
+   * @return string "image" or "text" or something else if new entity classes are created
+   */
+  String getEntityType();
+
   DoubleProperty nonStationaryProperty();
 
   DoubleProperty xProperty();

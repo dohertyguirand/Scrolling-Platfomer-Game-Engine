@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.menus;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
 import ooga.data.OogaProfile;
+import ooga.view.ViewProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class ProfileMenu extends ScrollMenu {
     private void makeViewProfiles() {
         List<OogaProfile> oogaProfiles;
         try {
-          oogaProfiles = myDataReader.getProfiles();
+          oogaProfiles = myProfileReader.getProfiles();
         }catch (OogaDataException e){
           return;
         }
@@ -80,7 +81,7 @@ public class ProfileMenu extends ScrollMenu {
 
      private void addNewProfile(ViewProfile profile){
         try {
-            myDataReader.addNewProfile(new OogaProfile(profile.getProfileName(),profile.getProfilePath()));
+            myProfileReader.addNewProfile(new OogaProfile(profile.getProfileName(),profile.getProfilePath()));
             myProfiles.add(profile);
             myHBox = new HBox();
             addProfileImages();

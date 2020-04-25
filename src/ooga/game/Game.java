@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import java.util.List;
 
 /**
+ * This is the external game api
  * An instance of a loaded game that holds all levels and global game data. Must be populated
  * with levels and any relevant persistent data like the starting number of lives. Handles
  * game logic that is applied to every entity within the game every frame.
@@ -30,6 +31,7 @@ public interface Game {
   /**
    * @return The String ID of the game's current level.
    */
+  @Deprecated
   String getCurrentLevelId();
 
   void setCameraShiftProperties(List<DoubleProperty> property);

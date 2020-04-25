@@ -1,10 +1,11 @@
-package ooga.view;
+package ooga.view.menus;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import ooga.data.DataReader;
+import ooga.data.gamedatareaders.GameDataReaderExternal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class LoadMenu extends OptionMenu {
      * @param reader - DataReader used to get past saves from data
      * @param backButton - button that allows user to get back to startmenu screen
      */
-    public LoadMenu(String gamename, String profilename, DataReader reader, Node backButton){
+    public LoadMenu(String gamename, String profilename, GameDataReaderExternal reader, Node backButton){
         super(gamename);
         this.setLeft(setMenuItems(createButtons(backButton, reader,profilename,gamename)));
     }
@@ -43,7 +44,7 @@ public class LoadMenu extends OptionMenu {
         this.dateSelected.set(optionSelected);
     }
 
-    private List<Node> createButtons(Node backButton, DataReader dataReader, String profileName, String gameName) {
+    private List<Node> createButtons(Node backButton, GameDataReaderExternal dataReader, String profileName, String gameName) {
         List<Node> buttons = new ArrayList<>();
         Button button = new Button(NEWGAME);
         button.setOnAction(e-> setDateSelected("  "));

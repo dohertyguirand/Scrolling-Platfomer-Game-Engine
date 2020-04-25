@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.menus;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
 import ooga.data.Thumbnail;
+import ooga.view.ViewProfile;
 
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class GameMenu extends ScrollMenu{
   public GameMenu() {
     super();
     try {
-      List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+      List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
     } catch (OogaDataException e){
       showError(e.getMessage());
@@ -40,7 +41,7 @@ public class GameMenu extends ScrollMenu{
   public GameMenu(ViewProfile profile, Node backButton){
     super();
     try {
-      List<Thumbnail> thumbnails = myDataReader.getThumbnails();
+      List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
       addImages(thumbnails);
     } catch (OogaDataException e){
       showError(e.getMessage());

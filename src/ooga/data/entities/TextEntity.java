@@ -1,10 +1,13 @@
-package ooga.data;
+package ooga.data.entities;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import ooga.Entity;
+import ooga.data.entities.OogaEntity;
 
 public class TextEntity extends OogaEntity {
 
+  private static final String type = Entity.textEntityType;
   private final StringProperty text = new SimpleStringProperty();
   private final StringProperty fontName = new SimpleStringProperty();
   private final String baseText; // without any variables inserted
@@ -34,4 +37,20 @@ public class TextEntity extends OogaEntity {
 
   public StringProperty fontNameProperty() { return fontName; }
 
+<<<<<<< HEAD:src/ooga/data/TextEntity.java
+=======
+  @SuppressWarnings({"EmptyMethod", "unused"})
+  public void updateTextProperty(double value) {
+  }
+
+  /**
+   * is it an image entity or text entity
+   *
+   * @return string "image" or "text" or something else if new entity classes are created
+   */
+  @Override
+  public String getEntityType() {
+    return type;
+  }
+>>>>>>> cary:src/ooga/data/entities/TextEntity.java
 }

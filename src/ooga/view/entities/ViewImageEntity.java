@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.entities;
 
 import javafx.beans.property.*;
 import javafx.scene.Node;
@@ -6,7 +6,8 @@ import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ooga.Entity;
-import ooga.data.ImageEntity;
+import ooga.data.entities.ImageEntity;
+import ooga.view.entities.ViewEntity;
 
 import java.util.List;
 import java.util.ResourceBundle;

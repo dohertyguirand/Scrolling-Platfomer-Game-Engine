@@ -25,11 +25,12 @@ public class BlinkImageEffect implements Effect {
   String currentImage;
 
   public BlinkImageEffect(List<String> args) throws IndexOutOfBoundsException{
-    image1Data = args.get(0);
-    image2Data = args.get(1);
-    finalImageData = args.get(2);
-    blinkTimeDelayData = args.get(3);
-    totalBlinkTimeData = args.get(4);
+    int index = 0;
+    image1Data = args.get(index++);
+    image2Data = args.get(index++);
+    finalImageData = args.get(index++);
+    blinkTimeDelayData = args.get(index++);
+    totalBlinkTimeData = args.get(index);
     currentImage = image1Data;
   }
 

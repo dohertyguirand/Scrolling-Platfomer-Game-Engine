@@ -9,7 +9,7 @@
 ////import java.util.Map;
 ////import ooga.game.behaviors.CollisionEffect;
 ////import ooga.Entity;
-////import ooga.data.ImageEntity;
+////import ooga.data.entities.ImageEntity;
 ////import ooga.game.behaviors.asyncbehavior.DestroySelfEffect;
 ////import ooga.game.behaviors.asyncbehavior.MoveUpCollision;
 ////import ooga.game.behaviors.noncollisioneffects.GravityEffect;
