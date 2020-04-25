@@ -1,12 +1,14 @@
-package ooga.data;
+package ooga.data.entities;
 
 import java.util.Map;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import ooga.Entity;
 
 public class ImageEntity extends OogaEntity {
 
   private StringProperty imageLocation = null;
+  private static final String type = Entity.imageEntityType;
 
   public ImageEntity(String name, String imageFilePath, double xPos, double yPos, double width, double height) {
     super(xPos, yPos, width, height);
@@ -33,6 +35,16 @@ public class ImageEntity extends OogaEntity {
 
   public StringProperty imageLocationProperty() {
     return imageLocation;
+  }
+
+  /**
+   * is it an image entity or text entity
+   *
+   * @return string "image" or "text" or something else if new entity classes are created
+   */
+  @Override
+  public String getEntityType() {
+    return type;
   }
 
   @Override

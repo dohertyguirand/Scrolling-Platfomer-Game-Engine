@@ -47,9 +47,9 @@ conditional behaviors, mainly internal game API and new behavior interfaces and 
                                   
                                         
                                           
-                                        
-                   
->>>>>>> dev
+- Changed ``loadLevel`` to ``loadNewLevel`` and added ``loadSavedLevel``
+- Added ``getGameSaves`` which gives information about all of the saves for a given user and game
+
 
 ### Entity
 - Added ``move`` method so that entities can move in their movement behavior.

@@ -22,11 +22,15 @@ import javafx.util.Duration;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
-import ooga.data.ImageEntity;
-import ooga.data.OogaDataReader;
-import ooga.data.TextEntity;
-import ooga.game.KeyboardControls;
+import ooga.data.entities.ImageEntity;
+import ooga.data.entities.TextEntity;
+import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.game.OogaGame;
+import ooga.game.controls.KeyboardControls;
+import ooga.view.entities.ViewEntity;
+import ooga.view.entities.ViewImageEntity;
+import ooga.view.entities.ViewTextEntity;
+import ooga.view.menus.PauseMenu;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -39,7 +43,7 @@ public class ViewerGame {
   private static final double MILLISECOND_DELAY = 33.33;
   public static final int NORMAL_BUTTON_XPOS = 300;
   public static final int ALIEN_BUTTON_XPOS = 100;
-  public static final String KEYBOARD_INPUT_FILE = "ooga/game/resources/inputs/keyboard";
+  public static final String KEYBOARD_INPUT_FILE = "ooga/game/controls/inputs/keyboard";
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final String ALIEN_BUTTON_LOCATION = myResources.getString("alienButtonLocation");
@@ -62,6 +66,14 @@ public class ViewerGame {
   private final List<DoubleProperty> cameraShift = new ArrayList<>();
   private Exception currentError = null;
 
+
+  /**
+   * This class handles the animation and viewing of each game, sets on input listeners
+   * @param gameName - name of game to be played
+   * @param profileName - name of profile user is on
+   * @param saveDate - save date of game being played, an empty string if playing a new game
+   * @throws OogaDataException if there is an error in reading game file
+   */
   public ViewerGame(String gameName, String profileName, String saveDate) throws OogaDataException {
     myGameName = gameName;
     myProfileName = profileName;
@@ -83,12 +95,13 @@ public class ViewerGame {
 
   private void setGame(String saveDate) throws OogaDataException {
     if(saveDate == null || saveDate.equals("")){
-      myGame = new OogaGame(myGameName, new OogaDataReader(), new DirectionalCollisionDetector(), new KeyboardControls(
+      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
           KEYBOARD_INPUT_FILE),myProfileName);
     }
     else {
       System.out.println("USING ALT GAME CONSTRUCTOR");
-      myGame = new OogaGame(myGameName, new OogaDataReader(), myProfileName,saveDate);
+      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
+              KEYBOARD_INPUT_FILE), myProfileName,saveDate);
     }
   }
 
@@ -126,16 +139,14 @@ public class ViewerGame {
   }
 
   private Node makeViewEntity(Entity entity){
-    // TODO: use reflection here?
-    if(entity instanceof ImageEntity){
-      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift));
-      return viewImageEntity.getNode();
+    ViewEntity viewEntity = null;
+    if(entity.getEntityType().equals(Entity.imageEntityType)){
+      viewEntity = new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift);
     }
-    else if(entity instanceof TextEntity){
-      ViewTextEntity viewTextEntity = new ViewTextEntity((TextEntity)entity,cameraShift);
-      return viewTextEntity.getNode();
-    }
-    return null;
+    else if(entity.getEntityType().equals(Entity.textEntityType)){
+      viewEntity = new ViewTextEntity((TextEntity)entity,cameraShift);
+    } else return null;
+    return viewEntity.getNode();
   }
 
   private Node setUpPauseButton() {
@@ -200,6 +211,7 @@ public class ViewerGame {
       try {
         step();
       } catch (Exception ex) {
+        ex.printStackTrace();
         // note that this should ideally never be thrown
         if(currentError == null || !ex.getClass().equals(currentError.getClass())) {
           myAnimation.stop();

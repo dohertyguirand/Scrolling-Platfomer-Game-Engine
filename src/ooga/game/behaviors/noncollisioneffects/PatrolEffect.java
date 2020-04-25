@@ -35,15 +35,16 @@ public class PatrolEffect extends TimeDelayedEffect {
    */
   @Override
   public void processArgs(List<String> args) {
-    accelPerFrameData = args.get(0);
-    myMaxSpeedData = args.get(1);
+    int index = 0;
+    accelPerFrameData = args.get(index++);
+    myMaxSpeedData = args.get(index++);
 
     myFirstPointData = new ArrayList<>();
-    myFirstPointData.add(args.get(2));
-    myFirstPointData.add(args.get(3));
+    myFirstPointData.add(args.get(index++));
+    myFirstPointData.add(args.get(index++));
     mySecondPointData = new ArrayList<>();
-    mySecondPointData.add(args.get(4));
-    mySecondPointData.add(args.get(5));
+    mySecondPointData.add(args.get(index++));
+    mySecondPointData.add(args.get(index));
 
     myTargetPointData = myFirstPointData;
   }

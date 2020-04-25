@@ -38,10 +38,10 @@ public class CameraDemo extends Application {
     }
 
     private void showStartMenu(ViewProfile profile){
-        StartMenu startMenu = new StartMenu(profile,new Button());
+        GameMenu gameMenu = new GameMenu(profile,new Button());
         profileNameSelected = profile.getProfileName();
-        startMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal, profileNameSelected));
-        stage.setScene(startMenu.getScene());
+        gameMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal, profileNameSelected));
+        stage.setScene(gameMenu.getScene());
     }
 
     private void startGame(String gameName, String profileName) {

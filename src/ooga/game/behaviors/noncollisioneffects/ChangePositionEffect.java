@@ -23,9 +23,10 @@ public class ChangePositionEffect extends TimeDelayedEffect {
 
     @Override
     public void processArgs(List<String> args) {
-        xPosChangeData = args.get(0);
-        yPosChangeData = args.get(1);
-        operatorData = args.get(2);
+        int index = 0;
+        xPosChangeData = args.get(index++);
+        yPosChangeData = args.get(index++);
+        operatorData = args.get(index);
     }
 
     /**

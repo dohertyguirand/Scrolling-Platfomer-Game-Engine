@@ -6,16 +6,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
-import ooga.data.DataReader;
-import ooga.data.OogaDataReader;
+import ooga.data.gamedatareaders.GameDataReaderExternal;
+import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.view.menus.GameMenu;
+import ooga.view.menus.LoadMenu;
+import ooga.view.menus.ProfileMenu;
 
 public class Visualizer extends Application {
 
   private static final String ERROR_MESSAGE = "Error: Internal Data Error";
   private static final String START_MENU_TITLE = "Choose a Game";
+  private static final String BACK_BUTTON_TEXT = "Back";
   private String profileNameSelected;
   private Stage stage;
-  private final DataReader dataReader = new OogaDataReader();
+  private final GameDataReaderExternal myDataReader = new XMLGameDataReader() {};
   private String dateSelected;
 
   public static void main(String[] args) {
@@ -24,36 +28,37 @@ public class Visualizer extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-
     stage = primaryStage;
-    Scene display = setUpStartMenuDisplay();
-    primaryStage.setScene(display);
+    showProfileMenu();
     primaryStage.setTitle(START_MENU_TITLE);
     primaryStage.show();
     primaryStage.setResizable(false);
   }
 
-  private Scene setUpStartMenuDisplay() {
+  private void showProfileMenu() {
     ProfileMenu profileMenu = new ProfileMenu();
-    Scene profileMenuScene = profileMenu.getScene();
-    profileMenu.profileSelected().addListener((p, poldVal, pnewVal) -> showStartMenu(pnewVal, profileMenuScene));
-    return profileMenuScene;
+    Scene profileMenuScene = new Scene(profileMenu,profileMenu.getWidth(),profileMenu.getHeight());
+    profileMenu.profileSelected().addListener((p, poldVal, pnewVal) ->{
+      profileNameSelected = pnewVal.getProfileName();
+      showStartMenu(pnewVal, profileMenuScene);
+    });
+    stage.setScene(profileMenuScene);
   }
 
   private void showStartMenu(ViewProfile profile, Scene returnScene){
     Button backToProfileMenu = makeBackButton(returnScene);
-    StartMenu startMenu = new StartMenu(profile,backToProfileMenu);
-    Scene gameMenuScene = startMenu.getScene();
-    profileNameSelected = profile.getProfileName();
-    startMenu.selectedProperty().addListener((o, oldVal, newVal) -> showLoadMenu(newVal, gameMenuScene));
+    GameMenu gameMenu = new GameMenu(profile,backToProfileMenu);
+    Scene gameMenuScene = new Scene(gameMenu, gameMenu.getWidth(), gameMenu.getHeight());
+    gameMenu.selectedProperty().addListener((o, oldVal, newVal) -> showLoadMenu(newVal, gameMenuScene));
     stage.setScene(gameMenuScene);
   }
 
   private void showLoadMenu(String gameName, Scene returnScene){
     Button backToStartMenu = makeBackButton(returnScene);
-    LoadMenu loadMenu = new LoadMenu(gameName, profileNameSelected,dataReader, backToStartMenu);
+    LoadMenu loadMenu = new LoadMenu(gameName, profileNameSelected,myDataReader, backToStartMenu);
+    Scene loadScene = new Scene(loadMenu, loadMenu.getWidth(),loadMenu.getHeight());
     loadMenu.getDateSelected().addListener((d,dold,dnew)-> startGame(gameName,profileNameSelected,dnew));
-    stage.setScene(loadMenu.getScene());
+    stage.setScene(loadScene);
   }
 
   private void startGame(String gameName, String profileName, String date) {
@@ -67,10 +72,9 @@ public class Visualizer extends Application {
       }
     }
   }
-
   private Button makeBackButton(Scene backScene){
     Button button = new Button();
-    button.setText("Back");
+    button.setText(BACK_BUTTON_TEXT);
     button.setOnAction(e->stage.setScene(backScene));
     return button;
   }

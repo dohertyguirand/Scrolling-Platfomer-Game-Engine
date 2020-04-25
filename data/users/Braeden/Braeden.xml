@@ -3,17 +3,10 @@
     <Image>DefaultAvatar.png</Image>
     <SavedGameStates>
         <Game>
-            <Name>Chrome Dino</Name>
-            <Save>
-                <Date></Date>
-                <StateFilePath></StateFilePath>
-            </Save>
-        </Game>
-        <Game>
             <Name>Super Mario Bros</Name>
             <Save>
-                <Date></Date>
-                <StateFilePath>saves/mario-save.xml</StateFilePath>
+                <Date>4/24/20</Date>
+                <StateFilePath>data/users/Braeden/saves/mario-save.xml</StateFilePath>
             </Save>
             <HighScore>60</HighScore>
         </Game>

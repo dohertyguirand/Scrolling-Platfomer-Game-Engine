@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.menus;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
