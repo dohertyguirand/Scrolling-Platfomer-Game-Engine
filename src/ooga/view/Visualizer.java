@@ -8,8 +8,6 @@ import javafx.stage.Stage;
 import ooga.OogaDataException;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.gamedatareaders.XMLGameDataReader;
-import ooga.game.Game;
-import ooga.game.Level;
 import ooga.data.gamerecorders.XMLGameRecorder;
 import ooga.view.menus.GameMenu;
 import ooga.view.menus.LoadMenu;

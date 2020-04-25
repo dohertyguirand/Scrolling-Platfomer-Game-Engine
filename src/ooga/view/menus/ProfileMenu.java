@@ -12,6 +12,7 @@ import ooga.OogaDataException;
 import ooga.data.OogaProfile;
 import ooga.view.ViewProfile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -19,6 +20,7 @@ import java.util.ResourceBundle;
 public class ProfileMenu extends ScrollMenu {
     private final ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
     private List<ViewProfile> myProfiles = new ArrayList<>();
+    public static final String DEFAULT_IMAGE_PATH = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
     private String addNewProfilePhoto = "ooga/view/Resources/profilephotos/Makenewprofile.png";
     private static final String ADD_PROFILE = "Add a New Profile";
     private static final String SUBMIT = "Submit";
@@ -83,12 +85,21 @@ public class ProfileMenu extends ScrollMenu {
 
      private void addNewProfile(ViewProfile profile){
         try {
-            myProfileReader.addNewProfile(new OogaProfile(profile.getProfileName(),profile.getProfilePath()));
-            myProfiles.add(profile);
-            myHBox = new HBox();
-            addProfileImages();
+            File photoFile = profile.getFileChosen();
+            if(photoFile != null){
+                myProfileReader.addNewProfile(profile.getProfileName(),profile.getFileChosen());
+                myProfiles.add(profile);
+                Button button = makeButton(new ImageView(profile.getProfilePath()), profile.getProfileName());
+                button.setOnAction(e -> setProfileSelected(profile));
+                myHBox.getChildren().add(button);
+            }
         } catch (OogaDataException e) {
              showError(ERROR_MESSAGE);
+        }catch (IllegalArgumentException d){
+            Button button = makeButton(new ImageView(DEFAULT_IMAGE_PATH), profile.getProfileName());
+            button.setOnAction(e -> setProfileSelected(profile));
+            myHBox.getChildren().add(button);
+            //BUG TO BE FIXED LATER
         }
      }
 

@@ -20,6 +20,8 @@ it to return variables in addition to level IDs
 - 4/21/20 Added ``addNewProfile``
 - 4/21/20 Replaced ``getBasicGameInfo`` with two new methods: ``getLevelIDs`` and ``getVariableMap``. Keeping 
 ``getBasicGameInfo`` as a private method.
+- 4/24/20 Change    ``addNewProfile`` signiture from taking in an oogaProfile to taking in a string containing the profile name and a file containing the photo because
+view shouldn't know about oogaProfiles
 
 ## Game API
 - getEntities now returns an observable list instead of list
