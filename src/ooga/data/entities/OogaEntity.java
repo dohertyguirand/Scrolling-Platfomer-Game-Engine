@@ -193,10 +193,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   @Override
   public void reactToVariables(Map<String, String> variables) {
     //TODO: make this work for entity variables?
-    for (String varName : variables.keySet()) {
-      if (propertyVariableDependencies.containsKey(varName)) {
-        String propertyName = propertyVariableDependencies.get(varName);
-        updateProperty(propertyName, variables.get(varName));
+    for (Map.Entry<String, String> varNameEntry : variables.entrySet()) {
+      if (propertyVariableDependencies.containsKey(varNameEntry.getKey())) {
+        String propertyName = propertyVariableDependencies.get(varNameEntry.getKey());
+        updateProperty(propertyName, varNameEntry.getValue());
       }
     }
     updateAutomaticEntityVariables();
