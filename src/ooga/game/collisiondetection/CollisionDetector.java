@@ -1,4 +1,4 @@
-package ooga.game;
+package ooga.game.collisiondetection;
 
 import ooga.Entity;
 

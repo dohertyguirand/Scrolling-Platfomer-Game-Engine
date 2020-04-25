@@ -2,7 +2,6 @@ package ooga.game.collisiondetection;
 
 import javafx.scene.shape.Rectangle;
 import ooga.Entity;
-import ooga.game.CollisionDetector;
 
 public class DirectionalCollisionDetector implements CollisionDetector {
 

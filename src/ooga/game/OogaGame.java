@@ -15,6 +15,7 @@ import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.entities.ImageEntityDefinition;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
+import ooga.game.collisiondetection.CollisionDetector;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import ooga.game.controls.ControlsInterpreter;
 import ooga.game.controls.InputManager;

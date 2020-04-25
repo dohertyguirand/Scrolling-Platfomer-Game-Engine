@@ -2,7 +2,6 @@ package ooga.data.profiledatareaders;
 
 import ooga.OogaDataException;
 import ooga.data.XMLDataReader;
-import ooga.data.profiledatareaders.ProfileReaderExternal;
 import ooga.view.OogaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface XMLProfileReader extends XMLDataReader, ProfileReaderExternal {
+public interface XMLProfileReader extends XMLDataReader, ProfileReaderExternal, ProfileReaderInternal {
 
   String DEFAULT_USERS_FILE = "data/users";
 

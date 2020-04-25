@@ -1,7 +1,6 @@
 package ooga.game.collisiondetection;
 
 import ooga.Entity;
-import ooga.game.CollisionDetector;
 
 @Deprecated
 public class OogaCollisionDetector implements CollisionDetector {

@@ -24,6 +24,7 @@ import ooga.data.entities.ImageEntity;
 import ooga.data.entities.TextEntity;
 import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.game.OogaGame;
+import ooga.view.entities.ViewEntity;
 import ooga.view.entities.ViewImageEntity;
 import ooga.view.entities.ViewTextEntity;
 import ooga.view.menus.PauseMenu;
@@ -120,16 +121,14 @@ public class ViewerGame {
   }
 
   private Node makeViewEntity(Entity entity){
-    // TODO: use reflection here?
-    if(entity instanceof ImageEntity){
-      ViewImageEntity viewImageEntity = (new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift));
-      return viewImageEntity.getNode();
+    ViewEntity viewEntity = null;
+    if(entity.getEntityType().equals(Entity.imageEntityType)){
+      viewEntity = new ViewImageEntity((ImageEntity)entity, colorEffectProperty,cameraShift);
     }
-    else if(entity instanceof TextEntity){
-      ViewTextEntity viewTextEntity = new ViewTextEntity((TextEntity)entity,cameraShift);
-      return viewTextEntity.getNode();
-    }
-    return null;
+    else if(entity.getEntityType().equals(Entity.textEntityType)){
+      viewEntity = new ViewTextEntity((TextEntity)entity,cameraShift);
+    } else return null;
+    return viewEntity.getNode();
   }
 
   private Node setUpPauseButton() {
