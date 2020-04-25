@@ -3,7 +3,6 @@ package ooga.game.behaviors.framebehaviors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
 import ooga.data.ImageEntity;
 import ooga.data.OogaEntity;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class TestMoveForward {
   @Test
   void test() {
-    final double FRICTION = OogaEntity.FRICTION_ACCELERATION;
+    final double FRICTION = OogaEntity.DEFAULT_FRICTION;
     final double SMALL_NUMBER = 0.000000001;
     final double ELAPSED_TIME = 1.0;
     final int NUM_ASSERTS = 10;

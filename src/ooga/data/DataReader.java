@@ -6,13 +6,13 @@ import java.util.Map;
 import ooga.OogaDataException;
 import ooga.game.Game;
 import ooga.game.Level;
-import ooga.view.OogaProfile;
 
 /**
  * Handles the interaction with game data files, including interpretation and writing.
  * Forms the external side of data interaction so that the rest of the program doesn't
  * need to know how we're storing games.
  */
+//TODO: make sure OogaDataReader methods are here too
 public interface DataReader {
 
   /**

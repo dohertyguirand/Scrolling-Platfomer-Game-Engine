@@ -1,5 +1,8 @@
 package ooga.game.behaviors.noncollisioneffects;
 
+import static ooga.game.behaviors.BehaviorUtil.getDotProduct;
+import static ooga.game.behaviors.BehaviorUtil.getMagnitude;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +14,9 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 public class ChangeVelocityEffect extends TimeDelayedEffect {
 
-  private String xAccelPerFrameData;
-  private String yAccelPerFrameData;
+  public static final double DEFAULT_ACCELERATION = 0.0;
+  private String xAccelerationPerFrameData;
+  private String yAccelerationPerFrameData;
   private String operatorData;
   private String myMaxSpeedData;
   private static final double MAX_SPEED_DEFAULT = 1000.0;
@@ -23,8 +27,8 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
 
   @Override
   public void processArgs(List<String> args) {
-    xAccelPerFrameData = args.get(0);
-    yAccelPerFrameData = args.get(1);
+    xAccelerationPerFrameData = args.get(0);
+    yAccelerationPerFrameData = args.get(1);
     operatorData = args.get(2);
     myMaxSpeedData = args.get(3);
   }
@@ -40,13 +44,16 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
   @Override
   protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     double myMaxSpeed = parseData(myMaxSpeedData, subject, variables, MAX_SPEED_DEFAULT);
+    double xAccel = parseData(xAccelerationPerFrameData,subject,variables, DEFAULT_ACCELERATION);
+    double yAccel = parseData(yAccelerationPerFrameData,subject,variables,DEFAULT_ACCELERATION);
     String operator = Effect.doVariableSubstitutions(operatorData, subject, variables);
-    //TODO: use dot product
-    if ((Math.abs(subject.getVelocity().get(0)) < myMaxSpeed)) {
+    double accelMagnitude = getMagnitude(List.of(xAccel,yAccel));
+    List<Double> accelVectorNormalized = List.of(xAccel / accelMagnitude, yAccel / accelMagnitude);
+    if (getDotProduct(subject.getVelocity(),accelVectorNormalized) < myMaxSpeed) {
       String formattedXVelocity = BigDecimal.valueOf(subject.getVelocity().get(0)).toPlainString();
       String formattedYVelocity = BigDecimal.valueOf(subject.getVelocity().get(1)).toPlainString();
-      double newX = ExpressionEvaluator.eval(formattedXVelocity+ operator + parseData(xAccelPerFrameData, subject, variables, 0.0));
-      double newY = ExpressionEvaluator.eval(formattedYVelocity+ operator + parseData(yAccelPerFrameData, subject, variables, 0.0));
+      double newX = ExpressionEvaluator.eval(formattedXVelocity+ operator + parseData(xAccelerationPerFrameData, subject, variables, 0.0));
+      double newY = ExpressionEvaluator.eval(formattedYVelocity+ operator + parseData(yAccelerationPerFrameData, subject, variables, 0.0));
       subject.setVelocity(newX, newY);
     }
   }

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface Profile {
 
-    //TODO: Can change stats to be another structure that hold more data points such as (kills,deaths,coins). Probably create a stats object
+    //Can change stats to be another structure that hold more data points such as (kills,deaths,coins). Probably create a stats object
 
     /**
      * Sets the users profile photo
@@ -56,6 +56,5 @@ public interface Profile {
      */
     String getProfilePhotoPath();
 
-    String getDefaultImagePath();
 
 }

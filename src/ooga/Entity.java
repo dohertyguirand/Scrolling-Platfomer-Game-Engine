@@ -15,19 +15,11 @@ import ooga.game.behaviors.ConditionalBehavior;
  */
 public interface Entity {
 
-  DoubleProperty stationaryProperty();
-
-  void setStationaryProperties(double bit);
-
-  double getX();
+  DoubleProperty nonStationaryProperty();
 
   DoubleProperty xProperty();
 
-  double getY();
-
   DoubleProperty yProperty();
-
-  boolean isActiveInView();
 
   BooleanProperty activeInViewProperty();
 
@@ -56,11 +48,10 @@ public interface Entity {
    * Handles updates that happen every frame, regardless of context. Can still have logic.
    * Example: An enemy might move forward every frame.
    * @param elapsedTime
-   * @param variables
-   * @param game
+   *
    *
    */
-  void updateSelf(double elapsedTime, Map<String, String> variables, GameInternal game);
+  void updateSelf(double elapsedTime);
 
   /**
    * Actually moves the entity in space by its velocity. Should happen after all movement and
@@ -102,11 +93,6 @@ public interface Entity {
   void changeVelocity(double xChange, double yChange);
 
   /**
-   * @param change A list with the coordinates of the change in velocity.
-   */
-  void changeVelocity(List<Double> change);
-
-  /**
    *
    * @param xVelocity The x-value of the new velocity.
    * @param yVelocity The y-value of the new velocity.
@@ -135,7 +121,7 @@ public interface Entity {
    * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
    * assigned actions if true
    */
-  void doConditionalBehaviors(double elapsedTime, List<String> inputs, Map<String, String> variables,
+  void doConditionalBehaviors(double elapsedTime, Map<String, String> inputs, Map<String, String> variables,
                               Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 
   /**
@@ -185,6 +171,6 @@ public interface Entity {
    * creates the double property stationaryProperty for the entity. 0 if false, 1 if true.
    * @param stationary
    */
-  void makeStationaryProperty(boolean stationary);
+  void makeNonStationaryProperty(boolean stationary);
 
 }

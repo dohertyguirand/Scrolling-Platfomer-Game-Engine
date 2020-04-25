@@ -8,9 +8,11 @@ import java.util.*;
 
 public class BehaviorInstance implements ConditionalBehavior {
 
-  public static final String ANY = "ANY";
+  public static final String ANY_DIRECTION = "ANY";
   public static final String SELF_IDENTIFIER = "SELF";
-  final Map<String, Boolean> inputConditions;
+  public static final String ANY_KEY_REQUIREMENT = "KeyAny";
+  public static final String KEY_INACTIVE_REQUIREMENT = "KeyInactive";
+  final Map<String, List<String>> inputConditions;
   final Map<List<String>, String> requiredCollisionConditions;
   final Map<List<String>, String> bannedCollisionConditions;
   List<VariableCondition> gameVarConditions;
@@ -22,25 +24,13 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param entityVariableConditions
    * @param inputConditions
    * @param requiredCollisionConditions conditions that must be true Map<List<String>, String> [entity 1 info, entity 2 info] : direction (or "ANY")
-*    *   entity info can be id or name, method will check for either
+   *   entity info can be id or name, method will check for either
    * @param bannedCollisionConditions conditions that must be false (see above)
    * @param actions
    */
-  @SuppressWarnings("unused")
-  public BehaviorInstance(Map<String, String> gameVariableConditions,
-                          Map<String, List<Entry<String, String>>> entityVariableConditions,
-                          Map<String, Boolean> inputConditions,
-                          Map<List<String>, String> requiredCollisionConditions,
-                          Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
-    this.inputConditions = inputConditions;
-    this.requiredCollisionConditions = requiredCollisionConditions;
-    this.bannedCollisionConditions = bannedCollisionConditions;
-    this.actions = actions;
-  }
-
   public BehaviorInstance(List<VariableCondition> gameVariableConditions,
       Map<String, List<VariableCondition>> entityVariableConditions,
-      Map<String, Boolean> inputConditions,
+      Map<String, List<String>> inputConditions,
       Map<List<String>, String> requiredCollisionConditions,
       Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
     this.inputConditions = inputConditions;
@@ -67,7 +57,7 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
+  public void doConditionalUpdate(double elapsedTime, Entity subject, Map<String, String> variables, Map<String, String> inputs,
                                   Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
     if (!checkGameVariableConditions(subject, variables)) {
@@ -76,15 +66,29 @@ public class BehaviorInstance implements ConditionalBehavior {
     if (!checkEntityVariableConditions(subject, gameInternal, variables)) {
       return;
     }
-    for(Map.Entry<String, Boolean> inputCondition : inputConditions.entrySet()){
-      if(inputs.contains(inputCondition.getKey()) != inputCondition.getValue()){
+    for(Map.Entry<String, List<String>> inputCondition : inputConditions.entrySet()){
+      if (!inputConditionSatisfied(inputs, inputCondition)) {
         return;
       }
     }
     if(anyCollisionConditionsUnsatisfied(collisionInfo, requiredCollisionConditions, true)) return;
     if(anyCollisionConditionsUnsatisfied(collisionInfo, bannedCollisionConditions, false)) return;
-    doActions(elapsedTime, subject, variables, inputs, collisionInfo, gameInternal);
+    doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
   }
+
+  private boolean inputConditionSatisfied(Map<String, String> inputs,
+      Entry<String, List<String>> inputCondition) {
+    for (String inputType : inputCondition.getValue()) {
+      String keyState = inputs.get(inputCondition.getKey());
+      if (inputType.equals(keyState) ||
+          (inputType.equals(ANY_KEY_REQUIREMENT) && keyState != null) ||
+          (inputType.equals(KEY_INACTIVE_REQUIREMENT) && keyState == null)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
   private boolean checkGameVariableConditions(Entity subject, Map<String, String> gameVariables) {
     return checkVariableConditionsList(subject, gameVariables, gameVarConditions, gameVariables);
@@ -180,7 +184,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info, String entity2Info, String direction) {
     for(Entity entity : collisionInfo.keySet()){
       if(entityMatches(entity1Info, entity)){
-        if(direction.equals(ANY)){
+        if(direction.equals(ANY_DIRECTION)){
           for(String possibleDirection : collisionInfo.get(entity).keySet()){
             if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
           }
@@ -216,12 +220,11 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param elapsedTime time in ms
    * @param subject entity that owns this conditional behavior
    * @param variables map of variables in the game/level
-   * @param inputs the input keys that are currently active in this frame
    * @param collisionInfo current collision info
    * @param gameInternal what game this is run from
    */
   @Override
-  public void doActions(double elapsedTime, Entity subject, Map<String, String> variables, List<String> inputs,
+  public void doActions(double elapsedTime, Entity subject, Map<String, String> variables,
                         Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
     for(Action action : actions){
       action.doAction(elapsedTime, subject, variables, collisionInfo, gameInternal);

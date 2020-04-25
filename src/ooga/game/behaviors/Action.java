@@ -16,13 +16,13 @@ public abstract class Action {
 
   public void doAction(double elapsedTime, Entity subject, Map<String, String> variables,
                        Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal) {
-    List<Entity> otherEntities = findOtherEntities(elapsedTime,subject,variables,collisionInfo,gameInternal);
+    List<Entity> otherEntities = findOtherEntities(subject,variables,collisionInfo,gameInternal);
     for (Entity e : otherEntities) {
       doEffects(elapsedTime,subject,e,variables,gameInternal);
     }
   }
 
-  public abstract List<Entity> findOtherEntities(double elapsedTime, Entity subject, Map<String, String> variables,
+  public abstract List<Entity> findOtherEntities(Entity subject, Map<String, String> variables,
                                                  Map<Entity, Map<String, List<Entity>>> collisionInfo, GameInternal gameInternal);
 
   protected void doEffects(double elapsedTime, Entity subject, Entity otherEntity, Map<String, String> variables, GameInternal gameInternal){

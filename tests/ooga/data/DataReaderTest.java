@@ -3,7 +3,6 @@ package ooga.data;
 
 import ooga.Entity;
 import ooga.OogaDataException;
-import ooga.view.OogaProfile;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

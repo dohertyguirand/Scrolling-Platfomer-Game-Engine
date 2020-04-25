@@ -1,10 +1,21 @@
 package ooga.game.collisiondetection;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.scene.shape.Rectangle;
 import ooga.Entity;
 import ooga.game.CollisionDetector;
 
 public class DirectionalCollisionDetector implements CollisionDetector {
+
+  public static final String RESOURCE_PATH = "ooga/game/collisiondetection/resources/collisiontypes";
+  public static final ResourceBundle directionCodes = ResourceBundle.getBundle(RESOURCE_PATH);
+
+  public static final String RIGHT_CODE = directionCodes.getString("RightCode");
+  public static final String LEFT_CODE = directionCodes.getString("LeftCode");
+  public static final String DOWN_CODE = directionCodes.getString("DownCode");
+  public static final String UP_CODE = directionCodes.getString("UpCode");
 
   /**
    * Figure out if the entities are colliding and return the direction that a is colliding with b (e.g. a,b -> right)
@@ -42,26 +53,30 @@ public class DirectionalCollisionDetector implements CollisionDetector {
       // ignore corner collisions
       if(leftShapeRightEdge - rightShapeLeftEdge == bottomShapeTopEdge - topShapeBottomEdge) return null;
       boolean isHorizontal = leftShapeRightEdge - rightShapeLeftEdge < -(bottomShapeTopEdge - topShapeBottomEdge);
-      // if they are equal, deciding factor: check that someone actually has a nonzero velocity in the desired direction, otherwise a collision doesn't make sense
-//        boolean nonZeroVerticalVelocity = a.getVelocity().get(1) != 0 || b.getVelocity().get(1) != 0;
-//        boolean nonZeroHorizontalVelocity = a.getVelocity().get(0) != 0 || b.getVelocity().get(0) != 0;
-//        if (!mustBeVertical && !nonZeroVerticalVelocity && nonZeroHorizontalVelocity) {
-//          return true;
-//        } else if (mustBeVertical && !nonZeroHorizontalVelocity && nonZeroVerticalVelocity) {
-//          return true;
-//        }
       if(isHorizontal){
         if(leftShape == aShape){
-          return "Right";
+          return RIGHT_CODE;
         }
-        return "Left";
+        return LEFT_CODE;
       }
       if(topShape == aShape){
-        return "Down";
+        return DOWN_CODE;
       }
-      return "Up";
+      return UP_CODE;
     }
     return null;
+  }
+
+  @Override
+  public Collection<String> getSupportedDirections() {
+    return List.of(RIGHT_CODE,LEFT_CODE,DOWN_CODE,UP_CODE);
+  }
+
+  @Override
+  public boolean entityAtPoint(Entity e, double xPos, double yPos) {
+    Rectangle eShape = makeShapeFromEntity(e,0.0,0.0);
+    Rectangle point = new Rectangle(xPos,yPos,1.0,1.0);
+    return eShape.intersects(point.getBoundsInParent());
   }
 
   private Rectangle makeShapeFromEntity(Entity e, double xChange, double yChange) {

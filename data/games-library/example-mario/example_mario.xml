@@ -27,10 +27,11 @@
         <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
-            <InputRequirement>true</InputRequirement>
+            <InputRequirement>Pressed</InputRequirement>
+            <InputRequirement>Active</InputRequirement>
           </InputCondition>
           <IndependentAction>
-            <Effect>VelocityInput -.1600 0 .3200</Effect>
+            <Effect>VelocityInput -.1600 0 + .3200</Effect>
             <Effect>SetImage LeftFacingImage</Effect>
           </IndependentAction>
         </Behavior>
@@ -38,10 +39,9 @@
         <Behavior>
           <InputCondition>
             <Key>RightKey2</Key>
-            <InputRequirement>true</InputRequirement>
           </InputCondition>
           <IndependentAction>
-            <Effect>VelocityInput .1600 0 .3200</Effect>
+            <Effect>VelocityInput .1600 0 + .3200</Effect>
             <Effect>SetImage RightFacingImage</Effect>
           </IndependentAction>
         </Behavior>
@@ -53,8 +53,7 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
-<!--            <Effect>RestartLevel</Effect>-->
-            <Effect>ChangeVariable Lives -1.0</Effect>
+            <Effect>ChangeVariable Lives + -1.0</Effect>
           </IndependentAction>
         </Behavior>
         <Behavior>
@@ -64,7 +63,7 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
-            <Effect>ChangeVariable Lives -1.0</Effect>
+            <Effect>ChangeVariable Lives + -1.0</Effect>
           </IndependentAction>
         </Behavior>
         <Behavior>
@@ -74,7 +73,7 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
-            <Effect>ChangeVariable Lives -1.0</Effect>
+            <Effect>ChangeVariable Lives + -1.0</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Run into a koopa downward in order to bounce off of it!-->
@@ -84,7 +83,7 @@
             <Direction>Down</Direction>
           </RequiredCollisionCondition>
           <IndependentAction>
-            <Effect>Jump -1.50</Effect>
+            <Effect>Jump 0.0 -1.50 + 10.0</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Run into a brick downward to stop falling.-->
@@ -132,15 +131,15 @@
 <!--        Press Up while on the ground to jump.-->
         <Behavior>
           <InputCondition>
-            <Key>UpKey2Pressed</Key>
-            <InputRequirement>true</InputRequirement>
+            <Key>UpKey2</Key>
+            <InputRequirement>Pressed</InputRequirement>
           </InputCondition>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>
             <Direction>Down</Direction>
           </RequiredCollisionCondition>
           <IndependentAction>
-            <Effect>Jump -1.2</Effect>
+            <Effect>Jump 0.0 -1.2 + 10.0</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Run into a flagpole to go to the next level.-->
@@ -160,14 +159,25 @@
             <Direction>ANY</Direction>
           </RequiredCollisionCondition>
           <IndependentAction>
-            <Effect>ChangeVariable Lives -1.0</Effect>
+            <Effect>ChangeVariable Lives + -1.0</Effect>
             <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Exist to obey gravity.-->
         <Behavior>
           <IndependentAction>
-            <Effect>Gravity 0 0.1</Effect>
+            <Effect>Gravity 0 0.1 + 10.0</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Run out of lives to start the game over.-->
+        <Behavior>
+          <GameVariableCondition>
+            <VariableName>Lives</VariableName>
+            <RequiredValue>0.0</RequiredValue>
+          </GameVariableCondition>
+          <IndependentAction>
+            <Effect>GoToLevel 1</Effect>
+            <Effect>SetVariable Lives 3.0</Effect>
           </IndependentAction>
         </Behavior>
       </Behaviors>
@@ -182,13 +192,13 @@
       <!--        Moves forward every frame-->
       <Behavior>
         <IndependentAction>
-          <Effect>VelocityInput xVel 0.0 0.2600</Effect>
+          <Effect>VelocityInput xVel 0.0 + 0.2600</Effect>
         </IndependentAction>
       </Behavior>
 <!--      Also follows gravity, like Mario-->
       <Behavior>
         <IndependentAction>
-          <Effect>Gravity 0 0.1</Effect>
+          <Effect>Gravity 0 0.1 + 10.0</Effect>
         </IndependentAction>
       </Behavior>
 <!--      Also runs into terrain like Mario-->
@@ -263,8 +273,15 @@
         <!--      Exist to obey gravity.-->
         <Behavior>
           <IndependentAction>
-            <Effect>Gravity 0 0.1</Effect>
+<!--            <Effect>Gravity 0 0.1 + 10.0</Effect>-->
           </IndependentAction>
+        </Behavior>
+        <!--Testing MoveTowardsEntity-->
+        <Behavior>
+          <NameDeterminedAction>
+            <Args>SmallMario</Args>
+            <Effect>MoveTowardEntity 0.1300 15.0</Effect>
+          </NameDeterminedAction>
         </Behavior>
         <!--      Also runs into terrain like Mario-->
         <Behavior>
@@ -321,7 +338,7 @@
 <!--        Moves right every frame-->
         <Behavior>
           <IndependentAction>
-            <Effect>VelocityInput 0.1300 0.0 0.2600</Effect>
+<!--            <Effect>VelocityInput 0.1300 0.0 + 0.2600</Effect>-->
           </IndependentAction>
         </Behavior>
       </Behaviors>
@@ -345,8 +362,8 @@
       <Width>100</Width>
       <Height>100</Height>
       <Image>mario_question_block.png</Image>
-      <VariableNames>TerrainID myItem empty</VariableNames>
-      <VariableValues>universalTerrain Mushroom false</VariableValues>
+      <VariableNames>TerrainID myItem empty rando</VariableNames>
+      <VariableValues>universalTerrain Mushroom false -6.0</VariableValues>
 <!--      Get hit by mario's head to spit out an item.-->
       <Behavior>
         <RequiredCollisionCondition>
@@ -358,6 +375,7 @@
         <RequiredValue>false</RequiredValue>
       </EntityVariableCondition>
         <IndependentAction>
+<!--          <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>-->
           <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>
           <Effect>SetVariable empty true</Effect>
         </IndependentAction>
@@ -395,7 +413,7 @@
           <XPos>0</XPos>
           <YPos>0</YPos>
           <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-          <VariableValues>0 500</VariableValues>
+          <VariableValues>0 250</VariableValues>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
@@ -499,7 +517,6 @@
     <Level>
       <ID>2</ID>
       <NextLevel>3</NextLevel>
-      <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Name>SmallMario</Name>
@@ -604,7 +621,6 @@
     <Level>
       <ID>3</ID>
       <NextLevel>1</NextLevel>
-      <EndCondition>Collision Flagpole SmallMario</EndCondition>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Name>SmallMario</Name>

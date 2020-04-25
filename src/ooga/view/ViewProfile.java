@@ -1,4 +1,5 @@
 package ooga.view;
+import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -12,49 +13,72 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 
-public class ViewProfile extends OogaProfile {
+public class ViewProfile{
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));
     private final double WINDOW_WIDTH = Double.parseDouble(myResources.getString("windowWidth"));
     private static final String STYLESHEET = "ooga/view/Resources/PlayerProfile.css";
-    private ImageView myProfilePhoto;
+    private static final String DEFAULT_IMAGE_PATH = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
+    private String profilePhotoPath;
+    private String profileName;
+    private Map<String, Integer> myStats;
+    private BorderPane pane = new BorderPane();
 
-
+    /**
+     * View's version of a profile, stores a photo, name, and stats, allows user to add a new profile
+     * and update an existing profile, can support some user interaction such as drag and drop photo to replace existing photo,
+     * double clicking on photo, and changing profile name by clicking on name
+     * @param name - String to be used as profile name
+     * @param imagePath - path to a photo to be used as profile photo -- if not an actual path, profile photo is set to default
+     */
     public ViewProfile(String name, String imagePath){
-        myName = name;
-        myProfilePhotoPath = imagePath;
-        myDefaultImagePath = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
-        setImageView();
-        myHighestScores = new HashMap<>();
+        profileName = name;
+        profilePhotoPath = imagePath;
+        verifyPhotoPath();
+        myStats = new HashMap<>();
     }
-    public ViewProfile(OogaProfile profile){
-        myProfilePhotoPath = profile.getProfilePhotoPath();
-        myDefaultImagePath = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
-        setImageView();
-        myName = profile.getProfileName();
-        myHighestScores = profile.getStats();
+    /**
+     * This constructor is used it the profile already as stats, used in ViewerGame when making viewProfiles from backend Profiles
+     * @param name - String to be used as profile name
+     * @param imagePath - path to a photo to be used a profile photo -- if not an actual path, profile photo is set to default
+     * @param stats - Map of String, Integer that stores users game statistics
+     */
+    public ViewProfile(String name, String imagePath, Map<String, Integer> stats){
+        this(name,imagePath);
+        myStats = stats;
     }
-
-    @Deprecated
-    public ViewProfile(){
-      this("Testing","ooga/view/Resources/profilephotos/defaultphoto.jpg");
-    }
-
-    public void setImageView(){
-        try{
-            myProfilePhoto = new ImageView(myProfilePhotoPath);
-        }
-        catch (IllegalArgumentException | NullPointerException e){
-            myProfilePhoto = new ImageView(myDefaultImagePath);
-            myProfilePhotoPath = myDefaultImagePath;
-        }
+    /**
+     * This constructor is used when user is creating a new profile, used by profileMenu
+     * @param submitButton - button that tells profileMenu that the user is ready to submit name and photo
+     * added. Name and photo saved in data
+     */
+    public ViewProfile(Node submitButton){
+      this("Click_To_Add_Name","ooga/view/Resources/profilephotos/defaultphoto.jpg");
+      pane.setBottom(submitButton);
     }
 
+    /**
+     *
+     * @return Return's profilename
+     */
+    public String getProfileName(){return profileName;}
+
+    /**
+     * returns path to profilephoto
+     * @return
+     */
+    public String getProfilePath(){return profilePhotoPath;}
+
+
+    /**
+     * Creates and returns a pane that displays the profile's name, photo and stats
+     * @return Pane
+     */
     public Pane getPane(){
-        BorderPane pane = new BorderPane();
         pane.setPrefSize(WINDOW_WIDTH,WINDOW_HEIGHT);
         pane.setTop(setNameAndPhoto());
         pane.setCenter(setStatsBox());
@@ -62,9 +86,18 @@ public class ViewProfile extends OogaProfile {
         return pane;
     }
 
+    private void verifyPhotoPath(){
+        try{
+            ImageView example = new ImageView(profilePhotoPath);
+        }
+        catch (IllegalArgumentException | NullPointerException e){
+            profilePhotoPath = DEFAULT_IMAGE_PATH;
+        }
+    }
+
     private VBox setNameAndPhoto(){
         VBox nameAndPhoto = new VBox();
-        nameAndPhoto.getChildren().add(myProfilePhoto);
+        nameAndPhoto.getChildren().add(new ImageView(profilePhotoPath));
         nameAndPhoto.getChildren().add(setNameText());
         nameAndPhoto.setOnDragEntered(this::handleDroppedPhoto);
         nameAndPhoto.setOnDragDropped(this::handleDroppedPhoto);
@@ -91,12 +124,12 @@ public class ViewProfile extends OogaProfile {
         try {
             bufferedImage = ImageIO.read(filepath);
             if(bufferedImage == null) return;
-            String profilePhotoPath = "src/ooga/view/Resources/profilephotos/" + myName+ "profilephoto.jpg";
+            String profilePhotoPath = "src/ooga/view/Resources/profilephotos/" + profileName+ "profilephoto.jpg";
             File newFile = new File(profilePhotoPath);
             ImageIO.write(bufferedImage,"png",newFile);
-            myProfilePhotoPath = "ooga/view/Resources/profilephotos/" + myName+ "profilephoto.jpg" ;
-            //myPane.setTop(setNameAndPhoto());
-            } catch (IOException | NullPointerException | IllegalArgumentException ex) {
+            profilePhotoPath = "ooga/view/Resources/profilephotos/" + profileName+ "profilephoto.jpg" ;
+            pane.setTop(setNameAndPhoto());
+            } catch (NullPointerException | IllegalArgumentException | IOException ignored) {
             }
     }
     private void handleExitPressed(TextArea textArea, HBox hBox, KeyEvent e){
@@ -107,9 +140,9 @@ public class ViewProfile extends OogaProfile {
 
     private void hideTextArea(TextArea textArea,HBox hBox){
         if(!textArea.getText().equals("\n")){
-            myName = textArea.getText();
+            profileName = textArea.getText().replace("\n", "");
         }
-        Text text = new Text(myName);
+        Text text = new Text(profileName);
         hBox.getChildren().clear();
         hBox.getChildren().add(text);
     }
@@ -120,7 +153,7 @@ public class ViewProfile extends OogaProfile {
     private GridPane setNameText(){
         Text nameHeader = new Text("Name:");
         GridPane gridPane = new GridPane();
-        Text name = new Text(myName);
+        Text name = new Text(profileName);
         HBox hBox = new HBox();
         TextArea textArea = new TextArea();
         textArea.setPrefHeight(25);
@@ -136,19 +169,20 @@ public class ViewProfile extends OogaProfile {
     }
 
 
+
     private GridPane setStatsBox(){
         GridPane gridPane = new GridPane();
         gridPane.setHgap(50);
         int row = 0;
-        if(myHighestScores == null) {
-           setStats(new HashMap<>(){{
-                put("SuperMario", 100);
-                put("Dino", 3500);
-                put("FireBoy and Water Girl", 3000);
-            }});
-        }
-        for(String game: myHighestScores.keySet()){
-            Integer stat = myHighestScores.get(game);
+//        if(myStats == null) {
+//           myStats = (new HashMap<>(){{
+//                put("SuperMario", 100);
+//                put("Dino", 3500);
+//                put("FireBoy and Water Girl", 3000);
+//            }});
+//        }
+        for(String game: myStats.keySet()){
+            Integer stat = myStats.get(game);
             Text gameName = new Text(game);
             Text statText = new Text(stat.toString());
             gridPane.add(gameName,0,row);
@@ -160,6 +194,5 @@ public class ViewProfile extends OogaProfile {
     }
 
 
-    public ImageView getProfilePhoto(){return myProfilePhoto;}
 
 }

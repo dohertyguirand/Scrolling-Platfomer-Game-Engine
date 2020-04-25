@@ -38,16 +38,16 @@ public class CameraDemo extends Application {
     }
 
     private void showStartMenu(ViewProfile profile){
-        StartMenu startMenu = new StartMenu(profile,new Button());
+        GameMenu gameMenu = new GameMenu(profile,new Button());
         profileNameSelected = profile.getProfileName();
-        startMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal, profileNameSelected));
-        stage.setScene(startMenu.getScene());
+        gameMenu.selectedProperty().addListener((o, oldVal, newVal) -> startGame(newVal, profileNameSelected));
+        stage.setScene(gameMenu.getScene());
     }
 
     private void startGame(String gameName, String profileName) {
         if (gameName != null) {
             try {
-                new ViewerGame(gameName, profileName, "",true);
+                new ViewerGame(gameName, profileName, "");
             } catch (OogaDataException e) {
                 //Sam added this, because he made it possible for the OogaGame constructor to throw
                 // an exception, so that the view can decide what to do when no game is found.

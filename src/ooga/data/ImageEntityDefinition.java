@@ -46,4 +46,8 @@ public class ImageEntityDefinition {
     public void setVariables(Map<String, String> entityVariables) { myVariables = entityVariables; }
 
     public void setStationary(boolean isStationary){stationary = isStationary;}
+
+    public boolean getStationary() {
+        return stationary;
+    }
 }

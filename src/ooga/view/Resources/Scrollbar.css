@@ -1,3 +1,6 @@
+.root{
+    -fx-background-image: url("menubackground.jpg");
+}
 .scroll-bar:horizontal.track {
 
 }
@@ -13,7 +16,6 @@
 
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
->>>>>>> game_dg211
     -fx-background-color :transparent;
     -fx-border-color : transparent;
     -fx-background-radius : 0.0em;

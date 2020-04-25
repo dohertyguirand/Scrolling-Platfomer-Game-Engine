@@ -26,10 +26,6 @@ public class TextEntity extends OogaEntity {
     this.fontName.set(variableValue);
   }
 
-  public String getText() {
-    return text.get();
-  }
-
   public StringProperty textProperty() {
     return text;
   }
@@ -38,7 +34,4 @@ public class TextEntity extends OogaEntity {
 
   public StringProperty fontNameProperty() { return fontName; }
 
-  @SuppressWarnings({"EmptyMethod", "unused"})
-  public void updateTextProperty(double value) {
-  }
 }
