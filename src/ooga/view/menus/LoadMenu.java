@@ -33,7 +33,7 @@ public class LoadMenu extends OptionMenu {
         try {
             pastSaves = gamerecorder.getGameSaves(profilename,gamename);
         } catch (OogaDataException | MissingResourceException e) {
-            showError(e.getMessage());
+            showError(languageResources.getString("SavesErrorMessage"));
             pastSaves = new ArrayList<>(new ArrayList<>());
         }
         NEWGAME = languageResources.getString(NEW_GAME);
@@ -74,7 +74,7 @@ public class LoadMenu extends OptionMenu {
 
 
     private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(ERROR_MESSAGE);
         alert.setContentText(message);
         alert.showAndWait();
