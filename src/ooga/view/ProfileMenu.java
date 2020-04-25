@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
+import ooga.data.OogaProfile;
 
 import java.util.ArrayList;
 import java.util.List;

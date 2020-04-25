@@ -12,7 +12,6 @@ import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.OogaVariableCondition;
 import ooga.game.behaviors.VariableCondition;
 import ooga.game.behaviors.comparators.VariableComparator;
-import ooga.view.OogaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

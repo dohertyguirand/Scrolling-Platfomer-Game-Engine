@@ -71,7 +71,6 @@ public class Visualizer extends Application {
       }
     }
   }
-
   private Button makeBackButton(Scene backScene){
     Button button = new Button();
     button.setText(BACK_BUTTON_TEXT);
