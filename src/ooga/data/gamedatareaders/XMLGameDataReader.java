@@ -357,7 +357,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
       Element requirementElement = (Element)(conditionNodes.item(j));
       conditionMap.putIfAbsent(name,new ArrayList<>());
       NodeList requirementList = requirementElement.getElementsByTagName(valueName);
-      if (requirementList.getLength() == 0) { conditionMap.get(name).add(myDataResources.getString("Any")); }
+      if (requirementList.getLength() == 0) conditionMap.get(name).add(myDataResources.getString("Any"));
       else {
         for (int k = 0; k < requirementList.getLength(); k ++) {
           String requirement = requirementList.item(k).getTextContent();

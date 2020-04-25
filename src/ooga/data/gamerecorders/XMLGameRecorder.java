@@ -15,7 +15,6 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
   public List<List<String>> getGameSaves(String userName, String gameName) throws OogaDataException {
     Document doc = getDocForUserName(userName);
     List<List<String>> gameSaveInfo = new ArrayList<>();
-    // loop through all of the games saves in the user file and find the right games
     for (int i = 0; i < doc.getElementsByTagName(myDataResources.getString("UserFileGameTag")).getLength(); i++) {
       Element gameElement = (Element) doc.getElementsByTagName(myDataResources.getString("UserFileGameTag")).item(i);
       String foundGameName = gameElement.getElementsByTagName(myDataResources.getString("UserFileGameNameTag")).item(0).getTextContent();

@@ -212,18 +212,22 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     for (String varName : variables.keySet()) {
       if (propertyVariableDependencies.containsKey(varName)) {
         String propertyName = propertyVariableDependencies.get(varName);
-        if (propertyUpdaters.containsKey(propertyName)) {
-          try{
-            propertyUpdaters.get(propertyName).accept(variables.get(varName));
-          } catch (NumberFormatException e){
-            System.out.println("Could not set variable property dependency because variable could not be parsed to double");
-          }
-        } else {
-          System.out.println("no method defined for setting " + propertyName + " property to a variable");
-        }
+        updateProperty(propertyName, variables.get(varName));
       }
     }
     updateAutomaticEntityVariables();
+  }
+
+  private void updateProperty(String propertyName, String variableValue) {
+    if (propertyUpdaters.containsKey(propertyName)) {
+      try{
+        propertyUpdaters.get(propertyName).accept(variableValue);
+      } catch (NumberFormatException e){
+        System.out.println("Could not set variable property dependency because variable could not be parsed to double");
+      }
+    } else {
+      System.out.println("no method defined for setting " + propertyName + " property to a variable");
+    }
   }
 
   /**

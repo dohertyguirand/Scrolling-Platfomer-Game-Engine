@@ -63,8 +63,8 @@ public class BehaviorInstance implements ConditionalBehavior {
     if (checkGameVariableConditions(subject,variables)
     &&  checkEntityVariableConditions(subject,gameInternal,variables)
     &&  checkInputConditions(inputs)
-    &&  !anyCollisionConditionsUnsatisfied(collisionInfo,requiredCollisionConditions,true)
-    &&  !anyCollisionConditionsUnsatisfied(collisionInfo,bannedCollisionConditions,false)) {
+    && allCollisionConditionsSatisfied(collisionInfo, requiredCollisionConditions, true)
+    && allCollisionConditionsSatisfied(collisionInfo, bannedCollisionConditions, false)) {
       doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
     }
   }
@@ -153,27 +153,34 @@ public class BehaviorInstance implements ConditionalBehavior {
     return null;
   }
 
-  private boolean anyCollisionConditionsUnsatisfied(Map<Entity, Map<String, List<Entity>>> collisionInfo,
-                                                    Map<List<String>, String> collisionConditions, boolean required) {
+  private boolean allCollisionConditionsSatisfied(Map<Entity, Map<String, List<Entity>>> collisionInfo,
+                                                  Map<List<String>, String> collisionConditions, boolean required) {
     for(Map.Entry<List<String>, String> collisionConditionEntry : collisionConditions.entrySet()){
       String entity1Info = collisionConditionEntry.getKey().get(0);
       String entity2Info = collisionConditionEntry.getKey().get(1);
       String direction = collisionConditionEntry.getValue();
-      if(checkCollisionCondition(collisionInfo, entity1Info, entity2Info, direction) != required) return true;
+      if(checkCollisionCondition(collisionInfo, entity1Info, entity2Info, direction, subject, ) != required) return false;
+    }
+    return true;
+  }
+
+  private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info,
+                                          String entity2Info, String direction, Entity subject, GameInternal gameInternal) {
+    Entity entity1 = identifyEntityVariableSubject(subject, gameInternal, entity1Info);
+    for(Entity entity : collisionInfo.keySet()){
+      if(entityMatches(entity1Info, entity)){
+        if(checkCollisionConditionForEntity(collisionInfo, entity2Info, direction, entity)) return true;
+      }
     }
     return false;
   }
 
-  private boolean checkCollisionCondition(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity1Info, String entity2Info, String direction) {
-    for(Entity entity : collisionInfo.keySet()){
-      if(entityMatches(entity1Info, entity)){
-        if(direction.equals(ANY_DIRECTION)){
-          for(String possibleDirection : collisionInfo.get(entity).keySet()){
-            if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
-          }
-        } else if (hasCollisionInDirection(collisionInfo, entity2Info, direction, entity)) return true;
+  private boolean checkCollisionConditionForEntity(Map<Entity, Map<String, List<Entity>>> collisionInfo, String entity2Info, String direction, Entity entity) {
+    if(direction.equals(ANY_DIRECTION)){
+      for(String possibleDirection : collisionInfo.get(entity).keySet()){
+        if(hasCollisionInDirection(collisionInfo, entity2Info, possibleDirection, entity)) return true;
       }
-    }
+    } else return hasCollisionInDirection(collisionInfo, entity2Info, direction, entity);
     return false;
   }
 
