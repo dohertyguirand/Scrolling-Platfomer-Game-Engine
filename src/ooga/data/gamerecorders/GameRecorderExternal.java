@@ -4,6 +4,7 @@ import ooga.OogaDataException;
 import ooga.game.Level;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handles saving the state of currently active games, or restoring save games.
@@ -18,7 +19,7 @@ public interface GameRecorderExternal {
    * @param level The filepath at which to save the game.
    * @param userName the name of the user asking for the save
    */
-  void saveLevel(String userName, String gameName, Level level);
+  void saveLevel(String userName, String gameName, Level level, Map<String, String> variables);
 
   /**
    * returns information about all of the saves for a given game and user name

@@ -3,7 +3,9 @@ package ooga.data;
 
 import ooga.Entity;
 import ooga.OogaDataException;
+import ooga.data.entities.ImageEntity;
 import ooga.data.entities.ImageEntityDefinition;
+import ooga.data.entities.OogaEntity;
 import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.data.gamerecorders.GameRecorderExternal;
 import ooga.data.gamerecorders.XMLGameRecorder;
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.ls.LSException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -265,9 +268,20 @@ public class DataReaderTest {
 
     @Test
     public void testSaveLevel(){
-        Level fakeLevel = new OogaLevel(new ArrayList<>(), "");
+        List<Entity> entityList = new ArrayList<Entity>();
+        Entity entity = new ImageEntity();
+        entity.setPosition(List.of(0.0, 0.1));
+        Map<String, String> entityVars = new HashMap<>();
+        entityVars.put("And he's singin'", "wayo wayo wayo wayo");
+        entityVars.put("ooAAAAooo", "WAAyo Wayo");
+        entity.setVariables(entityVars);
+        entityList.add(entity);
+        Level testLevel = new OogaLevel(entityList, "1");
         XMLGameRecorder testGameRecorder = new XMLGameRecorder();
-        testGameRecorder.saveLevel("Braeden", "Super Mario Bros", fakeLevel);
+        Map<String, String > vars = new HashMap<>();
+        vars.put("Lives", "2");
+        vars.put("Deaths", "30");
+        testGameRecorder.saveLevel("Braeden", "Super Mario Bros", testLevel, vars);
     }
 }
 
