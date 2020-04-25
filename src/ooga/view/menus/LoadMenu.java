@@ -6,9 +6,11 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import ooga.OogaDataException;
+import ooga.data.XMLGameRecorder;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class LoadMenu extends OptionMenu {
@@ -18,7 +20,7 @@ public class LoadMenu extends OptionMenu {
     private StringProperty dateSelected = new SimpleStringProperty();
     private String ERROR_MESSAGE;
     private String NEWGAME;
-
+    private List<List<String>> pastSaves;
     /**
      * View where user can decide to load a saved game or a new game
      * @param gamename - name of game selected, used to find past saves
@@ -26,8 +28,14 @@ public class LoadMenu extends OptionMenu {
      * @param reader - DataReader used to get past saves from data
      * @param backButton - button that allows user to get back to startmenu screen
      */
-    public LoadMenu(ResourceBundle languageResources, String gamename, String profilename, GameDataReaderExternal reader, Node backButton){
+    public LoadMenu(ResourceBundle languageResources, XMLGameRecorder gamerecorder,String gamename, String profilename, GameDataReaderExternal reader, Node backButton){
         super(languageResources, gamename);
+        try {
+            pastSaves = gamerecorder.getGameSaves(profilename,gamename);
+        } catch (OogaDataException | MissingResourceException e) {
+            showError(e.getMessage());
+            pastSaves = new ArrayList<>(new ArrayList<>());
+        }
         NEWGAME = languageResources.getString(NEW_GAME);
         ERROR_MESSAGE = languageResources.getString(SAVED_GAME_ERROR);
         this.setLeft(setMenuItems(createButtons(backButton, reader,profilename,gamename)));
@@ -56,14 +64,10 @@ public class LoadMenu extends OptionMenu {
         List<Node> buttons = new ArrayList<>();
         Button button = new Button(NEWGAME);
         button.setOnAction(e-> setDateSelected("  "));
-       buttons.add(button);
-//        try {
-//            for(List<String> dates: dataReader.getGameSaves(profileName,gameName) ){
-//              buttons.add(makeButton(dates.get(1), dates.get(0) + "- " + dates.get(1)));
-//            }
-//        } catch (OogaDataException e) {
-//            showError(e.getMessage());
-//        }
+        buttons.add(button);
+        for(List<String> dates: pastSaves){
+            buttons.add(makeButton(dates.get(1), dates.get(0) + "- " + dates.get(1)));
+        }
         buttons.add(backButton);
         return buttons;
     }

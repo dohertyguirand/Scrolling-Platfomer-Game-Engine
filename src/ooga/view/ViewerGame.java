@@ -43,7 +43,6 @@ public class ViewerGame {
   private static final double MILLISECOND_DELAY = 33.33;
   public static final int NORMAL_BUTTON_XPOS = 300;
   public static final int ALIEN_BUTTON_XPOS = 100;
-  public static final String KEYBOARD_INPUT_FILE = "ooga/game/resources/inputs/keyboard";
   public static final String NORMAL_MODE = "NormalMode";
   public static final String DARK_MODE = "DarkMode";
   public static final String SET_DARK_MODE = "setDarkMode";
@@ -73,6 +72,7 @@ public class ViewerGame {
   private ResourceBundle languageResources;
 
 
+
   /**
    * This class handles the animation and viewing of each game, sets on input listeners
    * @param gameName - name of game to be played
@@ -80,12 +80,11 @@ public class ViewerGame {
    * @param saveDate - save date of game being played, an empty string if playing a new game
    * @throws OogaDataException if there is an error in reading game file
    */
-  public ViewerGame(String gameName, String profileName, String saveDate, ResourceBundle languageresources) throws OogaDataException {
+  public ViewerGame(String gameName, String profileName, String saveDate, ResourceBundle languageresources, String keyBoardFilePath) throws OogaDataException {
     languageResources = languageresources;
     myGameName = gameName;
     myProfileName = profileName;
-    //TODO: Update to match the new constructors by adding the date of the save to load
-    setGame(saveDate);
+    setGame(saveDate, keyBoardFilePath);
     setUpGameStage();
     setCameraProperties();
     setUpGameEntities();
@@ -100,15 +99,15 @@ public class ViewerGame {
     myGame.setCameraShiftProperties(cameraShift);
   }
 
-  private void setGame(String saveDate) throws OogaDataException {
+  private void setGame(String saveDate, String keyInputFilePath) throws OogaDataException {
     if(saveDate == null || saveDate.equals("")){
       myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-          KEYBOARD_INPUT_FILE),myProfileName);
+              keyInputFilePath),myProfileName);
     }
     else {
       System.out.println("USING ALT GAME CONSTRUCTOR");
       myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-              KEYBOARD_INPUT_FILE), myProfileName,saveDate);
+              keyInputFilePath), myProfileName,saveDate);
     }
   }
 

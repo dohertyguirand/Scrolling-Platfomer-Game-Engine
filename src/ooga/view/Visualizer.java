@@ -6,8 +6,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
+import ooga.data.XMLGameRecorder;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.gamedatareaders.XMLGameDataReader;
+import ooga.game.Game;
 import ooga.view.menus.GameMenu;
 import ooga.view.menus.LoadMenu;
 import ooga.view.menus.ProfileMenu;
@@ -15,13 +17,30 @@ import ooga.view.menus.ProfileMenu;
 import java.util.ResourceBundle;
 
 public class Visualizer extends Application {
-  private final ResourceBundle gameLanguage = ResourceBundle.getBundle("ooga/view/Resources/languages.French");
-  private final String ERROR_MESSAGE = gameLanguage.getString("ErrorMessage");
-  private final String START_MENU_TITLE = gameLanguage.getString("StageTitle");
-  private final String BACK_BUTTON_TEXT = gameLanguage.getString("Back");
+  private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.English");
+  private final String KEYBOARD_INPUTS_FILE_PATH = "ooga/game/controls/inputs/keyboard";
+  private final String ERROR_MESSAGE = GAME_LANGUAGE.getString("ErrorMessage");
+  private final String START_MENU_TITLE = GAME_LANGUAGE.getString("StageTitle");
+  private final String BACK_BUTTON_TEXT = GAME_LANGUAGE.getString("Back");
   private String profileNameSelected;
   private Stage stage;
   private final GameDataReaderExternal myDataReader = new XMLGameDataReader() {};
+  private XMLGameRecorder gameRecorder = new XMLGameRecorder() {
+    @Override
+    public void saveGameState(String filePath) throws OogaDataException {
+
+    }
+
+    @Override
+    public Game loadGameState(String filePath) throws OogaDataException {
+      return null;
+    }
+
+    @Override
+    public String getLevelFilePath(String UserName, String Date) throws OogaDataException {
+      return null;
+    }
+  };
   private String dateSelected;
 
   public static void main(String[] args) {
@@ -38,7 +57,7 @@ public class Visualizer extends Application {
   }
 
   private void showProfileMenu() {
-    ProfileMenu profileMenu = new ProfileMenu(gameLanguage);
+    ProfileMenu profileMenu = new ProfileMenu(GAME_LANGUAGE);
     Scene profileMenuScene = new Scene(profileMenu,profileMenu.getWidth(),profileMenu.getHeight());
     profileMenu.profileSelected().addListener((p, poldVal, pnewVal) ->{
       profileNameSelected = pnewVal.getProfileName();
@@ -49,7 +68,7 @@ public class Visualizer extends Application {
 
   private void showStartMenu(ViewProfile profile, Scene returnScene){
     Button backToProfileMenu = makeBackButton(returnScene);
-    GameMenu gameMenu = new GameMenu(gameLanguage,profile,backToProfileMenu);
+    GameMenu gameMenu = new GameMenu(GAME_LANGUAGE,profile,backToProfileMenu);
     Scene gameMenuScene = new Scene(gameMenu, gameMenu.getWidth(), gameMenu.getHeight());
     gameMenu.selectedProperty().addListener((o, oldVal, newVal) -> showLoadMenu(newVal, gameMenuScene));
     stage.setScene(gameMenuScene);
@@ -57,7 +76,7 @@ public class Visualizer extends Application {
 
   private void showLoadMenu(String gameName, Scene returnScene){
     Button backToStartMenu = makeBackButton(returnScene);
-    LoadMenu loadMenu = new LoadMenu(gameLanguage,gameName, profileNameSelected,myDataReader, backToStartMenu);
+    LoadMenu loadMenu = new LoadMenu(GAME_LANGUAGE,gameRecorder,gameName, profileNameSelected,myDataReader, backToStartMenu);
     Scene loadScene = new Scene(loadMenu, loadMenu.getWidth(),loadMenu.getHeight());
     loadMenu.getDateSelected().addListener((d,dold,dnew)-> startGame(gameName,profileNameSelected,dnew));
     stage.setScene(loadScene);
@@ -66,7 +85,7 @@ public class Visualizer extends Application {
   private void startGame(String gameName, String profileName, String date) {
     if (gameName != null) {
       try {
-        new ViewerGame(gameName,profileName,date, gameLanguage);
+        new ViewerGame(gameName,profileName,date, GAME_LANGUAGE, KEYBOARD_INPUTS_FILE_PATH);
       } catch (OogaDataException e) {
         //Sam added this, because he made it possible for the OogaGame constructor to throw
         // an exception, so that the view can decide what to do when no game is found.
