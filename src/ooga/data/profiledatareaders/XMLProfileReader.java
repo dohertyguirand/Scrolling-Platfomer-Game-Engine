@@ -3,7 +3,6 @@ package ooga.data.profiledatareaders;
 import ooga.OogaDataException;
 import ooga.data.OogaProfile;
 import ooga.data.XMLDataReader;
-import ooga.view.OogaProfile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

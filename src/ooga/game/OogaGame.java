@@ -13,14 +13,12 @@ import javafx.collections.ObservableList;
 import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
-import ooga.data.DataReader;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import ooga.data.entities.ImageEntityDefinition;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.game.collisiondetection.CollisionDetector;
 import ooga.game.controls.ControlsInterpreter;
 import ooga.game.controls.InputManager;
-import ooga.game.controls.KeyboardControls;
 import ooga.game.controls.inputmanagers.OogaInputManager;
 
 public class OogaGame implements Game, UserInputListener, GameInternal {
@@ -28,8 +26,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public static final String CLICKED_ON_CODE = "ClickedOn";
   public static final String KEY_ACTIVE_REQUIREMENT = "KeyActive";
   public static final String KEY_PRESSED_REQUIREMENT = "KeyPressed";
-  public static final String DEFAULT_INPUT_MAPPINGS = "ooga/game/resources/inputs/keyboard";
-  public static final String DEFAULT_GAME_NAME = "Unnamed";
   private List<String> myLevelIds;
   private Level currentLevel;
   private final String myName;
@@ -54,6 +50,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myEntities = FXCollections.observableArrayList(new ArrayList<>());
     myEntityDefinitions = myGameDataReader.getImageEntityMap(gameName);
     initVariableMap(gameName);
+    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
   }
 
   private void initVariableMap(String gameName) throws OogaDataException {
@@ -63,9 +60,9 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
-  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, String profileName, String date) throws OogaDataException {
-    this(gameName, gameDataReaderExternal, new DirectionalCollisionDetector(), new KeyboardControls(
-        DEFAULT_INPUT_MAPPINGS), "");
+  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal,  CollisionDetector detector,
+                  ControlsInterpreter controls, String profileName, String date) throws OogaDataException {
+    this(gameName, gameDataReaderExternal, new DirectionalCollisionDetector(), controls, profileName);
     for (String key : gameDataReaderExternal.getVariableMap(gameName).keySet()){
       myVariables.put(key, gameDataReaderExternal.getVariableMap(gameName).get(key));
     }
@@ -86,14 +83,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myEntities.clear();
     myEntities.addAll(level.getEntities());
     return level;
-  }
-
-  @Deprecated
-  public OogaGame(Level startingLevel, CollisionDetector collisions) {
-    myName = DEFAULT_GAME_NAME;
-    myCollisionDetector = collisions;
-    myControlsInterpreter = new KeyboardControls(DEFAULT_INPUT_MAPPINGS);
-    currentLevel = startingLevel;
   }
 
   @Override

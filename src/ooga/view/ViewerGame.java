@@ -41,7 +41,7 @@ public class ViewerGame {
   private static final double MILLISECOND_DELAY = 33.33;
   public static final int NORMAL_BUTTON_XPOS = 300;
   public static final int ALIEN_BUTTON_XPOS = 100;
-  public static final String KEYBOARD_INPUT_FILE = "ooga/game/resources/inputs/keyboard";
+  public static final String KEYBOARD_INPUT_FILE = "ooga/game/controls/inputs/keyboard";
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final String ALIEN_BUTTON_LOCATION = myResources.getString("alienButtonLocation");
@@ -98,7 +98,8 @@ public class ViewerGame {
     }
     else {
       System.out.println("USING ALT GAME CONSTRUCTOR");
-      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, myProfileName,saveDate);
+      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
+              KEYBOARD_INPUT_FILE), myProfileName,saveDate);
     }
   }
 
@@ -208,6 +209,7 @@ public class ViewerGame {
       try {
         step();
       } catch (Exception ex) {
+        ex.printStackTrace();
         // note that this should ideally never be thrown
         if(currentError == null || !ex.getClass().equals(currentError.getClass())) {
           myAnimation.stop();
