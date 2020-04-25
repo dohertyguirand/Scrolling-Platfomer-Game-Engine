@@ -1,8 +1,7 @@
 package ooga.game.behaviors.noncollisioneffects;
 
 import java.util.Map;
-import ooga.Entity;
-import ooga.data.entities.ImageEntity;
+
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;

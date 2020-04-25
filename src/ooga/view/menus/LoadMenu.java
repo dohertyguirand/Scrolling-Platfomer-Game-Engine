@@ -18,9 +18,9 @@ public class LoadMenu extends OptionMenu {
 
     public static final String NEW_GAME = "NewGame";
     public static final String SAVED_GAME_ERROR = "SavedGameError";
-    private StringProperty dateSelected = new SimpleStringProperty();
-    private String ERROR_MESSAGE;
-    private String NEWGAME;
+    private final StringProperty dateSelected = new SimpleStringProperty();
+    private final String ERROR_MESSAGE;
+    private final String NEWGAME;
     private List<List<String>> pastSaves;
     /**
      * View where user can decide to load a saved game or a new game

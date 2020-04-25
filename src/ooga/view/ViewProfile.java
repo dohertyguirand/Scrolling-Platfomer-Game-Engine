@@ -27,7 +27,7 @@ public class ViewProfile{
     private String profilePhotoPath;
     private String profileName;
     private Map<String, Integer> myStats;
-    private List<Node> extraNodes = new ArrayList<>();
+    private final List<Node> extraNodes = new ArrayList<>();
     private File fileChosen;
 
     /**
@@ -132,8 +132,7 @@ public class ViewProfile{
         try {
             bufferedImage = ImageIO.read(filepath);
             String path = "src/ooga/view/Resources/profilephotos/" +System.currentTimeMillis()+".jpg";
-            String copiedProfileImage = path;
-            File newFile = new File(copiedProfileImage);
+            File newFile = new File(path);
             ImageIO.write(bufferedImage,"jpg",newFile);
             fileChosen = filepath;
             profilePhotoPath = path;

@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
 import ooga.data.OogaProfile;
@@ -21,7 +20,7 @@ public class ProfileMenu extends ScrollMenu {
     private final ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
     private List<ViewProfile> myProfiles = new ArrayList<>();
     public static final String DEFAULT_IMAGE_PATH = "ooga/view/Resources/profilephotos/defaultphoto.jpg";
-    private String addNewProfilePhoto = "ooga/view/Resources/profilephotos/Makenewprofile.png";
+    private final String addNewProfilePhoto = "ooga/view/Resources/profilephotos/Makenewprofile.png";
     private static final String ADD_PROFILE = "Add a New Profile";
     private static final String SUBMIT = "Submit";
     private static final String ERROR_MESSAGE = "Could Not Create New Profile";

@@ -15,8 +15,8 @@ public class BehaviorInstance implements ConditionalBehavior {
   final Map<String, List<String>> inputConditions;
   final Map<List<String>, String> requiredCollisionConditions;
   final Map<List<String>, String> bannedCollisionConditions;
-  List<VariableCondition> gameVarConditions;
-  Map<String,List<VariableCondition>> entityVarConditions;
+  final List<VariableCondition> gameVarConditions;
+  final Map<String,List<VariableCondition>> entityVarConditions;
   final List<Action> actions;
 
   /**

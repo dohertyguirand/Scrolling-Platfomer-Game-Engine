@@ -71,7 +71,7 @@ public class ViewerGame {
   private final String myProfileName;
   private final List<DoubleProperty> cameraShift = new ArrayList<>();
   private Exception currentError = null;
-  private ResourceBundle languageResources;
+  private final ResourceBundle languageResources;
 
 
 

@@ -8,7 +8,7 @@ public class OogaInputManager implements InputManager {
 
   private final List<String> myActiveKeys;
   private final List<String> myPressedKeys;
-  private List<List<Double>> mouseClickedPos;
+  private final List<List<Double>> mouseClickedPos;
 
   public OogaInputManager() {
     myActiveKeys = new ArrayList<>();

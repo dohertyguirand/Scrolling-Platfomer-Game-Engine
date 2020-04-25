@@ -19,7 +19,7 @@ public class PauseMenu extends OptionMenu {
   private final BooleanProperty resumed = new SimpleBooleanProperty(true);
   private final BooleanProperty quit = new SimpleBooleanProperty(false);
   private final BooleanProperty save = new SimpleBooleanProperty(false);
-  private Map<BooleanProperty, String> buttonPropertiesAndNames;
+  private final Map<BooleanProperty, String> buttonPropertiesAndNames;
 
 
   /**

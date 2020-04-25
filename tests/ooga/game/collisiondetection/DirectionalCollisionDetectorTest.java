@@ -2,7 +2,6 @@ package ooga.game.collisiondetection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import ooga.Entity;
 import ooga.data.entities.ImageEntity;
 import ooga.game.EntityInternal;
 import org.junit.jupiter.api.BeforeEach;
