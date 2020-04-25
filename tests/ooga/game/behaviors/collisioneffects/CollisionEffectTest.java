@@ -31,7 +31,8 @@ class CollisionEffectTest {
 
   @BeforeEach
   void setUp() throws OogaDataException {
-    OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(){},new DirectionalCollisionDetector(),new KeyboardControls(KEYBOARD_INPUT_FILE),"",new XMLGameRecorder());
+    OogaGame game = new OogaGame(GAME_NAME, new XMLGameDataReader(){},new DirectionalCollisionDetector(),
+            new KeyboardControls(KEYBOARD_INPUT_FILE),"",new XMLGameRecorder(),"");
     myGame = game;
     myGameInternal = game;
   }
