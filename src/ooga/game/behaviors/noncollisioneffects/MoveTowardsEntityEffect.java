@@ -5,7 +5,7 @@ import static ooga.game.behaviors.EffectUtil.getMagnitude;
 
 import java.util.List;
 import java.util.Map;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
@@ -27,7 +27,7 @@ public class MoveTowardsEntityEffect extends TimeDelayedEffect {
   }
 
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime,
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime,
       Map<String, String> variables, GameInternal game) {
     System.out.println(subject.getName());
     System.out.println(otherEntity.getName());

@@ -2,7 +2,7 @@ package ooga.game.behaviors;
 
 import java.util.List;
 import java.util.ResourceBundle;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
 import java.util.Map;
@@ -38,7 +38,7 @@ public abstract class TimeDelayedEffect implements Effect {
     this.timeDelayData = timeDelayData;
   }
 
-  private boolean hasTimeDelayFinished(double elapsedTime, Entity subject, Map<String, String> variables) {
+  private boolean hasTimeDelayFinished(double elapsedTime, EntityInternal subject, Map<String, String> variables) {
     timePassed += elapsedTime;
     double timeDelay = parseData(timeDelayData, subject, variables, 0.0);
     return timePassed >= timeDelay;
@@ -53,7 +53,7 @@ public abstract class TimeDelayedEffect implements Effect {
    * @param game
    */
   @Override
-  public void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game){
+  public void doEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game){
     if(hasTimeDelayFinished(elapsedTime, subject, variables)){
       doTimeDelayedEffect(subject, otherEntity, elapsedTime, variables, game);
       timePassed = 0.0;
@@ -69,7 +69,7 @@ public abstract class TimeDelayedEffect implements Effect {
    * @param game game instance
    */
   @SuppressWarnings("unused")
-  protected abstract void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game);
+  protected abstract void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game);
 
   protected void processTimeDelay(List<String> args, int numDefaultArgs) {
     if (args.size() > numDefaultArgs) {

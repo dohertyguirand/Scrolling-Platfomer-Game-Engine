@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
@@ -51,14 +51,14 @@ public class PatrolEffect extends TimeDelayedEffect {
 
   /**
    * Performs the effect
-   *  @param subject     The entity that owns this. This is the entity that should be modified.
+   * @param subject     The entity that owns this. This is the entity that should be modified.
    * @param otherEntity entity we are "interacting with" in this effect
    * @param elapsedTime time between steps in ms
    * @param variables   game variables
    * @param game        game instance
    */
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     List<Double> difference = targetDifference(subject, variables);
     double distanceFromTarget = getMagnitude(difference);
     if (distanceFromTarget < MARGIN) {
@@ -74,7 +74,7 @@ public class PatrolEffect extends TimeDelayedEffect {
     }
   }
 
-  private void switchTargets(Entity subject, Map<String, String> variables) {
+  private void switchTargets(EntityInternal subject, Map<String, String> variables) {
     List<Double> myTargetPoint = List.of(parseData(myTargetPointData.get(0), subject, variables, 0.0),
             parseData(myTargetPointData.get(1), subject, variables, 0.0));
     List<Double> myFirstPoint = List.of(parseData(myFirstPointData.get(0), subject, variables, 0.0),
@@ -87,7 +87,7 @@ public class PatrolEffect extends TimeDelayedEffect {
     }
   }
 
-  private List<Double> targetDifference(Entity subject, Map<String, String> variables) {
+  private List<Double> targetDifference(EntityInternal subject, Map<String, String> variables) {
     List<Double> difference = new ArrayList<>();
     List<Double> myTargetPoint = List.of(parseData(myTargetPointData.get(0), subject, variables, 0.0),
             parseData(myTargetPointData.get(1), subject, variables, 0.0));

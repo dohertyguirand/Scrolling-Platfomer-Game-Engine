@@ -1,7 +1,7 @@
 package ooga.game.behaviors;
 
 import java.util.Map;
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
 /**
@@ -21,7 +21,7 @@ public interface Effect {
    * @param variables
    * @param game
    */
-  void doEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game);
+  void doEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game);
 
   /**
    * attempts to convert the given data into a double. If it can't, tries to get a value from game variables, then from entity variables.
@@ -32,7 +32,7 @@ public interface Effect {
    * @param defaultValue what to return if no match is found
    * @return the parsed value
    */
-  default double parseData(String data, Entity subject, Map<String, String> variables, double defaultValue){
+  default double parseData(String data, EntityInternal subject, Map<String, String> variables, double defaultValue){
     double parsedData;
     String finalValue = doVariableSubstitutions(data, subject, variables);
     try{
@@ -51,7 +51,7 @@ public interface Effect {
    * @param variables game variables
    * @return the parsed value
    */
-  static String doVariableSubstitutions(String data, Entity subject, Map<String, String> variables){
+  static String doVariableSubstitutions(String data, EntityInternal subject, Map<String, String> variables){
     String finalValue = data;
     if(variables.containsKey(data)){
       finalValue = variables.get(data);

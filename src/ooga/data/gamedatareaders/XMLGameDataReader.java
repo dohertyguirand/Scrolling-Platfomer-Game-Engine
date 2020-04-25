@@ -12,6 +12,7 @@ import ooga.data.Thumbnail;
 import ooga.data.XMLDataReader;
 import ooga.data.entities.ImageEntityDefinition;
 import ooga.data.entities.TextEntity;
+import ooga.game.EntityInternal;
 import ooga.game.Game;
 import ooga.game.Level;
 import ooga.game.OogaLevel;
@@ -82,7 +83,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
    */
   @Override
   default Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException{
-    ArrayList<Entity> initialEntities = new ArrayList<>();
+    ArrayList<EntityInternal> initialEntities = new ArrayList<>();
     File gameFile = findGame(givenGameName);
     Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
     String nextLevelID = null;
@@ -112,7 +113,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
           for(int row=0; row<rowsColsAndGaps[0]; row++){
             xPos = parameterValues.get(0);
             for(int col=0;col<rowsColsAndGaps[1];col++){
-              Entity entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
+              EntityInternal entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
               entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
               entity.setVariables(getEntityVariables(entityElement));
               entity.makeNonStationaryProperty(isStationary(entityElement, imageEntityDefinition.getStationary()));
@@ -131,7 +132,7 @@ public interface XMLGameDataReader extends GameDataReaderInternal, XMLDataReader
           String[] parameterNames = new String[] {"XPosTag", "YPosTag","WidthTag", "HeightTag"};
           List<Double> parameterValues = constructEntity(entityElement, text, parameterNames);
           int index = 0;
-          Entity entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
+          EntityInternal entity = new TextEntity(text, font, parameterValues.get(index++), parameterValues.get(index++),
                   parameterValues.get(index++),  parameterValues.get(index));
           entity.setPropertyVariableDependencies(getEntityVariableDependencies(entityElement));
           entity.setVariables(getEntityVariables(entityElement));

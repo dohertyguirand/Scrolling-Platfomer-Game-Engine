@@ -1,6 +1,6 @@
 package ooga.game.behaviors.dotoothereffects;
 
-import ooga.Entity;
+import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.noncollisioneffects.SetVariableEffect;
 
@@ -14,7 +14,7 @@ public class SetOtherVariableEffect extends SetVariableEffect {
   }
 
   @Override
-  protected void doTimeDelayedEffect(Entity subject, Entity otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
+  protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     super.doTimeDelayedEffect(otherEntity, subject, elapsedTime, variables, game);
   }
 }

@@ -31,6 +31,7 @@ public class ImageEntity extends OogaEntity {
     this("Unnamed", null, 0, 0, 10.0, 10.0);
   }
 
+  @Override
   public void setImageLocation(String filePath){imageLocation.set(filePath);}
 
   public StringProperty imageLocationProperty() {
