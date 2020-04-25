@@ -43,9 +43,16 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private final List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
   private String myProfileName;
 
+  private void initVariableMap(String gameName) throws OogaDataException {
+    myVariables = new HashMap<>();
+    for (String key : myGameDataReader.getVariableMap(gameName).keySet()){
+      myVariables.put(key, myGameDataReader.getVariableMap(gameName).get(key));
+    }
+  }
 
-  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal, CollisionDetector detector,
-                  ControlsInterpreter controls, String profileName, GameRecorderExternal gameRecorderExternal) throws OogaDataException {
+  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal,  CollisionDetector detector,
+                  ControlsInterpreter controls, String profileName, GameRecorderExternal gameRecorderExternal,
+                  String date) throws OogaDataException {
     myGameDataReader = gameDataReaderExternal;
     myGameRecorder = gameRecorderExternal;
     myName = gameName;
@@ -57,30 +64,17 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myEntitiesInternal = new ArrayList<>();
     myEntityDefinitions = myGameDataReader.getImageEntityMap(gameName);
     initVariableMap(gameName);
-    currentLevel = loadGameLevel(gameName, myLevelIds.get(0));
-  }
-
-  private void initVariableMap(String gameName) throws OogaDataException {
-    myVariables = new HashMap<>();
-    for (String key : myGameDataReader.getVariableMap(gameName).keySet()){
-      myVariables.put(key, myGameDataReader.getVariableMap(gameName).get(key));
+    try {
+      loadGameLevel(myGameDataReader.loadSavedLevel(myProfileName, date));
+    } catch (OogaDataException e) {
+      loadGameLevel(myGameDataReader.loadNewLevel(myName, myLevelIds.get(0)));
     }
   }
 
-  public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal,  CollisionDetector detector,
-                  ControlsInterpreter controls, String profileName, GameRecorderExternal gameRecorderExternal,
-                  String date) throws OogaDataException {
-    this(gameName, gameDataReaderExternal, new DirectionalCollisionDetector(), controls, profileName, gameRecorderExternal);
-    for (String key : gameDataReaderExternal.getVariableMap(gameName).keySet()){
-      myVariables.put(key, gameDataReaderExternal.getVariableMap(gameName).get(key));
-    }
-  }
-
-  private Level loadGameLevel(String gameName, String id) throws OogaDataException {
-    Level level = myGameDataReader.loadNewLevel(gameName,id);
+  private void loadGameLevel(Level level) {
     clearEntities();
     addAllEntities(level.getEntities());
-    return level;
+    currentLevel = level;
   }
 
   private void addAllEntities(List<EntityInternal> entities) {
@@ -315,7 +309,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   @Override
   public void goToLevel(String levelID) {
     try {
-      currentLevel = loadGameLevel(myName,levelID);
+      loadGameLevel(myGameDataReader.loadNewLevel(myName,levelID));
       setCameraShiftValues(0,0);
     }
     catch (OogaDataException ignored) {

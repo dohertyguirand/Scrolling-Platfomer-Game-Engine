@@ -50,6 +50,7 @@ public class ViewerGame {
   public static final String SET_DARK_MODE = "setDarkMode";
   public static final String SET_NORMAL_MODE = "setNormalMode";
   public static final int START_X = 0;
+  public static final String SAVE_DATE_DEFAULT_EMPTY = "";
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String PAUSE_BUTTON_LOCATION = myResources.getString("pauseButtonLocation");
   private final String ALIEN_BUTTON_LOCATION = myResources.getString("alienButtonLocation");
@@ -102,15 +103,11 @@ public class ViewerGame {
   }
 
   private void setGame(String saveDate, String keyInputFilePath) throws OogaDataException {
-    if(saveDate == null || saveDate.equals("")){
-      myGame = new OogaGame(myGameName, new XMLGameDataReader(), new DirectionalCollisionDetector(), new KeyboardControls(
-              keyInputFilePath), myProfileName, new XMLGameRecorder());
+    if (saveDate == null) {
+      saveDate = SAVE_DATE_DEFAULT_EMPTY;
     }
-    else {
-      System.out.println("USING ALT GAME CONSTRUCTOR");
-      myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
-              keyInputFilePath), myProfileName,new XMLGameRecorder(), saveDate);
-    }
+    myGame = new OogaGame(myGameName, new XMLGameDataReader() {}, new DirectionalCollisionDetector(), new KeyboardControls(
+            keyInputFilePath), myProfileName,new XMLGameRecorder(), saveDate);
   }
 
   private void setUpGameEntities(){

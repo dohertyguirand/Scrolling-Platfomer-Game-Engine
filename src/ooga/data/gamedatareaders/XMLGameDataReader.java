@@ -64,12 +64,15 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
   public Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException{
     List<EntityInternal> initialEntities = new ArrayList<>();
     File gameFile = findGame(givenGameName);
+    System.out.println("CP1");
     Map<String, ImageEntityDefinition> entityMap = getImageEntityMap(givenGameName);
     String nextLevelID = null;
     Document doc = getDocument(gameFile);
+    System.out.println("CP2");
     // in the xml create a list of all 'Level' nodes
     NodeList levelNodes = doc.getElementsByTagName(myDataResources.getString("LevelTag"));
     // for each check the ID
+    System.out.println("CP3");
     for (int i = 0; i < levelNodes.getLength(); i++) {
       Element level = (Element) levelNodes.item(i);
       String levelID = getFirstElementByTag(level, "LevelIDTag", myDataResources.getString("MissingIDException"));
@@ -213,10 +216,10 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
     Document doc = getDocument(levelFile);
     String gameName = getGameName(doc);
     Map<String, ImageEntityDefinition> imageEntityMap = getImageEntityMap(gameName);
-    checkKeyExists(doc, myDataResources.getString("SaveFileLevelTag"), myDataResources.getString("SaveFileMissingLevel"));
+    checkKeyExists(doc, "SaveFileLevelTag","SaveFileMissingLevel");
     Element savedLevelElement = (Element) doc.getElementsByTagName(myDataResources.getString("SaveFileLevelTag")).item(0);
     List<EntityInternal> entities = getInitialEntities(imageEntityMap, savedLevelElement);
-    String id = getFirstElementByTag(savedLevelElement, myDataResources.getString("LevelIDTag"), myDataResources.getString("SaveFileLevelMissingID"));
+    String id = getFirstElementByTag(savedLevelElement,"LevelIDTag", "SaveFileLevelMissingID");
     return new OogaLevel(entities, id);
   }
 
@@ -230,7 +233,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
    */
   private String getLevelFilePath(String UserName, String Date) throws OogaDataException {
     Document userDoc = getDocForUserName(UserName);// find where the save file is stored
-    checkKeyExists(userDoc, myDataResources.getString("UserFileSaveDateTag"), myDataResources.getString("UserFileHasNoSaves"));
+    checkKeyExists(userDoc, "UserFileSaveDateTag", "UserFileHasNoSaves");
     for(int i=0; i<userDoc.getElementsByTagName(myDataResources.getString("UserFileSaveDateTag")).getLength(); i++){
       String loadedDate = userDoc.getElementsByTagName(myDataResources.getString("UserFileSaveDateTag")).item(i).getTextContent();
       if(!loadedDate.equals(Date)) continue;
