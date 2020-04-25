@@ -359,17 +359,22 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
       NodeList requirementList = requirementElement.getElementsByTagName(valueName);
       if (requirementList.getLength() == 0) { conditionMap.get(name).add(myDataResources.getString("Any")); }
       else {
-        for (int k = 0; k < requirementList.getLength(); k ++) {
-          String requirement = requirementList.item(k).getTextContent();
-          try {
-            conditionMap.get(name).add(myDataResources.getString(requirement));
-          } catch (Exception e) {
-            throw new OogaDataException(String.format(myDataResources.getString("InvalidInputRequirementException"),requirement,name));
-          }
-        }
+        addKeyRequirements(conditionMap, name, requirementList);
       }
     }
     return conditionMap;
+  }
+
+  private void addKeyRequirements(Map<String, List<String>> conditionMap, String name,
+      NodeList requirementList) throws OogaDataException {
+    for (int k = 0; k < requirementList.getLength(); k ++) {
+      String requirement = requirementList.item(k).getTextContent();
+      try {
+        conditionMap.get(name).add(myDataResources.getString(requirement));
+      } catch (Exception e) {
+        throw new OogaDataException(String.format(myDataResources.getString("InvalidInputRequirementException"),requirement,name));
+      }
+    }
   }
 
   private List<VariableCondition> getGameVariableConditions(NodeList conditions)
