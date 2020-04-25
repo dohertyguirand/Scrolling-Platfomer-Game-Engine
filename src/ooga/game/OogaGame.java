@@ -1,11 +1,9 @@
 package ooga.game;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
@@ -14,7 +12,6 @@ import ooga.Entity;
 import ooga.OogaDataException;
 import ooga.UserInputListener;
 import ooga.data.gamerecorders.GameRecorderExternal;
-import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import ooga.data.entities.ImageEntityDefinition;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.game.collisiondetection.CollisionDetector;
@@ -100,7 +97,11 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
    */
   @Override
   public void doGameStep(double elapsedTime) {
-    doUpdateLoop(elapsedTime);
+    doEntityFrameUpdates(elapsedTime);
+    doEntityBehaviors(elapsedTime);
+    doEntityCleanup();
+    executeEntityMovement(elapsedTime);
+    doEntityCreation();
     myInputManager.update();
   }
 
@@ -128,14 +129,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
         collisionsByDirection.get(collisionDirection).add(collidingWith);
       }
     }
-  }
-
-  private void doUpdateLoop(double elapsedTime) {
-    doEntityFrameUpdates(elapsedTime);
-    doEntityBehaviors(elapsedTime);
-    doEntityCleanup();
-    executeEntityMovement(elapsedTime);
-    doEntityCreation();
   }
 
   private void doEntityFrameUpdates(double elapsedTime) {
@@ -255,34 +248,18 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     System.out.println("oogagame");
   }
 
-  /**
-   * indicates the pause button was clicked in the ui
-   *
-   * @param paused whether or not the button clicked was pause or resume
-   */
-  @Override
-  @SuppressWarnings("EmptyMethod")
-  public void reactToPauseButton(boolean paused) {
-    //Ooga games do nothing as a reaction to pausing, but other implementations could do things.
-  }
-
   @Override
   public void createEntity(String type, List<Double> position) {
-    EntityInternal created = makeEntityInstance(type, position);
-    myNewCreatedEntities.add(created);
+    ImageEntityDefinition definition = myEntityDefinitions.get(type);
+    createEntity(type,position,definition.getWidth(),definition.getHeight());
   }
 
   @Override
   public void createEntity(String type, List<Double> position, double width, double height) {
-    EntityInternal created = makeEntityInstance(type, position);
+    EntityInternal created = myEntityDefinitions.get(type).makeInstanceAt(position.get(0),position.get(1));
     created.setHeight(height);
     created.setWidth(width);
     myNewCreatedEntities.add(created);
-  }
-
-  private EntityInternal makeEntityInstance(String type, List<Double> position) {
-    ImageEntityDefinition definition = myEntityDefinitions.get(type);
-    return definition.makeInstanceAt(position.get(0), position.get(1));
   }
 
   @Override

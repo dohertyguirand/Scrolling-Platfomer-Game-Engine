@@ -263,7 +263,6 @@ public class ViewerGame {
     myPauseMenu.resumedProperty().addListener((o, oldVal, newVal) -> {
       if(newVal){
         myGameStage.setScene(myGameScene);
-        userInputListener.reactToPauseButton(false);
         myAnimation.play();
       }
     });

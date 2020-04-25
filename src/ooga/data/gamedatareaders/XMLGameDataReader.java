@@ -191,9 +191,9 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
         for(int col=0;col<rowsColsAndGaps[1];col++){
           EntityInternal entity = entityMap.get(entityName).makeInstanceAt(xPos,yPos);
           imageEntities.add(setAdditionalEntityState(entityElement, entity, imageEntityDefinition.getStationary()));
-          xPos += imageEntityDefinition.getMyWidth()+rowsColsAndGaps[2];
+          xPos += imageEntityDefinition.getWidth()+rowsColsAndGaps[2];
         }
-        yPos += imageEntityDefinition.getMyHeight()+rowsColsAndGaps[3];
+        yPos += imageEntityDefinition.getHeight()+rowsColsAndGaps[3];
       }
     }
     return imageEntities;
