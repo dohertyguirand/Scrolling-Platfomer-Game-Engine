@@ -25,18 +25,6 @@ public class GameMenu extends ScrollMenu{
   private final StringProperty optionSelected = new SimpleStringProperty();
   private final String ERROR_MESSAGE = languageResources.getString("ThumbnailError");
   private static final String GAME_MENU_TITLE_KEY = "GameMenuTitle";
-  private static final String BACK_BUTTON_STYLE = ".backButton";
-
-//  @Deprecated
-////  public GameMenu(ResourceBundle languageResources, String titleKey) {
-////    super(languageResources, titleKey);
-////    try {
-////      List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
-////      addImages(thumbnails);
-////    } catch (OogaDataException e){
-////      showError(e.getMessage());
-////    }
-////  }
 
   /**
    * A screen that allows the user to select a game to be played

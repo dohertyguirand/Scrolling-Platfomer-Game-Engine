@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-public class MakeProfileDemo extends Application {
+public class MakeProfileTest extends Application {
 
     private GridPane myGridpane;
     private Scene myScene;
@@ -105,8 +105,6 @@ public class MakeProfileDemo extends Application {
         myFileChooser.setTitle("View Pictures");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
         myFileChooser.getExtensionFilters().add(extFilter);
-
-
     }
 
     public static void main(String[] args) {

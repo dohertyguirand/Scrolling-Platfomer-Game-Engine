@@ -28,16 +28,17 @@ public interface XMLDataReader extends DataReader {
   default String getFileType(){return fileType;}
 
   @Override
+
   default Document getDocument(File fXmlFile) throws OogaDataException {
     Document doc;
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fXmlFile);
     } catch (SAXException | ParserConfigurationException | IOException e) {
+
       throw new OogaDataException(myDataResources.getString("DocumentParseException"));
     }
     return doc;
   }
-
   /**
    * @param UserName the name of the user whose document we need
    * @return The Document for the user with the given username

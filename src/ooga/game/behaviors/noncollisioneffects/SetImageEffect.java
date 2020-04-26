@@ -42,6 +42,7 @@ public class SetImageEffect extends TimeDelayedEffect {
     setImage(subject, newImageFileName, variables, this);
   }
 
+
   public static void setImage(EntityInternal subject, String newImageFileName, Map<String, String> variables, Effect effectSource) {
 //    if(subject.getEntityType().equals(Entity.imageEntityType)){
 //      ImageEntity imageEntity = (ImageEntity)subject;
