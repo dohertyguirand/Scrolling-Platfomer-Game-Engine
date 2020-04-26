@@ -45,6 +45,7 @@ public class ImageEntity extends OogaEntity {
 
   @Override
   public void reactToVariables(Map<String, String> variables) {
-    //does nothing for now?
+    super.reactToVariables(variables);
+    myVariables.put("Image", this.imageLocation.get());
   }
 }

@@ -21,6 +21,7 @@
                     <CollisionDeterminedAction>
                         <Args>BluePlatform Down</Args>
                         <Effect>TerrainCollisionDown</Effect>
+                        <Effect>SetVelocity 0.0 0.0</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
@@ -42,6 +43,7 @@
                     <CollisionDeterminedAction>
                         <Args>GreenPlatform Down</Args>
                         <Effect>TerrainCollisionDown</Effect>
+                        <Effect>SetVelocity 0.0 0.0</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
@@ -63,6 +65,7 @@
                     <CollisionDeterminedAction>
                         <Args>WhitePlatform Down</Args>
                         <Effect>TerrainCollisionDown</Effect>
+                        <Effect>SetVelocity 0.0 0.0</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
@@ -74,8 +77,17 @@
                         <Effect>Jump 0.0 -1.20 + 20.0</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!-- Collision with Cracked Platform  -->
-
+                <Behavior>
+                     <EntityVariableCondition>
+                        <VariableName>Blinking</VariableName>
+                         <RequiredValue>true</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>BlinkImage Still none Still 50 1300</Effect>
+                        <Effect>SetVariable Blinking false 1300</Effect>
+                        <Effect>SetVelocity 0.0 0.0</Effect>
+                     </IndependentAction>
+                </Behavior>
                 <!-- Collision with Monster  -->
                 <Behavior>
                     <RequiredCollisionCondition>
@@ -85,7 +97,7 @@
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -115,7 +127,8 @@
                         <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                        <Effect>SetVariable Blinking true</Effect>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Left Key Input -->
@@ -243,6 +256,17 @@
                        <Effect>SetImage Touched</Effect>
                    </IndependentAction>
                </Behavior>
+               <Behavior>
+                   <GameVariableCondition>
+                       <VariableName>Lives</VariableName>
+                       <RequiredValue>0.0</RequiredValue>
+                   </GameVariableCondition>
+                   <IndependentAction>
+                       <Effect>GoToLevel 1</Effect>
+                       <Effect>SetVariable Lives 1.0</Effect>
+                       <Effect>SetVariable Score 0.0</Effect>
+                   </IndependentAction>
+               </Behavior>
            </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -262,6 +286,10 @@
         <Variable>
             <Name>Score</Name>
             <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>Lives</Name>
+            <StartValue>1</StartValue>
         </Variable>
     </Variables>
     <Levels>

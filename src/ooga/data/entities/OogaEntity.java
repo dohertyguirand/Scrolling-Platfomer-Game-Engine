@@ -50,7 +50,7 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private boolean isDestroyed;
   private static final String[] directions = new String[]{"Up", "Down", "Left", "Right"};
   private final Map<String, Boolean> blockedMovements = new HashMap<>();
-  private final Map<String, String> myVariables = new HashMap<>();
+  protected final Map<String, String> myVariables = new HashMap<>();
 
   public OogaEntity(double xPos, double yPos, double width, double height) {
     ResourceBundle constants = ResourceBundle.getBundle(CONSTANTS_FILEPATH);
@@ -225,10 +225,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private void updateAutomaticEntityVariables() {
     myVariables.put("XVelocity", String.valueOf(myVelocity.get(0)));
     myVariables.put("YVelocity", String.valueOf(myVelocity.get(1)));
-    myVariables.put("XPos", String.valueOf(this.xPos));
-    myVariables.put("YPos", String.valueOf(this.yPos));
-    myVariables.put("Width", String.valueOf(this.width));
-    myVariables.put("Height", String.valueOf(this.height));
+    myVariables.put("XPos", String.valueOf(this.xPos.get()));
+    myVariables.put("YPos", String.valueOf(this.yPos.get()));
+    myVariables.put("Width", String.valueOf(this.width.get()));
+    myVariables.put("Height", String.valueOf(this.height.get()));
   }
 
   @Override

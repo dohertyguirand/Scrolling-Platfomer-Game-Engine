@@ -178,6 +178,20 @@
                         <Effect>SetImage Spinning</Effect>
                     </IndependentAction>
                 </Behavior>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>XPos</VariableName>
+                        <Comparison>GreaterThan</Comparison>
+                        <RequiredValue>CameraBorderXPos</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable CameraShiftValue XPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue - CameraBorderXPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>
+                        <Effect>ShiftCamera CameraShiftValue 0</Effect>
+                        <Effect>ChangeVariable CameraBorderXPos - CameraShiftValue</Effect>
+                    </IndependentAction>
+                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -202,12 +216,13 @@
             <Behaviors>
                 <Behavior>
                     <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
                         <Entity2>Sonic</Entity2>
                         <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>RemoveSelf</Effect>
-                        <Effect>ChangeVariable Score + 1.0</Effect>
+                        <Effect>ChangeVariable Coins + 1.0</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
@@ -223,6 +238,16 @@
             <Width>1000</Width>
             <Height>800</Height>
             <Image>background.jpg</Image>
+            <Stationary>true</Stationary>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>InvisibleWall</Name>
+            <Width>60</Width>
+            <Height>800</Height>
+            <Image> </Image>
+            <Stationary>true</Stationary>
+            <VariableNames>TerrainID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
         </ImageEntity>
     </Entities>
     <Variables>
@@ -231,8 +256,16 @@
             <StartValue>3</StartValue>
         </Variable>
         <Variable>
-            <Name>Score</Name>
+            <Name>Coins</Name>
             <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>CameraShiftValue</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>CameraBorderXPos</Name>
+            <StartValue>800</StartValue>
         </Variable>
     </Variables>
     <Levels>
@@ -277,6 +310,11 @@
                     <YPos>600</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
+                    <Name>InvisibleWall</Name>
+                    <XPos>-60</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Name>Floor</Name>
                     <XPos>700</XPos>
                     <YPos>600</YPos>
@@ -302,19 +340,7 @@
                     <Name>Floor</Name>
                     <XPos>800</XPos>
                     <YPos>600</YPos>
-                    <Columns>2</Columns>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Floor</Name>
-                    <XPos>0</XPos>
-                    <YPos>0</YPos>
-                    <Rows>12</Rows>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Floor</Name>
-                    <XPos>950</XPos>
-                    <YPos>000</YPos>
-                    <Rows>12</Rows>
+                    <Columns>100</Columns>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
@@ -331,6 +357,7 @@
                     <YPos>0</YPos>
                     <Width>150</Width>
                     <Height>50</Height>
+                    <Stationary>true</Stationary>
                     <PropertyVariableDependency>
                         <VariableName>Lives</VariableName>
                         <PropertyName>Text</PropertyName>
@@ -345,7 +372,7 @@
                     <Height>50</Height>
                     <Stationary>true</Stationary>
                     <PropertyVariableDependency>
-                        <VariableName>Score</VariableName>
+                        <VariableName>Coins</VariableName>
                         <PropertyName>Text</PropertyName>
                     </PropertyVariableDependency>
                 </TextEntityInstance>

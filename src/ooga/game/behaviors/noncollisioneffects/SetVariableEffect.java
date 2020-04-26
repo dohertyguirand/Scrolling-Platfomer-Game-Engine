@@ -46,6 +46,9 @@ public class SetVariableEffect extends TimeDelayedEffect {
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     if (variables.containsKey(variableName)) {
+      System.out.println("changing variable " + variableName);
+      System.out.println(subject.getVariables());
+      System.out.println(Effect.doVariableSubstitutions(variableValue, subject, variables));
       game.setVariable(variableName, Effect.doVariableSubstitutions(variableValue, subject, variables));
     }
     if(subject.getVariable(variableName) != null){

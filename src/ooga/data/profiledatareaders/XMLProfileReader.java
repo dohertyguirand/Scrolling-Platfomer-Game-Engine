@@ -41,33 +41,57 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
       Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       String directory = DEFAULT_USERS_FILE+"/"+newProfileName;
       String filepath = directory+"/"+newProfileName+".xml";
+      File file = new File(directory);
+      boolean bool = file.mkdir();
+      if(bool){
+        System.out.println("Directory created successfully");
+      }else{
+        System.out.println("Sorry could not create specified directory");
+      }
+
+      // root element
       Element root = document.createElement("User");
       document.appendChild(root);
-      Element nameElement = document.createElement(myDataResources.getString("ProfileNameTag"));
+
+      // name element
+      Element nameElement = document.createElement("Name");
       nameElement.appendChild(document.createTextNode(newProfileName));
       root.appendChild(nameElement);
-//      BufferedImage bufferedImage = ImageIO.read(photoFile);
-//      String copiedProfileImage = directory+"/"+newProfileName+"photo"; //
-//      File newFile = new File(copiedProfileImage);
-//      ImageIO.write(bufferedImage,"jpg",newFile);
+
+
       //copy image into the new user's folder
       Path src = Paths.get(photoFile.getPath());
       String imageName = photoFile.getPath().split("/")[photoFile.getPath().split("/").length-1];
       String copiedProfileImage = directory+"/"+imageName; //
       Path dest = Paths.get(copiedProfileImage);
       Files.copy(src, dest);
+
       //change the directory stored in the given Profile to point to this new copy of the image
-      //newProfile.setProfilePhoto(imageName);
-      Element imageElement = document.createElement(myDataResources.getString("ProfileImageTag"));
-      imageElement.appendChild(document.createTextNode(newProfileName+"photo"));
+
+      // Image element
+      Element imageElement = document.createElement("Image");
+      imageElement.appendChild(document.createTextNode(imageName));
       root.appendChild(imageElement);
+
+      // Saves element
+      // Saves are initially empty for new users
       Element saveStateElement = document.createElement("SavedGameStates");
       root.appendChild(saveStateElement);
+
+      // create the xml file
+      //transform the DOM Object to an XML File
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       DOMSource domSource = new DOMSource(document);
       StreamResult streamResult = new StreamResult(new File(filepath));
+
+      // If you use
+//             StreamResult result = new StreamResult(System.out);
+      // the output will be pushed to the standard output ...
+      // You can use that for debugging
+
       transformer.transform(domSource, streamResult);
+
     } catch (ParserConfigurationException | TransformerException | NullPointerException | IllegalArgumentException | IOException pce) {
       throw new OogaDataException("Cannot Create Profile");
     }

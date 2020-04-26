@@ -16,7 +16,7 @@
                         <Key>UpKey</Key>
                         <InputRequirement>Pressed</InputRequirement>
                         <IndependentAction>
-                            <Effect>Jump 0 -1.2 + 10.0</Effect>
+                            <Effect>Jump 0 -0.8 + 10.0</Effect>
                             <Effect>SetImage GoingUp</Effect>
                         </IndependentAction>
                     </InputCondition>
@@ -32,7 +32,27 @@
                 </Behavior>
                 <Behavior>
                     <IndependentAction>
-                        <Effect>Gravity 0. 0.1 + 10.0</Effect>
+                        <Effect>Gravity 0. 0.07 + 10.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeUp</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeDown</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -88,7 +108,7 @@
         <ImageEntity>
             <Name>PipeDown</Name>
             <Width>50</Width>
-            <Height>200</Height>
+            <Height>150</Height>
             <Image>pipe_down.png</Image>
         </ImageEntity>
     </Entities>
