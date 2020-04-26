@@ -32,6 +32,7 @@ public interface Game {
   /**
    * @return The String ID of the game's current level.
    */
+  @Deprecated
   String getCurrentLevelId();
 
   void setCameraShiftProperties(List<DoubleProperty> property);

@@ -72,6 +72,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
+
   private void loadGameLevel(Level level) {
     clearEntities();
     addAllEntities(level.getEntities());
@@ -336,6 +337,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   public void setVariable(String var, String value) {
     myVariables.put(var,value);
   }
+
 
   @Override
   public List<EntityInternal> getInternalEntities() {

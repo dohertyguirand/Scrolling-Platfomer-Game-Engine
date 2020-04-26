@@ -67,6 +67,5 @@ public interface GameDataReaderExternal {
    * It maps from the entities' names to their definitions.
    */
   Map<String, ImageEntityDefinition> getImageEntityMap(String gameName) throws OogaDataException;
-
   Level loadSavedLevel(String UserName, String Date) throws OogaDataException;
 }

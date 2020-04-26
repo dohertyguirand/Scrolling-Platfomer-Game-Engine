@@ -36,6 +36,7 @@ public class ProfileMenu extends ScrollMenu {
         super(languageResources,PROFILE_MENU_TITLE_KEY );
         makeViewProfiles();
         addProfileImages();
+        makeProfileButton();
     }
 
     /**
@@ -128,4 +129,10 @@ public class ProfileMenu extends ScrollMenu {
         addProfileImages();
     }
 
+    private void makeProfileButton() {
+        Button newProfileButton = new Button("Make a new Profile");
+//        newProfileButton.setOnAction(e -> setProfileSelected(profile));
+        myHBox.getChildren().add(newProfileButton);
+
+    }
 }

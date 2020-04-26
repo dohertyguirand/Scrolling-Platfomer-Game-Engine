@@ -17,8 +17,6 @@ public class StartMenuOptions {
 
     private static final Paint COLORBUTTON = Color.BLACK;
     private static final double Button_Space = 30;
-    private static final double MARGIN = 50;
-    private static final Color BACKGROUND_COLOR = Color.WHITE;
     private final BooleanProperty Display = new SimpleBooleanProperty(false);
     private final BooleanProperty Audio = new SimpleBooleanProperty(false);
     private final BooleanProperty Reset = new SimpleBooleanProperty(false);

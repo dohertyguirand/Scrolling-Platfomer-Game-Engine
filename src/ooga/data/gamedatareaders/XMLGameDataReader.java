@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
 import ooga.OogaDataException;
 import ooga.data.Thumbnail;
 import ooga.data.XMLDataReader;
@@ -21,16 +20,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import static java.lang.Class.forName;
 
 /**
  * @author braeden ward, caryshindell, sam thompson
  * XML specific data reader
  */
+
 public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader {
 
   /**
@@ -62,6 +60,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
    * @throws OogaDataException If the given name isn't in the library or the ID is not in the game.
    */
   @Override
+
   public Level loadNewLevel(String givenGameName, String givenLevelID) throws OogaDataException{
     List<EntityInternal> initialEntities = new ArrayList<>();
     File gameFile = findGame(givenGameName);

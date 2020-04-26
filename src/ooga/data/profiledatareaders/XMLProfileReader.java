@@ -77,6 +77,7 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
    * @return A list of Profiles according to the data stored in the Users folder. Returns an empty list if there are no
    * existing profiles
    */
+
   public List<OogaProfile> getProfiles() throws OogaDataException{
     ArrayList<OogaProfile> profileList = new ArrayList<>();
     for (File userFile : getAllFiles(DEFAULT_USERS_FILE)){

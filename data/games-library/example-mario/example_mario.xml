@@ -21,6 +21,7 @@
           <IndependentAction>
             <Effect>ResizeImage 100 150</Effect>
             <Effect>ResizeImage 120 180 1000</Effect>
+            <Effect>ShiftCamera 0.0 100.0</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Press left to go left.-->
@@ -474,6 +475,11 @@
         <ImageEntityInstance>
           <Name>Koopa</Name>
           <XPos>600</XPos>
+          <YPos>400</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Koopa</Name>
+          <XPos>800</XPos>
           <YPos>400</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
