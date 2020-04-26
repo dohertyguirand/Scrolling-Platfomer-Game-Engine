@@ -18,9 +18,29 @@
       <Width>100</Width>
       <Height>100</Height>
       <Image>dinosaur.png</Image>
-      <VariableNames>NotJumped</VariableNames>
-      <VariableValues>example-dino/dinosaur.png</VariableValues>
+      <VariableNames>Normal Crouched</VariableNames>
+      <VariableValues>example-dino/dinosaur.png example-dino/crouched-dino.png</VariableValues>
       <Behaviors>
+        <Behavior>
+          <InputCondition>
+            <Key>DownKey</Key>
+            <InputRequirement>false</InputRequirement>
+          </InputCondition>
+          <IndependentAction>
+            <Effect>SetImage Normal</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <InputCondition>
+            <Key>DownKey</Key>
+            <InputRequirement>Pressed</InputRequirement>
+            <InputRequirement>Active</InputRequirement>
+          </InputCondition>
+          <IndependentAction>
+            <Effect>SetImage Crouched</Effect>
+            <Effect>ChangeVariable Score + 100.0</Effect>
+          </IndependentAction>
+        </Behavior>
         <!--Gravity Behavior-->
         <Behavior>
           <IndependentAction>
@@ -50,9 +70,10 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>Jump 0.0 -1.2 + 10.0</Effect>
+            <Effect>ChangeVariable Score + 100.0</Effect>
           </IndependentAction>
         </Behavior>
-  <!--   Collision with enemies-->
+        <!--   Collision with enemies-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>Cactus</Entity2>
@@ -152,9 +173,10 @@
           <IndependentAction>
             <Effect>GoToLevel 1</Effect>
             <Effect>SetVariable Lives 1.0</Effect>
+            <Effect>SetVariable Score 0.0</Effect>
           </IndependentAction>
         </Behavior>
-    </Behaviors>
+      </Behaviors>
     </ImageEntity>
     <!--Cactus behavior -->
     <ImageEntity>
@@ -164,7 +186,7 @@
       <Image>cactus.png</Image>
       <Behavior>
         <IndependentAction>
-          <Effect>VelocityInput -.100 0 + .2200</Effect>
+          <Effect>VelocityInput -.100 0 + .3200</Effect>
         </IndependentAction>
       </Behavior>
     </ImageEntity>
@@ -176,7 +198,7 @@
       <Image>smallcactus.png</Image>
       <Behavior>
         <IndependentAction>
-          <Effect>VelocityInput -.100 0 + .2200</Effect>
+          <Effect>VelocityInput -.100 0 + .3200</Effect>
         </IndependentAction>
       </Behavior>
     </ImageEntity>
@@ -188,7 +210,7 @@
       <Image>bird.png</Image>
       <Behavior>
         <IndependentAction>
-          <Effect>VelocityInput -.100 0 + .2200</Effect>
+          <Effect>VelocityInput -.100 0 + .3200</Effect>
         </IndependentAction>
       </Behavior>
     </ImageEntity>
@@ -197,6 +219,10 @@
     <Variable>
       <Name>Lives</Name>
       <StartValue>1</StartValue>
+    </Variable>
+    <Variable>
+      <Name>Score</Name>
+      <StartValue>0</StartValue>
     </Variable>
   </Variables>
   <Levels>
@@ -213,6 +239,7 @@
         <ImageEntityInstance>
           <Name>DinoUser</Name>
           <XPos>100</XPos>
+          <Xgap>100</Xgap>
           <YPos>200</YPos>
           <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
           <VariableValues>100 200</VariableValues>
@@ -221,18 +248,34 @@
           <Name>Cactus</Name>
           <XPos>500</XPos>
           <YPos>304</YPos>
+          <Columns>10</Columns>
+          <Xgap>100</Xgap>
         </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>SmallCactus</Name>
-          <XPos>800</XPos>
-          <YPos>344</YPos>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Bird</Name>
-          <XPos>1100</XPos>
-          <YPos>300</YPos>
-        </ImageEntityInstance>
+        <!--        <ImageEntityInstance>-->
+        <!--          <Name>SmallCactus</Name>-->
+        <!--          <XPos>800</XPos>-->
+        <!--          <YPos>344</YPos>-->
+        <!--        </ImageEntityInstance>-->
+        <!--        <ImageEntityInstance>-->
+        <!--          <Name>Bird</Name>-->
+        <!--          <XPos>1100</XPos>-->
+        <!--          <YPos>250</YPos>-->
+        <!--        </ImageEntityInstance>-->
       </ImageEntityInstances>
+      <TextEntityInstances>
+        <TextEntityInstance>
+          <Text>Score: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>850</XPos>
+          <YPos>0</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <PropertyVariableDependency>
+            <VariableName>Score</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+      </TextEntityInstances>
     </Level>
   </Levels>
 </Game>
