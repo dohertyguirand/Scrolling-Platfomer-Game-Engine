@@ -15,6 +15,7 @@ Finish Date: 4/24/2020
 Hours Spent: 
 * css57 - 85
 * stt13 - 70+?
+* dg211 - 60+ 
 
 ### Primary Roles
 
@@ -25,6 +26,9 @@ and collision in back end, fireboy and watergirl game.
 stt13 - Game external & internal API, game loop implementation, Entity API and implementation, input processing,
 some game file reader and game API refactoring, some effects, helped set up conditional
 behaviors, Mario game.
+
+dg211 - View menus and instantiating a game (selecting a profile, a game, and a past save). 
+Profile API and implementation in view. Camera shifting. VVVVV game.
 
 ### Resources Used
 To evaluate string expressions like "5+5" we used an expression parser we got from
@@ -107,6 +111,9 @@ We assumed that the user would not want to use their inputs to control multiple 
 inputs would be buttons or mouse click (no interpretation of analogue like controllers/bumpers, and no
 interpretation of mouse movement or mouse button releases).
 
+We assumed that the game designer would be responsible for accommodating multiple languages. All of
+the non-game specific text can be put to another language. The text entities that are created by each game cannot. 
+
 **Interesting data files:** See ``data/games-library`` after our demo (by May 3).
 
 **Known Bugs:** As of 4/25/2020, a collision between two entities will cause all onscreen entities
@@ -132,3 +139,8 @@ core, which meant that fewer resources went to things like saving, loading, mult
 DLC, profiles. Also, in the specification, it lists 'Example Games' alongside the other 
 extra features. Does that mean that having the required number of games counts toward that? If not,
 why are they in the same list?
+
+(dg211) Same as above. I think that having a very expansive "core" project (being able to implement a wide range of games), 
+was a very important thing that we were able to accomplish. Now that our game design is very robust, in further development we
+could add new features like a social center. Our view would be able to handle these new features.
+
