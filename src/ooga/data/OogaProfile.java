@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author doherty guirand, ?
+ * @author doherty guirand, Chris Warren
  */
 public class OogaProfile implements Profile {
     private String myProfilePhotoPath;

@@ -19,9 +19,17 @@ import java.util.ResourceBundle;
  * @author chris warren
  */
 public class MakeProfileMenu extends ScrollMenu {
+    /**
+     * gets the resource bundles in english
+     */
     public MakeProfileMenu() {
         super(ResourceBundle.getBundle("ooga/view/Resources.English"), "Create a Profile");
     }
+
+    /**
+     * Creates a window to insert a username and upload a photo
+     * @return a gridpane that contains a username input and photo input
+     */
     private GridPane createRegistrationFormPane() {
         // Instantiate a new Grid Pane
         GridPane gridPane = new GridPane();
@@ -53,6 +61,10 @@ public class MakeProfileMenu extends ScrollMenu {
         return gridPane;
     }
 
+    /**
+     * Uses the gridpane to properly lay out what the new screen will look like to make a new profile
+     * @param gridPane the gridpane that was made to hold all the componenets
+     */
     private void addUIControls(GridPane gridPane) {
         // Add Header
         Label headerLabel = new Label("Registration Form");

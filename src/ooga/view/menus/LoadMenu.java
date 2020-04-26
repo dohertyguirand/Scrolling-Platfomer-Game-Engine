@@ -61,11 +61,20 @@ public class LoadMenu extends OptionMenu {
         return new Button(text);
     }
 
+    /**
+     * Set the date selected
+     * @param optionSelected - string representing which date was selected
+     */
     private void setDateSelected(String optionSelected) {
         this.dateSelected.set(null);
         this.dateSelected.set(optionSelected);
     }
 
+    /**
+     *
+     * @param backButton
+     * @return creates the buttons for New Game, and load saved game
+     */
     private List<Node> createButtons(Node backButton, GameDataReaderExternal dataReader, String profileName, String gameName) {
        List<Node> buttons = new ArrayList<>();
         Button button = new Button(NEWGAME);
@@ -82,6 +91,10 @@ public class LoadMenu extends OptionMenu {
         return buttons;
     }
 
+    /**
+     * Shows an alert for any error message
+     * @param message specific error message prvided
+     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(ERROR_MESSAGE);
