@@ -96,13 +96,14 @@ public class ProfileMenu extends ScrollMenu {
             if(photoFile != null){
                 myProfileReader.addNewProfile(profile.getProfileName(),profile.getFileChosen());
                 myProfiles.add(profile);
-                Button button = makeButton(new ImageView(profile.getProfilePath()), profile.getProfileName());
+                Button button = makeButton(new ImageView("src/ooga/view/Resources/profilephotos/NewProfile.jpg"), profile.getProfileName());
                 button.setOnAction(e -> setProfileSelected(profile));
                 myHBox.getChildren().add(button);
             }
         } catch (OogaDataException e) {
              showError(ERROR_MESSAGE);
         }catch (IllegalArgumentException d){
+            profile.setProfilePhotoPath(DEFAULT_IMAGE_PATH);
             Button button = makeButton(new ImageView(DEFAULT_IMAGE_PATH), profile.getProfileName());
             button.setOnAction(e -> setProfileSelected(profile));
             myHBox.getChildren().add(button);

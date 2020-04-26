@@ -16,6 +16,7 @@ Hours Spent:
 * css57 - 85
 * stt13 - 70+?
 * dg211 - 60+ 
+* ccw43 - 55+
 
 ### Primary Roles
 
@@ -29,6 +30,9 @@ behaviors, Mario game.
 
 dg211 - View menus and instantiating a game (selecting a profile, a game, and a past save). 
 Profile API and implementation in view. Camera shifting. VVVVV game.
+
+ccw43 - View API, setting up profile and selecting a profile in profile API, Game specific behaviors, flappy bird,
+dino game, doodle jump
 
 ### Resources Used
 To evaluate string expressions like "5+5" we used an expression parser we got from
@@ -116,8 +120,12 @@ the non-game specific text can be put to another language. The text entities tha
 
 **Interesting data files:** See ``data/games-library`` after our demo (by May 3).
 
-**Known Bugs:** As of 4/25/2020, a collision between two entities will cause all onscreen entities
+**Known Bugs:** 
+* As of 4/25/2020, a collision between two entities will cause all onscreen entities
 with a similar reaction to activate their effect. (Ex: Stomping on a koopa kills all onscreen koopas).
+* As of 4/26/2020, a new profile can only be added if the profile name is original, this bug is listed as a todo in XMLProfileReader. The
+new profile's photo will show up as default photo but shows up as selected photo when program is reran. 
+
 
 Extra credit: You can choose which game you want to play and get a preview of each from
 the selection screen. 
@@ -146,3 +154,7 @@ why are they in the same list?
 was a very important thing that we were able to accomplish. Now that our game design is very robust, in further development we
 could add new features like a social center. Our view would be able to handle these new features.
 
+(ccw43) I agree with the others, there were many game specific extensions that were more important than getting
+some of the extensions that were listed on the website. We did a good job of making it as flexible as possible to add whatever
+scroller game we would want, but there was not enough time to do so. It was harder working remotely because peer coding had to
+be done over zoom which was a new dynamic added.

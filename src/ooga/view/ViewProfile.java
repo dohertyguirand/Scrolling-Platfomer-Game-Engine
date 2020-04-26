@@ -202,6 +202,8 @@ public class ViewProfile{
 
     public File getFileChosen(){return fileChosen;}
 
+    public void setProfilePhotoPath(String path){profilePhotoPath = path;}
+
 
 
 }
