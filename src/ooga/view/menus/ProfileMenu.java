@@ -90,7 +90,7 @@ public class ProfileMenu extends ScrollMenu {
      }
 
 
-     public void addNewProfile(ViewProfile profile){
+     private void addNewProfile(ViewProfile profile){
         try {
             File photoFile = profile.getFileChosen();
             if(photoFile != null){
