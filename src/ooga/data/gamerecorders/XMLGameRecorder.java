@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author braeden ward, caryshindell, doherty guirand, sam thompson
+ */
 public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
 
   @Override

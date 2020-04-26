@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import ooga.game.controls.InputManager;
 
+/**
+ * @author sam thompson
+ */
 public class OogaInputManager implements InputManager {
 
   private final List<String> myActiveKeys;

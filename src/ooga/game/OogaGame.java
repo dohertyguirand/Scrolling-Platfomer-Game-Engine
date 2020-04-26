@@ -19,6 +19,9 @@ import ooga.game.controls.ControlsInterpreter;
 import ooga.game.controls.InputManager;
 import ooga.game.controls.inputmanagers.OogaInputManager;
 
+/**
+ * @author sam thompson, caryshindell, doherty guirand, braeden ward, chris warren
+ */
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
   public static final String CLICKED_ON_CODE = "ClickedOn";

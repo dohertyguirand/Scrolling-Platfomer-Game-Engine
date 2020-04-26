@@ -8,6 +8,9 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+/**
+ * @author sam thompson
+ */
 @SuppressWarnings("unused")
 public class SetVariableRandomlyEffect extends TimeDelayedEffect {
 

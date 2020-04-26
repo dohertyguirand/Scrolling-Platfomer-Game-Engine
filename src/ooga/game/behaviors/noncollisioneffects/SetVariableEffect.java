@@ -7,6 +7,13 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+/**
+ * @author caryshindell, sam thompson
+ * This will set a game or entity variable to the specified value.
+ * Note: the value can be substituted with a variable but the variable name cannot.
+ * Dependencies: time delayed effect, entity internal
+ * Example: set game variable score to value of entity variable THIS_LEVEL_SCORE
+ */
 @SuppressWarnings("unused")
 public class SetVariableEffect extends TimeDelayedEffect {
 

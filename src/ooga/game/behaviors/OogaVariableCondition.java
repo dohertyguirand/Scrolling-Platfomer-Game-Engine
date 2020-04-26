@@ -4,6 +4,9 @@ import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.behaviors.comparators.VariableComparator;
 
+/**
+ * @author sam thompson
+ */
 public class OogaVariableCondition implements VariableCondition {
 
   private final VariableComparator myComparator;

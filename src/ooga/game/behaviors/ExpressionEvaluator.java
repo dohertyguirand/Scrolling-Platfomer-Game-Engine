@@ -3,6 +3,7 @@ package ooga.game.behaviors;
 /**
  * I (CARY) DID NOT WRITE THIS CODE
  * it came from: https://stackoverflow.com/questions/3422673/how-to-evaluate-a-math-expression-given-in-string-form
+ * It is just an expression parser so that we can turn "5+5" into 10
  */
 public interface ExpressionEvaluator {
 

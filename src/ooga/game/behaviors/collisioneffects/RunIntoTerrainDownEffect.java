@@ -6,6 +6,15 @@ import ooga.game.GameInternal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author caryshindell, sam thompson
+ * This represents an effect where, typically, subject entity is moving down into the terrain entity
+ * The subject will get moved back directly above the terrain.
+ * Assumptions: this doesn't have to be executed by a CollisionDeterminedAction, but the results probably won't make
+ * sense otherwise.
+ * Dependencies: entity internal api, effect
+ * Example: mario is standing on the ground. This effect makes sure he doesn't fall through it due to gravity.
+ */
 @SuppressWarnings("unused")
 public class RunIntoTerrainDownEffect extends RunIntoTerrainEffect {
   public RunIntoTerrainDownEffect(List<String> args) {

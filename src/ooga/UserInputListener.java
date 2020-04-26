@@ -1,6 +1,7 @@
 package ooga;
 
 /**
+ * @author sam thompson
  * Uses the Observer pattern so that the engine can subscribe to input and handle user interaction
  * asynchronously (Tell, don't ask).
  */

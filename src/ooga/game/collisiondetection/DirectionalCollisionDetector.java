@@ -6,6 +6,14 @@ import java.util.ResourceBundle;
 import javafx.scene.shape.Rectangle;
 import ooga.Entity;
 
+/**
+ * @author caryshindell, sam thompson
+ * This is an implementation of a collision detector that uses 4 directions, right left up down.
+ * It uses the positions of the entity edges to see which direction the collision is likely in, so it will likely produce
+ * some bugs when entities are moving very quickly (especially if both are moving), or frame rate is low.
+ * Note that it ignores corner collisions which makes sense since a corner collision doesn't block vertically or horizontally.
+ * Dependencies: collision detector, entity
+ */
 public class DirectionalCollisionDetector implements CollisionDetector {
 
   public static final String RESOURCE_PATH = "ooga/game/collisiondetection/resources/collisiontypes";

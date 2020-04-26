@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * @author braeden ward, caryshindell
  * Handles saving the state of currently active games, or restoring save games.
- * Has methods that are also under the XMLGameDataReader title, since this might be a part of the
- * internal data API.
+ *
  */
 public interface GameRecorderExternal {
   /**

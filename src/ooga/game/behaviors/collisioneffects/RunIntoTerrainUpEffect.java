@@ -6,6 +6,15 @@ import ooga.game.GameInternal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author caryshindell, sam thompson
+ * This represents an effect where, typically, subject entity is moving left into the terrain entity
+ * The subject will get moved back directly right of the terrain.
+ * Assumptions: this doesn't have to be executed by a CollisionDeterminedAction, but the results probably won't make
+ * sense otherwise.
+ * Dependencies: entity internal api, effect
+ * Example: mario is running left into a wall. This effect makes sure he doesn't pass through it.
+ */
 @SuppressWarnings("unused")
 public class RunIntoTerrainUpEffect extends RunIntoTerrainEffect {
   public RunIntoTerrainUpEffect(List<String> args) {

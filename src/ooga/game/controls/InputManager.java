@@ -2,6 +2,9 @@ package ooga.game.controls;
 
 import java.util.List;
 
+/**
+ * @author sam thompson
+ */
 public interface InputManager {
 
   void keyPressed(String key);

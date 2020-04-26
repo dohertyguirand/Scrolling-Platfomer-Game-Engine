@@ -8,8 +8,14 @@ import ooga.game.GameInternal;
 import java.util.Map;
 
 /**
+ * @author caryshindell, sam thompson
+ * This is an abstract class that allows an effect to take in a time delay as its final optional argument.
+ * The effect will keep track of the time passed and only execute when the specified delay has passed.
  * One small design flaw with this is you can't control how the time passed gets reset. So if the effect is intended
  * to only happen when you've been colliding with x for 5 seconds, you can just collide with it for 2.5, stop, then 2.5 again
+ * Note: this also uses reflection to determine the default number of arguments for each effect, which are stored in a
+ * properties file
+ * Dependencies: effect
  */
 public abstract class TimeDelayedEffect implements Effect {
 

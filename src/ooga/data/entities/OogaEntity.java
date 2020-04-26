@@ -16,6 +16,14 @@ import ooga.game.behaviors.ConditionalBehavior;
 import ooga.Entity;
 import ooga.game.EntityInternal;
 
+/**
+ * @author caryshindell, sam thompson, doherty guirand
+ * This is the implementation of entity on the data side. It is essentially an object that defines how it is modified
+ * by the back end and interpreted by the front end.
+ * Assumptions: An entity can be blocked in 4 directions: left, right, up, down
+ * Dependencies: entity internal, behavior interface
+ * Example: an image or text entity
+ */
 public abstract class OogaEntity implements Entity, EntityInternal {
 
   public static final String CONSTANTS_FILEPATH = "ooga/data/resources/entityconstants";

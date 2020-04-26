@@ -6,6 +6,12 @@ import ooga.game.GameInternal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author caryshindell, sam thompson
+ * This abstraction is what happens after a behavior passes its condition checks. The action type determines how the
+ * other entity(s) is determined, if any, and then executes the list of effects on each entity/other entity pair.
+ * Dependencies: effect, entity internal
+ */
 public abstract class Action {
 
   final List<Effect> myEffects;

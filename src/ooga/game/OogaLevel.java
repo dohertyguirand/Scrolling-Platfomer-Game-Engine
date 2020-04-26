@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import java.util.List;
 
 /**
- *
+ * @author sam thompson
  */
 public class OogaLevel implements Level{
     private final ObservableList<EntityInternal> myEntities;

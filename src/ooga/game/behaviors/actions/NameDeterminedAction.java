@@ -8,6 +8,7 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
 /**
+ * @author sam thompson, caryshindell
  * NameDeterminedAction: executes the effect on all entities with the specified name "howToFind"
  */
 @SuppressWarnings("unused")

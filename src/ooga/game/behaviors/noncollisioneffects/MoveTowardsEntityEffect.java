@@ -9,6 +9,9 @@ import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+/**
+ * @author sam thompson
+ */
 public class MoveTowardsEntityEffect extends TimeDelayedEffect {
 
   public static final double LARGE_DOUBLE_VALUE = 100000000.0;

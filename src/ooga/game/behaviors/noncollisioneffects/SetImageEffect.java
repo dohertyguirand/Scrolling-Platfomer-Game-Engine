@@ -9,6 +9,15 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 import java.util.List;
 
+/**
+ * @author caryshindell, sam thompson
+ * This effect changes the image location property of the entity. This will cause the corresponding view entity to
+ * set the image to the file at the image location. For an entity that is not an image it will not do anything.
+ * Assumptions/Notes: if the image location is invalid, the entity will still be there but will have no image (and possibly
+ * have 1 pixel size...)
+ * Dependencies: time delayed effect, entity internal
+ * Example: when mario is moving left he sets his image to his entity variable Facing_Left_Image
+ */
 @SuppressWarnings("unused")
 public class SetImageEffect extends TimeDelayedEffect {
 

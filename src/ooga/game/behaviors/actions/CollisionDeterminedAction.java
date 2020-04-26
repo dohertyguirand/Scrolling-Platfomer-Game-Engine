@@ -9,6 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This represents an action where the other entity parameter is determined by looking at the subject's collisions,
+ * and comparing that to arguments upon creation.
+ * Assumptions: this class is only accessed via reflection. Also note that it is distinctly different from a behavior
+ * with a collision condition.
+ * Dependencies: game internal, entity internal, action, effect
+ * Example: mario has a behavior with some conditions, and the action is a collision determined action based on what
+ * brick he is colliding with. If the conditions are satisfied this action will determine which brick instance mario
+ * is colliding with and run the specified list of effects, passing in the brick instance as other entity parameter.
+ */
 @SuppressWarnings("unused")
 public class CollisionDeterminedAction extends Action {
 

@@ -2,6 +2,10 @@ package ooga;
 
 import java.util.Map;
 
+/**
+ * @author doherty guirand
+ *
+ */
 public interface Profile {
 
     //Can change stats to be another structure that hold more data points such as (kills,deaths,coins). Probably create a stats object

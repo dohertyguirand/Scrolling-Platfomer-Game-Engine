@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author sam thompson, caryshindell
+ */
 @SuppressWarnings("unused")
 public class ChangePositionEffect extends TimeDelayedEffect {
 

@@ -15,6 +15,13 @@ import ooga.view.menus.ProfileMenu;
 
 import java.util.ResourceBundle;
 
+/**
+ * @author caryshindell, doherty guirand, chris warren
+ * THIS IS THE MASTER CONTROLLER. The program is launched from here. It creates the starting menus.
+ * Game language is also configurable.
+ * This decides on format for reading files.
+ * Dependencies: data reader external, menus
+ */
 public class Visualizer extends Application {
   private final ResourceBundle GAME_LANGUAGE = ResourceBundle.getBundle("ooga/view/Resources/languages.English");
   private final String KEYBOARD_INPUTS_FILE_PATH = "ooga/game/controls/inputs/keyboard";

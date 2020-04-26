@@ -9,7 +9,12 @@ import javafx.scene.image.ImageView;
 
 import java.util.*;
 
-
+/**
+ * @author caryshindell, doherty guirand
+ * This class represents the menu that appears in the UI when the user clicks the pause button.
+ * It uses property bindings to communicate back to ViewerGame what buttons were pressed.
+ * Dependencies: menu package
+ */
 public class PauseMenu extends OptionMenu {
   private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
   private final String ICON_STYLE = myResources.getString("iconcss");

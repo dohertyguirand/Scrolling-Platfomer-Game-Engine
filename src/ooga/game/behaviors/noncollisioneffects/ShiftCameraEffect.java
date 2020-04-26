@@ -7,6 +7,12 @@ import ooga.game.behaviors.TimeDelayedEffect;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author caryshindell
+ * This shifts the camera by a specified x and y (which can be varaibles).
+ * Assumptions/Notes: this should be coupled with the ability to make entities stationary/nonstationary.
+ * Dependencies: time delayed effect, entity internal, game internal
+ */
 @SuppressWarnings("unused")
 public class ShiftCameraEffect extends TimeDelayedEffect {
 

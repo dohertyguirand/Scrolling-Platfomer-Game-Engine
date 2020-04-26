@@ -13,6 +13,9 @@ import javafx.scene.text.Text;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @author doherty guirand
+ */
 public abstract class OptionMenu extends BorderPane {
     private final ResourceBundle myResources = ResourceBundle.getBundle("ooga/view/Resources.config");
     private final double WINDOW_HEIGHT = Double.parseDouble(myResources.getString("windowHeight"));

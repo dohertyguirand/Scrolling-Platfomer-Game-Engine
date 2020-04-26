@@ -81,6 +81,8 @@ Known Bugs:
 Extra credit: You can choose which game you want to play and get a preview of each from
 the selection screen.
 
+Game language can be changed in the UI.
+
 
 ### Impressions
 

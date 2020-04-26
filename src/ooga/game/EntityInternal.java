@@ -6,6 +6,7 @@ import ooga.Entity;
 import ooga.game.behaviors.ConditionalBehavior;
 
 /**
+ * @author sam thompson
  * The side of an entity that behaviors can see. Provides tools to modify or destroy
  * the entity.
  */

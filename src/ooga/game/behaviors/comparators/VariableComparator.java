@@ -1,5 +1,8 @@
 package ooga.game.behaviors.comparators;
 
+/**
+ * @author sam thompson
+ */
 public interface VariableComparator  {
 
   /**

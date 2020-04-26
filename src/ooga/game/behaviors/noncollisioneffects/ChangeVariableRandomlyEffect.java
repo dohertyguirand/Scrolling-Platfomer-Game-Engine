@@ -11,6 +11,9 @@ import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+/**
+ * @author sam thompson
+ */
 @SuppressWarnings("unused")
 public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
 

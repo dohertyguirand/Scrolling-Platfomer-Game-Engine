@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author braeden ward, caryshindell
+ * This represents the data reader internal api, and encapsulates methods that every file-specific data reader will need.
+ */
 public interface DataReader {
 
   /**

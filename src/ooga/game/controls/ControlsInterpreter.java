@@ -1,5 +1,8 @@
 package ooga.game.controls;
 
+/**
+ * @author sam thompson
+ */
 public interface ControlsInterpreter {
 
   /**

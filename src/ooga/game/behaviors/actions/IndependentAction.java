@@ -10,6 +10,7 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
 
 /**
+ * @author sam thompson, caryshindell
  * IndependentAction: no other entity is necessary for the effect
  */
 @SuppressWarnings("unused")

@@ -1,6 +1,8 @@
 package ooga.game.behaviors.comparators;
 
-
+/**
+ * @author sam thompson
+ */
 public class VariableLessEquals implements VariableComparator {
 
   @Override

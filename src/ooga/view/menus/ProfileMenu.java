@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @author doherty guirand, chris warren
+ */
 public class ProfileMenu extends ScrollMenu {
     private final ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
     private List<ViewProfile> myProfiles = new ArrayList<>();

@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import java.util.List;
 
 /**
+ * @author sam thompson, caryshindell
  * This is the external game api
  * An instance of a loaded game that holds all levels and global game data. Must be populated
  * with levels and any relevant persistent data like the starting number of lives. Handles

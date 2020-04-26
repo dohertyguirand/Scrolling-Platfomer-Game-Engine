@@ -5,7 +5,9 @@ import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
 /**
+ * @author caryshindell
  * Determines how an entity reacts to in-game user input of any kind.
+ * Dependencies: entity internal, game internal
  * Example: In Super Mario Bros, Mario can be moved with left and right keys.
  * Relies on a mapping (usually data-driven) between Strings and types of inputs.
  */

@@ -6,6 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author caryshindell, sam thompson, braeden ward
+ * This is the outline of an entity that can be defined in the data files, to make it faster to instantiate specific
+ * instances. Note that it contains behaviors and does not contain position.
+ * Assumptions: we are essentially assuming that all image entities with the same name/type have the same behaviors
+ * Note: We do not have text entity definitions, only image entity definitions.
+ * Dependencies: ConditionalBehavior interface
+ * Example: mario has a set image, width, height, behaviors, and camera stationary status.
+ */
 public class ImageEntityDefinition {
     private final double myHeight;
     private final double myWidth;

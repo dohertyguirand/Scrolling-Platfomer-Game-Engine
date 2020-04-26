@@ -6,6 +6,15 @@ import java.util.Map.Entry;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
+/**
+ * @author caryshindell, sam thompson
+ * This is the concrete implementation of a behavior. It essentially is "if these conditions are true do these actions"
+ * Note: you can use the special key SELF to specify the subject entity as the first entity in a collision condition
+ * Dependencies: entity internal, game internal, action, conditional behavior
+ * Example: fireboy has behavior "if game variables red diamonds is 1 and bluedimaonds is 1 and I am colliding with terrain
+ * in downward direction and I am colliding with red door in any direction and user is pressing down key and watergirl is
+ * colliding with blue door in any direction, then: do action(s) with effect(s) go to next level.
+ */
 public class BehaviorInstance implements ConditionalBehavior {
 
   public static final String ANY_DIRECTION = "ANY";

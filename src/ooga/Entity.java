@@ -6,6 +6,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 
 /**
+ * @author sam thompson, caryshindell, doherty guirand, braeden ward
  * Represents any in-game object that has a physical place in the level.
  * Examples include terrain tiles, the player in a platformer, or an enemy.
  * Relies on access to the list of all entities if it wants to do

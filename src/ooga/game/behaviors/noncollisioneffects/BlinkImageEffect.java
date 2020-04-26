@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * @author caryshindell
  * Blinks the image between 2 different images at a set rate, until total blink time has passed.
  * Note: this does not implement TimeDelayedEffect because it has its own time delays
  * This can be coupled with another time delayed effect like respawn (but this effect must complete before respawn)
+ * Dependencies: effect, entity internal
+ * Example: when fireboy touches water his image flickers for a few seconds to show that he died
  */
 @SuppressWarnings("unused")
 public class BlinkImageEffect implements Effect {

@@ -7,6 +7,13 @@ import ooga.game.behaviors.noncollisioneffects.SetPositionEffect;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author caryshindell
+ * This is the same as SetPositionEffect but it executes it on other entity instead of subject.
+ * We were thinking of having more effects like this, but instead we decided it would probably be sufficient to just
+ * have variable determined actions automaticaly execute their effects on other entity. However we kept this here
+ * in case we wanted to ever use it.
+ */
 @SuppressWarnings("unused")
 public class SetOtherPositionEffect extends SetPositionEffect {
   /**

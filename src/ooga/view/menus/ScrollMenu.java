@@ -20,6 +20,9 @@ import ooga.data.profiledatareaders.XMLProfileReader;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * @author chris warren, caryshindell, doherty guirand
+ */
 public abstract class ScrollMenu extends BorderPane {
 
     protected final ProfileReaderExternal myProfileReader;

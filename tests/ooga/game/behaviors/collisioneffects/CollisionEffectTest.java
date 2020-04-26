@@ -20,6 +20,9 @@ import ooga.game.controls.KeyboardControls;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author caryshindell
+ */
 class CollisionEffectTest {
 
   public static final String GAME_NAME = "Super Mario Bros";

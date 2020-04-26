@@ -28,6 +28,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import static java.lang.Class.forName;
 
 /**
+ * @author braeden ward, caryshindell, sam thompson
  * XML specific data reader
  */
 public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader {

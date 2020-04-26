@@ -24,6 +24,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * @author doherty guirand, braeden ward, caryshindell
+ */
 public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, ProfileReaderInternal {
 
   /**

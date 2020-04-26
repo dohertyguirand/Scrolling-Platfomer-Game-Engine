@@ -14,6 +14,16 @@ import ooga.view.entities.ViewEntity;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @author caryshindell
+ * This is the view's knowledge of an entity that holds text. It does not extend Text because of technical
+ * problems that creates with property bindings.
+ * The position, size, and text properties are all bound to the back end entity's properties. Image is updated whenever
+ * the file path changes.
+ * The font is dynamically resized so the text fits the desired boundaries.
+ * Note: color effect is used to set dark mode. There is a y offset in order to create a deadzone for the pause and dark mode buttons.
+ * Dependencies: ViewEntity, TextEntity, entity
+ */
 public class ViewTextEntity implements ViewEntity {
 
   private final Text text = new Text();

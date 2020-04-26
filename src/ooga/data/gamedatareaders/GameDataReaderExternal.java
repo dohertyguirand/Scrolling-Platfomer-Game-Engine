@@ -10,9 +10,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
+ * @author sam thompson, braeden ward, caryshindell
  * Handles the interaction with game data files, including interpretation and writing.
- *  * Forms the external side of data interaction so that the rest of the program doesn't
- *  * need to know how we're storing games.
+ *  Forms the external side of game data interaction so that the rest of the program doesn't
+ *  need to know how we're storing games.
  */
 public interface GameDataReaderExternal {
 

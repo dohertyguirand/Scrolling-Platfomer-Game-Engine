@@ -10,6 +10,9 @@ import javafx.scene.paint.Paint;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author chris warren, doherty guirand, caryshindell
+ */
 public class StartMenuOptions {
 
     private static final Paint COLORBUTTON = Color.BLACK;

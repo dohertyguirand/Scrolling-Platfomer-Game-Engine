@@ -12,6 +12,14 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 import javax.script.ScriptException;
 
+/**
+ * @author caryshindell, sam thompson
+ * This effect changes the value of a variable based on its existing value, and the operator and value given.
+ * Assumptions: this is called through reflection. Note that it can substitute in variable values for the operator
+ * and increment, but not the variable name. It can change either entity variable or game variable.
+ * Dependencies: TimeDelayedEffect, entity internal, ExpressionEvaluator
+ * Example: ChangeVariable score + 1.0 should add one to the game variable score
+ */
 @SuppressWarnings("unused")
 public class ChangeVariableEffect extends TimeDelayedEffect {
 

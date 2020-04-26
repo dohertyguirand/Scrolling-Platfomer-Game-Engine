@@ -15,6 +15,9 @@ import javafx.scene.text.FontWeight;
 
 import java.util.ResourceBundle;
 
+/**
+ * @author chris warren
+ */
 public class MakeProfileMenu extends ScrollMenu {
     public MakeProfileMenu() {
         super(ResourceBundle.getBundle("ooga/view/Resources.English"), "Create a Profile");

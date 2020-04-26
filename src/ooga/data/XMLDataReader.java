@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
+ * @author caryshindell, braeden ward
  * this is part of internal API. it houses the methods that are common to any type of XML data reader (e.g. XMLGameDataReader)
  */
 public interface XMLDataReader extends DataReader {

@@ -6,6 +6,9 @@ import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+/**
+ * @author sam thompson
+ */
 @SuppressWarnings("unused")
 public class RestartLevelEffect extends TimeDelayedEffect {
 

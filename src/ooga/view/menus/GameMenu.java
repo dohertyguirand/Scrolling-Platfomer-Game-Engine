@@ -19,6 +19,9 @@ import ooga.view.ViewProfile;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @author chris warren, doherty guirand, caryshindell
+ */
 public class GameMenu extends ScrollMenu{
 
   public static final String PROFILE_VIEW_TITLE = "ProfileViewTitle";

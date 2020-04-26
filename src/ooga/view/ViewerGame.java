@@ -39,6 +39,17 @@ import java.util.List;
 import java.util.ResourceBundle;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 
+/**
+ * @author caryshindell, doherty guirand
+ * This class represents the viewer's interpretation of a single game instance. It creates the game in back end and handles
+ * the basic UI interactions, including displaying and updating entities, and animation.
+ * Note: this is the class that decides on/specifies file format (e.g. xml), collision detector type, and keyboard controls.
+ *  Currently we only have on implementation for each of those but if others were added this is where that decision is made.
+ *  (Some are also made in Visualizer but they're passed through here...)
+ * Dependencies: OogaGame, entity, menus, DirectionalCollisionDetector, data readers, effect
+ * Example: mario is selected from start menu in Visualizer. This creates a new ViewerGame for that mario game. Another mario
+ * game could still be separately launched.
+ */
 public class ViewerGame {
 
   private static final double MILLISECOND_DELAY = 33.33;

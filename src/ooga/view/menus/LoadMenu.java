@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * @author doherty guirand, chris warren
+ */
 public class LoadMenu extends OptionMenu {
 
     public static final String NEW_GAME = "NewGame";

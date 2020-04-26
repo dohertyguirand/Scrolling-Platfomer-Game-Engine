@@ -12,6 +12,9 @@ import ooga.game.behaviors.Effect;
 import ooga.game.behaviors.ExpressionEvaluator;
 import ooga.game.behaviors.TimeDelayedEffect;
 
+/**
+ * @author sam thompson, caryshindell
+ */
 public class ChangeVelocityEffect extends TimeDelayedEffect {
 
   public static final double DEFAULT_ACCELERATION = 0.0;

@@ -17,6 +17,7 @@ import ooga.game.behaviors.comparators.VariableComparator;
 import ooga.game.behaviors.comparators.VariableEquals;
 
 /**
+ * @author sam thompson, caryshindell
  * VariableDeterminedAction: determined by entity variables. Action will be executed on any entity that has a matching variable
  * NOTE: this automatically switches the order of subject and otherEntity when executing the effects
  * Example: move all entities who have entity variable "movable" set to "true"

@@ -11,7 +11,10 @@ import java.util.*;
 import static java.lang.Class.forName;
 
 /**
+ * @author caryshindell
  * this interface essentially houses all game data reader methods that are not specific to a certain file type (e.g. xml)
+ * Assumptions: there are action classes and effects classes set up so that the reflection here will work
+ * Dependencies: action, effect
  */
 public interface GameDataReaderInternal extends GameDataReaderExternal {
 

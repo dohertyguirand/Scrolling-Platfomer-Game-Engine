@@ -3,6 +3,7 @@ package ooga.game;
 import javafx.collections.ObservableList;
 
 /**
+ * @author sam thompson
  * Represents one in-game level, including its end conditions and list of entities.
  */
 public interface Level {

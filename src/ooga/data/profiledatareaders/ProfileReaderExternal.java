@@ -6,6 +6,11 @@ import ooga.data.OogaProfile;
 import java.io.File;
 import java.util.List;
 
+/**
+ * @author caryshindell, braeden ward
+ * This is the external api of a profile data reader. It deals with reading user profile data.
+ * Dependencies: OogaProfile
+ */
 public interface ProfileReaderExternal {
 
   /**

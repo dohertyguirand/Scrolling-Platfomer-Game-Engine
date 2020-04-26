@@ -4,6 +4,7 @@ import java.util.Collection;
 import ooga.Entity;
 
 /**
+ * @author sam thompson, caryshindell
  * Detects collisions between entities. Can likely be static.
  * May use JavaFX algorithms, so should be encapsulated from the back end.
  */

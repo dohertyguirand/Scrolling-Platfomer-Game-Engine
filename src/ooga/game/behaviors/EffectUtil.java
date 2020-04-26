@@ -2,6 +2,9 @@ package ooga.game.behaviors;
 
 import java.util.List;
 
+/**
+ * @author sam thompson
+ */
 public class EffectUtil {
 
   private EffectUtil() {

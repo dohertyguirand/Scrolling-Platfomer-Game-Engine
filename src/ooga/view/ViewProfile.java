@@ -13,7 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-
+/**
+ * @author doherty guirand
+ */
 public class ViewProfile{
     public static final int ZERO_INDEX = 0;
     public static final int FIRST_INDEX = 1;

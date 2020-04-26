@@ -8,6 +8,7 @@ import ooga.game.GameInternal;
 import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
+ * @author sam thompson
  * Exactly the same as CreateEntityRelative, but allows you to set the width and height of
  * the new entity.
  */

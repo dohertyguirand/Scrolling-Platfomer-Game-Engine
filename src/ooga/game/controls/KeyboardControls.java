@@ -2,6 +2,9 @@ package ooga.game.controls;
 
 import java.util.ResourceBundle;
 
+/**
+ * @author sam thompson
+ */
 public class KeyboardControls implements ControlsInterpreter {
 
   public static final String UNKNOWN_INPUT = "UNKNOWN";

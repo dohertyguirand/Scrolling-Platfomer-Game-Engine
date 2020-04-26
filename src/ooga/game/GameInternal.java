@@ -4,6 +4,9 @@ import java.util.List;
 
 import java.util.Map;
 
+/**
+ * @author sam thompson, doherty guirand, caryshindell
+ */
 public interface GameInternal {
 
   void createEntity(String type, List<Double> position);
