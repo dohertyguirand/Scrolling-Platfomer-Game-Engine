@@ -225,14 +225,10 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private void updateAutomaticEntityVariables() {
     myVariables.put("XVelocity", String.valueOf(myVelocity.get(0)));
     myVariables.put("YVelocity", String.valueOf(myVelocity.get(1)));
-    myVariables.put("XPos", String.valueOf(this.xPos));
-    myVariables.put("YPos", String.valueOf(this.yPos));
-    myVariables.put("Width", String.valueOf(this.width));
-    myVariables.put("Height", String.valueOf(this.height));
-//    myVariables.put("XPos", String.valueOf(this.xPos.get()));
-//    myVariables.put("YPos", String.valueOf(this.yPos.get()));
-//    myVariables.put("Width", String.valueOf(this.width.get()));
-//    myVariables.put("Height", String.valueOf(this.height.get()));
+    myVariables.put("XPos", String.valueOf(this.xPos.get()));
+    myVariables.put("YPos", String.valueOf(this.yPos.get()));
+    myVariables.put("Width", String.valueOf(this.width.get()));
+    myVariables.put("Height", String.valueOf(this.height.get()));
   }
 
   @Override
