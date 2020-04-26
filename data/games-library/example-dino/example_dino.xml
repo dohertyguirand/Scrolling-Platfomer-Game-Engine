@@ -28,6 +28,7 @@
           </InputCondition>
           <IndependentAction>
             <Effect>SetImage Normal</Effect>
+            <Effect>Resize 100 100</Effect>
           </IndependentAction>
         </Behavior>
         <Behavior>
@@ -38,6 +39,15 @@
           </InputCondition>
           <IndependentAction>
             <Effect>SetImage Crouched</Effect>
+            <Effect>Resize 100 75</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <InputCondition>
+            <Key>DownKey</Key>
+            <InputRequirement>Pressed</InputRequirement>
+          </InputCondition>
+          <IndependentAction>
             <Effect>ChangeVariable Score + 100.0</Effect>
           </IndependentAction>
         </Behavior>
@@ -248,19 +258,23 @@
           <Name>Cactus</Name>
           <XPos>500</XPos>
           <YPos>304</YPos>
-          <Columns>10</Columns>
-          <Xgap>100</Xgap>
+          <Columns>40</Columns>
+          <XGap>1000</XGap>
         </ImageEntityInstance>
-        <!--        <ImageEntityInstance>-->
-        <!--          <Name>SmallCactus</Name>-->
-        <!--          <XPos>800</XPos>-->
-        <!--          <YPos>344</YPos>-->
-        <!--        </ImageEntityInstance>-->
-        <!--        <ImageEntityInstance>-->
-        <!--          <Name>Bird</Name>-->
-        <!--          <XPos>1100</XPos>-->
-        <!--          <YPos>250</YPos>-->
-        <!--        </ImageEntityInstance>-->
+        <ImageEntityInstance>
+          <Name>SmallCactus</Name>
+          <XPos>950</XPos>
+          <YPos>344</YPos>
+          <Columns>40</Columns>
+          <XGap>1000</XGap>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Bird</Name>
+          <XPos>1300</XPos>
+          <YPos>275</YPos>
+          <Columns>40</Columns>
+          <XGap>1000</XGap>
+        </ImageEntityInstance>
       </ImageEntityInstances>
       <TextEntityInstances>
         <TextEntityInstance>
