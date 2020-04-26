@@ -17,8 +17,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+
 
 public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, ProfileReaderInternal {
 
@@ -39,18 +44,18 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
       Element nameElement = document.createElement(myDataResources.getString("ProfileNameTag"));
       nameElement.appendChild(document.createTextNode(newProfileName));
       root.appendChild(nameElement);
-      BufferedImage bufferedImage = ImageIO.read(photoFile);
-      String copiedProfileImage = directory+"/"+newProfileName+"photo"; //
-      File newFile = new File(copiedProfileImage);
-      ImageIO.write(bufferedImage,"png",newFile);
-//      //copy image into the new user's folder
-//      Path src = Paths.get(newProfileImage);
-//      String imageName = newProfileImage.split("/")[newProfileImage.split("/").length-1];
-//      String copiedProfileImage = directory+"/"+imageName; //
-//      Path dest = Paths.get(copiedProfileImage);
-//      Files.copy(src, dest);
-//      //change the directory stored in the given Profile to point to this new copy of the image
-//      newProfile.setProfilePhoto(imageName);
+//      BufferedImage bufferedImage = ImageIO.read(photoFile);
+//      String copiedProfileImage = directory+"/"+newProfileName+"photo"; //
+//      File newFile = new File(copiedProfileImage);
+//      ImageIO.write(bufferedImage,"jpg",newFile);
+      //copy image into the new user's folder
+      Path src = Paths.get(photoFile.getPath());
+      String imageName = photoFile.getPath().split("/")[photoFile.getPath().split("/").length-1];
+      String copiedProfileImage = directory+"/"+imageName; //
+      Path dest = Paths.get(copiedProfileImage);
+      Files.copy(src, dest);
+      //change the directory stored in the given Profile to point to this new copy of the image
+      //newProfile.setProfilePhoto(imageName);
       Element imageElement = document.createElement(myDataResources.getString("ProfileImageTag"));
       imageElement.appendChild(document.createTextNode(newProfileName+"photo"));
       root.appendChild(imageElement);
@@ -70,6 +75,7 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
    * @return A list of Profiles according to the data stored in the Users folder. Returns an empty list if there are no
    * existing profiles
    */
+
   public List<OogaProfile> getProfiles() throws OogaDataException{
     ArrayList<OogaProfile> profileList = new ArrayList<>();
     for (File userFile : getAllFiles(DEFAULT_USERS_FILE)){

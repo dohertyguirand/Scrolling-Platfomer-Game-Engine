@@ -11,6 +11,7 @@
             <VariableNames>FacingRight FacingLeft</VariableNames>
             <VariableValues>doodle_jump/doodle_right.png doodle_jump/doodle_left.png</VariableValues>
             <Behaviors>
+                <!-- Collision with Blue Platform  -->
                 <Behavior>
                     <RequiredCollisionDetection>
                         <Entity1>Doodle</Entity1>
@@ -23,6 +24,16 @@
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>BluePlatform</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>Jump 0.0 -1.50 + 10.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- Collision with Green Platform  -->
+                <Behavior>
                     <RequiredCollisionDetection>
                         <Entity1>Doodle</Entity1>
                         <Entity2>GreenPlatform</Entity2>
@@ -33,6 +44,16 @@
                         <Effect>TerrainCollisionDown</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>GreenPlatform</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>Jump 0.0 -1.50 + 10.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- Collision with White Platform  -->
                 <Behavior>
                     <RequiredCollisionDetection>
                         <Entity1>Doodle</Entity1>
@@ -45,16 +66,17 @@
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
-                    <RequiredCollisionDetection>
-                        <Entity1>Doodle</Entity1>
-                        <Entity2>CrackedPlatform</Entity2>
+                    <RequiredCollisionCondition>
+                        <Entity2>WhitePlatform</Entity2>
                         <Direction>Down</Direction>
-                    </RequiredCollisionDetection>
-                    <CollisionDeterminedAction>
-                        <Args>CrackedPlatform Down</Args>
-                        <Effect>TerrainCollisionDown</Effect>
-                    </CollisionDeterminedAction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>Jump 0.0 -1.20 + 20.0</Effect>
+                    </IndependentAction>
                 </Behavior>
+                <!-- Collision with Cracked Platform  -->
+
+                <!-- Collision with Monster  -->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>Monster</Entity2>
@@ -67,6 +89,27 @@
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
+                    <RequiredCollisionDetection>
+                        <Entity1>Doodle</Entity1>
+                        <Entity2>Monster</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionDetection>
+                    <CollisionDeterminedAction>
+                        <Args>Monster Down</Args>
+                        <Effect>TerrainCollisionDown</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Monster</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>Jump 0.0 -1.50 + 10.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- Collision with Void  -->
+                <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>Void</Entity2>
                         <Direction>ANY</Direction>
@@ -75,74 +118,114 @@
                         <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!-- Left Key Input -->
                 <Behavior>
                     <InputCondition>
                         <Key>LeftKey</Key>
-                        <InputRequirement>true</InputRequirement>
+                        <InputRequirement>Active</InputRequirement>
+                        <InputRequirement>Pressed</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput -.1600 0 .3200</Effect>
+                        <Effect>VelocityInput -.1600 0 + .3200</Effect>
                         <Effect>SetImage FacingLeft</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!-- Right Key Input -->
                 <Behavior>
                     <InputCondition>
                         <Key>RightKey</Key>
-                        <InputRequirement>true</InputRequirement>
+                        <InputRequirement>Active</InputRequirement>
+                        <InputRequirement>Pressed</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput .1600 0 .3200</Effect>
+                        <Effect>VelocityInput .1600 0 + .3200</Effect>
                         <Effect>SetImage FacingRight</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--Gravity Behavior-->
                 <Behavior>
                     <IndependentAction>
-                        <Effect>Gravity 0 0.025</Effect>
+                        <Effect>Gravity 0 0.05 + 20</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
+        <!-- Green Platform Behavior  -->
         <ImageEntity>
             <Name>GreenPlatform</Name>
             <Width>75</Width>
             <Height>20</Height>
             <Image>greenplatform.png</Image>
         </ImageEntity>
+        <!-- Blue Platform Behavior  -->
         <ImageEntity>
             <Name>BluePlatform</Name>
             <Width>75</Width>
             <Height>20</Height>
             <Image>blueplatform.png</Image>
         </ImageEntity>
+        <!-- Monster Behavior  -->
         <ImageEntity>
             <Name>Monster</Name>
             <Width>75</Width>
             <Height>50</Height>
             <Image>monster.png</Image>
+            <Behaviors>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Doodle</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>RemoveSelf</Effect>
+                    </IndependentAction>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
+        <!-- Void Behavior  -->
         <ImageEntity>
             <Name>Void</Name>
             <Width>75</Width>
             <Height>50</Height>
             <Image>void.png</Image>
         </ImageEntity>
+        <!-- White Platform Behavior  -->
         <ImageEntity>
             <Name>WhitePlatform</Name>
             <Width>75</Width>
             <Height>20</Height>
             <Image>whiteplatform.png</Image>
-            <VariableNames>TouchedOnce TouchedTwice</VariableNames>
-            <VariableValues>doodle_jump/yellowplatform.png doodle_jump/redplatform.png</VariableValues>
-            <Behavior>
-                <RequiredCollisionCondition>
-                    <Entity2>Doodle</Entity2>
-                    <Direction>Up</Direction>
-                </RequiredCollisionCondition>
-                <IndependentAction>
-                    <Effect>SetImage TouchedOnce</Effect>
-                </IndependentAction>
-            </Behavior>
+            <VariableNames>TouchedOnce TouchedTwice count</VariableNames>
+            <VariableValues>doodle_jump/yellowplatform.png doodle_jump/redplatform.png 0</VariableValues>
+            <Behaviors>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Doodle</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>SetImage TouchedTwice</Effect>
+                        <Effect>ChangeVariable count + 1.0</Effect>
+                        <Effect>ChangeVariable score + 1.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>Doodle</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <EntityVariableCondition>
+                        <EntityNameOrID>WhitePlatform</EntityNameOrID>
+                        <VariableName>count</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetImage TouchedOnce</Effect>
+                    </IndependentAction>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
+        <!-- Cracked Platform Behavior  -->
         <ImageEntity>
             <Name>CrackedPlatform</Name>
             <Width>75</Width>
@@ -150,15 +233,17 @@
             <Image>crackedplatform.png</Image>
             <VariableNames>NotTouched Touched</VariableNames>
             <VariableValues>doodle_jump/crackedplatform.png doodle_jump/brokenplatform.png</VariableValues>
-            <Behavior>
-                <RequiredCollisionCondition>
-                    <Entity2>Doodle</Entity2>
-                    <Direction>Up</Direction>
-                </RequiredCollisionCondition>
-                <IndependentAction>
-                    <Effect>SetImage Touched</Effect>
-                </IndependentAction>
-            </Behavior>
+           <Behaviors>
+               <Behavior>
+                   <RequiredCollisionCondition>
+                       <Entity2>Doodle</Entity2>
+                       <Direction>Up</Direction>
+                   </RequiredCollisionCondition>
+                   <IndependentAction>
+                       <Effect>SetImage Touched</Effect>
+                   </IndependentAction>
+               </Behavior>
+           </Behaviors>
         </ImageEntity>
         <ImageEntity>
             <Name>Background</Name>
@@ -166,12 +251,37 @@
             <Height>800</Height>
             <Image>background.png</Image>
         </ImageEntity>
+        <ImageEntity>
+            <Name>OffScreen</Name>
+            <Width>1500</Width>
+            <Height>1</Height>
+            <Image>mario_brick.png</Image>
+        </ImageEntity>
     </Entities>
+    <Variables>
+        <Variable>
+            <Name>Score</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+    </Variables>
     <Levels>
         <Level>
             <ID>1</ID>
             <NextLevel>1</NextLevel>
             <EndCondition>DestroyAll Koopa</EndCondition>
+            <TextEntityInstance>
+                <Text>Score: %.0f</Text>
+                <Font>Times New Roman</Font>
+                <XPos>700</XPos>
+                <YPos>0</YPos>
+                <Width>150</Width>
+                <Height>50</Height>
+                <Stationary>true</Stationary>
+                <PropertyVariableDependency>
+                    <VariableName>Score</VariableName>
+                    <PropertyName>Text</PropertyName>
+                </PropertyVariableDependency>
+            </TextEntityInstance>
             <ImageEntityInstances>
                 <ImageEntityInstance>
                     <Name>Background</Name>
@@ -180,40 +290,105 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Doodle</Name>
-                    <XPos>600</XPos>
-                    <YPos>0</YPos>
+                    <XPos>0</XPos>
+                    <YPos>400</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
                     <VariableValues>0 0</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>GreenPlatform</Name>
                     <XPos>0</XPos>
-                    <YPos>318</YPos>
+                    <YPos>618</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>340</XPos>
+                    <YPos>700</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>430</XPos>
+                    <YPos>213</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>540</XPos>
+                    <YPos>187</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>700</XPos>
+                    <YPos>310</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>BluePlatform</Name>
                     <XPos>100</XPos>
-                    <YPos>318</YPos>
+                    <YPos>518</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>722</XPos>
+                    <YPos>10</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>636</XPos>
+                    <YPos>265</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>20</XPos>
+                    <YPos>335</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>WhitePlatform</Name>
                     <XPos>200</XPos>
+                    <YPos>418</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>WhitePlatform</Name>
+                    <XPos>582</XPos>
+                    <YPos>402</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>WhitePlatform</Name>
+                    <XPos>413</XPos>
+                    <YPos>87</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>CrackedPlatform</Name>
+                    <XPos>300</XPos>
                     <YPos>318</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>CrackedPlatform</Name>
-                    <XPos>500</XPos>
-                    <YPos>318</YPos>
+                    <XPos>620</XPos>
+                    <YPos>397</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>CrackedPlatform</Name>
+                    <XPos>674</XPos>
+                    <YPos>695</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Monster</Name>
-                    <XPos>600</XPos>
-                    <YPos>318</YPos>
+                    <XPos>400</XPos>
+                    <YPos>218</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>368</XPos>
+                    <YPos>276</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Void</Name>
-                    <XPos>700</XPos>
-                    <YPos>318</YPos>
+                    <XPos>300</XPos>
+                    <YPos>118</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Void</Name>
+                    <XPos>440</XPos>
+                    <YPos>545</YPos>
                 </ImageEntityInstance>
             </ImageEntityInstances>
         </Level>

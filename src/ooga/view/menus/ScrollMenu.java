@@ -16,7 +16,6 @@ import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.profiledatareaders.ProfileReaderExternal;
 import ooga.data.gamedatareaders.XMLGameDataReader;
 import ooga.data.profiledatareaders.XMLProfileReader;
-
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 

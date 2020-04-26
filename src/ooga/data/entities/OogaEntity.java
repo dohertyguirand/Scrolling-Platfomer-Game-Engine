@@ -21,7 +21,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   public static final String CONSTANTS_FILEPATH = "ooga/data/resources/entityconstants";
   public static final String FRICTION_CONST_LABEL = "Friction";
   public static final double DEFAULT_FRICTION = 30.0 / 1000.0;
-
   private final BooleanProperty activeInView = new SimpleBooleanProperty(true);
   protected final DoubleProperty xPos = new SimpleDoubleProperty();
   protected final DoubleProperty yPos = new SimpleDoubleProperty();

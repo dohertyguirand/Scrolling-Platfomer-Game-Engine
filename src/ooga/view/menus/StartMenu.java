@@ -12,8 +12,6 @@ import javafx.stage.Stage;
 import ooga.OogaDataException;
 import ooga.data.Thumbnail;
 import ooga.view.ViewProfile;
-
-
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,16 +20,6 @@ public class StartMenu extends ScrollMenu{
 
   private final StringProperty optionSelected = new SimpleStringProperty();
 
-  @Deprecated
-  public StartMenu() {
-    super(ResourceBundle.getBundle("ooga/view/Resources/languages.French"),"Select a game");
-    try {
-      List<Thumbnail> thumbnails = myGameDataReader.getThumbnails();
-      addImages(thumbnails);
-    } catch (OogaDataException ignored){
-      //TODO: actually show an error message
-    }
-  }
 
   public StartMenu(ViewProfile profile, Node backButton){
     super(ResourceBundle.getBundle("ooga/view/Resources/languages.French"),"select a game");

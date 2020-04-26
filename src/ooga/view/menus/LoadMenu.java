@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import ooga.OogaDataException;
 import ooga.data.gamedatareaders.GameDataReaderExternal;
 import ooga.data.gamerecorders.GameRecorderExternal;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -79,7 +78,6 @@ public class LoadMenu extends OptionMenu {
         buttons.add(backButton);
         return buttons;
     }
-
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
