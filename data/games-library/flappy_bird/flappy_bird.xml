@@ -37,6 +37,25 @@
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
+                        <Entity2>PipeUp</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeDown</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
                         <Entity2>universalTerrain</Entity2>
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
