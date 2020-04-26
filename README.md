@@ -122,6 +122,8 @@ the non-game specific text can be put to another language. The text entities tha
 
 **Known Bugs:** As of 4/25/2020, a collision between two entities will cause all onscreen entities
 with a similar reaction to activate their effect. (Ex: Stomping on a koopa kills all onscreen koopas).
+This is not exactly a bug, as this is just the default behavior for when no Entity1 is provided in a collision
+condition. The solution is to put SELF for the text content of Entity1 in a collision condition.
 
 Extra credit: You can choose which game you want to play and get a preview of each from
 the selection screen. 
