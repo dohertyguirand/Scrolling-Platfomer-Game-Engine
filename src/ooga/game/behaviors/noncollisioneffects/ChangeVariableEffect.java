@@ -76,6 +76,6 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
 
   private String evaluateOperation(String varValue, double changeValue, String operator) throws NumberFormatException {
     String formattedVarValue = BigDecimal.valueOf(Double.parseDouble(varValue)).toPlainString();
-    return String.valueOf(ExpressionEvaluator.eval(formattedVarValue + operator + changeValue));
+    return String.valueOf(ExpressionEvaluator.eval(formattedVarValue + operator + BigDecimal.valueOf(changeValue).toPlainString()));
   }
 }

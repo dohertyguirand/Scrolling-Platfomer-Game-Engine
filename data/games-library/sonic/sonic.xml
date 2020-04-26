@@ -8,8 +8,8 @@
             <Width>50</Width>
             <Height>100</Height>
             <Image>sonic.gif</Image>
-            <VariableNames>Still FacingRight FacingLeft Blinking Spinning</VariableNames>
-            <VariableValues>sonic/sonic.gif sonic/sonic_facing_right.gif sonic/sonic_facing_left.gif false sonic/sonic_spinning.gif</VariableValues>
+            <VariableNames>Still FacingRight FacingLeft Blinking Spinning MaxSpeed</VariableNames>
+            <VariableValues>sonic/sonic.gif sonic/sonic_facing_right.gif sonic/sonic_facing_left.gif false sonic/sonic_spinning.gif .6</VariableValues>
             <Behaviors>
                 <Behavior>
                     <InputCondition>
@@ -55,7 +55,7 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput -.1300 0 + .2600</Effect>
+                        <Effect>VelocityInput -.1300 0 + MaxSpeed</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -68,7 +68,7 @@
                         <RequiredValue>false</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>VelocityInput .1300 0 + .2600</Effect>
+                        <Effect>VelocityInput .1300 0 + MaxSpeed</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -114,22 +114,22 @@
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Sonic</Entity1>
-                        <Entity2>universalTerrain</Entity2>
+                        <Entity2>Floor</Entity2>
                         <Direction>Right</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>universalTerrain Right</Args>
+                        <Args>Floor Right</Args>
                         <Effect>TerrainCollisionRight</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Sonic</Entity1>
-                        <Entity2>universalTerrain</Entity2>
+                        <Entity2>Floor</Entity2>
                         <Direction>Left</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>universalTerrain Left</Args>
+                        <Args>Floor Left</Args>
                         <Effect>TerrainCollisionLeft</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
@@ -147,12 +147,23 @@
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Sonic</Entity1>
-                        <Entity2>universalTerrain</Entity2>
+                        <Entity2>Floor</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
                     <CollisionDeterminedAction>
-                        <Args>universalTerrain Up</Args>
+                        <Args>Floor Up</Args>
                         <Effect>TerrainCollisionUp</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Sonic</Entity1>
+                        <Entity2>InvisibleWall</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>InvisibleWall Left</Args>
+                        <Effect>TerrainCollisionLeft</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <Behavior>
@@ -182,14 +193,30 @@
                     <EntityVariableCondition>
                         <VariableName>XPos</VariableName>
                         <Comparison>GreaterThan</Comparison>
-                        <RequiredValue>CameraBorderXPos</RequiredValue>
+                        <RequiredValue>CameraBorderRightPos</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>SetVariable CameraShiftValue XPos</Effect>
-                        <Effect>ChangeVariable CameraShiftValue - CameraBorderXPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue - CameraBorderRightPos</Effect>
                         <Effect>ChangeVariable CameraShiftValue * -1</Effect>
                         <Effect>ShiftCamera CameraShiftValue 0</Effect>
-                        <Effect>ChangeVariable CameraBorderXPos - CameraShiftValue</Effect>
+                        <Effect>ChangeVariable CameraBorderRightPos - CameraShiftValue</Effect>
+                        <Effect>ChangeVariable CameraBorderLeftPos - CameraShiftValue</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>XPos</VariableName>
+                        <Comparison>LessThan</Comparison>
+                        <RequiredValue>CameraBorderLeftPos</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable CameraShiftValue XPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue - CameraBorderLeftPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>
+                        <Effect>ShiftCamera CameraShiftValue 0</Effect>
+                        <Effect>ChangeVariable CameraBorderRightPos - CameraShiftValue</Effect>
+                        <Effect>ChangeVariable CameraBorderLeftPos - CameraShiftValue</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
@@ -245,7 +272,14 @@
             <Width>60</Width>
             <Height>800</Height>
             <Image> </Image>
-            <Stationary>true</Stationary>
+            <VariableNames>TerrainID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>Platform</Name>
+            <Width>100</Width>
+            <Height>50</Height>
+            <Image>terrain_block.png</Image>
             <VariableNames>TerrainID</VariableNames>
             <VariableValues>universalTerrain</VariableValues>
         </ImageEntity>
@@ -264,8 +298,12 @@
             <StartValue>0</StartValue>
         </Variable>
         <Variable>
-            <Name>CameraBorderXPos</Name>
-            <StartValue>800</StartValue>
+            <Name>CameraBorderRightPos</Name>
+            <StartValue>500</StartValue>
+        </Variable>
+        <Variable>
+            <Name>CameraBorderLeftPos</Name>
+            <StartValue>75</StartValue>
         </Variable>
     </Variables>
     <Levels>
@@ -285,10 +323,10 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Sonic</Name>
-                    <XPos>130</XPos>
+                    <XPos>150</XPos>
                     <YPos>500</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-                    <VariableValues>130 500</VariableValues>
+                    <VariableValues>150 500</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Coin</Name>
@@ -311,7 +349,7 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>InvisibleWall</Name>
-                    <XPos>-60</XPos>
+                    <XPos>30</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
@@ -340,12 +378,33 @@
                     <Name>Floor</Name>
                     <XPos>800</XPos>
                     <YPos>600</YPos>
-                    <Columns>100</Columns>
+                    <Columns>60</Columns>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>Floor</Name>
+                    <Name>Coin</Name>
+                    <XPos>1300</XPos>
+                    <YPos>375</YPos>
+                    <Columns>5</Columns>
+                    <Rows>2</Rows>
+                    <XGap>60</XGap>
+                    <YGap>150</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Platform</Name>
                     <XPos>275</XPos>
                     <YPos>425</YPos>
+                    <Columns>6</Columns>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Platform</Name>
+                    <XPos>2075</XPos>
+                    <YPos>425</YPos>
+                    <Columns>6</Columns>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Spikes</Name>
+                    <XPos>2075</XPos>
+                    <YPos>550</YPos>
                     <Columns>6</Columns>
                 </ImageEntityInstance>
             </ImageEntityInstances>
