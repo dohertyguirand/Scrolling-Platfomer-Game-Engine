@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AddNewProfileTest {
 
@@ -17,7 +18,11 @@ public class AddNewProfileTest {
     File photoFile = new File("/Users/dohertyguirand/Spring2020/CS308/Projects/final_team17/src/ooga/view/Resources/alien.jpg");
 
     @Test
-    public void someTest() {
-        assertThrows(OogaDataException.class, () -> profileReader.addNewProfile(exampleName,photoFile));
+    public void testExceptionThrown() {
+        try {
+            profileReader.addNewProfile(exampleName, photoFile);
+        } catch (OogaDataException ex) {
+            fail("Should not have thrown an exception");
+        }
     }
 }
