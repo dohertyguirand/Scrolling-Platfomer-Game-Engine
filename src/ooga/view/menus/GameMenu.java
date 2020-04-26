@@ -54,6 +54,10 @@ public class GameMenu extends ScrollMenu{
   }
 
 
+  /**
+   * Adds the images as games that are thumbnails which once selected, opens a screen of the game
+   * @param thumbnails list of thumbnails for the game
+   */
   private void addImages(List<Thumbnail> thumbnails){
     for (Thumbnail thumbnail : thumbnails) {
       ImageView optionImage = new ImageView(thumbnail.getImageFile());
@@ -64,6 +68,12 @@ public class GameMenu extends ScrollMenu{
     }
   }
 
+  /**
+   * Adds the Profile data back button
+   * @param profile current profile selected
+   * @param backButton node for the back button
+   * @return an HBox with both the profile and the back button
+   */
   private Node addProfileDataAndBackButton(ViewProfile profile, Node backButton){
     HBox bottomBox = new HBox();
     if(profile != null) bottomBox.getChildren().add(setProfileData(profile));
@@ -71,6 +81,11 @@ public class GameMenu extends ScrollMenu{
     return bottomBox;
   }
 
+  /**
+   * Gets the profile Data and displayes it
+   * @param profile the current profile being viewed
+   * @return the node that displays the Profile data
+   */
   private Node setProfileData(ViewProfile profile){
     VBox vBox = new VBox();
     vBox.setOnMouseClicked(e-> showProfile(profile));
@@ -82,7 +97,10 @@ public class GameMenu extends ScrollMenu{
     return vBox;
   }
 
-
+  /**
+   * Shows the profile in a new stage
+   * @param profile current profile being selected
+   */
   private void showProfile(ViewProfile profile){
     Stage stage  = new Stage();
     Scene scene = new Scene(profile.getPane());
@@ -91,11 +109,18 @@ public class GameMenu extends ScrollMenu{
     stage.show();
   }
 
+  /**
+   * Sets the option selected
+   */
   private void setOptionSelected(String optionSelected) {
     this.optionSelected.set(null);
     this.optionSelected.set(optionSelected);
   }
 
+  /**
+   * Shows error if appropriate action happens
+   * @param message message specific to the error
+   */
   private void showError(String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle(ERROR_MESSAGE);
