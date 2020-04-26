@@ -15,14 +15,14 @@
                     <RequiredCollisionCondition>
                         <Entity1>Avatar</Entity1>
                         <Entity2>Floor</Entity2>
-                        <Direction>Down</Direction>
+                        <Direction>Up</Direction>
                     </RequiredCollisionCondition>
                     <InputCondition>
-                        <Key>DownKeyPressed</Key>
+                        <Key>DownKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-                        <Effect>Gravity 0 0.1</Effect>
+                        <Effect>Gravity 0 0.1 + 1</Effect>
                         <Effect>SetImage Down</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -30,14 +30,14 @@
                     <RequiredCollisionCondition>
                         <Entity1>Avatar</Entity1>
                         <Entity2>Floor</Entity2>
-                        <Direction>Up</Direction>
+                        <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <InputCondition>
-                        <Key>UpKey2Pressed</Key>
+                        <Key>UpKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-                        <Effect>Gravity 0 -0.1</Effect>
+                        <Effect>Gravity 0 -0.1 - 1</Effect>
                         <Effect>SetImage Up</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -49,7 +49,7 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>Respawn 150 500</Effect>
-                        <Effect>ChangeVariable Lives -1.0</Effect>
+                        <Effect>ChangeVariable Lives - 1.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <IndependentAction>
@@ -143,9 +143,14 @@
                     <YPos>600</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
+                    <Name>Floor</Name>
+                    <XPos>100</XPos>
+                    <YPos>50</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Name>Avatar</Name>
                     <XPos>100</XPos>
-                    <YPos>500</YPos>
+                    <YPos>550</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
                     <VariableValues>0 0</VariableValues>
                 </ImageEntityInstance>
