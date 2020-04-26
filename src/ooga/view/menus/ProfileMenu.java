@@ -74,7 +74,10 @@ public class ProfileMenu extends ScrollMenu {
          myHBox.getChildren().add(button);
     }
 
-     private void showNewProfileScreen(){
+    /**
+     * Creates a button that once clicked shows a new screen with the new profile included
+     */
+    private void showNewProfileScreen(){
          Button submit = new Button(SUBMIT);
          ViewProfile profile = new ViewProfile(languageResources,submit);
          Stage stage = new Stage();
@@ -85,6 +88,7 @@ public class ProfileMenu extends ScrollMenu {
          stage.setScene(new Scene(profile.getPane(),this.getWidth(),this.getHeight()));
          stage.show();
      }
+
 
      private void addNewProfile(ViewProfile profile){
         try {
@@ -106,12 +110,20 @@ public class ProfileMenu extends ScrollMenu {
         }
      }
 
-     private void setProfileSelected(ViewProfile profile){
+    /**
+     * Sets the profile to the one selected
+     * @param profile - profile parameter
+     */
+    private void setProfileSelected(ViewProfile profile){
         this.profileSelected.set(null);
         this.profileSelected.set(profile);
      }
 
 
+    /**
+     * Shows the appropriate error
+     * @param message - messaged based on apporpirate error
+     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR_MESSAGE);
@@ -129,6 +141,9 @@ public class ProfileMenu extends ScrollMenu {
         addProfileImages();
     }
 
+    /**
+     * Makes the profile button and adds it to the Hbox
+     */
     private void makeProfileButton() {
         Button newProfileButton = new Button("Make a new Profile");
 //        newProfileButton.setOnAction(e -> setProfileSelected(profile));

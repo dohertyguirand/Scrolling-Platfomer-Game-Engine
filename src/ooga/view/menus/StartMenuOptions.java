@@ -34,6 +34,12 @@ public class StartMenuOptions {
     private Button myButton;
 
 
+    /**
+     * Makes button based on the statusproperty and then sets it to the opposite after it is clicked
+     * @param statusProperty gets the status property of the audio button
+     * @param text sets the text of the button
+     * @return makes the appropriate button
+     */
     private Button makeButton(BooleanProperty statusProperty, String text) {
         myButton = new Button(text);
         myButton.setTextFill(COLORBUTTON);
@@ -41,10 +47,17 @@ public class StartMenuOptions {
         return myButton;
     }
 
+    /**
+     * Gets buttons
+     * @return the  button
+     */
     private Button getButton() {
         return myButton;
     }
 
+    /**
+     * Gets the vbox of all the buttons and highlights the buttons based on mouse position
+     */
     public StartMenuOptions() {
         VBox buttonVBox = new VBox(Button_Space);
         for (Map.Entry<BooleanProperty, String> buttonPropertyAndName : buttonPropertiesAndNames.entrySet()) {
@@ -54,6 +67,10 @@ public class StartMenuOptions {
         }
     }
 
+    /**
+     * Creates a slider for volume
+     * @return a slider that controls music volume
+     */
     public Slider volumeControl() {
         Slider myVolumeSlider = new Slider();
         myVolumeSlider.setMin(SLIDERMINNUM);

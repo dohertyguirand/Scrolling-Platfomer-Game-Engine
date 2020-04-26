@@ -83,6 +83,10 @@ public abstract class ScrollMenu extends BorderPane {
         image.setFitHeight(IMAGE_HEIGHT *resizeFactor);
     }
 
+    /**
+     * creates horizontal scroller
+     * @return returns a node that holds all the thumbnails that can scroll based on addition of content
+     */
     private Node horizontalScroller() {
         myHBox = new HBox();
         myHBox.setStyle(HBOX_STYLE);
@@ -97,6 +101,12 @@ public abstract class ScrollMenu extends BorderPane {
         scrollPane.setContent(myHBox);
         return scrollPane;
     }
+
+    /**
+     *
+     * @param titleKey - represents the string that corresponds to the title
+     * @return Hbox that contains the title
+     */
     private HBox makeTitle(String titleKey){
         String title;
         try {
