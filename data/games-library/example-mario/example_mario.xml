@@ -7,9 +7,9 @@
       <Name>SmallMario</Name>
       <Width>80</Width>
       <Height>120</Height>
-      <Image>mario_facing_right.png</Image>
-      <VariableNames>RightFacingImage LeftFacingImage</VariableNames>
-      <VariableValues>example-mario/mario_facing_right.png example-mario/mario_facing_left.png</VariableValues>
+      <Image>mario_small_right_standing.png</Image>
+      <VariableNames>StandingSprite WalkingSprite JumpingSprite Facing Jumping Walking</VariableNames>
+      <VariableValues>example-mario/mario-sprites/right/mario_standing.png example-mario/mario-sprites/right/mario_walk_right.gif example-mario/mario-sprites/right/mario_jump_right.gif Right False False</VariableValues>
       <Behaviors>
 <!--        Colliding with a mushroom makes you big.-->
         <Behavior>
@@ -28,12 +28,12 @@
         <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
-            <InputRequirement>Pressed</InputRequirement>
-            <InputRequirement>Active</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput -.1600 0 + .3200</Effect>
-            <Effect>SetImage LeftFacingImage</Effect>
+<!--            <Effect>SetImage LeftWalkingImage</Effect>-->
+            <Effect>SetVariable Facing Left</Effect>
+            <Effect>SetVariable Walking True</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Press right to go right.-->
@@ -43,7 +43,81 @@
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput .1600 0 + .3200</Effect>
-            <Effect>SetImage RightFacingImage</Effect>
+<!--            <Effect>SetImage RightWalkingImage</Effect>-->
+            <Effect>SetVariable Facing Right</Effect>
+            <Effect>SetVariable Walking True</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Press neither left nor right to stand still.-->
+        <Behavior>
+          <InputCondition>
+            <Key>RightKey2</Key>
+            <InputRequirement>Inactive</InputRequirement>
+          </InputCondition>
+          <InputCondition>
+            <Key>LeftKey2</Key>
+            <InputRequirement>Inactive</InputRequirement>
+          </InputCondition>
+          <IndependentAction>
+            <Effect>SetVariable Walking False</Effect>
+          </IndependentAction>
+        </Behavior>
+<!--        Facing right means using the right facing sprites-->
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>Facing</VariableName>
+            <RequiredValue>Right</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>SetVariable StandingSprite example-mario/mario-sprites/right/mario_standing_right.png</Effect>
+            <Effect>SetVariable WalkingSprite example-mario/mario-sprites/right/mario_walk_right.gif</Effect>
+            <Effect>SetVariable JumpingSprite example-mario/mario-sprites/right/mario_jump_right.png</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>Facing</VariableName>
+            <RequiredValue>Left</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>SetVariable StandingSprite example-mario/mario-sprites/left/mario_standing_left.png</Effect>
+            <Effect>SetVariable WalkingSprite example-mario/mario-sprites/left/mario_walk_left.gif</Effect>
+            <Effect>SetVariable JumpingSprite example-mario/mario-sprites/left/mario_jump_left.png</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>Jumping</VariableName>
+            <RequiredValue>True</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>SetImage JumpingSprite</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>Jumping</VariableName>
+            <RequiredValue>False</RequiredValue>
+          </EntityVariableCondition>
+          <EntityVariableCondition>
+            <VariableName>Walking</VariableName>
+            <RequiredValue>True</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>SetImage WalkingSprite</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>Jumping</VariableName>
+            <RequiredValue>False</RequiredValue>
+          </EntityVariableCondition>
+          <EntityVariableCondition>
+            <VariableName>Walking</VariableName>
+            <RequiredValue>False</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>SetImage StandingSprite</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Run into a koopa sideways or upward in order to die.-->
@@ -85,17 +159,20 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>Jump 0.0 -1.50 + 10.0</Effect>
+            <Effect>SetVariable Jumping True</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Run into a brick downward to stop falling.-->
         <Behavior>
           <RequiredCollisionCondition>
+            <Entity1>SELF</Entity1>
             <Entity2>universalTerrain</Entity2>
             <Direction>Down</Direction>
           </RequiredCollisionCondition>
           <CollisionDeterminedAction>
             <Args>universalTerrain Down</Args>
             <Effect>TerrainCollisionDown</Effect>
+            <Effect>SetVariable Jumping False</Effect>
           </CollisionDeterminedAction>
         </Behavior>
 <!--        Run into a brick sideways or downward to stop too-->
@@ -141,6 +218,7 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>Jump 0.0 -1.2 + 10.0</Effect>
+            <Effect>SetVariable Jumping True</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Run into a flagpole to go to the next level.-->
@@ -249,6 +327,7 @@
 <!--      Run into Mario's feet to die.-->
       <Behavior>
         <RequiredCollisionCondition>
+          <Entity1>SELF</Entity1>
           <Entity2>SmallMario</Entity2>
           <Direction>Up</Direction>
         </RequiredCollisionCondition>
@@ -636,7 +715,7 @@
     </Level>
     <Level>
       <ID>3</ID>
-      <NextLevel>1</NextLevel>
+      <NextLevel>4</NextLevel>
       <ImageEntityInstances>
         <ImageEntityInstance>
           <Name>SmallMario</Name>
@@ -734,5 +813,57 @@
         </TextEntityInstance>
       </TextEntityInstances>
     </Level>
+    <Level>
+      <ID>4</ID>
+      <NextLevel>1</NextLevel>
+      <ImageEntityInstances>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>600.0</XPos>
+          <YPos>300.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>SmallMario</Name>
+          <XPos>200.0</XPos>
+          <YPos>400.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>500.0</XPos>
+          <YPos>500.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>600.0</XPos>
+          <YPos>500.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>700.0</XPos>
+          <YPos>500.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>100.0</XPos>
+          <YPos>600.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>200.0</XPos>
+          <YPos>600.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>300.0</XPos>
+          <YPos>600.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>400.0</XPos>
+          <YPos>600.0</YPos>
+        </ImageEntityInstance>
+      </ImageEntityInstances>
+    </Level>
+
   </Levels>
 </Game>

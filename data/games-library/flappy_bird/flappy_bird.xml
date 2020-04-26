@@ -18,6 +18,7 @@
                         <IndependentAction>
                             <Effect>Jump 0 -0.8 + 10.0</Effect>
                             <Effect>SetImage GoingUp</Effect>
+<!--                            <Effect>CreateEntityRelative PipeUp 100 100</Effect>-->
                         </IndependentAction>
                     </InputCondition>
                 </Behavior>
@@ -83,6 +84,20 @@
                         <Effect>VelocityInput .100 0 + .0400</Effect>
                     </IndependentAction>
                 </Behavior>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>XPos</VariableName>
+                        <Comparison>GreaterThan</Comparison>
+                        <RequiredValue>CameraBorderXPos</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable CameraShiftValue XPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue - CameraBorderXPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>
+                        <Effect>ShiftCamera CameraShiftValue 0</Effect>
+                        <Effect>ChangeVariable CameraBorderXPos - CameraShiftValue</Effect>
+                    </IndependentAction>
+                </Behavior>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -121,6 +136,14 @@
             <Name>Lives</Name>
             <StartValue>1</StartValue>
         </Variable>
+        <Variable>
+            <Name>CameraShiftValue</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>CameraBorderXPos</Name>
+            <StartValue>300</StartValue>
+        </Variable>
     </Variables>
     <Levels>
         <Level>
@@ -132,11 +155,13 @@
                     <Name>Background</Name>
                     <XPos>0</XPos>
                     <YPos>0</YPos>
+                    <Columns>10</Columns>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
                     <XPos>0</XPos>
                     <YPos>700</YPos>
+                    <Columns>10</Columns>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Bird</Name>
@@ -164,6 +189,7 @@
                     <YPos>0</YPos>
                     <Width>150</Width>
                     <Height>50</Height>
+                    <Stationary>true</Stationary>
                     <PropertyVariableDependency>
                         <VariableName>Score</VariableName>
                         <PropertyName>Text</PropertyName>
