@@ -44,6 +44,7 @@
                         <Effect>ChangeVariable Lives + -1.0</Effect>
                         <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
                     </IndependentAction>
+                </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>PipeDown</Entity2>
