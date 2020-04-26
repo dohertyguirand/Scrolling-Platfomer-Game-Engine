@@ -73,7 +73,7 @@
             <Effect>ChangeVariable Score + 100.0</Effect>
           </IndependentAction>
         </Behavior>
-  <!--   Collision with enemies-->
+        <!--   Collision with enemies-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>Cactus</Entity2>
@@ -176,7 +176,7 @@
             <Effect>SetVariable Score 0.0</Effect>
           </IndependentAction>
         </Behavior>
-    </Behaviors>
+      </Behaviors>
     </ImageEntity>
     <!--Cactus behavior -->
     <ImageEntity>
@@ -251,16 +251,16 @@
           <Columns>10</Columns>
           <Xgap>100</Xgap>
         </ImageEntityInstance>
-<!--        <ImageEntityInstance>-->
-<!--          <Name>SmallCactus</Name>-->
-<!--          <XPos>800</XPos>-->
-<!--          <YPos>344</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Bird</Name>-->
-<!--          <XPos>1100</XPos>-->
-<!--          <YPos>250</YPos>-->
-<!--        </ImageEntityInstance>-->
+        <!--        <ImageEntityInstance>-->
+        <!--          <Name>SmallCactus</Name>-->
+        <!--          <XPos>800</XPos>-->
+        <!--          <YPos>344</YPos>-->
+        <!--        </ImageEntityInstance>-->
+        <!--        <ImageEntityInstance>-->
+        <!--          <Name>Bird</Name>-->
+        <!--          <XPos>1100</XPos>-->
+        <!--          <YPos>250</YPos>-->
+        <!--        </ImageEntityInstance>-->
       </ImageEntityInstances>
       <TextEntityInstances>
         <TextEntityInstance>
