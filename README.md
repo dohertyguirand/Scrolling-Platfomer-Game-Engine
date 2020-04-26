@@ -20,7 +20,7 @@ Hours Spent:
 ### Primary Roles
 
 css57 - setting up basic view/visualizer functionality (communication w back end and
-updating display), updating and refactoring data reader, conditional behaviors/effects
+updating display, camera), updating and refactoring data reader, conditional behaviors/effects
 and collision in back end, fireboy and watergirl game.
 
 stt13 - Game external & internal API, game loop implementation, Entity API and implementation, input processing,
@@ -127,7 +127,7 @@ Game language can be changed in the UI.
 
 ### Impressions
 
-Some of the extension features were interesting but it seems like it might be better to
+(css57) Some of the extension features were interesting but it seems like it might be better to
 have game-specific extensions because we thought it was much better to improve our design
 and make our back end more flexible. For example, rather than adding a social center,
 which is cool but doesn't add much to design, we decided to implement a camera because
