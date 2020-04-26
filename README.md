@@ -123,7 +123,8 @@ the non-game specific text can be put to another language. The text entities tha
 **Known Bugs:** 
 * As of 4/25/2020, a collision between two entities will cause all onscreen entities
 with a similar reaction to activate their effect. (Ex: Stomping on a koopa kills all onscreen koopas).
-* As of 4/26/2020, a new profile can only be added if the profile name is original, this bug is listed as a todo in XMLProfileReader
+* As of 4/26/2020, a new profile can only be added if the profile name is original, this bug is listed as a todo in XMLProfileReader. The
+new profile's photo will show up as default photo but shows up as selected photo when program is reran. 
 
 
 Extra credit: You can choose which game you want to play and get a preview of each from
