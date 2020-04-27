@@ -9,21 +9,97 @@
             <Height>100</Height>
             <Image>avatarUp.jpg</Image>
             <VariableNames>Up Down</VariableNames>
-            <VariableValues>avatarUp.jpg avatarDown.jpg</VariableValues>
+            <VariableValues>VVVVVV/avatarUp.jpg VVVVVV/avatarDown.jpg</VariableValues>
             <Behaviors>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>GravityDown</VariableName>
+                        <RequiredValue>-1</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>Gravity 0 1 + 10.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>GravityDown</VariableName>
+                        <RequiredValue>1</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>Gravity 0 -1 + 10.0</Effect>
+                    </IndependentAction>
+                </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Avatar</Entity1>
-                        <Entity2>Floor</Entity2>
+                        <Entity2>CheckPoint</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable RespawnYLocation CheckPointYLocation </Effect>
+                        <Effect>SetVariable RespawnXLocation CheckPointXLocation </Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Avatar</Entity1>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Right</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Right</Args>
+                        <Effect>TerrainCollisionRight</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Avatar</Entity1>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Left</Args>
+                        <Effect>TerrainCollisionLeft</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Avatar</Entity1>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Down</Args>
+                        <Effect>TerrainCollisionDown</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Avatar</Entity1>
+                        <Entity2>universalTerrain</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Up</Args>
+                        <Effect>TerrainCollisionUp</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <Behavior>
                     <InputCondition>
-                        <Key>DownKey</Key>
+                        <Key>RightKey</Key>
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-                        <Effect>Gravity 0 0.1 + 1</Effect>
-                        <Effect>SetImage Down</Effect>
+                        <Effect>VelocityInput .100 0 + .3200</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <InputCondition>
+                        <Key>LeftKey</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <IndependentAction>
+                        <Effect>VelocityInput -.100 0 + .3200</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -37,7 +113,22 @@
                         <InputRequirement>true</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-                        <Effect>Gravity 0 -0.1 - 1</Effect>
+                        <Effect>SetImage Down</Effect>
+                        <Effect>SetVariable GravityDown -1</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Avatar</Entity1>
+                        <Entity2>Floor</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <InputCondition>
+                        <Key>DownKey</Key>
+                        <InputRequirement>true</InputRequirement>
+                    </InputCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable GravityDown 1</Effect>
                         <Effect>SetImage Up</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -48,13 +139,9 @@
                         <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Respawn 150 500</Effect>
-                        <Effect>ChangeVariable Lives - 1.0</Effect>
+                        <Effect>Respawn RespawnYLocation RespawnXLocation</Effect>
                     </IndependentAction>
                 </Behavior>
-                <IndependentAction>
-                    <Effect>VelocityInputEffect .1 0 0.1</Effect>
-                </IndependentAction>
             </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -62,6 +149,8 @@
             <Width>100</Width>
             <Height>50</Height>
             <Image>brick.jpg</Image>
+            <VariableNames>TerrainID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
         </ImageEntity>
         <ImageEntity>
             <Name>Spikes</Name>
@@ -69,12 +158,18 @@
             <Height>50</Height>
             <Image>spikes.jpg</Image>
         </ImageEntity>
-<!--        <ImageEntity>-->
-<!--            <Name>Background</Name>-->
-<!--            <Width>1000</Width>-->
-<!--            <Height>800</Height>-->
-<!--            <Image>background.jpg</Image>-->
-<!--        </ImageEntity>-->
+        <ImageEntity>
+            <Name>Background</Name>
+            <Width>1000</Width>
+            <Height>800</Height>
+            <Image>background.jpg</Image>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>CheckPoint</Name>
+            <Width>50</Width>
+            <Height>100</Height>
+            <Image>checkpoint.jpg</Image>
+        </ImageEntity>
     </Entities>
     <Variables></Variables>
     <Levels>
@@ -83,76 +178,98 @@
             <NextLevel>1</NextLevel>
             <EndCondition>DestroyAll Koopa</EndCondition>
             <ImageEntityInstances>
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>Background</Name>-->
-<!--                    <XPos>0</XPos>-->
-<!--                    <YPos>0</YPos>-->
-<!--                </ImageEntityInstance>-->
                 <ImageEntityInstance>
-                    <Name>Floor</Name>
-                    <XPos>300</XPos>
-                    <YPos>250</YPos>
+                    <Name>Background</Name>
+                    <XPos>0</XPos>
+                    <YPos>0</YPos>
                 </ImageEntityInstance>
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>Button</Name>-->
-<!--                    <XPos>350</XPos>-->
-<!--                    <YPos>275</YPos>-->
-<!--                    <VariableNames>Pressed</VariableNames>-->
-<!--                    <VariableValues>false</VariableValues>-->
-<!--                </ImageEntityInstance>-->
+                <ImageEntityInstance>
+                    <Name>CheckPoint</Name>
+                    <XPos>400</XPos>
+                    <YPos>500</YPos>
+                    <VariableNames>CheckPointXLocation CheckPointYLocation</VariableNames>
+                    <VariableValues>400 600</VariableValues>
+                </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
                     <XPos>0</XPos>
                     <YPos>600</YPos>
-                    <Columns>4</Columns>
+                    <Columns>15</Columns>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
-                    <XPos>500</XPos>
-                    <YPos>600</YPos>
-                    <Columns>2</Columns>
+                    <XPos>0</XPos>
+                    <YPos>650</YPos>
+                    <Columns>15</Columns>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
-                    <XPos>800</XPos>
-                    <YPos>600</YPos>
-                    <Columns>2</Columns>
-                    <Gap>0.0</Gap>
+                    <XPos>0</XPos>
+                    <YPos>700</YPos>
+                    <Columns>15</Columns>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Floor</Name>
+                    <XPos>0</XPos>
+                    <YPos>750</YPos>
+                    <Columns>15</Columns>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Floor</Name>
+                    <XPos>0</XPos>
+                    <YPos>800</YPos>
+                    <Columns>15</Columns>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
                     <XPos>0</XPos>
                     <YPos>0</YPos>
-                    <Rows>12</Rows>
+                    <Columns>15</Columns>
+                    <Rows>4</Rows>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
-                    <XPos>950</XPos>
-                    <YPos>000</YPos>
-                    <Rows>12</Rows>
+                    <XPos>300</XPos>
+                    <YPos>300</YPos>
+                    <Columns>1</Columns>
+                    <Rows>10</Rows>
                 </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Floor</Name>
-                    <XPos>275</XPos>
-                    <YPos>425</YPos>
-                    <Columns>6</Columns>
-                </ImageEntityInstance>
+<!--                <ImageEntityInstance>-->
+<!--                    <Name>Floor</Name>-->
+<!--                    <XPos>800</XPos>-->
+<!--                    <YPos>600</YPos>-->
+<!--                    <Columns>2</Columns>-->
+<!--                    <Gap>0.0</Gap>-->
+<!--                </ImageEntityInstance>-->
+<!--                <ImageEntityInstance>-->
+<!--                    <Name>Floor</Name>-->
+<!--                    <XPos>0</XPos>-->
+<!--                    <YPos>0</YPos>-->
+<!--                    <Rows>12</Rows>-->
+<!--                </ImageEntityInstance>-->
+<!--                <ImageEntityInstance>-->
+<!--                    <Name>Floor</Name>-->
+<!--                    <XPos>950</XPos>-->
+<!--                    <YPos>000</YPos>-->
+<!--                    <Rows>12</Rows>-->
+<!--                </ImageEntityInstance>-->
+<!--                <ImageEntityInstance>-->
+<!--                    <Name>Floor</Name>-->
+<!--                    <XPos>275</XPos>-->
+<!--                    <YPos>425</YPos>-->
+<!--                    <Columns>6</Columns>-->
+<!--                </ImageEntityInstance>-->
                 <ImageEntityInstance>
                     <Name>Spikes</Name>
                     <XPos>500</XPos>
                     <YPos>600</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>Floor</Name>
-                    <XPos>100</XPos>
-                    <YPos>50</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
                     <Name>Avatar</Name>
                     <XPos>100</XPos>
-                    <YPos>550</YPos>
-                    <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-                    <VariableValues>0 0</VariableValues>
+                    <YPos>500</YPos>
+                    <VariableNames>RespawnXLocation RespawnYLocation GravityDown</VariableNames>
+                    <VariableValues>100 500 -1</VariableValues>
                 </ImageEntityInstance>
             </ImageEntityInstances>
             <TextEntityInstances>
