@@ -34,19 +34,6 @@
             <Effect>SetVariable GotFlower True</Effect>
           </IndependentAction>
         </Behavior>
-<!--        &lt;!&ndash;Collidiing with Flower makes you fire Mario   &ndash;&gt;-->
-<!--        <Behavior>-->
-<!--          <RequiredCollisionCondition>-->
-<!--            <Entity1>SmallMario</Entity1>-->
-<!--            <Entity2>Mushroom</Entity2>-->
-<!--            <Direction>ANY</Direction>-->
-<!--          </RequiredCollisionCondition>-->
-<!--          <IndependentAction>-->
-<!--            <Effect>ResizeImage 100 150</Effect>-->
-<!--            <Effect>ResizeImage 120 180 1000</Effect>-->
-<!--            &lt;!&ndash;            <Effect>ShiftCamera 0.0 100.0</Effect>&ndash;&gt;-->
-<!--          </IndependentAction>-->
-<!--        </Behavior>-->
         <!--        Press left to go left.-->
         <Behavior>
           <InputCondition>
@@ -441,40 +428,40 @@
             <Effect>SetVariable Lives 3.0</Effect>
           </IndependentAction>
         </Behavior>
-<!--&lt;!&ndash;        Go to the right of the camera X border to shift the camera (Based on Cary's sonic.xml)&ndash;&gt;-->
-<!--        <Behavior>-->
-<!--          <EntityVariableCondition>-->
-<!--            <VariableName>XPos</VariableName>-->
-<!--            <Comparison>GreaterThan</Comparison>-->
-<!--            <RequiredValue>CameraBorderXRight</RequiredValue>-->
-<!--          </EntityVariableCondition>-->
-<!--          <IndependentAction>-->
-<!--            <Effect>SetVariable CameraDiff XPos</Effect>-->
-<!--            <Effect>ChangeVariable CameraDiff - CameraBorderXRight</Effect>-->
-<!--            <Effect>ChangeVariable CameraDiff * -1</Effect>-->
-<!--            <Effect>ShiftCamera CameraDiff 0</Effect>-->
-<!--            <Effect>ChangeVariable CameraBorderXRight - CameraDiff</Effect>-->
-<!--            <Effect>SetVariable CameraBorderXLeft CameraBorderXRight</Effect>-->
-<!--            <Effect>ChangeVariable CameraBorderXLeft - 200.0</Effect>-->
-<!--          </IndependentAction>-->
-<!--        </Behavior>-->
-<!--        <Behavior>-->
-<!--          <EntityVariableCondition>-->
-<!--            <VariableName>XPos</VariableName>-->
-<!--            <Comparison>LessThan</Comparison>-->
-<!--            <RequiredValue>CameraBorderXLeft</RequiredValue>-->
-<!--          </EntityVariableCondition>-->
-<!--          <IndependentAction>-->
-<!--            <Effect>SetVariable CameraDiff XPos</Effect>-->
-<!--            <Effect>ChangeVariable CameraDiff - CameraBorderXLeft</Effect>-->
-<!--            <Effect>ChangeVariable CameraDiff * -1</Effect>-->
-<!--            <Effect>ShiftCamera CameraDiff 0</Effect>-->
-<!--            <Effect>ChangeVariable CameraBorderXLeft - CameraDiff</Effect>-->
-<!--            <Effect>SetVariable CameraBorderXRight CameraBorderXLeft</Effect>-->
-<!--            <Effect>ChangeVariable CameraBorderXRight + 200.0</Effect>-->
-<!--          </IndependentAction>-->
-<!--        </Behavior>-->
-<!--        If you have invincibility frames, tick them down.-->
+<!--        Go to the right of the camera X border to shift the camera (Based on Cary's sonic.xml)-->
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>XPos</VariableName>
+            <Comparison>GreaterThan</Comparison>
+            <RequiredValue>CameraBorderXRight</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>SetVariable CameraDiff XPos</Effect>
+            <Effect>ChangeVariable CameraDiff - CameraBorderXRight</Effect>
+            <Effect>ChangeVariable CameraDiff * -1</Effect>
+            <Effect>ShiftCamera CameraDiff 0</Effect>
+            <Effect>ChangeVariable CameraBorderXRight - CameraDiff</Effect>
+            <Effect>SetVariable CameraBorderXLeft CameraBorderXRight</Effect>
+            <Effect>ChangeVariable CameraBorderXLeft - 200.0</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>XPos</VariableName>
+            <Comparison>LessThan</Comparison>
+            <RequiredValue>CameraBorderXLeft</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>SetVariable CameraDiff XPos</Effect>
+            <Effect>ChangeVariable CameraDiff - CameraBorderXLeft</Effect>
+            <Effect>ChangeVariable CameraDiff * -1</Effect>
+            <Effect>ShiftCamera CameraDiff 0</Effect>
+            <Effect>ChangeVariable CameraBorderXLeft - CameraDiff</Effect>
+            <Effect>SetVariable CameraBorderXRight CameraBorderXLeft</Effect>
+            <Effect>ChangeVariable CameraBorderXRight + 200.0</Effect>
+          </IndependentAction>
+        </Behavior>
+        If you have invincibility frames, tick them down.
         <Behavior>
           <EntityVariableCondition>
             <VariableName>InvincibilityTimer</VariableName>
