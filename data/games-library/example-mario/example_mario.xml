@@ -6,9 +6,9 @@
     <ImageEntity>
       <Name>SmallMario</Name>
       <Width>100</Width>
-      <Height>100</Height>
+      <Height>50</Height>
       <Image>mario_small_right_standing.png</Image>
-      <VariableNames>StandingSprite WalkingSprite JumpingSprite Facing Jumping Walking GotFlower CameraBorderXRight CameraBorderXLeft InvincibilityTimer</VariableNames>
+      <VariableNames>StandingSprite WalkingSprite JumpingSprite Facing Jumping Walking GotFlower CameraBorderXRight CameraBorderXLeft InvincibilityTimer </VariableNames>
       <VariableValues>example-mario/mario-sprites/right/mario_standing.png example-mario/mario-sprites/right/mario_walk_right.gif example-mario/mario-sprites/right/mario_jump_right.gif Right False False False 550 150 0</VariableValues>
       <Behaviors>
 <!--        Colliding with a mushroom makes you big.-->
@@ -415,8 +415,13 @@
         </Behavior>
         <!--        Press Key to spawn a fireball.-->
         <Behavior>
+          <EntityVariableCondition>
+            <VariableName>GotFlower</VariableName>
+            <RequiredValue>True</RequiredValue>
+          </EntityVariableCondition>
           <InputCondition>
             <Key>DownKey</Key>
+            <InputRequirement>Pressed</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>CreateEntityRelative FireBallThrow 1 0</Effect>
@@ -654,12 +659,26 @@
             <Effect>RemoveSelf</Effect>
           </IndependentAction>
         </Behavior>
+        <Behavior>
+          <GameVariableCondition>
+            <VariableName>MarioState</VariableName>
+            <RequiredValue>1</RequiredValue>
+          </GameVariableCondition>
+          <RequiredCollisionCondition>
+            <Entity1>SELF</Entity1>
+            <Entity2>SmallMario</Entity2>
+            <Direction>Down</Direction>
+          </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>RemoveSelf</Effect>
+          </IndependentAction>
+        </Behavior>
       </Behaviors>
     </ImageEntity>
     <ImageEntity>
       <Name>FireBallThrow</Name>
-      <Width>10</Width>
-      <Height>10</Height>
+      <Width>40</Width>
+      <Height>40</Height>
       <Image>PowerUps/FireBallPower.gif</Image>
       <VariableNames>Direction</VariableNames>
       <VariableValues>Right</VariableValues>
@@ -671,6 +690,7 @@
         <CollisionDeterminedAction>
           <Args>universalTerrain Down</Args>
           <Effect>TerrainCollisionDown</Effect>
+          <Effect>Jump 0.0 -1.50 + 10.0</Effect>
         </CollisionDeterminedAction>
       </Behavior>
       <Behavior>
@@ -894,7 +914,7 @@
       <Name>FireFlower</Name>
       <Width>100</Width>
       <Height>100</Height>
-      <Stationary>true</Stationary>
+      <Stationary>false</Stationary>
       <Image>PowerUps/FireFlower.gif</Image>
       <!--      Run into mario to be destroyed.-->
       <Behavior>
