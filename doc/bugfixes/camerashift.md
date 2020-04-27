@@ -25,3 +25,4 @@ N/A
 ## Hypothesis for Fixing the Bug
 
 Describe the test you think will verify this bug and the code fix you believe will solve this issue.
+A test that sets the camerShiftValues to be nonxero for X and zero for Y. Then it gets the values and tests that they are equal.
