@@ -158,9 +158,9 @@ public class BehaviorInstance implements ConditionalBehavior {
       if (e != null) {
         return e;
       }
-      e = gameInternal.getEntitiesWithName(subjectVariable).get(0);
-      if (e != null) {
-        return e;
+      List<EntityInternal> entitiesWithName = gameInternal.getEntitiesWithName(subjectVariable);
+      if (entitiesWithName.size() > 0) {
+        return entitiesWithName.get(0);
       }
     }
     EntityInternal e = gameInternal.getEntityWithId(label);
