@@ -15,7 +15,7 @@ public interface Level {
 
   /**
    * Removes an entity from the level, if it is in the level.
-   * @param e
+   * @param e The Entity to remove from the level.
    */
   void removeEntity(EntityInternal e);
 
@@ -32,12 +32,12 @@ public interface Level {
 
   /**
    * @return The String ID of the level that this level will go to when it ends.
-   * @param nextID
+   * @param nextID The String ID of the level that will be this level's next level.
    */
   void setNextLevelID(String nextID);
 
   /**
-   * @return The ID of this level as assigned in the file.
+   * @return The ID of this level, as assigned when the level was initialized.
    */
   String getLevelId();
 }

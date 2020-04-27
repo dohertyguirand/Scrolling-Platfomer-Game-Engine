@@ -2,6 +2,9 @@ package ooga.game.behaviors.comparators;
 
 /**
  * @author sam thompson
+ * Compares two variables and returns true if the conditions defined in the comparator's
+ * implementation are true. Since variables can be Strings or Doubles (as Strings), it must
+ * be able to compare either, even if it's primarily used for one.
  */
 public interface VariableComparator  {
 
