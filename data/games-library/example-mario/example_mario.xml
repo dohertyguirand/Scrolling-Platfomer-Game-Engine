@@ -43,6 +43,7 @@
             <Effect>VelocityInput -.2000 0 + .3200</Effect>
             <Effect>SetVariable Facing Left</Effect>
             <Effect>SetVariable Walking True</Effect>
+            <Effect>SetVariable Direction Left</Effect>
           </IndependentAction>
         </Behavior>
         <!--        Press right to go right.-->
@@ -54,6 +55,7 @@
             <Effect>VelocityInput .2000 0 + .3200</Effect>
             <Effect>SetVariable Facing Right</Effect>
             <Effect>SetVariable Walking True</Effect>
+            <Effect>SetVariable Direction Left</Effect>
           </IndependentAction>
         </Behavior>
         <!--        Press neither left nor right to stand still.-->
@@ -411,7 +413,16 @@
             <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Exist to obey gravity.-->
+        <!--        Press Key to spawn a fireball.-->
+        <Behavior>
+          <InputCondition>
+            <Key>DownKey</Key>
+          </InputCondition>
+          <IndependentAction>
+            <Effect>CreateEntityRelative FireBallThrow 1 0</Effect>
+          </IndependentAction>
+        </Behavior>
+        <!--        Exist to obey gravity.-->
         <Behavior>
           <IndependentAction>
             <Effect>Gravity 0 0.1 + 10.0</Effect>
@@ -461,7 +472,7 @@
             <Effect>ChangeVariable CameraBorderXRight + 200.0</Effect>
           </IndependentAction>
         </Behavior>
-        If you have invincibility frames, tick them down.
+<!--        If you have invincibility frames, tick them down.-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>InvincibilityTimer</VariableName>
@@ -646,6 +657,69 @@
       </Behaviors>
     </ImageEntity>
     <ImageEntity>
+      <Name>FireBallThrow</Name>
+      <Width>10</Width>
+      <Height>10</Height>
+      <Image>PowerUps/FireBallPower.gif</Image>
+      <VariableNames>Direction</VariableNames>
+      <VariableValues>Right</VariableValues>
+      <Behavior>
+        <RequiredCollisionCondition>
+          <Entity2>universalTerrain</Entity2>
+          <Direction>Down</Direction>
+        </RequiredCollisionCondition>
+        <CollisionDeterminedAction>
+          <Args>universalTerrain Down</Args>
+          <Effect>TerrainCollisionDown</Effect>
+        </CollisionDeterminedAction>
+      </Behavior>
+      <Behavior>
+        <RequiredCollisionCondition>
+          <Entity2>universalTerrain</Entity2>
+          <Direction>Left</Direction>
+        </RequiredCollisionCondition>
+        <CollisionDeterminedAction>
+          <Args>universalTerrain Left</Args>
+          <Effect>TerrainCollisionLeft</Effect>
+          <Effect>RemoveSelf</Effect>
+        </CollisionDeterminedAction>
+      </Behavior>
+      <Behavior>
+        <RequiredCollisionCondition>
+          <Entity2>universalTerrain</Entity2>
+          <Direction>Right</Direction>
+        </RequiredCollisionCondition>
+        <CollisionDeterminedAction>
+          <Args>universalTerrain Right</Args>
+          <Effect>TerrainCollisionRight</Effect>
+          <Effect>RemoveSelf</Effect>
+        </CollisionDeterminedAction>
+      </Behavior>
+      <Behavior>
+        <IndependentAction>
+          <Effect>Gravity 0 0.1 + 10.0</Effect>
+        </IndependentAction>
+      </Behavior>
+      <Behavior>
+        <EntityVariableCondition>
+          <VariableName>Direction</VariableName>
+          <RequiredValue>Right</RequiredValue>
+        </EntityVariableCondition>
+        <IndependentAction>
+          <Effect>VelocityInput .2000 0 + .3200</Effect>
+        </IndependentAction>
+      </Behavior>
+      <Behavior>
+        <EntityVariableCondition>
+          <VariableName>Direction</VariableName>
+          <RequiredValue>Left</RequiredValue>
+        </EntityVariableCondition>
+        <IndependentAction>
+          <Effect>VelocityInput -.2000 0 + .3200</Effect>
+        </IndependentAction>
+      </Behavior>
+    </ImageEntity>
+    <ImageEntity>
       <Name>Mushroom</Name>
       <Width>80</Width>
       <Height>80</Height>
@@ -820,6 +894,7 @@
       <Name>FireFlower</Name>
       <Width>100</Width>
       <Height>100</Height>
+      <Stationary>true</Stationary>
       <Image>PowerUps/FireFlower.gif</Image>
       <!--      Run into mario to be destroyed.-->
       <Behavior>
@@ -940,795 +1015,6 @@
     </Variable>
   </Variables>
   <Levels>
-<!--    <Level>-->
-<!--      <ID>5</ID>-->
-<!--      <NextLevel>3</NextLevel>-->
-<!--      <ImageEntityInstances>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>CaveBackground</Name>-->
-<!--          <XPos>-1000.0</XPos>-->
-<!--          <YPos>0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>CaveBackground</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>CaveBackground</Name>-->
-<!--          <XPos>1000.0</XPos>-->
-<!--          <YPos>0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>CaveBackground</Name>-->
-<!--          <XPos>2000.0</XPos>-->
-<!--          <YPos>0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>CaveBackground</Name>-->
-<!--          <XPos>3000.0</XPos>-->
-<!--          <YPos>0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Fireball</Name>-->
-<!--          <XPos>-500.0</XPos>-->
-<!--          <YPos>150.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>100.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>LeftFacingPipe</Name>-->
-<!--          <XPos>200.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>300.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>400.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>500.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>600.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>700.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>800.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>900.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1000.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1100.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1200.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1300.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1400.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1500.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1600.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1700.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1800.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1900.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2000.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2100.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2200.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2300.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2400.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>300</XPos>-->
-<!--          <YPos>400</YPos>-->
-<!--          <Size>2.0</Size>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>400</XPos>-->
-<!--          <YPos>400</YPos>-->
-<!--          <Size>2.0</Size>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>400</XPos>-->
-<!--          <YPos>300</YPos>-->
-<!--          <Size>2.0</Size>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>FireBlock</Name>-->
-<!--          <XPos>100</XPos>-->
-<!--          <YPos>200</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--&lt;!&ndash;        <ImageEntityInstance>&ndash;&gt;-->
-<!--&lt;!&ndash;          <Name>Koopa</Name>&ndash;&gt;-->
-<!--&lt;!&ndash;          <XPos>800</XPos>&ndash;&gt;-->
-<!--&lt;!&ndash;          <YPos>400</YPos>&ndash;&gt;-->
-<!--&lt;!&ndash;        </ImageEntityInstance>&ndash;&gt;-->
-<!--&lt;!&ndash;        <ImageEntityInstance>&ndash;&gt;-->
-<!--&lt;!&ndash;          <Name>Koopa</Name>&ndash;&gt;-->
-<!--&lt;!&ndash;          <XPos>500</XPos>&ndash;&gt;-->
-<!--&lt;!&ndash;          <YPos>400</YPos>&ndash;&gt;-->
-<!--&lt;!&ndash;        </ImageEntityInstance>&ndash;&gt;-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2700.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2800.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2900.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3000.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3100.0</XPos>-->
-<!--          <YPos>0.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>100.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1200.0</XPos>-->
-<!--          <YPos>100.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1300.0</XPos>-->
-<!--          <YPos>100.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1400.0</XPos>-->
-<!--          <YPos>100.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2000.0</XPos>-->
-<!--          <YPos>100.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3000.0</XPos>-->
-<!--          <YPos>100.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3100.0</XPos>-->
-<!--          <YPos>100.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>200.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>SmallMario</Name>-->
-<!--          <XPos>200.0</XPos>-->
-<!--          <YPos>200.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1200.0</XPos>-->
-<!--          <YPos>200.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1300.0</XPos>-->
-<!--          <YPos>200.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3000.0</XPos>-->
-<!--          <YPos>200.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3100.0</XPos>-->
-<!--          <YPos>200.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>900.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1000.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1200.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2200.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2300.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2400.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3000.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3100.0</XPos>-->
-<!--          <YPos>300.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>400.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>800.0</XPos>-->
-<!--          <YPos>400.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>900.0</XPos>-->
-<!--          <YPos>400.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1000.0</XPos>-->
-<!--          <YPos>400.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2000.0</XPos>-->
-<!--          <YPos>400.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2100.0</XPos>-->
-<!--          <YPos>400.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>500.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>700.0</XPos>-->
-<!--          <YPos>500.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>800.0</XPos>-->
-<!--          <YPos>500.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>900.0</XPos>-->
-<!--          <YPos>500.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1000.0</XPos>-->
-<!--          <YPos>500.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>LeftFacingPipe</Name>-->
-<!--          <XPos>3100.0</XPos>-->
-<!--          <YPos>500.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>100.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>200.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>300.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>400.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>500.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>600.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>700.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>800.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>900.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1000.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1100.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1200.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1300.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1400.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1600.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1800.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2000.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2100.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2200.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2300.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2400.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2900.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3000.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3100.0</XPos>-->
-<!--          <YPos>600.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>100.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>200.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>300.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>400.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>500.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>600.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>700.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>800.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>900.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1000.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1100.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1200.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1300.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>1400.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2000.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2100.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2200.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2300.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2400.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>2900.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3000.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Brick</Name>-->
-<!--          <XPos>3100.0</XPos>-->
-<!--          <YPos>700.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>0.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>100.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>200.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>300.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>400.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>500.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>600.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>700.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>800.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>900.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1000.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1100.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1200.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1300.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1400.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1500.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1600.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1700.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1800.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>1900.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2000.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2100.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2200.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2300.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2400.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2500.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2600.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2700.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2800.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>2900.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>3000.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Void</Name>-->
-<!--          <XPos>3100.0</XPos>-->
-<!--          <YPos>800.0</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--      </ImageEntityInstances>-->
-<!--    </Level>-->
     <Level>
       <ID>1</ID>
       <NextLevel>2</NextLevel>
@@ -1737,6 +1023,7 @@
           <Name>Background</Name>
           <XPos>0</XPos>
           <YPos>0</YPos>
+          <Stationary>true</Stationary>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>SmallMario</Name>
@@ -1786,7 +1073,7 @@
           <YPos>300.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Name>Brick</Name>
+          <Name>FireBlock</Name>
           <XPos>600.0</XPos>
           <YPos>300.0</YPos>
         </ImageEntityInstance>
@@ -2149,6 +1436,7 @@
           <YPos>0</YPos>
           <Width>150</Width>
           <Height>50</Height>
+          <Stationary>true</Stationary>
           <PropertyVariableDependency>
             <VariableName>Lives</VariableName>
             <PropertyName>Text</PropertyName>
@@ -2161,6 +1449,7 @@
           <YPos>0</YPos>
           <Width>150</Width>
           <Height>50</Height>
+          <Stationary>true</Stationary>
           <PropertyVariableDependency>
             <VariableName>Score</VariableName>
             <PropertyName>Text</PropertyName>
@@ -2176,11 +1465,13 @@
           <Name>CaveBackground</Name>
           <XPos>-1000.0</XPos>
           <YPos>0</YPos>
+          <Stationary>true</Stationary>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>CaveBackground</Name>
           <XPos>0.0</XPos>
           <YPos>0</YPos>
+          <Stationary>true</Stationary>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>CaveBackground</Name>
@@ -3260,16 +2551,6 @@
           <YPos>300</YPos>
           <Size>2.0</Size>
         </ImageEntityInstance>
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Koopa</Name>-->
-<!--          <XPos>800</XPos>-->
-<!--          <YPos>400</YPos>-->
-<!--        </ImageEntityInstance>-->
-<!--        <ImageEntityInstance>-->
-<!--          <Name>Koopa</Name>-->
-<!--          <XPos>500</XPos>-->
-<!--          <YPos>400</YPos>-->
-<!--        </ImageEntityInstance>-->
         <ImageEntityInstance>
           <Name>Flagpole</Name>
           <XPos>900</XPos>
