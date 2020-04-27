@@ -441,39 +441,39 @@
             <Effect>SetVariable Lives 3.0</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Go to the right of the camera X border to shift the camera (Based on Cary's sonic.xml)-->
-        <Behavior>
-          <EntityVariableCondition>
-            <VariableName>XPos</VariableName>
-            <Comparison>GreaterThan</Comparison>
-            <RequiredValue>CameraBorderXRight</RequiredValue>
-          </EntityVariableCondition>
-          <IndependentAction>
-            <Effect>SetVariable CameraDiff XPos</Effect>
-            <Effect>ChangeVariable CameraDiff - CameraBorderXRight</Effect>
-            <Effect>ChangeVariable CameraDiff * -1</Effect>
-            <Effect>ShiftCamera CameraDiff 0</Effect>
-            <Effect>ChangeVariable CameraBorderXRight - CameraDiff</Effect>
-            <Effect>SetVariable CameraBorderXLeft CameraBorderXRight</Effect>
-            <Effect>ChangeVariable CameraBorderXLeft - 200.0</Effect>
-          </IndependentAction>
-        </Behavior>
-        <Behavior>
-          <EntityVariableCondition>
-            <VariableName>XPos</VariableName>
-            <Comparison>LessThan</Comparison>
-            <RequiredValue>CameraBorderXLeft</RequiredValue>
-          </EntityVariableCondition>
-          <IndependentAction>
-            <Effect>SetVariable CameraDiff XPos</Effect>
-            <Effect>ChangeVariable CameraDiff - CameraBorderXLeft</Effect>
-            <Effect>ChangeVariable CameraDiff * -1</Effect>
-            <Effect>ShiftCamera CameraDiff 0</Effect>
-            <Effect>ChangeVariable CameraBorderXLeft - CameraDiff</Effect>
-            <Effect>SetVariable CameraBorderXRight CameraBorderXLeft</Effect>
-            <Effect>ChangeVariable CameraBorderXRight + 200.0</Effect>
-          </IndependentAction>
-        </Behavior>
+<!--&lt;!&ndash;        Go to the right of the camera X border to shift the camera (Based on Cary's sonic.xml)&ndash;&gt;-->
+<!--        <Behavior>-->
+<!--          <EntityVariableCondition>-->
+<!--            <VariableName>XPos</VariableName>-->
+<!--            <Comparison>GreaterThan</Comparison>-->
+<!--            <RequiredValue>CameraBorderXRight</RequiredValue>-->
+<!--          </EntityVariableCondition>-->
+<!--          <IndependentAction>-->
+<!--            <Effect>SetVariable CameraDiff XPos</Effect>-->
+<!--            <Effect>ChangeVariable CameraDiff - CameraBorderXRight</Effect>-->
+<!--            <Effect>ChangeVariable CameraDiff * -1</Effect>-->
+<!--            <Effect>ShiftCamera CameraDiff 0</Effect>-->
+<!--            <Effect>ChangeVariable CameraBorderXRight - CameraDiff</Effect>-->
+<!--            <Effect>SetVariable CameraBorderXLeft CameraBorderXRight</Effect>-->
+<!--            <Effect>ChangeVariable CameraBorderXLeft - 200.0</Effect>-->
+<!--          </IndependentAction>-->
+<!--        </Behavior>-->
+<!--        <Behavior>-->
+<!--          <EntityVariableCondition>-->
+<!--            <VariableName>XPos</VariableName>-->
+<!--            <Comparison>LessThan</Comparison>-->
+<!--            <RequiredValue>CameraBorderXLeft</RequiredValue>-->
+<!--          </EntityVariableCondition>-->
+<!--          <IndependentAction>-->
+<!--            <Effect>SetVariable CameraDiff XPos</Effect>-->
+<!--            <Effect>ChangeVariable CameraDiff - CameraBorderXLeft</Effect>-->
+<!--            <Effect>ChangeVariable CameraDiff * -1</Effect>-->
+<!--            <Effect>ShiftCamera CameraDiff 0</Effect>-->
+<!--            <Effect>ChangeVariable CameraBorderXLeft - CameraDiff</Effect>-->
+<!--            <Effect>SetVariable CameraBorderXRight CameraBorderXLeft</Effect>-->
+<!--            <Effect>ChangeVariable CameraBorderXRight + 200.0</Effect>-->
+<!--          </IndependentAction>-->
+<!--        </Behavior>-->
 <!--        If you have invincibility frames, tick them down.-->
         <Behavior>
           <EntityVariableCondition>
@@ -863,7 +863,7 @@
       <Name>FireBlock</Name>
       <Width>100</Width>
       <Height>100</Height>
-      <Image>QuestionBlock.gif</Image>
+      <Image>question-block/FireQuestionBlock.gif</Image>
       <VariableNames>TerrainID myItem empty rando</VariableNames>
       <VariableValues>universalTerrain FireFlower false -6.0</VariableValues>
       <!--      Get hit by mario's head to spit out an item.-->
@@ -880,6 +880,7 @@
           <!--          <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>-->
           <Effect>CreateEntityRelative FireFlower 0.0 -100.0</Effect>
           <Effect>SetVariable empty true</Effect>
+          <Effect>SetImage example-mario/question-block/depleted_qblock.png</Effect>
         </IndependentAction>
       </Behavior>
     </ImageEntity>
