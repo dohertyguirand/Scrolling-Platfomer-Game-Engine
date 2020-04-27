@@ -31,6 +31,8 @@
                         <Effect>GoToLevel 1</Effect>
                         <Effect>SetVariable Lives 1.0</Effect>
                         <Effect>SetVariable Score 0.0</Effect>
+                        <Effect>SetVariable CameraShiftValue 0.0</Effect>
+                        <Effect>SetVariable CameraBorderYPos 200</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -40,11 +42,11 @@
                         <RequiredValue>CameraBorderYPos</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>SetVariable CameraShiftValue YPos</Effect>
-                        <Effect>ChangeVariable CameraShiftValue - CameraBorderYPos</Effect>
-                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>
-                        <Effect>ShiftCamera CameraShiftValue 0</Effect>
-                        <Effect>ChangeVariable CameraBorderYPos - CameraShiftValue</Effect>
+                        <Effect>SetVariable CameraShiftValue 0 YPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue 0 CameraShiftValue-CameraBorderYPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue  0 CameraShiftValue*-1</Effect>
+                        <Effect>ShiftCamera CameraShiftValue 0 1</Effect>
+                        <Effect>ChangeVariable CameraBorderYPos  0 CameraBorderYPos-CameraShiftValue</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Blue Platform  -->
