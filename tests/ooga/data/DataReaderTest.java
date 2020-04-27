@@ -296,12 +296,15 @@ public class DataReaderTest {
     @Test
     public void testSaveLevel(){
         List<EntityInternal> entityList = new ArrayList<>();
-        Entity entity = new ImageEntity("testName", "testImage", 0.0, 0.1, 400, 500){};
+        EntityInternal entity = new ImageEntity("testName", "testImage", 0.0, 0.1, 400, 500){};
         Map<String, String> entityVars = new HashMap<>();
-//        entityVars.put("And he's singin'", "wayo wayo wayo wayo");
-//        entityVars.put("ooAAAAooo", "WAAyo Wayo");
+        entityVars.put("And he's singin'", "wayo wayo wayo wayo");
+        entityVars.put("ooAAAAooo", "WAAyo Wayo");
+        entity.setVariables(entityVars);
 
-        Level testLevel = new OogaLevel(entityList, "1");
+        entityList.add(entity);
+
+        Level testLevel = new OogaLevel(entityList, "What's up Gamers");
         XMLGameRecorder testGameRecorder = new XMLGameRecorder();
         Map<String, String > vars = new HashMap<>();
         vars.put("Lives", "2");
