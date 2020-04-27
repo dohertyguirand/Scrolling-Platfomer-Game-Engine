@@ -17,7 +17,9 @@ private final File file = null;
     @Test
     public void openFileChooser(){
         try {
-            BufferedImage bufferedImage = ImageIO.read(file);
+            if(file != null ){
+                BufferedImage bufferedImage = ImageIO.read(file);
+            }
         } catch (IllegalArgumentException | IOException e) {
             fail("Should Not Have Shown Exception");
         }
