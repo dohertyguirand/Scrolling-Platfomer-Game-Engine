@@ -226,7 +226,7 @@ public class ViewerGame {
       try {
         step();
       } catch (Exception ex) {
-        //ex.printStackTrace();
+        ex.printStackTrace();
         // note that this should ideally never be thrown
         if(currentError == null || !ex.getClass().equals(currentError.getClass())) {
           myAnimation.stop();

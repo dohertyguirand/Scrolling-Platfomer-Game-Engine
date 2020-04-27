@@ -11,6 +11,42 @@
             <VariableNames>FacingRight FacingLeft</VariableNames>
             <VariableValues>doodle_jump/doodle_right.png doodle_jump/doodle_left.png</VariableValues>
             <Behaviors>
+                <!-- Falling Under the bottom of screen -->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>YPos</VariableName>
+                        <Comparison>GreaterThan</Comparison>
+                        <RequiredValue>FloorValue</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <GameVariableCondition>
+                        <VariableName>Lives</VariableName>
+                        <RequiredValue>0.0</RequiredValue>
+                    </GameVariableCondition>
+                    <IndependentAction>
+                        <Effect>GoToLevel 1</Effect>
+                        <Effect>SetVariable Lives 1.0</Effect>
+                        <Effect>SetVariable Score 0.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>YPos</VariableName>
+                        <Comparison>LessThan</Comparison>
+                        <RequiredValue>CameraBorderYPos</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable CameraShiftValue YPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue - CameraBorderYPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>
+                        <Effect>ShiftCamera CameraShiftValue 0</Effect>
+                        <Effect>ChangeVariable CameraBorderYPos - CameraShiftValue</Effect>
+                    </IndependentAction>
+                </Behavior>
                 <!-- Collision with Blue Platform  -->
                 <Behavior>
                     <RequiredCollisionDetection>
@@ -30,7 +66,7 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Jump 0.0 -1.50 + 10.0</Effect>
+                        <Effect>Jump 0.0 -1.00 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Green Platform  -->
@@ -52,7 +88,7 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Jump 0.0 -1.50 + 10.0</Effect>
+                        <Effect>Jump 0.0 -1.00 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with White Platform  -->
@@ -74,19 +110,8 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Jump 0.0 -1.20 + 20.0</Effect>
+                        <Effect>Jump 0.0 -1.00 + 20.0</Effect>
                     </IndependentAction>
-                </Behavior>
-                <Behavior>
-                     <EntityVariableCondition>
-                        <VariableName>Blinking</VariableName>
-                         <RequiredValue>true</RequiredValue>
-                    </EntityVariableCondition>
-                    <IndependentAction>
-                        <Effect>BlinkImage Still none Still 50 1300</Effect>
-                        <Effect>SetVariable Blinking false 1300</Effect>
-                        <Effect>SetVelocity 0.0 0.0</Effect>
-                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Monster  -->
                 <Behavior>
@@ -117,7 +142,7 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Jump 0.0 -1.50 + 10.0</Effect>
+                        <Effect>Jump 0.0 -1.00 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Void  -->
@@ -256,17 +281,6 @@
                        <Effect>SetImage Touched</Effect>
                    </IndependentAction>
                </Behavior>
-               <Behavior>
-                   <GameVariableCondition>
-                       <VariableName>Lives</VariableName>
-                       <RequiredValue>0.0</RequiredValue>
-                   </GameVariableCondition>
-                   <IndependentAction>
-                       <Effect>GoToLevel 1</Effect>
-                       <Effect>SetVariable Lives 1.0</Effect>
-                       <Effect>SetVariable Score 0.0</Effect>
-                   </IndependentAction>
-               </Behavior>
            </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -291,25 +305,52 @@
             <Name>Lives</Name>
             <StartValue>1</StartValue>
         </Variable>
+        <Variable>
+            <Name>CameraShiftValue</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>CameraBorderYPos</Name>
+            <StartValue>200</StartValue>
+        </Variable>
+        <Variable>
+            <Name>FloorValue</Name>
+            <StartValue>800</StartValue>
+        </Variable>
     </Variables>
     <Levels>
         <Level>
             <ID>1</ID>
             <NextLevel>1</NextLevel>
-            <EndCondition>DestroyAll Koopa</EndCondition>
-            <TextEntityInstance>
-                <Text>Score: %.0f</Text>
-                <Font>Times New Roman</Font>
-                <XPos>700</XPos>
-                <YPos>0</YPos>
-                <Width>150</Width>
-                <Height>50</Height>
-                <Stationary>true</Stationary>
-                <PropertyVariableDependency>
-                    <VariableName>Score</VariableName>
-                    <PropertyName>Text</PropertyName>
-                </PropertyVariableDependency>
-            </TextEntityInstance>
+            <EndCondition>DestroyALl Koopa</EndCondition>
+            <TextEntityInstances>
+                <TextEntityInstance>
+                    <Text>Score: %.0f</Text>
+                    <Font>Times New Roman</Font>
+                    <XPos>700</XPos>
+                    <YPos>0</YPos>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                    <Stationary>true</Stationary>
+                    <PropertyVariableDependency>
+                        <VariableName>Score</VariableName>
+                        <PropertyName>Text</PropertyName>
+                    </PropertyVariableDependency>
+                </TextEntityInstance>
+                <TextEntityInstance>
+                    <Text>Lives: %.0f</Text>
+                    <Font>Times New Roman</Font>
+                    <XPos>500</XPos>
+                    <YPos>0</YPos>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                    <Stationary>true</Stationary>
+                    <PropertyVariableDependency>
+                        <VariableName>Lives</VariableName>
+                        <PropertyName>Text</PropertyName>
+                    </PropertyVariableDependency>
+                </TextEntityInstance>
+            </TextEntityInstances>
             <ImageEntityInstances>
                 <ImageEntityInstance>
                     <Name>Background</Name>
@@ -319,7 +360,7 @@
                 <ImageEntityInstance>
                     <Name>Doodle</Name>
                     <XPos>0</XPos>
-                    <YPos>400</YPos>
+                    <YPos>500</YPos>
                     <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
                     <VariableValues>0 0</VariableValues>
                 </ImageEntityInstance>
@@ -330,93 +371,23 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>GreenPlatform</Name>
-                    <XPos>340</XPos>
-                    <YPos>700</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>430</XPos>
-                    <YPos>213</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>540</XPos>
-                    <YPos>187</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>700</XPos>
-                    <YPos>310</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>BluePlatform</Name>
-                    <XPos>100</XPos>
+                    <XPos>150</XPos>
                     <YPos>518</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>BluePlatform</Name>
-                    <XPos>722</XPos>
-                    <YPos>10</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>BluePlatform</Name>
-                    <XPos>636</XPos>
-                    <YPos>265</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>BluePlatform</Name>
-                    <XPos>20</XPos>
-                    <YPos>335</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>WhitePlatform</Name>
-                    <XPos>200</XPos>
+                    <Name>GreenPlatform</Name>
+                    <XPos>300</XPos>
                     <YPos>418</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>WhitePlatform</Name>
-                    <XPos>582</XPos>
-                    <YPos>402</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>WhitePlatform</Name>
-                    <XPos>413</XPos>
-                    <YPos>87</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>CrackedPlatform</Name>
-                    <XPos>300</XPos>
+                    <Name>GreenPlatform</Name>
+                    <XPos>450</XPos>
                     <YPos>318</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>CrackedPlatform</Name>
-                    <XPos>620</XPos>
-                    <YPos>397</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>CrackedPlatform</Name>
-                    <XPos>674</XPos>
-                    <YPos>695</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>400</XPos>
+                    <Name>GreenPlatform</Name>
+                    <XPos>600</XPos>
                     <YPos>218</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>368</XPos>
-                    <YPos>276</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Void</Name>
-                    <XPos>300</XPos>
-                    <YPos>118</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Void</Name>
-                    <XPos>440</XPos>
-                    <YPos>545</YPos>
                 </ImageEntityInstance>
             </ImageEntityInstances>
         </Level>

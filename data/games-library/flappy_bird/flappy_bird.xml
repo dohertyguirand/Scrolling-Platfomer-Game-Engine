@@ -18,6 +18,7 @@
                         <IndependentAction>
                             <Effect>Jump 0 -0.8 + 10.0</Effect>
                             <Effect>SetImage GoingUp</Effect>
+<!--                            <Effect>CreateEntityRelative PipeUp 100 100</Effect>-->
                         </IndependentAction>
                     </InputCondition>
                 </Behavior>
