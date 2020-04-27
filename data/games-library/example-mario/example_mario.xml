@@ -478,7 +478,7 @@
       <Name>Koopa</Name>
       <Width>100</Width>
       <Height>120</Height>
-      <Image>example-mario/Enemies/Koopa.gif</Image>
+      <Image>Enemies/Koopa.gif</Image>
       <VariableNames>TerrainID xVel</VariableNames>
       <VariableValues>enemy 0.1300</VariableValues>
       <!--        Moves forward every frame-->
@@ -553,7 +553,7 @@
       <Name>Goomba</Name>
       <Width>90</Width>
       <Height>90</Height>
-      <Image>example-mario/Enemies/Goomba.gif</Image>
+      <Image>Enemies/Goomba.gif</Image>
       <VariableNames>TerrainID xVel</VariableNames>
       <VariableValues>enemy 0.01</VariableValues>
       <!--        Moves forward every frame-->
@@ -628,7 +628,7 @@
       <Name>Brick</Name>
       <Width>100</Width>
       <Height>100</Height>
-      <Image>example-mario/Terrain/Brick.png</Image>
+      <Image>terrain/Brick.png</Image>
       <VariableNames>TerrainID</VariableNames>
       <VariableValues>universalTerrain</VariableValues>
 <!--      Gets destroyed by a Fireball-->
@@ -649,7 +649,7 @@
       <Name>Mushroom</Name>
       <Width>80</Width>
       <Height>80</Height>
-      <Image>example-mario/PowerUps/mario_mushroom.png</Image>
+      <Image>PowerUps/mario_mushroom.png</Image>
       <Behaviors>
         <!--      Exist to obey gravity.-->
         <Behavior>
@@ -820,7 +820,7 @@
       <Name>FireFlower</Name>
       <Width>100</Width>
       <Height>100</Height>
-      <Image>example-mario/PowerUps/FireFlower.gif</Image>
+      <Image>PowerUps/FireFlower.gif</Image>
       <!--      Run into mario to be destroyed.-->
       <Behavior>
         <RequiredCollisionCondition>
@@ -842,7 +842,7 @@
       <Name>Flagpole</Name>
       <Width>100</Width>
       <Height>400</Height>
-      <Image>example-mario/Terrain/mario_flagpole.png</Image>
+      <Image>terrain/mario_flagpole.png</Image>
       <VariableNames>TerrainID</VariableNames>
       <VariableValues>universalTerrain</VariableValues>
     </ImageEntity>
@@ -875,7 +875,7 @@
       <Name>QuestionBlock</Name>
       <Width>100</Width>
       <Height>100</Height>
-      <Image>question-block/mario_question_block.png</Image>
+      <Image>question-block/mario_question_block.gif</Image>
       <VariableNames>TerrainID myItem empty rando</VariableNames>
       <VariableValues>universalTerrain Mushroom false -6.0</VariableValues>
 <!--      Get hit by mario's head to spit out an item.-->
@@ -899,19 +899,19 @@
       <Name>Background</Name>
       <Width>1000</Width>
       <Height>800</Height>
-      <Image>example-mario/Terrain/mario_background.png</Image>
+      <Image>terrain/mario_background.png</Image>
     </ImageEntity>
     <ImageEntity>
       <Name>CaveBackground</Name>
       <Width>1000</Width>
       <Height>1000</Height>
-      <Image>example-mario/Terrain/cave_background.png</Image>
+      <Image>terrain/cave_background.png</Image>
     </ImageEntity>
     <ImageEntity>
       <Name>Fireball</Name>
       <Width>500</Width>
       <Height>500</Height>
-      <Image>example-mario/Terrain/fireball.png</Image>
+      <Image>terrain/fireball.png</Image>
       <Behaviors>
         <Behavior>
           <IndependentAction>
