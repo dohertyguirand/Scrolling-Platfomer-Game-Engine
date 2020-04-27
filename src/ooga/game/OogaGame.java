@@ -325,7 +325,7 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
 
   @Override
   public List<Double> getCameraShiftValues() {
-    return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(0).getValue());
+    return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(1).getValue());
   }
 
   @Override
