@@ -87,7 +87,7 @@ public abstract class ScrollMenu extends BorderPane {
      * creates horizontal scroller
      * @return returns a node that holds all the thumbnails that can scroll based on addition of content
      */
-    private Node horizontalScroller() {
+    protected Node horizontalScroller() {
         myHBox = new HBox();
         myHBox.setStyle(HBOX_STYLE);
         myHBox.setLayoutY(HBOX_Y_LAYOUT);

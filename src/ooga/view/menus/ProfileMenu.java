@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.OogaDataException;
 import ooga.data.OogaProfile;
@@ -95,10 +96,14 @@ public class ProfileMenu extends ScrollMenu {
             File photoFile = profile.getFileChosen();
             if(photoFile != null){
                 myProfileReader.addNewProfile(profile.getProfileName(),profile.getFileChosen());
-                myProfiles.add(profile);
-                Button button = makeButton(new ImageView("src/ooga/view/Resources/profilephotos/NewProfile.jpg"), profile.getProfileName());
-                button.setOnAction(e -> setProfileSelected(profile));
-                myHBox.getChildren().add(button);
+//                myProfiles.add(profile);
+//                Button button = makeButton(new ImageView(profile.getProfilePath()), profile.getProfileName());
+//                button.setOnAction(e -> setProfileSelected(profile));
+//                myHBox.getChildren().add(button);
+                this.setBottom(horizontalScroller());
+                myProfiles = new ArrayList<>();
+                makeViewProfiles();
+                addProfileImages();
             }
         } catch (OogaDataException e) {
              showError(ERROR_MESSAGE);

@@ -129,8 +129,7 @@ the non-game specific text can be put to another language. The text entities tha
 with a similar reaction to activate their effect. (Ex: Stomping on a koopa kills all onscreen koopas).
 This is not exactly a bug, as this is just the default behavior for when no Entity1 is provided in a collision
 condition. The solution is to put SELF for the text content of Entity1 in a collision condition.
-* As of 4/26/2020, a new profile can only be added if the profile name is original, this bug is listed as a todo in XMLProfileReader. The
-new profile's photo will show up as default photo but shows up as selected photo when program is reran. 
+* As of 4/26/2020, a new profile can only be added if the profile name is original, this bug is listed as a todo in XMLProfileReader.
 
 Extra credit: You can choose which game you want to play and get a preview of each from
 the selection screen. 
