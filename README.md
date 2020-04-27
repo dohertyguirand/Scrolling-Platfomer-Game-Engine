@@ -17,6 +17,7 @@ Hours Spent:
 * stt13 - 70+?
 * dg211 - 60+ 
 * ccw43 - 55+
+* bmw54 - 60+
 
 ### Primary Roles
 
@@ -33,6 +34,9 @@ Profile API and implementation in view. Camera shifting. VVVVV game.
 
 ccw43 - View API, setting up profile and selecting a profile in profile API, Game specific behaviors, flappy bird,
 dino game, doodle jump
+
+bmw54 - DataReader; The methods that involved writing to or reading from data on the computer.
+This included reading and writing xml files as well as navigating and creating directories.
 
 ### Resources Used
 To evaluate string expressions like "5+5" we used an expression parser we got from
@@ -159,3 +163,12 @@ could add new features like a social center. Our view would be able to handle th
 some of the extensions that were listed on the website. We did a good job of making it as flexible as possible to add whatever
 scroller game we would want, but there was not enough time to do so. It was harder working remotely because peer coding had to
 be done over zoom which was a new dynamic added.
+
+(bmw54) I really enjoyed this project. Out of all of the projects so far, this one
+felt the most fulfilling and our final product was the cleanest and most fun of the 
+projects to date. While it was difficult to generalize our design to work for so many 
+different types of games and we did have to alter our design one a few occasions to fit this
+flexibility, the challenge resulted in a final project that was very well made and could 
+run a surprisingly huge library of games and levels. I would agree with the others that
+this flexibility and robustness was our main accomplishment and that every other feature
+felt more like additions to make when that was accomplished.
