@@ -1,6 +1,7 @@
 package ooga.data.profiledatareaders;
 
 import ooga.OogaDataException;
+import ooga.Profile;
 import ooga.data.OogaProfile;
 import ooga.data.XMLDataReader;
 import org.w3c.dom.Document;
@@ -36,7 +37,9 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
    * @throws OogaDataException - if creating a new profile breaks such as file not being found
    */
   public void addNewProfile(String newProfileName, File photoFile) throws OogaDataException {
-    //TODO: make sure profile doesn't already exist
+    for (OogaProfile op : getProfiles()){
+      if(newProfileName.equals(op.getProfileName())) throw new OogaDataException("Username already exists");
+    }
     try {
       Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       String directory = DEFAULT_USERS_FILE+"/"+newProfileName;
@@ -84,11 +87,6 @@ public class XMLProfileReader implements XMLDataReader, ProfileReaderExternal, P
       Transformer transformer = transformerFactory.newTransformer();
       DOMSource domSource = new DOMSource(document);
       StreamResult streamResult = new StreamResult(new File(filepath));
-
-      // If you use
-//             StreamResult result = new StreamResult(System.out);
-      // the output will be pushed to the standard output ...
-      // You can use that for debugging
 
       transformer.transform(domSource, streamResult);
 
