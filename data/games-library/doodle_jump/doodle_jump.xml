@@ -14,12 +14,37 @@
                 <!-- Falling Under the bottom of screen -->
                 <Behavior>
                     <EntityVariableCondition>
-                        <VariableName>XPos</VariableName>
-                        <Comparison>Equals</Comparison>
+                        <VariableName>YPos</VariableName>
+                        <Comparison>GreaterThan</Comparison>
                         <RequiredValue>FloorValue</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>ChangeVariable Lives + -1.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <GameVariableCondition>
+                        <VariableName>Lives</VariableName>
+                        <RequiredValue>0.0</RequiredValue>
+                    </GameVariableCondition>
+                    <IndependentAction>
+                        <Effect>GoToLevel 1</Effect>
+                        <Effect>SetVariable Lives 1.0</Effect>
+                        <Effect>SetVariable Score 0.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>YPos</VariableName>
+                        <Comparison>LessThan</Comparison>
+                        <RequiredValue>CameraBorderYPos</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable CameraShiftValue YPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue - CameraBorderYPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>
+                        <Effect>ShiftCamera CameraShiftValue 0</Effect>
+                        <Effect>ChangeVariable CameraBorderYPos - CameraShiftValue</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Blue Platform  -->
@@ -87,17 +112,6 @@
                     <IndependentAction>
                         <Effect>Jump 0.0 -1.00 + 20.0</Effect>
                     </IndependentAction>
-                </Behavior>
-                <Behavior>
-                     <EntityVariableCondition>
-                        <VariableName>Blinking</VariableName>
-                         <RequiredValue>true</RequiredValue>
-                    </EntityVariableCondition>
-                    <IndependentAction>
-                        <Effect>BlinkImage Still none Still 50 1300</Effect>
-                        <Effect>SetVariable Blinking false 1300</Effect>
-                        <Effect>SetVelocity 0.0 0.0</Effect>
-                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Monster  -->
                 <Behavior>
@@ -173,20 +187,6 @@
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
-<!--            <Behavior>-->
-<!--                <EntityVariableCondition>-->
-<!--                    <VariableName>YPos</VariableName>-->
-<!--                    <Comparison>GreaterThan</Comparison>-->
-<!--                    <RequiredValue>CameraBorderYPos</RequiredValue>-->
-<!--                </EntityVariableCondition>-->
-<!--                <IndependentAction>-->
-<!--                    <Effect>SetVariable CameraShiftValue YPos</Effect>-->
-<!--                    <Effect>ChangeVariable CameraShiftValue - CameraBorderYPos</Effect>-->
-<!--                    <Effect>ChangeVariable CameraShiftValue * -1</Effect>-->
-<!--                    <Effect>ShiftCamera CameraShiftValue 0</Effect>-->
-<!--                    <Effect>ChangeVariable CameraBorderYPos - CameraShiftValue</Effect>-->
-<!--                </IndependentAction>-->
-<!--            </Behavior>-->
         </ImageEntity>
         <!-- Green Platform Behavior  -->
         <ImageEntity>
@@ -281,18 +281,6 @@
                        <Effect>SetImage Touched</Effect>
                    </IndependentAction>
                </Behavior>
-               <!-- Restart Level-->
-               <Behavior>
-                   <GameVariableCondition>
-                       <VariableName>Lives</VariableName>
-                       <RequiredValue>0.0</RequiredValue>
-                   </GameVariableCondition>
-                   <IndependentAction>
-                       <Effect>GoToLevel 1</Effect>
-                       <Effect>SetVariable Lives 1.0</Effect>
-                       <Effect>SetVariable Score 0.0</Effect>
-                   </IndependentAction>
-               </Behavior>
            </Behaviors>
         </ImageEntity>
         <ImageEntity>
@@ -334,7 +322,7 @@
         <Level>
             <ID>1</ID>
             <NextLevel>1</NextLevel>
-            <EndCondition>DestroyAll Koopa</EndCondition>
+            <EndCondition>DestroyALl Koopa</EndCondition>
             <TextEntityInstances>
                 <TextEntityInstance>
                     <Text>Score: %.0f</Text>
