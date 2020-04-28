@@ -21,6 +21,9 @@ import ooga.game.controls.inputmanagers.OogaInputManager;
 
 /**
  * @author sam thompson, caryshindell, doherty guirand, braeden ward, chris warren
+ * Handles running an OOGA game, with any sort of input type, collision detector, and
+ * data type. Also handles the external side of the game to visualizers and the
+ * internal side of the game to entities and their behaviors.
  */
 public class OogaGame implements Game, UserInputListener, GameInternal {
 
@@ -43,13 +46,20 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private final List<DoubleProperty> cameraShiftProperties = List.of(new SimpleDoubleProperty(), new SimpleDoubleProperty());
   private String myProfileName;
 
-  private void initVariableMap(String gameName) throws OogaDataException {
-    myVariables = new HashMap<>();
-    for (String key : myGameDataReader.getVariableMap(gameName).keySet()){
-      myVariables.put(key, myGameDataReader.getVariableMap(gameName).get(key));
-    }
-  }
-
+  /**
+   * Constructs an OogaGame instance.
+   * @param gameName The name of the game, agreeing with the name in the target game file.
+   * @param gameDataReaderExternal The GameDataReaderExternal that this game will use to
+   *                               read its game file.
+   * @param detector The CollisionDetector that this game will use to check for collisions.
+   * @param controls The ControlsInterpreter that this game will use to map raw inputs
+   *                 to standardized key codes.
+   * @param profileName The name of the user profile running the game.
+   * @param gameRecorderExternal The name of the game recorder that will be used to make saves.
+   * @param date The date of the save to load, or an arbitrary date if no game should be loaded.
+   * @throws OogaDataException if it is impossible to load the game. Provides details of
+   * the error.
+   */
   public OogaGame(String gameName, GameDataReaderExternal gameDataReaderExternal,  CollisionDetector detector,
                   ControlsInterpreter controls, String profileName, GameRecorderExternal gameRecorderExternal,
                   String date) throws OogaDataException {
@@ -72,6 +82,206 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ObservableList<Entity> getEntities() {
+    return myEntities;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void doGameStep(double elapsedTime) {
+    doEntityFrameUpdates(elapsedTime);
+    doEntityBehaviors(elapsedTime);
+    doEntityCleanup();
+    executeEntityMovement(elapsedTime);
+    doEntityCreation();
+    myInputManager.update();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getCurrentLevelId() {
+    return currentLevel.getLevelId();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void reactToMouseClick(double mouseX, double mouseY) {
+    myInputManager.mouseClicked(mouseX,mouseY);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void reactToKeyPress(String keyName) {
+    String inputType = myControlsInterpreter.translateInput(keyName);
+    myInputManager.keyPressed(inputType);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void reactToKeyRelease(String keyName) {
+    String inputType = myControlsInterpreter.translateInput(keyName);
+    myInputManager.keyReleased(inputType);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void reactToGameSave() {
+    myGameRecorder.saveLevel(myProfileName,myName,currentLevel, myVariables);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void createEntity(String type, List<Double> position) {
+    ImageEntityDefinition definition = myEntityDefinitions.get(type);
+    createEntity(type,position,definition.getWidth(),definition.getHeight());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void createEntity(String type, List<Double> position, double width, double height) {
+    EntityInternal created = myEntityDefinitions.get(type).makeInstanceAt(position.get(0),position.get(1));
+    created.setHeight(height);
+    created.setWidth(width);
+    myNewCreatedEntities.add(created);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public EntityInternal getEntityWithId(String id) {
+    for (EntityInternal e : myEntitiesInternal) {
+      String entityId = e.getEntityID();
+      if (entityId != null && entityId.equals(id)) {
+        return e;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<EntityInternal> getEntitiesWithName(String name) {
+    List<EntityInternal> entitiesWithName = new ArrayList<>();
+    for (EntityInternal e : myEntitiesInternal) {
+      if (e.getName().equals(name)) {
+        entitiesWithName.add(e);
+      }
+    }
+    return entitiesWithName;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void goToLevel(String levelID) {
+    try {
+      loadGameLevel(myGameDataReader.loadNewLevel(myName,levelID));
+      setCameraShiftValues(0,0);
+    }
+    catch (OogaDataException ignored) {
+      //To preserve the pristine gameplay experience, we do nothing (rather than crash).
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void goToNextLevel() {
+    goToLevel(currentLevel.nextLevelID());
+    setCameraShiftValues(0,0);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void restartLevel() {
+    goToLevel(currentLevel.getLevelId());
+    setCameraShiftValues(0,0);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setCameraShiftProperties(List<DoubleProperty> properties){
+    for(int i = 0; i < cameraShiftProperties.size(); i ++){
+      cameraShiftProperties.get(i).bindBidirectional(properties.get(i));
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setCameraShiftValues(double xValue, double yValue){
+    cameraShiftProperties.get(0).set(xValue);
+    cameraShiftProperties.get(1).set(yValue);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Double> getCameraShiftValues() {
+    return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(1).getValue());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Map<String, String> getVariables() {
+    return new HashMap<>(myVariables);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setVariable(String var, String value) {
+    myVariables.put(var,value);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<EntityInternal> getInternalEntities() {
+    return new ArrayList<>(myEntitiesInternal);
+  }
+
+  private void initVariableMap(String gameName) throws OogaDataException {
+    myVariables = new HashMap<>();
+    for (String key : myGameDataReader.getVariableMap(gameName).keySet()){
+      myVariables.put(key, myGameDataReader.getVariableMap(gameName).get(key));
+    }
+  }
 
   private void loadGameLevel(Level level) {
     clearEntities();
@@ -88,36 +298,6 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
   private void clearEntities() {
     myEntities.clear();
     myEntitiesInternal.clear();
-  }
-
-  @Override
-  public ObservableList<Entity> getEntities() {
-    return myEntities;
-  }
-
-  /**
-   * Updates things in the game according to how much time has passed
-   *
-   * @param elapsedTime time passed in milliseconds
-   */
-  @Override
-  public void doGameStep(double elapsedTime) {
-    doEntityFrameUpdates(elapsedTime);
-    doEntityBehaviors(elapsedTime);
-    doEntityCleanup();
-    executeEntityMovement(elapsedTime);
-    doEntityCreation();
-    myInputManager.update();
-  }
-
-  private Map<EntityInternal, Map<String, List<EntityInternal>>> findDirectionalCollisions(double elapsedTime) {
-    Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo = new HashMap<>();
-    for(EntityInternal entity : currentLevel.getEntities()){
-      Map<String, List<EntityInternal>> collisionsByDirection = new HashMap<>();
-      findEntityCollisions(elapsedTime, entity, collisionsByDirection);
-      collisionInfo.put(entity, collisionsByDirection);
-    }
-    return collisionInfo;
   }
 
   private void findEntityCollisions(double elapsedTime, Entity entity,
@@ -212,135 +392,13 @@ public class OogaGame implements Game, UserInputListener, GameInternal {
     myEntitiesInternal.remove(destroyed);
   }
 
-  @Override
-  public String getCurrentLevelId() {
-    return currentLevel.getLevelId();
-  }
-
-  /**
-   * @param mouseX The X-coordinate of the mouse click, in in-game screen coordinates
-   *               (not "view-relative" coordinates).
-   * @param mouseY The Y-coordinate of the mouse click, in-game screen coordinates.
-   */
-  @Override
-  public void reactToMouseClick(double mouseX, double mouseY) {
-    myInputManager.mouseClicked(mouseX,mouseY);
-  }
-
-  /**
-   * React to a key being pressed. Use data files to determine appropriate action
-   *
-   * @param keyName string name of key
-   */
-  @Override
-  public void reactToKeyPress(String keyName) {
-    String inputType = myControlsInterpreter.translateInput(keyName);
-    myInputManager.keyPressed(inputType);
-  }
-
-  @Override
-  public void reactToKeyRelease(String keyName) {
-    String inputType = myControlsInterpreter.translateInput(keyName);
-    myInputManager.keyReleased(inputType);
-  }
-
-  /**
-   * Handles when the command is given to save the game to a file.
-   */
-  @Override
-  public void reactToGameSave() {
-    myGameRecorder.saveLevel(myProfileName,myName,currentLevel, myVariables);
-  }
-
-  @Override
-  public void createEntity(String type, List<Double> position) {
-    ImageEntityDefinition definition = myEntityDefinitions.get(type);
-    createEntity(type,position,definition.getWidth(),definition.getHeight());
-  }
-
-  @Override
-  public void createEntity(String type, List<Double> position, double width, double height) {
-    EntityInternal created = myEntityDefinitions.get(type).makeInstanceAt(position.get(0),position.get(1));
-    created.setHeight(height);
-    created.setWidth(width);
-    myNewCreatedEntities.add(created);
-  }
-
-  @Override
-  public EntityInternal getEntityWithId(String id) {
-    for (EntityInternal e : myEntitiesInternal) {
-      String entityId = e.getEntityID();
-      if (entityId != null && entityId.equals(id)) {
-        return e;
-      }
+  private Map<EntityInternal, Map<String, List<EntityInternal>>> findDirectionalCollisions(double elapsedTime) {
+    Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo = new HashMap<>();
+    for(EntityInternal entity : currentLevel.getEntities()){
+      Map<String, List<EntityInternal>> collisionsByDirection = new HashMap<>();
+      findEntityCollisions(elapsedTime, entity, collisionsByDirection);
+      collisionInfo.put(entity, collisionsByDirection);
     }
-    return null;
-  }
-
-  @Override
-  public List<EntityInternal> getEntitiesWithName(String name) {
-    List<EntityInternal> entitiesWithName = new ArrayList<>();
-    for (EntityInternal e : myEntitiesInternal) {
-      if (e.getName().equals(name)) {
-        entitiesWithName.add(e);
-      }
-    }
-    return entitiesWithName;
-  }
-
-  @Override
-  public void goToLevel(String levelID) {
-    try {
-      loadGameLevel(myGameDataReader.loadNewLevel(myName,levelID));
-      setCameraShiftValues(0,0);
-    }
-    catch (OogaDataException ignored) {
-      //To preserve the pristine gameplay experience, we do nothing (rather than crash).
-    }
-  }
-
-  @Override
-  public void goToNextLevel() {
-    goToLevel(currentLevel.nextLevelID());
-    setCameraShiftValues(0,0);
-  }
-
-  @Override
-  public void restartLevel() {
-    goToLevel(currentLevel.getLevelId());
-    setCameraShiftValues(0,0);
-  }
-
-  @Override
-  public void setCameraShiftProperties(List<DoubleProperty> properties){
-    for(int i = 0; i < cameraShiftProperties.size(); i ++){
-      cameraShiftProperties.get(i).bindBidirectional(properties.get(i));
-    }
-  }
-
-  public void setCameraShiftValues(double xValue, double yValue){
-    cameraShiftProperties.get(0).set(xValue);
-    cameraShiftProperties.get(1).set(yValue);
-  }
-
-  @Override
-  public List<Double> getCameraShiftValues() {
-    return List.of(cameraShiftProperties.get(0).getValue(), cameraShiftProperties.get(1).getValue());
-  }
-
-  @Override
-  public Map<String, String> getVariables() {
-    return new HashMap<>(myVariables);
-  }
-
-  @Override
-  public void setVariable(String var, String value) {
-    myVariables.put(var,value);
-  }
-
-
-  @Override
-  public List<EntityInternal> getInternalEntities() {
-    return new ArrayList<>(myEntitiesInternal);
+    return collisionInfo;
   }
 }

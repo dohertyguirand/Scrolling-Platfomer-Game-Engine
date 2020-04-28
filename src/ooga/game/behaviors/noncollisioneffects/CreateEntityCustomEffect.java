@@ -26,6 +26,9 @@ public class CreateEntityCustomEffect extends TimeDelayedEffect {
     super(args);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void processArgs(List<String> args) {
     createdEntityType = args.get(0);

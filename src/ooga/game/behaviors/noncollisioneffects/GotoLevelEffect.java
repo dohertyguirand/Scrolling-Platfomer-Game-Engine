@@ -8,6 +8,8 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
+ * Causes the game to go to the specified level and set that as its
+ * active level.
  */
 @SuppressWarnings("unused")
 public class GotoLevelEffect extends TimeDelayedEffect {
@@ -18,6 +20,9 @@ public class GotoLevelEffect extends TimeDelayedEffect {
     super(args);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void processArgs(List<String> args) {
     myLevelId = args.get(0);

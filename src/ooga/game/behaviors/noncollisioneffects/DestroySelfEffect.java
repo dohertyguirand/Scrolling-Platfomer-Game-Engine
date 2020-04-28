@@ -8,6 +8,8 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
+ * Causes the entity to remove itself from the level, meaning that
+ * it won't show up onscreen and won't be considered in future frames.
  */
 @SuppressWarnings("unused")
 public class DestroySelfEffect extends TimeDelayedEffect {
@@ -17,6 +19,9 @@ public class DestroySelfEffect extends TimeDelayedEffect {
         super(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void processArgs(List<String> args) {
         //has no arguments.

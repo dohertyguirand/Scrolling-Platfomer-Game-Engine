@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * @author sam thompson
+ * Sets the position of the subject to a specified value.
  */
 @SuppressWarnings("unused")
 public class SetPositionEffect extends TimeDelayedEffect {
@@ -25,9 +26,7 @@ public class SetPositionEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Processes the String arguments given in the data file into values used by this effect.
-   *
-   * @param args The String arguments given for this effect in the data file.
+   * {@inheritDoc}
    */
   @Override
   public void processArgs(List<String> args) {

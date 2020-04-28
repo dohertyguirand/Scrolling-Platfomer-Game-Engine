@@ -35,5 +35,9 @@ public interface Game {
   @Deprecated
   String getCurrentLevelId();
 
+  /**
+   * @param property The List of Double properties representing the location of the
+   *                 camera, so that the Game can pan the camera.
+   */
   void setCameraShiftProperties(List<DoubleProperty> property);
 }

@@ -23,14 +23,30 @@ public interface Entity {
    */
   String getEntityType();
 
+  /**
+   * @return A DoubleProperty with value 0.0 if the Entity is NOT affected by camera
+   * movements, or a non-zero value otherwise.
+   */
   DoubleProperty nonStationaryProperty();
 
+  /**
+   * @return A DoubleProperty that tracks the X coordinate of the Entity.
+   */
   DoubleProperty xProperty();
 
+  /**
+   * @return A DoubleProperty that tracks the Y coordinate of the Entity.
+   */
   DoubleProperty yProperty();
 
+  /**
+   * @return A Property which is true while the entity is visible onscreen.
+   */
   BooleanProperty activeInViewProperty();
 
+  /**
+   * @param activeInView True if the entity should be visible onscreen, false otherwise.
+   */
   void setActiveInView(boolean activeInView);
 
   /**
@@ -63,8 +79,14 @@ public interface Entity {
    */
   boolean isDestroyed();
 
+  /**
+   * @return The ID of this entity instance, which can be used to uniquely identify it.
+   */
   String getEntityID();
 
+  /**
+   * @return A copy of the Map mapping names of Entity variables to their String values.
+   */
   Map<String,String> getVariables();
 
   /**

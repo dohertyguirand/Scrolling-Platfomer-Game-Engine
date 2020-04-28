@@ -13,6 +13,8 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
+ * Causes the subject to patrol directly between two specified locations
+ * at a specified acceleration and max speed.
  */
 @SuppressWarnings("unused")
 public class PatrolEffect extends TimeDelayedEffect {
@@ -32,9 +34,7 @@ public class PatrolEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Processes the String arguments given in the data file into values used by this effect.
-   *
-   * @param args The String arguments given for this effect in the data file.
+   * {@inheritDoc}
    */
   @Override
   public void processArgs(List<String> args) {
