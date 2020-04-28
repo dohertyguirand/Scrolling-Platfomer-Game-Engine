@@ -39,14 +39,14 @@
                     <EntityVariableCondition>
                         <VariableName>YPos</VariableName>
                         <Comparison>LessThan</Comparison>
-                        <RequiredValue>CameraBorderYPos</RequiredValue>
+                        <RequiredValue>CameraBorderRightPos</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>SetVariable CameraShiftValue 0 YPos</Effect>
-                        <Effect>ChangeVariable CameraShiftValue 0 CameraShiftValue-CameraBorderYPos</Effect>
-                        <Effect>ChangeVariable CameraShiftValue  0 CameraShiftValue*-1</Effect>
-                        <Effect>ShiftCamera CameraShiftValue 0 1</Effect>
-                        <Effect>ChangeVariable CameraBorderYPos  0 CameraBorderYPos-CameraShiftValue</Effect>
+                        <Effect>SetVariable CameraShiftValue YPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue - CameraBorderYPos</Effect>
+                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>
+                        <Effect>ShiftCamera 0 CameraShiftValue </Effect>
+                        <Effect>ChangeVariable CameraBorderYPos - CameraShiftValue</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Blue Platform  -->
