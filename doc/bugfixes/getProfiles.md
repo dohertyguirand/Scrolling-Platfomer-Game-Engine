@@ -41,3 +41,10 @@ Include any relevant print statements or stack traces.
 
 Describe the test you think will verify this bug and the code fix you believe will solve this issue.
 
+Adding three lines at the top XMLProfileReader.addNewProfile() so that the program
+checks to see if a user by that name already exists and if so, throws an error. 
+This makes that process much more streamlined and user-friendly as a pop up is shown 
+displaying the error message and telling the user that they cant use that name because a user 
+already exists by that name.
+
+To test this bug, simply create a profile named Braeden, or any other currently saved user name.
