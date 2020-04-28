@@ -207,6 +207,7 @@
                 <!-- Dies if Doodle Jumps on top -->
                 <Behavior>
                     <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
                         <Entity2>Doodle</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
@@ -235,6 +236,7 @@
                 <!-- Touched Twice by Doodle -->
                 <Behavior>
                     <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
                         <Entity2>Doodle</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
@@ -247,6 +249,7 @@
                 <!--  Touched Once  by Doodle -->
                 <Behavior>
                     <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
                         <Entity2>Doodle</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
@@ -301,7 +304,7 @@
         <ImageEntity>
             <Name>IncreaseHeight</Name>
             <Width>1000</Width>
-            <Height>50</Height>
+            <Height>200</Height>
             <Image>transparent.png</Image>
             <Stationary>true</Stationary>
             <Behavior>
@@ -311,10 +314,10 @@
                     <Direction>Up</Direction>
                 </RequiredCollisionCondition>
                 <IndependentAction>
-                    <Effect>SetVariable CameraShiftValue 20</Effect>
+                    <Effect>SetVariable CameraShiftValue 50</Effect>
                     <Effect>ShiftCamera 0 CameraShiftValue </Effect>
                     <Effect>ChangePosition 0 50 - </Effect>
-                    <Effect>ChangeVariable FloorValue + -20</Effect>
+                    <Effect>ChangeVariable FloorValue + -50</Effect>
                 </IndependentAction>
             </Behavior>
         </ImageEntity>
@@ -369,7 +372,7 @@
                 <ImageEntityInstance>
                     <Name>IncreaseHeight</Name>
                     <XPos>0</XPos>
-                    <YPos>300</YPos>
+                    <YPos>100</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Background</Name>
@@ -385,28 +388,167 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>GreenPlatform</Name>
-                    <XPos>0</XPos>
-                    <YPos>618</YPos>
+                    <XPos>100</XPos>
+                    <YPos>700</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-1200</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>GreenPlatform</Name>
-                    <XPos>150</XPos>
-                    <YPos>518</YPos>
+                    <XPos>768</XPos>
+                    <YPos>591</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>GreenPlatform</Name>
-                    <XPos>300</XPos>
-                    <YPos>418</YPos>
+                    <XPos>479</XPos>
+                    <YPos>126</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>GreenPlatform</Name>
-                    <XPos>450</XPos>
-                    <YPos>318</YPos>
+                    <XPos>252</XPos>
+                    <YPos>637</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-1000</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>342</XPos>
+                    <YPos>747</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-1500</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>391</XPos>
+                    <YPos>772</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>GreenPlatform</Name>
                     <XPos>600</XPos>
-                    <YPos>218</YPos>
+                    <YPos>317</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>150</XPos>
+                    <YPos>596</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-1100</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>450</XPos>
+                    <YPos>796</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>300</XPos>
+                    <YPos>236</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>500</XPos>
+                    <YPos>800</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-700</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>400</XPos>
+                    <YPos>600</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-700</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>600</XPos>
+                    <YPos>700</YPos>
+                    <Columns>2</Columns>
+                    <XGap>400</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-700</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>0</XPos>
+                    <YPos>400</YPos>
+                    <Columns>3</Columns>
+                    <XGap>300</XGap>
+                    <Rows>5</Rows>
+                    <YGap>-700</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>CrackedPlatform</Name>
+                    <XPos>200</XPos>
+                    <YPos>400</YPos>
+                    <XGap>200</XGap>
+                    <Columns>2</Columns>
+                    <Rows>5</Rows>
+                    <YGap>-500</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>300</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>284</XPos>
+                    <YPos>653</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>192</XPos>
+                    <YPos>393</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>57</XPos>
+                    <YPos>-98</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>773</XPos>
+                    <YPos>-98</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>813</XPos>
+                    <YPos>-287</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>627</XPos>
+                    <YPos>-465</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>331</XPos>
+                    <YPos>-750</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>231</XPos>
+                    <YPos>-888</YPos>
                 </ImageEntityInstance>
             </ImageEntityInstances>
         </Level>
