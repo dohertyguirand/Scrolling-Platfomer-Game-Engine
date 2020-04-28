@@ -11,6 +11,9 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
+ * Causes the subject to move toward otherEntity.
+ * Requires that there be another entity specified besides the subject
+ * when this is executed.
  */
 public class MoveTowardsEntityEffect extends TimeDelayedEffect {
 
@@ -23,6 +26,9 @@ public class MoveTowardsEntityEffect extends TimeDelayedEffect {
     super(args);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void processArgs(List<String> args) {
     myAcceleration = args.get(0);

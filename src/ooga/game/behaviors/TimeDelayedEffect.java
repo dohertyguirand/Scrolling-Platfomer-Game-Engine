@@ -23,6 +23,9 @@ public abstract class TimeDelayedEffect implements Effect {
   private double timePassed = 0.0;
   private String timeDelayData = "";
 
+  /**
+   * @param args The String arguments of this effect.
+   */
   public TimeDelayedEffect(List<String> args) {
     processArgs(args);
     ResourceBundle resources = ResourceBundle.getBundle(PATH_TO_DEFAULTS);

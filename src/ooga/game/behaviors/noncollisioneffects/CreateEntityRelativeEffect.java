@@ -9,6 +9,8 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
+ * Creates an entity of the specified type at the specified coordinates,
+ * treating the subject as the origin.
  */
 @SuppressWarnings("unused")
 public class CreateEntityRelativeEffect extends TimeDelayedEffect {
@@ -22,6 +24,9 @@ public class CreateEntityRelativeEffect extends TimeDelayedEffect {
     super(args);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void processArgs(List<String> args) {
     int index = 0;

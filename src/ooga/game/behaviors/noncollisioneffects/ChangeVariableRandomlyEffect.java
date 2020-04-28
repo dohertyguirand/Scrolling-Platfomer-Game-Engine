@@ -13,6 +13,9 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
+ * Changes the given variable of the subject by an amount
+ * in a specified range. Detects what operator is used when changing
+ * the variable (+,-,*,/)
  */
 @SuppressWarnings("unused")
 public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
@@ -27,8 +30,7 @@ public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
   }
 
   /**
-   * This should be variable name, operator (e.g. +), value
-   * @param args The String arguments given for this effect in the data file.
+   * {@inheritDoc}
    */
   @Override
   public void processArgs(List<String> args) {

@@ -8,6 +8,7 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
+ * Restarts the game's current level by reloading it.
  */
 @SuppressWarnings("unused")
 public class RestartLevelEffect extends TimeDelayedEffect {
@@ -16,6 +17,9 @@ public class RestartLevelEffect extends TimeDelayedEffect {
     super(args);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void processArgs(List<String> args) {
     //has no arguments.

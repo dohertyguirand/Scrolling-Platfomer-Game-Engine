@@ -29,9 +29,7 @@ public class SetImageEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Processes the String arguments given in the data file into values used by this effect.
-   *
-   * @param args The String arguments given for this effect in the data file.
+   * {@inheritDoc}
    */
   @Override
   public void processArgs(List<String> args) {
