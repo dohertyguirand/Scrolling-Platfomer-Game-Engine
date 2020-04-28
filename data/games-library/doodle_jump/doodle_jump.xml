@@ -33,22 +33,28 @@
                         <Effect>SetVariable Score 0.0</Effect>
                         <Effect>SetVariable CameraShiftValue 0.0</Effect>
                         <Effect>SetVariable CameraBorderYPos 200</Effect>
+                        <Effect>SetVariable FloorValue 800</Effect>
                     </IndependentAction>
                 </Behavior>
-                <Behavior>
-                    <EntityVariableCondition>
-                        <VariableName>YPos</VariableName>
-                        <Comparison>LessThan</Comparison>
-                        <RequiredValue>CameraBorderRightPos</RequiredValue>
-                    </EntityVariableCondition>
-                    <IndependentAction>
-                        <Effect>SetVariable CameraShiftValue YPos</Effect>
-                        <Effect>ChangeVariable CameraShiftValue - CameraBorderYPos</Effect>
-                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>
-                        <Effect>ShiftCamera 0 CameraShiftValue </Effect>
-                        <Effect>ChangeVariable CameraBorderYPos - CameraShiftValue</Effect>
-                    </IndependentAction>
-                </Behavior>
+<!--                <Behavior>-->
+<!--&lt;!&ndash;                    <EntityVariableCondition>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <VariableName>CameraShiftValue</VariableName>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <Comparison>GreaterThan</Comparison>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <RequiredValue>-1</RequiredValue>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </EntityVariableCondition>&ndash;&gt;-->
+<!--                    <EntityVariableCondition>-->
+<!--                        <VariableName>YPos</VariableName>-->
+<!--                        <Comparison>LessThan</Comparison>-->
+<!--                        <RequiredValue>CameraBorderRightPos</RequiredValue>-->
+<!--                    </EntityVariableCondition>-->
+<!--                    <IndependentAction>-->
+<!--                        <Effect>SetVariable CameraShiftValue YPos</Effect>-->
+<!--                        <Effect>ChangeVariable CameraShiftValue - CameraBorderYPos</Effect>-->
+<!--                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>-->
+<!--                        <Effect>ShiftCamera 0 CameraShiftValue </Effect>-->
+<!--                        <Effect>ChangeVariable CameraBorderYPos - CameraShiftValue</Effect>-->
+<!--                    </IndependentAction>-->
+<!--                </Behavior>-->
                 <!-- Collision with Blue Platform  -->
                 <Behavior>
                     <RequiredCollisionDetection>
@@ -290,12 +296,33 @@
             <Width>1000</Width>
             <Height>800</Height>
             <Image>background.png</Image>
+            <Stationary>true</Stationary>
         </ImageEntity>
         <ImageEntity>
             <Name>OffScreen</Name>
             <Width>1500</Width>
             <Height>1</Height>
             <Image>mario_brick.png</Image>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>IncreaseHeight</Name>
+            <Width>1000</Width>
+            <Height>50</Height>
+            <Image>transparent.png</Image>
+            <Stationary>true</Stationary>
+            <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity1>Doodle</Entity1>
+                    <Entity2>IncreaseHeight</Entity2>
+                    <Direction>Up</Direction>
+                </RequiredCollisionCondition>
+                <IndependentAction>
+                    <Effect>SetVariable CameraShiftValue 50</Effect>
+                    <Effect>ShiftCamera 0 CameraShiftValue </Effect>
+                    <Effect>ChangePosition 0 50 - </Effect>
+                    <Effect>ChangeVariable FloorValue + -50</Effect>
+                </IndependentAction>
+            </Behavior>
         </ImageEntity>
     </Entities>
     <Variables>
@@ -354,6 +381,11 @@
                 </TextEntityInstance>
             </TextEntityInstances>
             <ImageEntityInstances>
+                <ImageEntityInstance>
+                    <Name>IncreaseHeight</Name>
+                    <XPos>0</XPos>
+                    <YPos>300</YPos>
+                </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Background</Name>
                     <XPos>0</XPos>
