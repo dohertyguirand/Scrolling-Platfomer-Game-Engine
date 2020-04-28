@@ -172,6 +172,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
     for (int j = 0; j < imageEntityNodes.getLength(); j++) {
       Node currentEntity = imageEntityNodes.item(j);
       Element entityElement = (Element) currentEntity;
+
       String entityName = getFirstElementByTag(entityElement, "EntityNameTag", String.format(myDataResources.getString("EntityNameException"),
               level.getElementsByTagName(myDataResources.getString("LevelIDTag"))));
       if(!entityMap.containsKey(entityName)) throw new OogaDataException(myDataResources.getString("UnknownEntityException") + entityName);
