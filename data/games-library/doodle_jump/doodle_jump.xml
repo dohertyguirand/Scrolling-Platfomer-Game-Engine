@@ -276,6 +276,7 @@
                 <!--  If Doodle Jumps on top, it cracks -->
                <Behavior>
                    <RequiredCollisionCondition>
+                       <Entity1>SELF</Entity1>
                        <Entity2>Doodle</Entity2>
                        <Direction>Up</Direction>
                    </RequiredCollisionCondition>
