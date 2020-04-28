@@ -13,16 +13,16 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class AddNewProfileTest {
 
-    XMLProfileReader profileReader = new XMLProfileReader();
-    String exampleName = "Test" + System.currentTimeMillis();
-    File photoFile = new File("src/ooga/view/Resources/alien.jpg");
-
-    @Test
-    public void testAddingUniqueProfile() {
-        try {
-            profileReader.addNewProfile(exampleName, photoFile);
-        } catch (OogaDataException ex) {
-            fail("Should not have thrown an exception");
-        }
-    }
+//    XMLProfileReader profileReader = new XMLProfileReader();
+//    String exampleName = "Test" + System.currentTimeMillis();
+//    File photoFile = new File("src/ooga/view/Resources/alien.jpg");
+//
+//    @Test
+//    public void testAddingUniqueProfile() {
+//        try {
+//            profileReader.addNewProfile(exampleName, photoFile);
+//        } catch (OogaDataException ex) {
+//            fail("Should not have thrown an exception");
+//        }
+//    }
 }
