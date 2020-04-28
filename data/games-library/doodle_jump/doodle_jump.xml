@@ -350,7 +350,6 @@
         <Level>
             <ID>1</ID>
             <NextLevel>1</NextLevel>
-            <EndCondition>DestroyALl Koopa</EndCondition>
             <TextEntityInstances>
                 <TextEntityInstance>
                     <Text>Score: %.0f</Text>

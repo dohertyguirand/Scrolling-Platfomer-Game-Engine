@@ -8,7 +8,7 @@
             <Name>Bird</Name>
             <Width>50</Width>
             <Height>50</Height>
-            <Image>flappybird.jpg</Image>
+            <Image>flappy_down.png</Image>
             <VariableNames>GoingDown GoingUp</VariableNames>
             <VariableValues>flappy_bird/flappy_down.png flappy_bird/flappy_up.png</VariableValues>
             <Behaviors>
@@ -55,6 +55,69 @@
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>PipeDown</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeUp-Small</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--Dies if you collide with downward facing pipe-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeDown-Small</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeUp-Large</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--Dies if you collide with downward facing pipe-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeDown-Large</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeUp-XL</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                        <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--Dies if you collide with downward facing pipe-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>PipeDown-XL</Entity2>
                         <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
@@ -135,12 +198,65 @@
             <Height>400</Height>
             <Image>pipe_up.png</Image>
         </ImageEntity>
+        <ImageEntity>
+            <Name>PipeUp-Small</Name>
+            <Width>50</Width>
+            <Height>500</Height>
+            <Image>pipe_up.png</Image>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>PipeUp-Large</Name>
+            <Width>50</Width>
+            <Height>250</Height>
+            <Image>pipe_up.png</Image>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>PipeUp-XL</Name>
+            <Width>50</Width>
+            <Height>100</Height>
+            <Image>pipe_up.png</Image>
+        </ImageEntity>
         <!--Downward Facing Pipe Entity -->
         <ImageEntity>
             <Name>PipeDown</Name>
             <Width>50</Width>
             <Height>150</Height>
             <Image>pipe_down.png</Image>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>PipeDown-Small</Name>
+            <Width>50</Width>
+            <Height>50</Height>
+            <Image>pipe_down.png</Image>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>PipeDown-Large</Name>
+            <Width>50</Width>
+            <Height>300</Height>
+            <Image>pipe_down.png</Image>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>PipeDown-XL</Name>
+            <Width>50</Width>
+            <Height>450</Height>
+            <Image>pipe_down.png</Image>
+        </ImageEntity>
+        <ImageEntity>
+            <Name>ScreenMover</Name>
+            <Width>50</Width>
+            <Height>1000</Height>
+            <Image>transparent.png</Image>
+            <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity1>Bird</Entity1>
+                    <Entity2>ScreenMover</Entity2>
+                    <Direction>Left</Direction>
+                </RequiredCollisionCondition>
+                <IndependentAction>
+                    <Effect>ChangePosition 200 0 + </Effect>
+                    <Effect>ChangeVariable Score + 1.0</Effect>
+                </IndependentAction>
+            </Behavior>
         </ImageEntity>
     </Entities>
     <Variables>
@@ -172,6 +288,11 @@
             <EndCondition>DestroyAll Bird</EndCondition>
             <ImageEntityInstances>
                 <ImageEntityInstance>
+                    <Name>ScreenMover</Name>
+                    <XPos>500</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Name>Background</Name>
                     <XPos>0</XPos>
                     <YPos>0</YPos>
@@ -200,6 +321,62 @@
                 <ImageEntityInstance>
                     <Name>PipeDown</Name>
                     <XPos>500</XPos>
+                    <YPos>0</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PipeUp-Small</Name>
+                    <XPos>700</XPos>
+                    <YPos>200</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PipeDown-Small</Name>
+                    <XPos>700</XPos>
+                    <YPos>0</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PipeUp-Large</Name>
+                    <XPos>900</XPos>
+                    <YPos>450</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PipeDown-Large</Name>
+                    <XPos>900</XPos>
+                    <YPos>0</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PipeUp-XL</Name>
+                    <XPos>1100</XPos>
+                    <YPos>600</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PipeDown-XL</Name>
+                    <XPos>1100</XPos>
+                    <YPos>0</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PipeUp-Large</Name>
+                    <XPos>1300</XPos>
+                    <YPos>450</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PipeDown-Large</Name>
+                    <XPos>1300</XPos>
                     <YPos>0</YPos>
                     <Columns>10</Columns>
                     <XGap>1000</XGap>
