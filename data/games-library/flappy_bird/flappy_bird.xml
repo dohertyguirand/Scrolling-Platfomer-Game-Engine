@@ -3,6 +3,7 @@
     <Thumbnail>flappy_bird_icon.png</Thumbnail>
     <Description>Play the classic game that got millions of people hooked</Description>
     <Entities>
+        <!--Bird Entity -->
         <ImageEntity>
             <Name>Bird</Name>
             <Width>50</Width>
@@ -11,6 +12,7 @@
             <VariableNames>GoingDown GoingUp</VariableNames>
             <VariableValues>flappy_bird/flappy_down.png flappy_bird/flappy_up.png</VariableValues>
             <Behaviors>
+                <!--Jump up once up key is pressed -->
                 <Behavior>
                     <InputCondition>
                         <Key>UpKey</Key>
@@ -22,6 +24,7 @@
                         </IndependentAction>
                     </InputCondition>
                 </Behavior>
+                <!--If up key not pressed, set image facing down-->
                 <Behavior>
                     <InputCondition>
                         <Key>UpKey</Key>
@@ -31,11 +34,13 @@
                         <Effect>SetImage GoingDown</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--Bird Follows Gravity-->
                 <Behavior>
                     <IndependentAction>
                         <Effect>Gravity 0. 0.07 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--Dies if you collide with upward facing pipe-->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>PipeUp</Entity2>
@@ -46,6 +51,7 @@
                         <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--Dies if you collide with downward facing pipe-->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>PipeDown</Entity2>
@@ -56,6 +62,7 @@
                         <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--Dies if you collide with terrain-->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>universalTerrain</Entity2>
@@ -68,6 +75,7 @@
                         <Effect>ChangeVariable Lives + -1.0</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
+                <!--Reset Game once dead-->
                 <Behavior>
                     <GameVariableCondition>
                         <VariableName>Lives</VariableName>
@@ -79,11 +87,13 @@
                         <Effect>SetVariable Score 0.0</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--Moves bird forward-->
                 <Behavior>
                     <IndependentAction>
                         <Effect>VelocityInput .100 0 + .0400</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--Shift Camera toward the right-->
                 <Behavior>
                     <EntityVariableCondition>
                         <VariableName>XPos</VariableName>
@@ -100,6 +110,7 @@
                 </Behavior>
             </Behaviors>
         </ImageEntity>
+        <!--Floor Entity -->
         <ImageEntity>
             <Name>Floor</Name>
             <Width>1000</Width>
@@ -108,18 +119,21 @@
             <VariableNames>TerrainID</VariableNames>
             <VariableValues>universalTerrain</VariableValues>
         </ImageEntity>
+        <!--BackGround Entity -->
         <ImageEntity>
             <Name>Background</Name>
             <Width>1000</Width>
             <Height>800</Height>
             <Image>flappy_background.png</Image>
         </ImageEntity>
+        <!--Upward Facing Pipe Entity -->
         <ImageEntity>
             <Name>PipeUp</Name>
             <Width>50</Width>
             <Height>400</Height>
             <Image>pipe_up.png</Image>
         </ImageEntity>
+        <!--Downward Facing Pipe Entity -->
         <ImageEntity>
             <Name>PipeDown</Name>
             <Width>50</Width>
@@ -128,18 +142,22 @@
         </ImageEntity>
     </Entities>
     <Variables>
+        <!--Score Variable-->
         <Variable>
             <Name>Score</Name>
             <StartValue>0</StartValue>
         </Variable>
+        <!--Lives Variable-->
         <Variable>
             <Name>Lives</Name>
             <StartValue>1</StartValue>
         </Variable>
+        <!--Camera shift value-->
         <Variable>
             <Name>CameraShiftValue</Name>
             <StartValue>0</StartValue>
         </Variable>
+        <!--Camera border X pos value-->
         <Variable>
             <Name>CameraBorderXPos</Name>
             <StartValue>300</StartValue>

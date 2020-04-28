@@ -12,7 +12,7 @@
       <VariableNames>StandingSprite WalkingSprite JumpingSprite Facing Jumping Walking GotFlower CameraBorderXRight CameraBorderXLeft InvincibilityTimer </VariableNames>
       <VariableValues>example-mario/mario-sprites/right/mario_standing.png example-mario/mario-sprites/right/mario_walk_right.gif example-mario/mario-sprites/right/mario_jump_right.gif Right False False False 550 150 0</VariableValues>
       <Behaviors>
-<!--        Colliding with a mushroom makes you big.-->
+        <!-- Colliding with a mushroom makes you big.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity1>SmallMario</Entity1>
@@ -25,6 +25,7 @@
             <Effect>SetVariable MarioState 1</Effect>
           </IndependentAction>
         </Behavior>
+        <!-- Collision with flower powerup -->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity1>SmallMario</Entity1>
@@ -36,7 +37,7 @@
             <Effect>SetVariable GotFlower True</Effect>
           </IndependentAction>
         </Behavior>
-        <!--        Press left to go left.-->
+        <!-- Press left to go left.-->
         <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
@@ -48,7 +49,7 @@
             <Effect>SetVariable Direction Left</Effect>
           </IndependentAction>
         </Behavior>
-        <!--        Press right to go right.-->
+        <!--  Press right to go right.-->
         <Behavior>
           <InputCondition>
             <Key>RightKey2</Key>
@@ -60,7 +61,7 @@
             <Effect>SetVariable Direction Left</Effect>
           </IndependentAction>
         </Behavior>
-        <!--        Press neither left nor right to stand still.-->
+        <!--  Press neither left nor right to stand still.-->
         <Behavior>
           <InputCondition>
             <Key>RightKey2</Key>
@@ -74,7 +75,7 @@
             <Effect>SetVariable Walking False</Effect>
           </IndependentAction>
         </Behavior>
-        <!--        Facing right means using the right facing sprites-->
+        <!--  Facing right means using the right facing sprites-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>Facing</VariableName>
@@ -90,6 +91,7 @@
             <Effect>SetVariable JumpingSprite example-mario/mario-sprites/right/mario_jump_right.png</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  Facing left with means using the left facing sprites-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>Facing</VariableName>
@@ -105,6 +107,7 @@
             <Effect>SetVariable JumpingSprite example-mario/mario-sprites/left/mario_jump_left.png</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  Jumping means using jumping sprite-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>Jumping</VariableName>
@@ -114,6 +117,7 @@
             <Effect>SetImage JumpingSprite</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  walking means using walking sprite-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>Jumping</VariableName>
@@ -127,6 +131,7 @@
             <Effect>SetImage WalkingSprite</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  not walking or jumping  means using standing still sprite-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>Jumping</VariableName>
@@ -140,11 +145,8 @@
             <Effect>SetImage StandingSprite</Effect>
           </IndependentAction>
         </Behavior>
-      <!--  WITH THE FIREBALL POWERUP.-->
-      <!--        Press right to go right.-->
-      <!--        Press neither left nor right to stand still.-->
-      <!--        Facing right means using the right facing sprites-->
-      <Behavior>
+        <!--  Facing Right with flower means using the right facing sprites-->
+        <Behavior>
         <EntityVariableCondition>
           <VariableName>Facing</VariableName>
           <RequiredValue>Right</RequiredValue>
@@ -159,7 +161,8 @@
           <Effect>SetVariable JumpingSprite example-mario/mario-sprites/right/Fiery_Mario_Jumping_Right.png</Effect>
         </IndependentAction>
       </Behavior>
-      <Behavior>
+        <!--  Facing Left with flower means using the Left facing sprites-->
+        <Behavior>
         <EntityVariableCondition>
           <VariableName>Facing</VariableName>
           <RequiredValue>Left</RequiredValue>
@@ -174,7 +177,7 @@
           <Effect>SetVariable JumpingSprite example-mario/mario-sprites/left/Fiery_Mario_Jumping_Left.png</Effect>
         </IndependentAction>
       </Behavior>
-        <!--        Run into a koopa sideways or upward while small in order to die.-->
+        <!--  Run into a koopa sideways or upward while small in order to die.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>enemy</Entity2>
@@ -195,6 +198,7 @@
             <Effect>ChangeVariable Lives + -1.0</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  Restart Level if small mario and touching enemy wrong.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>enemy</Entity2>
@@ -215,6 +219,7 @@
             <Effect>ChangeVariable Lives + -1.0</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  Restart Level if small mario and touching enemy wrong.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>enemy</Entity2>
@@ -235,8 +240,7 @@
             <Effect>ChangeVariable Lives + -1.0</Effect>
           </IndependentAction>
         </Behavior>
-<!--    Run into a koopa sideways or upward while large and not invincible in order to become small and
-        get invincibility frames.-->
+        <!--  Restart Level if small mario and touching enemy wrong.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>enemy</Entity2>
@@ -257,6 +261,7 @@
             <Effect>SetVariable InvincibilityTimer 30</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  Restart Level if small mario and touching enemy wrong.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>enemy</Entity2>
@@ -277,6 +282,7 @@
             <Effect>SetVariable InvincibilityTimer 30</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  Restart Level if small mario and touching enemy wrong.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>enemy</Entity2>
@@ -297,7 +303,7 @@
             <Effect>SetVariable InvincibilityTimer 30</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Run into a koopa or goomba downward in order to bounce off of it!-->
+        <!--  Run into a koopa or goomba downward in order to bounce off of it!-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>Koopa</Entity2>
@@ -308,6 +314,7 @@
             <Effect>SetVariable Jumping True</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  If mario jumps on gooba, mario gets a boost.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>Goomba</Entity2>
@@ -318,7 +325,7 @@
             <Effect>SetVariable Jumping True</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Fireballs also cause death.-->
+        <!--  Fireballs also cause death.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity1>SELF</Entity1>
@@ -333,7 +340,7 @@
             </IndependentAction>
           </IndependentAction>
         </Behavior>
-<!--        Run into a brick downward to stop falling.-->
+        <!--  Run into a brick downward to stop falling.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity1>SELF</Entity1>
@@ -346,8 +353,7 @@
             <Effect>SetVariable Jumping False</Effect>
           </CollisionDeterminedAction>
         </Behavior>
-
-<!--        Run into a brick sideways or downward to stop too-->
+        <!--  Run into a brick Left to stop too-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>
@@ -358,6 +364,7 @@
             <Effect>TerrainCollisionLeft</Effect>
           </CollisionDeterminedAction>
         </Behavior>
+        <!--  Run into a brick Right to stop too-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>
@@ -368,6 +375,7 @@
             <Effect>TerrainCollisionRight</Effect>
           </CollisionDeterminedAction>
         </Behavior>
+        <!--  Run into a brick downward to stop too-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>
@@ -378,7 +386,7 @@
             <Effect>TerrainCollisionUp</Effect>
           </CollisionDeterminedAction>
         </Behavior>
-<!--        Press Up while on the ground to jump.-->
+        <!--  Press Up while on the ground to jump.-->
         <Behavior>
           <InputCondition>
             <Key>UpKey2</Key>
@@ -393,7 +401,7 @@
             <Effect>SetVariable Jumping True</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Run into a flagpole to go to the next level.-->
+        <!--  Run into a flagpole to go to the next level.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>Flagpole</Entity2>
@@ -403,7 +411,7 @@
             <Effect>GoToNextLevel</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Run into the void to die.-->
+        <!--  Run into the void to die.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>Void</Entity2>
@@ -415,7 +423,7 @@
             <Effect>Respawn RespawnXLocation RespawnYLocation</Effect>
           </IndependentAction>
         </Behavior>
-        <!--        Press Key to spawn a fireball.-->
+        <!--  Press Key to spawn a fireball.-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>GotFlower</VariableName>
@@ -429,13 +437,13 @@
             <Effect>CreateEntityRelative FireBallThrow 1 0</Effect>
           </IndependentAction>
         </Behavior>
-        <!--        Exist to obey gravity.-->
+        <!--  Exist to obey gravity.-->
         <Behavior>
           <IndependentAction>
             <Effect>Gravity 0 0.1 + 10.0</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Run out of lives to start the game over.-->
+        <!--  Run out of lives to start the game over.-->
         <Behavior>
           <GameVariableCondition>
             <VariableName>Lives</VariableName>
@@ -446,7 +454,7 @@
             <Effect>SetVariable Lives 3.0</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Go to the right of the camera X border to shift the camera (Based on Cary's sonic.xml)-->
+        <!--  Go to the right of the camera X border to shift the camera (Based on Cary's sonic.xml)-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>XPos</VariableName>
@@ -463,6 +471,7 @@
             <Effect>ChangeVariable CameraBorderXLeft - 200.0</Effect>
           </IndependentAction>
         </Behavior>
+        <!--  Go to the left of the camera X border to shift the camera (Based on Cary's sonic.xml)-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>XPos</VariableName>
@@ -479,7 +488,7 @@
             <Effect>ChangeVariable CameraBorderXRight + 200.0</Effect>
           </IndependentAction>
         </Behavior>
-<!--        If you have invincibility frames, tick them down.-->
+        <!--  If you have invincibility frames, tick them down.-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>InvincibilityTimer</VariableName>
@@ -500,19 +509,19 @@
       <Image>Enemies/Koopa.gif</Image>
       <VariableNames>TerrainID xVel</VariableNames>
       <VariableValues>enemy 0.1300</VariableValues>
-      <!--        Moves forward every frame-->
+      <!--   Moves forward every frame-->
       <Behavior>
         <IndependentAction>
           <Effect>VelocityInput xVel 0.0 + 0.2600</Effect>
         </IndependentAction>
       </Behavior>
-<!--      Also follows gravity, like Mario-->
+      <!--   Also follows gravity, like Mario-->
       <Behavior>
         <IndependentAction>
           <Effect>Gravity 0 0.1 + 10.0</Effect>
         </IndependentAction>
       </Behavior>
-<!--      Also runs into terrain like Mario-->
+      <!--   Also runs into terrain like Mario-->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity2>universalTerrain</Entity2>
@@ -523,7 +532,7 @@
           <Effect>TerrainCollisionDown</Effect>
         </CollisionDeterminedAction>
       </Behavior>
-      <!--        Run into a brick sideways or downward to stop too-->
+      <!--    Run into a brick left to stop and turn around-->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity2>universalTerrain</Entity2>
@@ -535,6 +544,7 @@
           <Effect>SetVariable xVel 0.1300</Effect>
         </CollisionDeterminedAction>
       </Behavior>
+      <!--    Run into a brick right to stop and turn around-->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity2>universalTerrain</Entity2>
@@ -546,6 +556,7 @@
           <Effect>SetVariable xVel -0.1300</Effect>
         </CollisionDeterminedAction>
       </Behavior>
+      <!--    Walk on bricks-->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity2>universalTerrain</Entity2>
@@ -556,7 +567,7 @@
           <Effect>TerrainCollisionUp</Effect>
         </CollisionDeterminedAction>
       </Behavior>
-<!--      Run into Mario's feet to die.-->
+      <!--  Run into Mario's feet to die.-->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity1>SELF</Entity1>
@@ -600,7 +611,7 @@
           <Effect>TerrainCollisionDown</Effect>
         </CollisionDeterminedAction>
       </Behavior>
-      <!--        Run into a brick sideways or downward to stop too-->
+      <!--    Run into a brick left to stop and turn around-->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity2>universalTerrain</Entity2>
@@ -612,6 +623,7 @@
           <Effect>SetVariable xVel 0.1300</Effect>
         </CollisionDeterminedAction>
       </Behavior>
+      <!--    Run into a brick right to stop and turn around-->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity2>universalTerrain</Entity2>
@@ -623,6 +635,7 @@
           <Effect>SetVariable xVel -0.1300</Effect>
         </CollisionDeterminedAction>
       </Behavior>
+      <!--    Walk on bricks-->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity2>universalTerrain</Entity2>
@@ -654,8 +667,8 @@
       <Image>terrain/Brick.png</Image>
       <VariableNames>TerrainID</VariableNames>
       <VariableValues>universalTerrain</VariableValues>
-<!--      Gets destroyed by a Fireball-->
       <Behaviors>
+        <!--      Gets destroyed by a Fireball-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity1>SELF</Entity1>
@@ -669,6 +682,7 @@
             <Effect>CreateEntityRelative BrickFragment 20 0</Effect>
           </IndependentAction>
         </Behavior>
+        <!--    Remove self and spawn brick fragments if Mario jumps under in grown state-->
         <Behavior>
           <GameVariableCondition>
             <VariableName>MarioState</VariableName>
@@ -698,6 +712,7 @@
       <VariableNames>xVel yVel</VariableNames>
       <VariableValues>0 0</VariableValues>
       <Behaviors>
+        <!-- Set Random Velocity-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>xVel</VariableName>
@@ -709,11 +724,13 @@
             <Effect>SetVelocity xVel yVel</Effect>
           </IndependentAction>
         </Behavior>
+        <!-- Follows Gravity-->
         <Behavior>
           <IndependentAction>
             <Effect>Gravity 0 0.1 + 10.0</Effect>
           </IndependentAction>
         </Behavior>
+        <!-- Removes once it falls off screen-->
         <Behavior>
           <EntityVariableCondition>
             <VariableName>YPos</VariableName>
@@ -726,7 +743,7 @@
         </Behavior>
       </Behaviors>
     </ImageEntity>
-    
+    <!-- FireBall Powerup Entity    -->
     <ImageEntity>
       <Name>FireBallThrow</Name>
       <Width>40</Width>
@@ -734,63 +751,72 @@
       <Image>PowerUps/FireBallPower.gif</Image>
       <VariableNames>Direction</VariableNames>
       <VariableValues>Right</VariableValues>
-      <Behavior>
-        <RequiredCollisionCondition>
-          <Entity2>universalTerrain</Entity2>
-          <Direction>ANY</Direction>
-        </RequiredCollisionCondition>
-        <CollisionDeterminedAction>
-          <Args>universalTerrain ANY</Args>
-          <Effect>TerrainCollisionDown</Effect>
-          <Effect>Jump 0.0 -1.50 + 10.0</Effect>
-        </CollisionDeterminedAction>
-      </Behavior>
-      <Behavior>
-        <RequiredCollisionCondition>
-          <Entity2>universalTerrain</Entity2>
-          <Direction>Left</Direction>
-        </RequiredCollisionCondition>
-        <CollisionDeterminedAction>
-          <Args>universalTerrain Left</Args>
-          <Effect>TerrainCollisionLeft</Effect>
-          <Effect>RemoveSelf</Effect>
-        </CollisionDeterminedAction>
-      </Behavior>
-      <Behavior>
-        <RequiredCollisionCondition>
-          <Entity2>universalTerrain</Entity2>
-          <Direction>Right</Direction>
-        </RequiredCollisionCondition>
-        <CollisionDeterminedAction>
-          <Args>universalTerrain Right</Args>
-          <Effect>TerrainCollisionRight</Effect>
-          <Effect>RemoveSelf</Effect>
-        </CollisionDeterminedAction>
-      </Behavior>
-      <Behavior>
-        <IndependentAction>
-          <Effect>Gravity 0 0.1 + 10.0</Effect>
-        </IndependentAction>
-      </Behavior>
-      <Behavior>
-        <EntityVariableCondition>
-          <VariableName>Direction</VariableName>
-          <RequiredValue>Right</RequiredValue>
-        </EntityVariableCondition>
-        <IndependentAction>
-          <Effect>VelocityInput .2000 0 + .3200</Effect>
-        </IndependentAction>
-      </Behavior>
-      <Behavior>
-        <EntityVariableCondition>
-          <VariableName>Direction</VariableName>
-          <RequiredValue>Left</RequiredValue>
-        </EntityVariableCondition>
-        <IndependentAction>
-          <Effect>VelocityInput -.2000 0 + .3200</Effect>
-        </IndependentAction>
-      </Behavior>
+      <Behaviors>
+        <!-- Bounces on terrain-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>ANY</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain ANY</Args>
+            <Effect>TerrainCollisionDown</Effect>
+            <Effect>Jump 0.0 -1.50 + 10.0</Effect>
+          </CollisionDeterminedAction>
+        </Behavior>
+        <!-- Remove if hits left wall-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Left</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Left</Args>
+            <Effect>TerrainCollisionLeft</Effect>
+            <Effect>RemoveSelf</Effect>
+          </CollisionDeterminedAction>
+        </Behavior>
+        <!-- Remove if hits left wall-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>universalTerrain</Entity2>
+            <Direction>Right</Direction>
+          </RequiredCollisionCondition>
+          <CollisionDeterminedAction>
+            <Args>universalTerrain Right</Args>
+            <Effect>TerrainCollisionRight</Effect>
+            <Effect>RemoveSelf</Effect>
+          </CollisionDeterminedAction>
+        </Behavior>
+        <!-- Follows Gravity-->
+        <Behavior>
+          <IndependentAction>
+            <Effect>Gravity 0 0.1 + 10.0</Effect>
+          </IndependentAction>
+        </Behavior>
+        <!-- Velocity to the right-->
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>Direction</VariableName>
+            <RequiredValue>Right</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>VelocityInput .2000 0 + .3200</Effect>
+          </IndependentAction>
+        </Behavior>
+        <!-- Velocity to the left-->
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>Direction</VariableName>
+            <RequiredValue>Left</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>VelocityInput -.2000 0 + .3200</Effect>
+          </IndependentAction>
+        </Behavior>
+      </Behaviors>
     </ImageEntity>
+    <!-- Mushroom Entity    -->
     <ImageEntity>
       <Name>Mushroom</Name>
       <Width>80</Width>
@@ -814,7 +840,7 @@
             <Effect>TerrainCollisionDown</Effect>
           </CollisionDeterminedAction>
         </Behavior>
-        <!--        Run into a brick sideways or downward to stop too-->
+        <!--      Run into terrain on the left to turn around-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>
@@ -825,6 +851,7 @@
             <Effect>TerrainCollisionLeft</Effect>
           </CollisionDeterminedAction>
         </Behavior>
+        <!--      Run into terrain on the right to turn around-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>
@@ -835,6 +862,7 @@
             <Effect>TerrainCollisionRight</Effect>
           </CollisionDeterminedAction>
         </Behavior>
+        <!--      Moves on the ground-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>universalTerrain</Entity2>
@@ -845,7 +873,7 @@
             <Effect>TerrainCollisionUp</Effect>
           </CollisionDeterminedAction>
         </Behavior>
-        <!--      Run into mario to be destroyed.-->
+        <!--     Run into mario to be destroyed.-->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity2>SmallMario</Entity2>
@@ -856,7 +884,7 @@
             <Effect>ChangeVariable Score + 20.0</Effect>
           </IndependentAction>
         </Behavior>
-<!--        Moves right every frame-->
+        <!--    Moves right every frame-->
         <Behavior>
           <IndependentAction>
             <Effect>VelocityInput 0.1300 0.0 + 0.2600</Effect>
@@ -864,6 +892,7 @@
         </Behavior>
       </Behaviors>
     </ImageEntity>
+    <!-- Left Facing Pipe Entity    -->
     <ImageEntity>
       <Name>LeftFacingPipe</Name>
       <Width>120</Width>
@@ -872,6 +901,7 @@
       <VariableNames>TerrainID</VariableNames>
       <VariableValues>universalTerrain</VariableValues>
       <Behaviors>
+        <!-- Go to next level if mario enters      -->
         <Behavior>
           <RequiredCollisionCondition>
             <Entity1>SELF</Entity1>
@@ -888,14 +918,16 @@
         </Behavior>
       </Behaviors>
     </ImageEntity>
+    <!-- Down Facing Pipe Entity    -->
     <ImageEntity>
-    <Name>DownFacingPipe</Name>
-    <Width>110</Width>
-    <Height>120</Height>
-    <Image>pipe/pipe_downward.png</Image>
-    <VariableNames>TerrainID</VariableNames>
-    <VariableValues>universalTerrain</VariableValues>
-    <Behaviors>
+      <Name>DownFacingPipe</Name>
+      <Width>110</Width>
+      <Height>120</Height>
+      <Image>pipe/pipe_downward.png</Image>
+      <VariableNames>TerrainID</VariableNames>
+      <VariableValues>universalTerrain</VariableValues>
+     <Behaviors>
+      <!-- Go to next level if mario enters      -->
       <Behavior>
         <RequiredCollisionCondition>
           <Entity1>SELF</Entity1>
@@ -912,6 +944,7 @@
       </Behavior>
     </Behaviors>
   </ImageEntity>
+    <!-- Right Facing Pipe Entity    -->
     <ImageEntity>
       <Name>RightFacingPipe</Name>
       <Width>110</Width>
@@ -920,6 +953,7 @@
       <VariableNames>TerrainID</VariableNames>
       <VariableValues>universalTerrain</VariableValues>
     </ImageEntity>
+    <!-- Up Facing Pipe Entity    -->
     <ImageEntity>
       <Name>UpFacingPipe</Name>
       <Width>110</Width>
@@ -944,12 +978,14 @@
         </Behavior>
       </Behaviors>
     </ImageEntity>
+    <!-- Restart Button Entity    -->
     <ImageEntity>
       <Name>RestartButton</Name>
       <Width>200</Width>
       <Height>100</Height>
       <Image>restartbutton.png</Image>
       <Behaviors>
+        <!--Restart Games if clicked-->
         <Behavior>
           <InputCondition>
             <Key>ClickedOn</Key>
@@ -963,6 +999,7 @@
         </Behavior>
       </Behaviors>
     </ImageEntity>
+    <!-- Fire Flower Entity    -->
     <ImageEntity>
       <Name>FireFlower</Name>
       <Width>100</Width>
@@ -981,12 +1018,14 @@
         </IndependentAction>
       </Behavior>
     </ImageEntity>
+    <!-- Void Entity    -->
     <ImageEntity>
       <Name>Void</Name>
       <Width>1500</Width>
       <Height>1</Height>
       <Image>mario_brick.png</Image>
     </ImageEntity>
+    <!-- Flagpole Entity    -->
     <ImageEntity>
       <Name>Flagpole</Name>
       <Width>100</Width>
@@ -995,6 +1034,7 @@
       <VariableNames>TerrainID</VariableNames>
       <VariableValues>universalTerrain</VariableValues>
     </ImageEntity>
+    <!-- Fire Question Block Entity    -->
     <ImageEntity>
       <Name>FireBlock</Name>
       <Width>100</Width>
@@ -1002,24 +1042,27 @@
       <Image>question-block/FireQuestionBlock.gif</Image>
       <VariableNames>TerrainID myItem empty rando</VariableNames>
       <VariableValues>universalTerrain FireFlower false -6.0</VariableValues>
-      <!--      Get hit by mario's head to spit out an item.-->
-      <Behavior>
-        <RequiredCollisionCondition>
-          <Entity2>SmallMario</Entity2>
-          <Direction>Down</Direction>
-        </RequiredCollisionCondition>
-        <EntityVariableCondition>
-          <VariableName>empty</VariableName>
-          <RequiredValue>false</RequiredValue>
-        </EntityVariableCondition>
-        <IndependentAction>
-          <!--          <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>-->
-          <Effect>CreateEntityRelative FireFlower 0.0 -100.0</Effect>
-          <Effect>SetVariable empty true</Effect>
-          <Effect>SetImage example-mario/question-block/depleted_qblock.png</Effect>
-        </IndependentAction>
-      </Behavior>
+      <Behaviors>
+        <!--      Get hit by mario's head to spit out an item.-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>SmallMario</Entity2>
+            <Direction>Down</Direction>
+          </RequiredCollisionCondition>
+          <EntityVariableCondition>
+            <VariableName>empty</VariableName>
+            <RequiredValue>false</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <!--          <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>-->
+            <Effect>CreateEntityRelative FireFlower 0.0 -100.0</Effect>
+            <Effect>SetVariable empty true</Effect>
+            <Effect>SetImage example-mario/question-block/depleted_qblock.png</Effect>
+          </IndependentAction>
+        </Behavior>
+      </Behaviors>
     </ImageEntity>
+    <!-- Fire Question Block Entity    -->
     <ImageEntity>
       <Name>QuestionBlock</Name>
       <Width>100</Width>
@@ -1027,41 +1070,47 @@
       <Image>question-block/mario_question_block.gif</Image>
       <VariableNames>TerrainID myItem empty rando</VariableNames>
       <VariableValues>universalTerrain Mushroom false -6.0</VariableValues>
-<!--      Get hit by mario's head to spit out an item.-->
-      <Behavior>
-        <RequiredCollisionCondition>
-          <Entity2>SmallMario</Entity2>
-          <Direction>Down</Direction>
-        </RequiredCollisionCondition>
-        <EntityVariableCondition>
-        <VariableName>empty</VariableName>
-        <RequiredValue>false</RequiredValue>
-      </EntityVariableCondition>
-        <IndependentAction>
-          <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>
-          <Effect>SetVariable empty true</Effect>
-          <Effect>SetImage example-mario/question-block/depleted_qblock.png</Effect>
-        </IndependentAction>
-      </Behavior>
+      <Behaviors>
+        <!--      Get hit by mario's head to spit out an item.-->
+        <Behavior>
+          <RequiredCollisionCondition>
+            <Entity2>SmallMario</Entity2>
+            <Direction>Down</Direction>
+          </RequiredCollisionCondition>
+          <EntityVariableCondition>
+            <VariableName>empty</VariableName>
+            <RequiredValue>false</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>CreateEntityRelative Mushroom 0.0 -100.0</Effect>
+            <Effect>SetVariable empty true</Effect>
+            <Effect>SetImage example-mario/question-block/depleted_qblock.png</Effect>
+          </IndependentAction>
+        </Behavior>
+      </Behaviors>
     </ImageEntity>
+    <!-- Background Entity    -->
     <ImageEntity>
       <Name>Background</Name>
       <Width>1000</Width>
       <Height>800</Height>
       <Image>terrain/mario_background.png</Image>
     </ImageEntity>
+    <!-- Cave Background Entity    -->
     <ImageEntity>
       <Name>CaveBackground</Name>
       <Width>1000</Width>
       <Height>1000</Height>
       <Image>terrain/cave_background.png</Image>
     </ImageEntity>
+    <!-- Big FireBall Entity    -->
     <ImageEntity>
       <Name>Fireball</Name>
       <Width>500</Width>
       <Height>500</Height>
       <Image>terrain/fireball.png</Image>
       <Behaviors>
+        <!-- Moves to the right.-->
         <Behavior>
           <IndependentAction>
             <Effect>ChangeVelocity 0.0305 0 + 10.0</Effect>
@@ -1071,18 +1120,22 @@
     </ImageEntity>
   </Entities>
   <Variables>
+    <!-- Lives Variable    -->
     <Variable>
       <Name>Lives</Name>
       <StartValue>3</StartValue>
     </Variable>
+    <!-- Score Variable    -->
     <Variable>
       <Name>Score</Name>
       <StartValue>0</StartValue>
     </Variable>
+    <!-- Camera Difference Variable    -->
     <Variable>
       <Name>CameraDiff</Name>
       <StartValue>0</StartValue>
     </Variable>
+    <!-- Mario State Variable    -->
     <Variable>
       <Name>MarioState</Name>
       <StartValue>0</StartValue>

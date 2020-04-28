@@ -226,10 +226,12 @@
     </ImageEntity>
   </Entities>
   <Variables>
+    <!--Lives Variable -->
     <Variable>
       <Name>Lives</Name>
       <StartValue>1</StartValue>
     </Variable>
+    <!--Score Variable -->
     <Variable>
       <Name>Score</Name>
       <StartValue>0</StartValue>
