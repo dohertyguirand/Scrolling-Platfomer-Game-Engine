@@ -36,25 +36,6 @@
                         <Effect>SetVariable FloorValue 800</Effect>
                     </IndependentAction>
                 </Behavior>
-<!--                <Behavior>-->
-<!--&lt;!&ndash;                    <EntityVariableCondition>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <VariableName>CameraShiftValue</VariableName>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <Comparison>GreaterThan</Comparison>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <RequiredValue>-1</RequiredValue>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </EntityVariableCondition>&ndash;&gt;-->
-<!--                    <EntityVariableCondition>-->
-<!--                        <VariableName>YPos</VariableName>-->
-<!--                        <Comparison>LessThan</Comparison>-->
-<!--                        <RequiredValue>CameraBorderRightPos</RequiredValue>-->
-<!--                    </EntityVariableCondition>-->
-<!--                    <IndependentAction>-->
-<!--                        <Effect>SetVariable CameraShiftValue YPos</Effect>-->
-<!--                        <Effect>ChangeVariable CameraShiftValue - CameraBorderYPos</Effect>-->
-<!--                        <Effect>ChangeVariable CameraShiftValue * -1</Effect>-->
-<!--                        <Effect>ShiftCamera 0 CameraShiftValue </Effect>-->
-<!--                        <Effect>ChangeVariable CameraBorderYPos - CameraShiftValue</Effect>-->
-<!--                    </IndependentAction>-->
-<!--                </Behavior>-->
                 <!-- Collision with Blue Platform  -->
                 <Behavior>
                     <RequiredCollisionDetection>
@@ -75,6 +56,7 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>Jump 0.0 -1.00 + 10.0</Effect>
+                        <Effect>ChangeVariable Score + 100.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Green Platform  -->
@@ -96,6 +78,7 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
+                        <Effect>ChangeVariable Score + 100.0</Effect>
                         <Effect>Jump 0.0 -1.00 + 10.0</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -119,6 +102,7 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>Jump 0.0 -1.00 + 20.0</Effect>
+                        <Effect>ChangeVariable Score + 100.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Monster  -->
@@ -151,6 +135,7 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>Jump 0.0 -1.00 + 10.0</Effect>
+                        <Effect>ChangeVariable Score + 100.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Collision with Void  -->
@@ -317,10 +302,10 @@
                     <Direction>Up</Direction>
                 </RequiredCollisionCondition>
                 <IndependentAction>
-                    <Effect>SetVariable CameraShiftValue 50</Effect>
+                    <Effect>SetVariable CameraShiftValue 20</Effect>
                     <Effect>ShiftCamera 0 CameraShiftValue </Effect>
                     <Effect>ChangePosition 0 50 - </Effect>
-                    <Effect>ChangeVariable FloorValue + -50</Effect>
+                    <Effect>ChangeVariable FloorValue + -20</Effect>
                 </IndependentAction>
             </Behavior>
         </ImageEntity>
@@ -363,19 +348,6 @@
                     <Stationary>true</Stationary>
                     <PropertyVariableDependency>
                         <VariableName>Score</VariableName>
-                        <PropertyName>Text</PropertyName>
-                    </PropertyVariableDependency>
-                </TextEntityInstance>
-                <TextEntityInstance>
-                    <Text>Lives: %.0f</Text>
-                    <Font>Times New Roman</Font>
-                    <XPos>500</XPos>
-                    <YPos>0</YPos>
-                    <Width>150</Width>
-                    <Height>50</Height>
-                    <Stationary>true</Stationary>
-                    <PropertyVariableDependency>
-                        <VariableName>Lives</VariableName>
                         <PropertyName>Text</PropertyName>
                     </PropertyVariableDependency>
                 </TextEntityInstance>
