@@ -8,8 +8,8 @@
             <Width>50</Width>
             <Height>100</Height>
             <Image>avatarUp.jpg</Image>
-            <VariableNames>Up Down</VariableNames>
-            <VariableValues>VVVVVV/avatarUp.jpg VVVVVV/avatarDown.jpg</VariableValues>
+            <VariableNames>Up Down GravityDown RespawnXLocation RespawnYLocation</VariableNames>
+            <VariableValues>VVVVVV/avatarUp.jpg VVVVVV/avatarDown.jpg -1 100 500</VariableValues>
             <Behaviors>
                 <Behavior>
                     <EntityVariableCondition>
@@ -17,7 +17,7 @@
                         <RequiredValue>-1</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>Gravity 0 1 + 10.0</Effect>
+                        <Effect>Gravity 0 1 + 0.1</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -26,18 +26,7 @@
                         <RequiredValue>1</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>Gravity 0 -1 + 10.0</Effect>
-                    </IndependentAction>
-                </Behavior>
-                <Behavior>
-                    <RequiredCollisionCondition>
-                        <Entity1>Avatar</Entity1>
-                        <Entity2>CheckPoint</Entity2>
-                        <Direction>Left</Direction>
-                    </RequiredCollisionCondition>
-                    <IndependentAction>
-                        <Effect>SetVariable RespawnYLocation CheckPointYLocation </Effect>
-                        <Effect>SetVariable RespawnXLocation CheckPointXLocation </Effect>
+                        <Effect>Gravity 0 -1 + 0.1</Effect>
                     </IndependentAction>
                 </Behavior>
                 <Behavior>
@@ -102,33 +91,33 @@
                         <Effect>VelocityInput -.100 0 + .3200</Effect>
                     </IndependentAction>
                 </Behavior>
+                  <Behavior>
+                        <RequiredCollisionCondition>
+                            <Entity1>Avatar</Entity1>
+                            <Entity2>universalTerrain</Entity2>
+                            <Direction>ANY</Direction>
+                        </RequiredCollisionCondition>
+                        <InputCondition>
+                          <Key>UpKey</Key>
+                          <InputRequirement>Pressed</InputRequirement>
+                        </InputCondition>
+                        <IndependentAction>
+                          <Effect>SetVariable GravityDown 1</Effect>
+                              <Effect>SetImage Down</Effect>
+                        </IndependentAction>
+                  </Behavior>
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Avatar</Entity1>
-                        <Entity2>Floor</Entity2>
-                        <Direction>Down</Direction>
-                    </RequiredCollisionCondition>
-                    <InputCondition>
-                        <Key>UpKey</Key>
-                        <InputRequirement>true</InputRequirement>
-                    </InputCondition>
-                    <IndependentAction>
-                        <Effect>SetImage Down</Effect>
-                        <Effect>SetVariable GravityDown -1</Effect>
-                    </IndependentAction>
-                </Behavior>
-                <Behavior>
-                    <RequiredCollisionCondition>
-                        <Entity1>Avatar</Entity1>
-                        <Entity2>Floor</Entity2>
-                        <Direction>Up</Direction>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
                     <InputCondition>
                         <Key>DownKey</Key>
-                        <InputRequirement>true</InputRequirement>
+                        <InputRequirement>Pressed</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
-                        <Effect>SetVariable GravityDown 1</Effect>
+                        <Effect>SetVariable GravityDown -1</Effect>
                         <Effect>SetImage Up</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -169,6 +158,21 @@
             <Width>50</Width>
             <Height>100</Height>
             <Image>checkpoint.jpg</Image>
+            <VariableNames>CheckPointXLocation CheckPointYLocation</VariableNames>
+            <VariableValues>400 500</VariableValues>
+            <Behaviors>
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>Avatar</Entity1>
+                        <Entity2>CheckPoint</Entity2>
+                        <Direction>ANY</Direction>
+                        <IndependantAction>
+                            <Effect>SetVariable RespawnYLocation CheckPointYLocation</Effect>
+                            <Effect>SetVariable RespawnXLocation CheckPointXLocation</Effect>
+                        </IndependantAction>
+                    </RequiredCollisionCondition>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
     </Entities>
     <Variables></Variables>
@@ -187,8 +191,6 @@
                     <Name>CheckPoint</Name>
                     <XPos>400</XPos>
                     <YPos>500</YPos>
-                    <VariableNames>CheckPointXLocation CheckPointYLocation</VariableNames>
-                    <VariableValues>400 600</VariableValues>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
@@ -268,8 +270,6 @@
                     <Name>Avatar</Name>
                     <XPos>100</XPos>
                     <YPos>500</YPos>
-                    <VariableNames>RespawnXLocation RespawnYLocation GravityDown</VariableNames>
-                    <VariableValues>100 500 -1</VariableValues>
                 </ImageEntityInstance>
             </ImageEntityInstances>
             <TextEntityInstances>
