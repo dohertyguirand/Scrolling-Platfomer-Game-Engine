@@ -434,7 +434,7 @@
             <InputRequirement>Pressed</InputRequirement>
           </InputCondition>
           <IndependentAction>
-            <Effect>CreateEntityRelative FireBallThrow 1 0</Effect>
+            <Effect>CreateEntityRelative FireBallThrow 20 50</Effect>
           </IndependentAction>
         </Behavior>
         <!--  Exist to obey gravity.-->
@@ -755,6 +755,7 @@
         <!-- Bounces on terrain-->
         <Behavior>
           <RequiredCollisionCondition>
+            <Entity1>SELF</Entity1>
             <Entity2>universalTerrain</Entity2>
             <Direction>ANY</Direction>
           </RequiredCollisionCondition>
@@ -767,6 +768,7 @@
         <!-- Remove if hits left wall-->
         <Behavior>
           <RequiredCollisionCondition>
+            <Entity1>SELF</Entity1>
             <Entity2>universalTerrain</Entity2>
             <Direction>Left</Direction>
           </RequiredCollisionCondition>
@@ -779,6 +781,7 @@
         <!-- Remove if hits left wall-->
         <Behavior>
           <RequiredCollisionCondition>
+            <Entity1>SELF</Entity1>
             <Entity2>universalTerrain</Entity2>
             <Direction>Right</Direction>
           </RequiredCollisionCondition>
