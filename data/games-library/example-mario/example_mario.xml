@@ -6,7 +6,7 @@
     <ImageEntity>
       <Name>SmallMario</Name>
       <Width>100</Width>
-      <Height>50</Height>
+      <Height>100</Height>
       <Image>mario_small_right_standing.png</Image>
       <VariableNames>StandingSprite WalkingSprite JumpingSprite Facing Jumping Walking GotFlower CameraBorderXRight CameraBorderXLeft InvincibilityTimer </VariableNames>
       <VariableValues>example-mario/mario-sprites/right/mario_standing.png example-mario/mario-sprites/right/mario_walk_right.gif example-mario/mario-sprites/right/mario_jump_right.gif Right False False False 550 150 0</VariableValues>
@@ -31,6 +31,7 @@
             <Direction>ANY</Direction>
           </RequiredCollisionCondition>
           <IndependentAction>
+            <Effect>SetVariable MarioState 2</Effect>
             <Effect>SetVariable GotFlower True</Effect>
           </IndependentAction>
         </Behavior>
@@ -562,6 +563,7 @@
         </RequiredCollisionCondition>
         <IndependentAction>
           <Effect>RemoveSelf</Effect>
+          <Effect>ChangeVariable Score + 20.0</Effect>
         </IndependentAction>
       </Behavior>
     </ImageEntity>
@@ -637,6 +639,7 @@
         </RequiredCollisionCondition>
         <IndependentAction>
           <Effect>RemoveSelf</Effect>
+          <Effect>ChangeVariable Score + 20.0</Effect>
         </IndependentAction>
       </Behavior>
     </ImageEntity>
@@ -657,6 +660,9 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>RemoveSelf</Effect>
+            <Effect>CreateEntityRelative BrickFragment -20 0</Effect>
+            <Effect>CreateEntityRelative BrickFragment 0 0</Effect>
+            <Effect>CreateEntityRelative BrickFragment 20 0</Effect>
           </IndependentAction>
         </Behavior>
         <Behavior>
@@ -669,6 +675,46 @@
             <Entity2>SmallMario</Entity2>
             <Direction>Down</Direction>
           </RequiredCollisionCondition>
+          <IndependentAction>
+            <Effect>RemoveSelf</Effect>
+            <Effect>RemoveSelf</Effect>
+            <Effect>CreateEntityRelative BrickFragment -20 0</Effect>
+            <Effect>CreateEntityRelative BrickFragment 0 0</Effect>
+            <Effect>CreateEntityRelative BrickFragment 20 0</Effect>
+          </IndependentAction>
+        </Behavior>
+      </Behaviors>
+    </ImageEntity>
+    <ImageEntity>
+      <Name>BrickFragment</Name>
+      <Width>20</Width>
+      <Height>20</Height>
+      <Image>terrain/Brick.png</Image>
+      <VariableNames>xVel yVel</VariableNames>
+      <VariableValues>0 0</VariableValues>
+      <Behaviors>
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>xVel</VariableName>
+            <RequiredValue>0.0</RequiredValue>
+          </EntityVariableCondition>
+          <IndependentAction>
+            <Effect>SetVariableRandomly xVel 0.0 0.65</Effect>
+            <Effect>SetVariableRandomly yVel 0.0 -1.20 </Effect>
+            <Effect>SetVelocity xVel yVel</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <IndependentAction>
+            <Effect>Gravity 0 0.1 + 10.0</Effect>
+          </IndependentAction>
+        </Behavior>
+        <Behavior>
+          <EntityVariableCondition>
+            <VariableName>YPos</VariableName>
+            <Comparison>GreaterThan</Comparison>
+            <RequiredValue>1200</RequiredValue>
+          </EntityVariableCondition>
           <IndependentAction>
             <Effect>RemoveSelf</Effect>
           </IndependentAction>
@@ -685,10 +731,10 @@
       <Behavior>
         <RequiredCollisionCondition>
           <Entity2>universalTerrain</Entity2>
-          <Direction>Down</Direction>
+          <Direction>ANY</Direction>
         </RequiredCollisionCondition>
         <CollisionDeterminedAction>
-          <Args>universalTerrain Down</Args>
+          <Args>universalTerrain ANY</Args>
           <Effect>TerrainCollisionDown</Effect>
           <Effect>Jump 0.0 -1.50 + 10.0</Effect>
         </CollisionDeterminedAction>
@@ -801,6 +847,7 @@
           </RequiredCollisionCondition>
           <IndependentAction>
             <Effect>RemoveSelf</Effect>
+            <Effect>ChangeVariable Score + 20.0</Effect>
           </IndependentAction>
         </Behavior>
 <!--        Moves right every frame-->
@@ -924,6 +971,7 @@
         </RequiredCollisionCondition>
         <IndependentAction>
           <Effect>RemoveSelf</Effect>
+          <Effect>ChangeVariable Score + 20.0</Effect>
         </IndependentAction>
       </Behavior>
     </ImageEntity>
@@ -1047,8 +1095,8 @@
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>SmallMario</Name>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
+          <XPos>200</XPos>
+          <YPos>400</YPos>
           <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
           <VariableValues>0 250</VariableValues>
         </ImageEntityInstance>
@@ -1484,34 +1532,32 @@
         <ImageEntityInstance>
           <Name>CaveBackground</Name>
           <XPos>-1000.0</XPos>
-          <YPos>0</YPos>
-          <Stationary>true</Stationary>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>CaveBackground</Name>
           <XPos>0.0</XPos>
-          <YPos>0</YPos>
-          <Stationary>true</Stationary>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>CaveBackground</Name>
           <XPos>1000.0</XPos>
-          <YPos>0</YPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>CaveBackground</Name>
           <XPos>2000.0</XPos>
-          <YPos>0</YPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>CaveBackground</Name>
           <XPos>3000.0</XPos>
-          <YPos>0</YPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Name>Fireball</Name>
-          <XPos>-500.0</XPos>
-          <YPos>150.0</YPos>
+          <Name>CaveBackground</Name>
+          <XPos>4000.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
@@ -1524,19 +1570,9 @@
           <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Name>DownFacingPipe</Name>
+          <Name>LeftFacingPipe</Name>
           <XPos>200.0</XPos>
           <YPos>0.0</YPos>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Goomba</Name>
-          <XPos>400.0</XPos>
-          <YPos>450</YPos>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Mushroom</Name>
-          <XPos>300.0</XPos>
-          <YPos>300.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
@@ -1590,203 +1626,153 @@
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>0</XPos>
-          <YPos>600</YPos>
+          <XPos>1300.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>300</XPos>
-          <YPos>600</YPos>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>QuestionBlock</Name>
-          <XPos>300</XPos>
-          <YPos>200</YPos>
+          <XPos>1400.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>400</XPos>
-          <YPos>600</YPos>
+          <XPos>1500.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>400</XPos>
-          <YPos>500</YPos>
-          <Size>2.0</Size>
+          <XPos>1600.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>500</XPos>
-          <YPos>600</YPos>
-          <Size>2.0</Size>
+          <XPos>1700.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>600</XPos>
-          <YPos>600</YPos>
-          <Size>2.0</Size>
+          <XPos>1800.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>700</XPos>
-          <YPos>600</YPos>
-          <Size>2.0</Size>
+          <XPos>1900.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>800</XPos>
-          <YPos>600</YPos>
-          <Size>2.0</Size>
+          <XPos>2000.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>1000</XPos>
-          <YPos>600</YPos>
-          <Size>2.0</Size>
+          <XPos>2100.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Name>Koopa</Name>
-          <XPos>600</XPos>
-          <YPos>400</YPos>
+          <Name>Brick</Name>
+          <XPos>2200.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Name>Koopa</Name>
-          <XPos>800</XPos>
-          <YPos>400</YPos>
+          <Name>Brick</Name>
+          <XPos>2300.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Name>Flagpole</Name>
-          <XPos>800</XPos>
-          <YPos>200</YPos>
+          <Name>Brick</Name>
+          <XPos>2400.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
-          <Name>Void</Name>
-          <XPos>-250</XPos>
-          <YPos>799</YPos>
+          <Name>Brick</Name>
+          <XPos>2500.0</XPos>
+          <YPos>0.0</YPos>
         </ImageEntityInstance>
-      </ImageEntityInstances>
-      <TextEntityInstances>
-        <TextEntityInstance>
-          <Text>Lives: %.0f</Text>
-          <Font>Times New Roman</Font>
-          <XPos>850</XPos>
-          <YPos>0</YPos>
-          <Width>150</Width>
-          <Height>50</Height>
-          <PropertyVariableDependency>
-            <VariableName>Lives</VariableName>
-            <PropertyName>Text</PropertyName>
-          </PropertyVariableDependency>
-        </TextEntityInstance>
-        <TextEntityInstance>
-          <Text>Score: %.0f</Text>
-          <Font>Times New Roman</Font>
-          <XPos>650</XPos>
-          <YPos>0</YPos>
-          <Width>150</Width>
-          <Height>50</Height>
-          <PropertyVariableDependency>
-            <VariableName>Score</VariableName>
-            <PropertyName>Text</PropertyName>
-          </PropertyVariableDependency>
-        </TextEntityInstance>
-      </TextEntityInstances>
-    </Level>
-    <Level>
-      <ID>2</ID>
-      <NextLevel>3</NextLevel>
-      <ImageEntityInstances>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>2600.0</XPos>
+          <YPos>0.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>2700.0</XPos>
+          <YPos>0.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>2800.0</XPos>
+          <YPos>0.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>2900.0</XPos>
+          <YPos>0.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>3000.0</XPos>
+          <YPos>0.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>3100.0</XPos>
+          <YPos>0.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>0.0</XPos>
+          <YPos>100.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>1200.0</XPos>
+          <YPos>100.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>1300.0</XPos>
+          <YPos>100.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>1400.0</XPos>
+          <YPos>100.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>2000.0</XPos>
+          <YPos>100.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>3000.0</XPos>
+          <YPos>100.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>3100.0</XPos>
+          <YPos>100.0</YPos>
+        </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Brick</Name>
+          <XPos>0.0</XPos>
+          <YPos>200.0</YPos>
+        </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>SmallMario</Name>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
-          <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-          <VariableValues>0 300</VariableValues>
+          <XPos>200.0</XPos>
+          <YPos>200.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>0</XPos>
-          <YPos>500</YPos>
+          <XPos>1200.0</XPos>
+          <YPos>200.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
-          <XPos>100</XPos>
-          <YPos>500</YPos>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>200</XPos>
-          <YPos>500</YPos>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>300</XPos>
-          <YPos>500</YPos>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>400</XPos>
-          <YPos>500</YPos>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>500</XPos>
-          <YPos>500</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>500</XPos>
-          <YPos>500</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>600</XPos>
-          <YPos>500</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>700</XPos>
-          <YPos>500</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>800</XPos>
-          <YPos>500</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>400</XPos>
-          <YPos>500</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>500</XPos>
-          <YPos>500</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>FireBlock</Name>
-          <XPos>200</XPos>
-          <YPos>200</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>300</XPos>
-          <YPos>400</YPos>
-          <Size>2.0</Size>
-        </ImageEntityInstance>
-        <ImageEntityInstance>
-          <Name>Brick</Name>
-          <XPos>400</XPos>
-          <YPos>400</YPos>
-          <Size>2.0</Size>
+          <XPos>1300.0</XPos>
+          <YPos>200.0</YPos>
         </ImageEntityInstance>
         <ImageEntityInstance>
           <Name>Brick</Name>
@@ -2303,7 +2289,40 @@
           <XPos>3100.0</XPos>
           <YPos>800.0</YPos>
         </ImageEntityInstance>
+        <ImageEntityInstance>
+          <Name>Fireball</Name>
+          <XPos>-500.0</XPos>
+          <YPos>50.0</YPos>
+        </ImageEntityInstance>
       </ImageEntityInstances>
+      <TextEntityInstances>
+          <TextEntityInstance>
+            <Text>Lives: %.0f</Text>
+            <Font>Times New Roman</Font>
+            <XPos>850</XPos>
+            <YPos>0</YPos>
+            <Width>150</Width>
+            <Height>50</Height>
+            <Stationary>true</Stationary>
+            <PropertyVariableDependency>
+              <VariableName>Lives</VariableName>
+              <PropertyName>Text</PropertyName>
+            </PropertyVariableDependency>
+          </TextEntityInstance>
+          <TextEntityInstance>
+            <Text>Score: %.0f</Text>
+            <Font>Times New Roman</Font>
+            <XPos>650</XPos>
+            <YPos>0</YPos>
+            <Width>150</Width>
+            <Height>50</Height>
+            <Stationary>true</Stationary>
+            <PropertyVariableDependency>
+              <VariableName>Score</VariableName>
+              <PropertyName>Text</PropertyName>
+            </PropertyVariableDependency>
+          </TextEntityInstance>
+        </TextEntityInstances>
     </Level>
     <Level>
       <ID>3</ID>
@@ -2519,6 +2538,7 @@
           <YPos>0</YPos>
           <Width>1000</Width>
           <Height>500</Height>
+          <Stationary>true</Stationary>
         </TextEntityInstance>
         <TextEntityInstance>
           <Text>Score: %.0f</Text>
@@ -2527,6 +2547,7 @@
           <YPos>600</YPos>
           <Width>150</Width>
           <Height>50</Height>
+          <Stationary>true</Stationary>
           <PropertyVariableDependency>
             <VariableName>Score</VariableName>
             <PropertyName>Text</PropertyName>
@@ -2582,6 +2603,30 @@
           <YPos>799</YPos>
         </ImageEntityInstance>
       </ImageEntityInstances>
+      <TextEntityInstances>
+        <TextEntityInstance>
+          <Text>You Win!</Text>
+          <Font>Comic Sans MS</Font>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+          <Width>1000</Width>
+          <Height>500</Height>
+          <Stationary>true</Stationary>
+        </TextEntityInstance>
+        <TextEntityInstance>
+          <Text>Score: %.0f</Text>
+          <Font>Times New Roman</Font>
+          <XPos>400</XPos>
+          <YPos>600</YPos>
+          <Width>150</Width>
+          <Height>50</Height>
+          <Stationary>true</Stationary>
+          <PropertyVariableDependency>
+            <VariableName>Score</VariableName>
+            <PropertyName>Text</PropertyName>
+          </PropertyVariableDependency>
+        </TextEntityInstance>
+      </TextEntityInstances>
     </Level>
   </Levels>
 </Game>
