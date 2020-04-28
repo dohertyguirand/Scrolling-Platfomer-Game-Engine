@@ -8,7 +8,7 @@
             <Name>Bird</Name>
             <Width>50</Width>
             <Height>50</Height>
-            <Image>flappybird.jpg</Image>
+            <Image>flappy_down.png</Image>
             <VariableNames>GoingDown GoingUp</VariableNames>
             <VariableValues>flappy_bird/flappy_down.png flappy_bird/flappy_up.png</VariableValues>
             <Behaviors>
