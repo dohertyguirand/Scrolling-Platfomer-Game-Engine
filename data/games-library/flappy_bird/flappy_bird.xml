@@ -241,6 +241,23 @@
             <Height>450</Height>
             <Image>pipe_down.png</Image>
         </ImageEntity>
+        <ImageEntity>
+            <Name>ScreenMover</Name>
+            <Width>50</Width>
+            <Height>1000</Height>
+            <Image>transparent.png</Image>
+            <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity1>Bird</Entity1>
+                    <Entity2>ScreenMover</Entity2>
+                    <Direction>Left</Direction>
+                </RequiredCollisionCondition>
+                <IndependentAction>
+                    <Effect>ChangePosition 200 0 + </Effect>
+                    <Effect>ChangeVariable Score + 1.0</Effect>
+                </IndependentAction>
+            </Behavior>
+        </ImageEntity>
     </Entities>
     <Variables>
         <!--Score Variable-->
@@ -275,6 +292,11 @@
                     <XPos>0</XPos>
                     <YPos>0</YPos>
                     <Columns>10</Columns>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>ScreenMover</Name>
+                    <XPos>500</XPos>
+                    <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
