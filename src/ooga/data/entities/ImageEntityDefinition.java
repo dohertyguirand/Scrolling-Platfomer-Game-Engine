@@ -36,6 +36,7 @@ public class ImageEntityDefinition {
         ImageEntity newEntity = new ImageEntity(myName, myImageLocation, xpos, ypos, myWidth, myHeight);
         newEntity.setConditionalBehaviors(myBehaviors);
         newEntity.setVariables(myVariables);
+        newEntity.makeNonStationaryProperty(stationary);
         return newEntity;
     }
 
