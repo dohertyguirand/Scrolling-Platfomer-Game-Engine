@@ -31,7 +31,6 @@ public class MakeProfileTest extends Application {
     private final ImageView mv = new ImageView();
     private Stage myStage;
 
-    @Test
     public void start(Stage primaryStage) throws Exception {
         myGridpane = createRegistrationFormPane();
         addUIControls(myGridpane);
