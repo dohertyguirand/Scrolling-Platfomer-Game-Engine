@@ -15,7 +15,7 @@ public class AddNewProfileTest {
 
     XMLProfileReader profileReader = new XMLProfileReader();
     String exampleName = "Test" + System.currentTimeMillis();
-    File photoFile = new File("/Users/dohertyguirand/Spring2020/CS308/Projects/final_team17/src/ooga/view/Resources/alien.jpg");
+    File photoFile = new File("src/ooga/view/Resources/alien.jpg");
 
     @Test
     public void testAddingUniqueProfile() {
