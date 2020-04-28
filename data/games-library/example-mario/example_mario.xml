@@ -3,6 +3,7 @@
   <Thumbnail>mario_logo.jpg</Thumbnail>
   <Description>Straight from the mind of Shigeru Miyamoto.</Description>
   <Entities>
+    <!-- Mario Entity    -->
     <ImageEntity>
       <Name>SmallMario</Name>
       <Width>100</Width>
@@ -491,6 +492,7 @@
         </Behavior>
       </Behaviors>
     </ImageEntity>
+    <!-- Koopa Entity    -->
     <ImageEntity>
       <Name>Koopa</Name>
       <Width>100</Width>
@@ -567,6 +569,7 @@
         </IndependentAction>
       </Behavior>
     </ImageEntity>
+    <!-- Goomba Entity    -->
     <ImageEntity>
       <Name>Goomba</Name>
       <Width>90</Width>
@@ -643,6 +646,7 @@
         </IndependentAction>
       </Behavior>
     </ImageEntity>
+    <!-- Brick Entity    -->
     <ImageEntity>
       <Name>Brick</Name>
       <Width>100</Width>
@@ -685,6 +689,7 @@
         </Behavior>
       </Behaviors>
     </ImageEntity>
+    <!-- Brick Fragment Entity    -->
     <ImageEntity>
       <Name>BrickFragment</Name>
       <Width>20</Width>
@@ -721,6 +726,7 @@
         </Behavior>
       </Behaviors>
     </ImageEntity>
+    
     <ImageEntity>
       <Name>FireBallThrow</Name>
       <Width>40</Width>

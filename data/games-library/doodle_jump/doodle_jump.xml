@@ -3,6 +3,7 @@
     <Thumbnail>doodle_jump_logo.png</Thumbnail>
     <Description>Jump as High as you can</Description>
     <Entities>
+        <!-- Doodle behavior  -->
         <ImageEntity>
             <Name>Doodle</Name>
             <Width>70</Width>
@@ -22,6 +23,7 @@
                         <Effect>ChangeVariable Lives + -1.0</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--   Resetting the Game and all the variables  -->
                 <Behavior>
                     <GameVariableCondition>
                         <VariableName>Lives</VariableName>
@@ -202,6 +204,7 @@
             <Height>50</Height>
             <Image>monster.png</Image>
             <Behaviors>
+                <!-- Dies if Doodle Jumps on top -->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>Doodle</Entity2>
@@ -229,6 +232,7 @@
             <VariableNames>TouchedOnce TouchedTwice count</VariableNames>
             <VariableValues>doodle_jump/yellowplatform.png doodle_jump/redplatform.png 0</VariableValues>
             <Behaviors>
+                <!-- Touched Twice by Doodle -->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>Doodle</Entity2>
@@ -240,6 +244,7 @@
                         <Effect>ChangeVariable score + 1.0</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!--  Touched Once  by Doodle -->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity2>Doodle</Entity2>
@@ -265,6 +270,7 @@
             <VariableNames>NotTouched Touched</VariableNames>
             <VariableValues>doodle_jump/crackedplatform.png doodle_jump/brokenplatform.png</VariableValues>
            <Behaviors>
+                <!--  If Doodle Jumps on top, it cracks -->
                <Behavior>
                    <RequiredCollisionCondition>
                        <Entity2>Doodle</Entity2>
@@ -276,6 +282,7 @@
                </Behavior>
            </Behaviors>
         </ImageEntity>
+        <!-- Background Behavior  -->
         <ImageEntity>
             <Name>Background</Name>
             <Width>1000</Width>
@@ -283,12 +290,14 @@
             <Image>background.png</Image>
             <Stationary>true</Stationary>
         </ImageEntity>
+        <!-- Bottom of screen behavior  -->
         <ImageEntity>
             <Name>OffScreen</Name>
             <Width>1500</Width>
             <Height>1</Height>
             <Image>mario_brick.png</Image>
         </ImageEntity>
+        <!-- Invisible Screen Mover Behavior  -->
         <ImageEntity>
             <Name>IncreaseHeight</Name>
             <Width>1000</Width>
@@ -311,22 +320,27 @@
         </ImageEntity>
     </Entities>
     <Variables>
+        <!-- Score behavior  -->
         <Variable>
             <Name>Score</Name>
             <StartValue>0</StartValue>
         </Variable>
+        <!-- Lives behavior  -->
         <Variable>
             <Name>Lives</Name>
             <StartValue>1</StartValue>
         </Variable>
+        <!-- Camera Shift Value behavior  -->
         <Variable>
             <Name>CameraShiftValue</Name>
             <StartValue>0</StartValue>
         </Variable>
+        <!-- Camera Y border behavior  -->
         <Variable>
             <Name>CameraBorderYPos</Name>
             <StartValue>200</StartValue>
         </Variable>
+        <!-- Floor Value behavior  -->
         <Variable>
             <Name>FloorValue</Name>
             <StartValue>800</StartValue>
