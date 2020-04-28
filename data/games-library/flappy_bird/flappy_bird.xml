@@ -85,6 +85,8 @@
                         <Effect>GoToLevel 1</Effect>
                         <Effect>SetVariable Lives 1.0</Effect>
                         <Effect>SetVariable Score 0.0</Effect>
+                        <Effect>SetVariable CameraShiftValue 0.0</Effect>
+                        <Effect>SetVariable CameraBorderXPos 300.0</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!--Moves bird forward-->
@@ -192,11 +194,15 @@
                     <Name>PipeUp</Name>
                     <XPos>500</XPos>
                     <YPos>300</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>PipeDown</Name>
                     <XPos>500</XPos>
                     <YPos>0</YPos>
+                    <Columns>10</Columns>
+                    <XGap>1000</XGap>
                 </ImageEntityInstance>
             </ImageEntityInstances>
             <TextEntityInstances>
