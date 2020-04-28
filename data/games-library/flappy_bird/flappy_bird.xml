@@ -288,15 +288,15 @@
             <EndCondition>DestroyAll Bird</EndCondition>
             <ImageEntityInstances>
                 <ImageEntityInstance>
+                    <Name>ScreenMover</Name>
+                    <XPos>500</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
                     <Name>Background</Name>
                     <XPos>0</XPos>
                     <YPos>0</YPos>
                     <Columns>10</Columns>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>ScreenMover</Name>
-                    <XPos>500</XPos>
-                    <YPos>0</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
