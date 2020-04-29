@@ -66,12 +66,8 @@ public abstract class TimeDelayedEffect implements Effect {
   }
 
   /**
-   * Performs the effect
-   * @param subject The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity entity we are "interacting with" in this effect
-   * @param elapsedTime time between steps in ms
-   * @param variables game variables
-   * @param game game instance
+   * Does the same thing as doEffect, but with the delay that was specified when the effect was created.
+   * @see Effect#doEffect
    */
   @SuppressWarnings("unused")
   protected abstract void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game);
