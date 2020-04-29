@@ -136,7 +136,7 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
-                        <Effect>Jump 0.0 -1.00 + 10.0</Effect>
+                        <Effect>Jump 0.0 -1.00 + 20.0</Effect>
                         <Effect>ChangeVariable Score + 100.0</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -240,6 +240,11 @@
                         <Entity2>Doodle</Entity2>
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
+                    <EntityVariableCondition>
+                        <EntityNameOrID>WhitePlatform</EntityNameOrID>
+                        <VariableName>count</VariableName>
+                        <RequiredValue>0</RequiredValue>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>SetImage TouchedTwice</Effect>
                         <Effect>ChangeVariable count + 1.0</Effect>
@@ -304,7 +309,7 @@
         <!-- Invisible Screen Mover Behavior  -->
         <ImageEntity>
             <Name>IncreaseHeight</Name>
-            <Width>1000</Width>
+            <Width>2000</Width>
             <Height>200</Height>
             <Image>transparent.png</Image>
             <Stationary>true</Stationary>
@@ -372,7 +377,7 @@
             <ImageEntityInstances>
                 <ImageEntityInstance>
                     <Name>IncreaseHeight</Name>
-                    <XPos>0</XPos>
+                    <XPos>-500</XPos>
                     <YPos>100</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
@@ -389,167 +394,188 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>GreenPlatform</Name>
+                    <XPos>0</XPos>
+                    <YPos>700</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
                     <XPos>100</XPos>
                     <YPos>700</YPos>
                     <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-1200</YGap>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>768</XPos>
-                    <YPos>591</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>479</XPos>
-                    <YPos>126</YPos>
-                    <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-600</YGap>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>252</XPos>
-                    <YPos>637</YPos>
-                    <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-1000</YGap>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>342</XPos>
-                    <YPos>747</YPos>
-                    <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-1500</YGap>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>391</XPos>
-                    <YPos>772</YPos>
-                    <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-600</YGap>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>600</XPos>
-                    <YPos>317</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>GreenPlatform</Name>
-                    <XPos>150</XPos>
-                    <YPos>596</YPos>
-                    <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-1100</YGap>
+                    <XGap>500</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>BluePlatform</Name>
-                    <XPos>450</XPos>
-                    <YPos>796</YPos>
+                    <XPos>200</XPos>
+                    <YPos>600</YPos>
+                    <Columns>2</Columns>
+                    <XGap>300</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>BluePlatform</Name>
                     <XPos>300</XPos>
-                    <YPos>236</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>BluePlatform</Name>
-                    <XPos>500</XPos>
-                    <YPos>800</YPos>
+                    <YPos>500</YPos>
                     <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-700</YGap>
+                    <XGap>100</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>BluePlatform</Name>
-                    <XPos>400</XPos>
-                    <YPos>600</YPos>
-                    <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-700</YGap>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>BluePlatform</Name>
-                    <XPos>600</XPos>
-                    <YPos>700</YPos>
-                    <Columns>2</Columns>
-                    <XGap>400</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-700</YGap>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>BluePlatform</Name>
-                    <XPos>0</XPos>
+                    <XPos>100</XPos>
                     <YPos>400</YPos>
                     <Columns>3</Columns>
                     <XGap>300</XGap>
-                    <Rows>5</Rows>
-                    <YGap>-700</YGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>CrackedPlatform</Name>
-                    <XPos>200</XPos>
-                    <YPos>400</YPos>
+                    <XPos>100</XPos>
+                    <YPos>300</YPos>
+                    <Columns>3</Columns>
+                    <XGap>300</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>WhitePlatform</Name>
+                    <XPos>250</XPos>
+                    <YPos>300</YPos>
+                    <Columns>3</Columns>
+                    <XGap>300</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>WhitePlatform</Name>
+                    <XPos>150</XPos>
+                    <YPos>200</YPos>
+                    <Columns>4</Columns>
+                    <XGap>250</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>0</XPos>
+                    <YPos>100</YPos>
+                    <Columns>5</Columns>
                     <XGap>200</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>100</XPos>
+                    <YPos>0</YPos>
+                    <Columns>4</Columns>
+                    <XGap>100</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>WhitePlatform</Name>
+                    <XPos>300</XPos>
+                    <YPos>-100</YPos>
+                    <Columns>3</Columns>
+                    <XGap>100</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Monster</Name>
+                    <XPos>200</XPos>
+                    <YPos>-200</YPos>
                     <Columns>2</Columns>
-                    <Rows>5</Rows>
-                    <YGap>-500</YGap>
+                    <XGap>500</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>CrackedPlatform</Name>
+                    <XPos>100</XPos>
+                    <YPos>-200</YPos>
+                    <Columns>3</Columns>
+                    <XGap>500</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>GreenPlatform</Name>
+                    <XPos>100</XPos>
+                    <YPos>-300</YPos>
+                    <Columns>3</Columns>
+                    <XGap>300</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>BluePlatform</Name>
+                    <XPos>300</XPos>
+                    <YPos>-400</YPos>
+                    <Columns>2</Columns>
+                    <XGap>300</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>WhitePlatform</Name>
+                    <XPos>200</XPos>
+                    <YPos>-500</YPos>
+                    <Columns>3</Columns>
+                    <XGap>350</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Monster</Name>
                     <XPos>300</XPos>
-                    <YPos>300</YPos>
+                    <YPos>-600</YPos>
+                    <Columns>3</Columns>
+                    <XGap>350</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>284</XPos>
-                    <YPos>653</YPos>
+                    <Name>WhitePlatform</Name>
+                    <XPos>100</XPos>
+                    <YPos>-700</YPos>
+                    <Columns>4</Columns>
+                    <XGap>250</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>192</XPos>
-                    <YPos>393</YPos>
+                    <Name>Void</Name>
+                    <XPos>250</XPos>
+                    <YPos>-350</YPos>
+                    <Columns>1</Columns>
+                    <XGap>400</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>57</XPos>
-                    <YPos>-98</YPos>
+                    <Name>Void</Name>
+                    <XPos>250</XPos>
+                    <YPos>200</YPos>
+                    <Columns>1</Columns>
+                    <XGap>400</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>773</XPos>
-                    <YPos>-98</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>813</XPos>
-                    <YPos>-287</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>627</XPos>
-                    <YPos>-465</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>331</XPos>
-                    <YPos>-750</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>Monster</Name>
-                    <XPos>231</XPos>
-                    <YPos>-888</YPos>
+                    <Name>GreenPlatform</Name>
+                    <XPos>400</XPos>
+                    <YPos>-800</YPos>
+                    <Columns>3</Columns>
+                    <XGap>150</XGap>
+                    <Rows>3</Rows>
+                    <YGap>-1600</YGap>
                 </ImageEntityInstance>
             </ImageEntityInstances>
         </Level>

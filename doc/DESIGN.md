@@ -42,7 +42,7 @@ bmw54 - DataReader; The methods that involved writing to or reading from data on
     * We assumed that the depth of entities could be in the order that they were listed in the file, such that two entities wouldn't need to have the same depth.
     * We assumed that only one level would need to be loaded and running at once.
     * We assumed that for dark mode we just needed to change the overall colors, rather than having a distinct image for each game entity.
-    * We assumed that data files would be in xml format but set up the data reader apis to make it easy to add data readers for other file types.
+    * We assumed that data files would be in xml format but set up the data reader APIs to make it easy to add data readers for other file types.
     * We assumed that the user profiles would want to keep track of score and that games would thus use a Score variable to keep track of whatever formation they wanted attached to player profiles.
     * We assumed that no games would expect certain sound effects or music to play.
     * This isn't a hard assumption, but the APIs would have to change slightly in order to support sound effects
@@ -52,9 +52,15 @@ bmw54 - DataReader; The methods that involved writing to or reading from data on
 
 
 * describe, in detail, how to add new features to your project, especially ones you were not able to complete by the deadline
-    * How to add a new collision checker
+    * How to add a new collision detection algorithm
+        * Create a concrete class implementing CollisionDetector.
+        * Implement ``getSupportedDirections`` to return the possible collision directions that this could detect.
+        * Implement ``getCollisionDirection`` to return the direction of the collision (or null for no collision) when given two entities, using your new fancy algorithm.
+        * Modify ``ViewerGame.setGame()`` to instantiate your new collision detector when creating its OogaGame.
     * How to add a new control keyboard input type
-    * How to add a new control scheme
+        * Add the new keyboard input type to the keyboard.properties file 
+        (such as P = PunchKey)
+        * Use new keyboard input type (PunchKey) in game data file
     * How to add a new Effect
         * Create a new class for the effect that either (a) implements Effect or (b) extends TimeDelayedEffect.
         * If it implements Effect, implement the doEffect method to acheive the desired effect using the tools provided by EntityInternal on the subject or target entity, GameInternal, or the modifiable map of game variables.
@@ -62,3 +68,11 @@ bmw54 - DataReader; The methods that involved writing to or reading from data on
         * Also implement processArgs() to set instance variables related to the effect when it is initialized (such as max speed).
         * Add an entry to src/ooga/game/behaviors/resources/effectdefaults.properties listing the number of arguments that are required for the effect to execute.
         * Add entries to src/ooga/data/resources/entityconstants.properties that maps the name of the class to its nicknames that can be used by game designers (for reflection).
+    * How to add a different type of DataReader (that uses another file type).
+        * First, create a new interface that implements the ``DataReader`` interface. See ``XMLDataReader`` as an example.
+        * GameDataReader: create
+    * How to add the ability to save and load files
+        * The ability is there but there is a small problem. When saving a file, the ``GameRecorderExternal`` loops through the entities stored in the Level and stores their name, location, and variables in a new file
+        * The problem comes when there are text entities, which have no name and must be stored differently. These are stored instead as image entities with no name. 
+        * When the saved level is loaded, if there are text entities, the loading fails to load the entity with no name and ``GameDataReaderExternal`` throws an error which ``Game`` catches and responds by loading a new game instead.
+        * To fix this problem you would just need to add the ability for ``GameRecorderExternal`` to ask each ``Entity`` if they are an image entity or a text entity. If they are a text entity, it should save them accordingly.
