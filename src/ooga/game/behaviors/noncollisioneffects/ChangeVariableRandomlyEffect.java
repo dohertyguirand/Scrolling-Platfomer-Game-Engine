@@ -25,6 +25,13 @@ public class ChangeVariableRandomlyEffect extends TimeDelayedEffect {
   private String randomRangeMin;
   private String randomRangeMax;
 
+  /**
+   * @param args The first arg is the String name of the ariable.
+   *             The second arg is the operator used (+,-,*,/)
+   *             The third arg is the minimum value to produce.
+   *             The fourth arg is the maximum value to produce.
+   * @throws IndexOutOfBoundsException
+   */
   public ChangeVariableRandomlyEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }

@@ -53,13 +53,9 @@ public abstract class TimeDelayedEffect implements Effect {
     return timePassed >= timeDelay;
   }
 
+
   /**
-   * Performs the effect if time delay has been satisfied
-   * @param subject The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity
-   * @param elapsedTime
-   * @param variables
-   * @param game
+   * {@inheritDoc}
    */
   @Override
   public void doEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game){
