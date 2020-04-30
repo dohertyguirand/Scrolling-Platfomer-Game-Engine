@@ -34,7 +34,7 @@ bmw54 - DataReader; The methods that involved writing to or reading from data on
     The Visualizer, which handles showing information to the user and communicating UI interaction to the rest of the program, interacts with the ProfileReaderExternal to get the user profiles, then communicates with GameDataReaderExternal to find out the possible game files that the user can select. The Visualizer then makes a ViewerGame to handle showing a game to the user by translating Entities into ViewEntities. The Game uses GameDataReaderExternal to translate a game file into Levels, and the Visualizer/ViewerGame asks the Game to update itself and react to user input. 
     The Game takes the Level's Entities (as EntityInternal) and gives them the information to do their behaviors based on variables and entity conditions. The Entities pass this information to behaviors, which pass it to their conditions so they know whether to execute, and the behavior passes information and pointers to itself and the GameInternal so that a behavior's Effects can execute.
     When the user tells the program to save a game, the GameRecorder uses the Game to create a file representing the current level and variable states.
-    
+  
 * what assumptions or decisions were made to simplify your project's design, especially those that affected adding required features
 
     * It was assumed that some physics things might be universal, such as friction.

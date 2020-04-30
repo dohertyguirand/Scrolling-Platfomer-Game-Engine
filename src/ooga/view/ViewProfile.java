@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * @author doherty guirand
+ * @author doherty guirand, chris warren
  */
 public class ViewProfile{
     public static final int ZERO_INDEX = 0;
@@ -200,8 +200,16 @@ public class ViewProfile{
         return gridPane;
     }
 
+    /**
+     * Gets the file choosen
+     * @return the file chosen
+     */
     public File getFileChosen(){return fileChosen;}
 
+    /**
+     * Sets the profile path in order to get the profile photos
+     * @param path path to the photo
+     */
     public void setProfilePhotoPath(String path){profilePhotoPath = path;}
 
 

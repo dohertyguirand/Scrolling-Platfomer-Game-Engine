@@ -33,12 +33,18 @@ public class Visualizer extends Application {
   private final GameDataReaderExternal myDataReader = new XMLGameDataReader();
   private final XMLGameRecorder gameRecorder = new XMLGameRecorder();
 
-
+  /**
+   * Launches the program
+   * @param args launch
+   */
   public static void main(String[] args) {
     launch(args);
   }
 
   @Override
+  /**
+   * Gets the stage to start the game
+   */
   public void start(Stage primaryStage) {
     stage = primaryStage;
     showProfileMenu();

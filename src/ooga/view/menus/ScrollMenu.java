@@ -20,7 +20,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * @author chris warren, caryshindell, doherty guirand
+ * @author Chris warren, caryshindell, doherty guirand
  */
 public abstract class ScrollMenu extends BorderPane {
 

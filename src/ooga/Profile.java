@@ -3,7 +3,7 @@ package ooga;
 import java.util.Map;
 
 /**
- * @author doherty guirand
+ * @author doherty guirand, Chris Warren
  *
  */
 public interface Profile {
