@@ -52,6 +52,13 @@ public abstract class OogaEntity implements Entity, EntityInternal {
   private final Map<String, Boolean> blockedMovements = new HashMap<>();
   protected final Map<String, String> myVariables = new HashMap<>();
 
+  /**
+   * Creates an OogaEntity with no behaviors, with the specified parameters.
+   * @param xPos The X position of the new OogaEntity.
+   * @param yPos The Y position of the new OogaEntity.
+   * @param width The width position of the new OogaEntity.
+   * @param height The height position of the new OogaEntity.
+   */
   public OogaEntity(double xPos, double yPos, double width, double height) {
     ResourceBundle constants = ResourceBundle.getBundle(CONSTANTS_FILEPATH);
     initConstant(constants,FRICTION_CONST_LABEL,DEFAULT_FRICTION);
@@ -67,6 +74,260 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getName() { return myName; }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public DoubleProperty xProperty() { return xPos; }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public DoubleProperty yProperty() { return yPos; }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public BooleanProperty activeInViewProperty() { return activeInView; }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setActiveInView(boolean activeInView) { this.activeInView.set(activeInView); }
+
+  public DoubleProperty widthProperty(){ return width; }
+
+  public DoubleProperty heightProperty(){ return height; }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public double getWidth() { return width.get(); }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public double getHeight() { return height.get(); }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setWidth(double width) { this.width.set(width); }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setHeight(double height) { this.height.set(height); }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setPosition(List<Double> newPosition) {
+    xPos.set(newPosition.get(0));
+    yPos.set(newPosition.get(1));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void updateSelf(double elapsedTime) {
+    applyFrictionHorizontal();
+    applyFrictionVertical();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void executeMovement(double elapsedTime) {
+    double[] directionalVelocities = new double[]{-myVelocity.get(1), myVelocity.get(1), -myVelocity.get(0), myVelocity.get(0)};
+    int[] velocityIndexes = new int[]{1, 1, 0, 0};
+    for(int i=0; i<directions.length; i++){
+      double[] newVelocity = new double[]{myVelocity.get(0), myVelocity.get(1)};
+      newVelocity[velocityIndexes[i]] = 0.0;
+      if(blockedMovements.get(directions[i]) && directionalVelocities[i] > 0) {
+        setVelocity(newVelocity[0], newVelocity[1]);
+      }
+    }
+    changePosition(myVelocity,elapsedTime);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors) {
+    myConditionalBehaviors = new ArrayList<>(conditionalBehaviors);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Double> getPosition() {
+    return List.of(xPos.get(), yPos.get());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Double> getVelocity() {
+    return new ArrayList<>(myVelocity);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isDestroyed() {
+    return isDestroyed;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void destroySelf() {
+    isDestroyed = true;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void changeVelocity(double xChange, double yChange) {
+    setVelocity(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setVelocity(double xVelocity, double yVelocity) {
+    myVelocity = List.of(xVelocity, yVelocity);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void reactToVariables(Map<String, String> variables) {
+    //TODO: make this work for entity variables?
+    for (Map.Entry<String, String> varNameEntry : variables.entrySet()) {
+      if (propertyVariableDependencies.containsKey(varNameEntry.getKey())) {
+        String propertyName = propertyVariableDependencies.get(varNameEntry.getKey());
+        updateProperty(propertyName, varNameEntry.getValue());
+      }
+    }
+    updateAutomaticEntityVariables();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getEntityID(){
+    return getVariable("ID");
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Map<String, String> getVariables() {
+    return new HashMap<>(myVariables);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies){
+    this.propertyVariableDependencies = propertyVariableDependencies;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void doConditionalBehaviors(double elapsedTime, Map<String, String> inputs, Map<String, String> variables,
+      Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
+    for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
+      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void blockInDirection(String direction, boolean isBlocked){
+    blockedMovements.put(direction, isBlocked);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void blockInAllDirections(boolean isBlocked){
+    blockedMovements.replaceAll((d, v) -> isBlocked);
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void addVariable(String name, String value){ myVariables.put(name, value); }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getVariable(String name){ return myVariables.get(name); }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setVariables(Map<String, String> variables) { myVariables.putAll(variables); }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void makeNonStationaryProperty(boolean stationary) {
+    if (stationary) nonStationaryProperty.set(0);
+    else nonStationaryProperty.set(1);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public DoubleProperty nonStationaryProperty(){
+    return nonStationaryProperty;
+  }
+
   private void initConstant(ResourceBundle constants, String label, Double fallback) {
     try {
       this.frictionAcceleration = Double.parseDouble(constants.getString(label));
@@ -75,47 +336,9 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     }
   }
 
-  @Override
-  public String getName() { return myName; }
-
-  @Override
-  public DoubleProperty xProperty() { return xPos; }
-
-  @Override
-  public DoubleProperty yProperty() { return yPos; }
-
-  @Override
-  public BooleanProperty activeInViewProperty() { return activeInView; }
-
-  @Override
-  public void setActiveInView(boolean activeInView) { this.activeInView.set(activeInView); }
-
-  public DoubleProperty widthProperty(){ return width; }
-
-  public DoubleProperty heightProperty(){ return height; }
-
-  @Override
-  public double getWidth() { return width.get(); }
-
-  @Override
-  public double getHeight() { return height.get(); }
-
-  @Override
-  public void setWidth(double width) { this.width.set(width); }
-
-  @Override
-  public void setHeight(double height) { this.height.set(height); }
-
-  @Override
-  public void setPosition(List<Double> newPosition) {
-    xPos.set(newPosition.get(0));
-    yPos.set(newPosition.get(1));
-  }
-
-  @Override
-  public void updateSelf(double elapsedTime) {
-    applyFrictionHorizontal();
-    applyFrictionVertical();
+  private void changePosition(List<Double> velocity, double elapsedTime) {
+    xPos.set(xPos.get() + (velocity.get(0) * elapsedTime));
+    yPos.set(yPos.get() + (velocity.get(1) * elapsedTime));
   }
 
   private void applyFrictionHorizontal() {
@@ -135,78 +358,6 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     else {
       changeVelocity(0, frictionAcceleration * -1 * Math.signum(myVelocity.get(1)));
     }
-  }
-
-
-  @Override
-  public void executeMovement(double elapsedTime) {
-    double[] directionalVelocities = new double[]{-myVelocity.get(1), myVelocity.get(1), -myVelocity.get(0), myVelocity.get(0)};
-    int[] velocityIndexes = new int[]{1, 1, 0, 0};
-    for(int i=0; i<directions.length; i++){
-      double[] newVelocity = new double[]{myVelocity.get(0), myVelocity.get(1)};
-      newVelocity[velocityIndexes[i]] = 0.0;
-      if(blockedMovements.get(directions[i]) && directionalVelocities[i] > 0) {
-        setVelocity(newVelocity[0], newVelocity[1]);
-      }
-    }
-    changePosition(myVelocity,elapsedTime);
-  }
-
-  /**
-   * assigns the conditional behaviors of this entity
-   *
-   * @param conditionalBehaviors list of conditional behaviors
-   */
-  @Override
-  public void setConditionalBehaviors(List<ConditionalBehavior> conditionalBehaviors) {
-    myConditionalBehaviors = new ArrayList<>(conditionalBehaviors);
-  }
-
-  @Override
-  public List<Double> getPosition() {
-    return List.of(xPos.get(), yPos.get());
-  }
-
-  @Override
-  public List<Double> getVelocity() {
-    return new ArrayList<>(myVelocity);
-  }
-
-  @Override
-  public boolean isDestroyed() {
-    return isDestroyed;
-  }
-
-  @Override
-  public void destroySelf() {
-    isDestroyed = true;
-  }
-
-  private void changePosition(List<Double> velocity, double elapsedTime) {
-    xPos.set(xPos.get() + (velocity.get(0) * elapsedTime));
-    yPos.set(yPos.get() + (velocity.get(1) * elapsedTime));
-  }
-
-  @Override
-  public void changeVelocity(double xChange, double yChange) {
-    setVelocity(myVelocity.get(0) + xChange, myVelocity.get(1) + yChange);
-  }
-
-  @Override
-  public void setVelocity(double xVelocity, double yVelocity) {
-    myVelocity = List.of(xVelocity, yVelocity);
-  }
-
-  @Override
-  public void reactToVariables(Map<String, String> variables) {
-    //TODO: make this work for entity variables?
-    for (Map.Entry<String, String> varNameEntry : variables.entrySet()) {
-      if (propertyVariableDependencies.containsKey(varNameEntry.getKey())) {
-        String propertyName = propertyVariableDependencies.get(varNameEntry.getKey());
-        updateProperty(propertyName, varNameEntry.getValue());
-      }
-    }
-    updateAutomaticEntityVariables();
   }
 
   private void updateProperty(String propertyName, String variableValue) {
@@ -229,91 +380,5 @@ public abstract class OogaEntity implements Entity, EntityInternal {
     myVariables.put("YPos", String.valueOf(this.yPos.get()));
     myVariables.put("Width", String.valueOf(this.width.get()));
     myVariables.put("Height", String.valueOf(this.height.get()));
-  }
-
-  @Override
-  public String getEntityID(){
-    return getVariable("ID");
-  }
-
-  @Override
-  public Map<String, String> getVariables() {
-    return new HashMap<>(myVariables);
-  }
-
-  @Override
-  public void setPropertyVariableDependencies(Map<String, String> propertyVariableDependencies){
-    this.propertyVariableDependencies = propertyVariableDependencies;
-  }
-
-  /**
-   * Execute the do method on each of this entity's conditional behaviors, which will check the conditions and execute the
-   * assigned behavior if true
-   */
-  @Override
-  public void doConditionalBehaviors(double elapsedTime, Map<String, String> inputs, Map<String, String> variables,
-                                     Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
-    for (ConditionalBehavior conditionalBehavior : myConditionalBehaviors) {
-      conditionalBehavior.doConditionalUpdate(elapsedTime, this, variables, inputs, collisionInfo, gameInternal);
-    }
-  }
-
-  /**
-   * change the value in this entity's blockedMovements map to the specified value
-   * @param direction up, down, left, or right
-   * @param isBlocked true if the entity is blocked in the direction, otherwise false
-   */
-  @Override
-  public void blockInDirection(String direction, boolean isBlocked){
-    blockedMovements.put(direction, isBlocked);
-  }
-
-  /**
-   * change every value in this entity's blockedMovements map to the specified value
-   * @param isBlocked true if the entity is blocked in the direction, otherwise false
-   */
-  @Override
-  public void blockInAllDirections(boolean isBlocked){
-    blockedMovements.replaceAll((d, v) -> isBlocked);
-  }
-
-  /**
-   * Adds (or sets) a variable to this entity's variable map
-   * @param name name of the variable
-   * @param value value of the variable
-   */
-  @Override
-  public void addVariable(String name, String value){ myVariables.put(name, value); }
-
-  /**
-   * returns the value of entity variable mapped to name
-   * @param name key
-   * @return value
-   */
-  @Override
-  public String getVariable(String name){ return myVariables.get(name); }
-
-  /**
-   * add all variables to the specified map to this entity's variable map
-   *
-   * @param variables map of variable names to values
-   */
-  @Override
-  public void setVariables(Map<String, String> variables) { myVariables.putAll(variables); }
-
-  /**
-   * creates the double property nonStationaryProperty for the entity. 1 if false, 0 if true.
-   *
-   * @param stationary whether or not the entity is stationary with respect to camera moves
-   */
-  @Override
-  public void makeNonStationaryProperty(boolean stationary) {
-    if (stationary) nonStationaryProperty.set(0);
-    else nonStationaryProperty.set(1);
-  }
-
-  @Override
-  public DoubleProperty nonStationaryProperty(){
-    return nonStationaryProperty;
   }
 }
