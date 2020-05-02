@@ -514,7 +514,7 @@
 <!--    Blocker entity-->
     <ImageEntity>
       <Name>Blocker</Name>
-      <Width>200</Width>
+      <Width>400</Width>
       <Height>100</Height>
       <Image>blocker.png</Image>
       <VariableNames>TerrainID</VariableNames>
@@ -585,7 +585,7 @@
           </InputCondition>
           <IndependentAction>
             <Effect>Resize 400 600</Effect>
-            <Effect>GotoLevel 1 300</Effect>
+            <Effect>GotoLevel 1 3000</Effect>
           </IndependentAction>
         </Behavior>
       </Behaviors>
