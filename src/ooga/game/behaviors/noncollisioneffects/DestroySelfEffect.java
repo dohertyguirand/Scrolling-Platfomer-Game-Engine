@@ -14,7 +14,9 @@ import ooga.game.behaviors.TimeDelayedEffect;
 @SuppressWarnings("unused")
 public class DestroySelfEffect extends TimeDelayedEffect {
 
-
+    /**
+     * @param args Has no arguments.
+     */
     public DestroySelfEffect(List<String> args) {
         super(args);
     }
@@ -28,12 +30,7 @@ public class DestroySelfEffect extends TimeDelayedEffect {
     }
 
     /**
-     * Performs the effect
-     * @param subject     The entity that owns this. This is the entity that should be modified.
-     * @param otherEntity
-     * @param elapsedTime
-     * @param variables
-     * @param game
+     * {@inheritDoc}
      */
     @Override
     protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

@@ -15,6 +15,7 @@ import ooga.game.behaviors.TimeDelayedEffect;
 /**
  * @author sam thompson, caryshindell
  * Changes the velocity of the subject by a specified amount.
+ * Detects what arithmetic operator is used to make the change.
  */
 public class ChangeVelocityEffect extends TimeDelayedEffect {
 
@@ -25,6 +26,14 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
   private String myMaxSpeedData;
   private static final double MAX_SPEED_DEFAULT = 1000.0;
 
+  /**
+   * @param args  1. The X value by which to modify the velocity.
+   *              2. The Y value by which to modify the velocity.
+   *              3. The operator (+,-,*,/) to use on the current position to apply the change.
+   *              4. The maximum speed this effect can accelerate the Entity to in the direction
+   *              specified.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
+   */
   public ChangeVelocityEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
@@ -42,12 +51,7 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Performs the effect
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity
-   * @param elapsedTime
-   * @param variables
-   * @param game
+   * {@inheritDoc}
    */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

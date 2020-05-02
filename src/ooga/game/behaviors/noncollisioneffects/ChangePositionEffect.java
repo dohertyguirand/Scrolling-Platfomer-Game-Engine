@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * @author sam thompson, caryshindell
- * Changes the subject's position by a specified amount.
+ * Changes the subject's position by a specified amount in the X and Y direction.
  * Detects what arithmetic operator is used to make the change.
  */
 @SuppressWarnings("unused")
@@ -22,6 +22,12 @@ public class ChangePositionEffect extends TimeDelayedEffect {
     private String yPosChangeData;
     private String operatorData;
 
+    /**
+     * @param args  1. The X value of the change in position.
+     *              2. The Y value of the change in position.
+     *              3. The operator (+,-,*,/) to use on the current position to apply the change.
+     * @throws IndexOutOfBoundsException If there are arguments missing.
+     */
     public ChangePositionEffect(List<String> args) throws IndexOutOfBoundsException {
         super(args);
     }
@@ -38,12 +44,7 @@ public class ChangePositionEffect extends TimeDelayedEffect {
     }
 
     /**
-     * Performs the effect
-     * @param subject     The entity that owns this. This is the entity that should be modified.
-     * @param otherEntity
-     * @param elapsedTime
-     * @param variables
-     * @param game
+     * {@inheritDoc}
      */
     @Override
     protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

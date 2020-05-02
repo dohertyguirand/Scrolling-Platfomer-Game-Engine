@@ -13,6 +13,9 @@ import ooga.game.behaviors.TimeDelayedEffect;
 @SuppressWarnings("unused")
 public class RestartLevelEffect extends TimeDelayedEffect {
 
+  /**
+   * @param args Has no arguments.
+   */
   public RestartLevelEffect(List<String> args) {
     super(args);
   }
@@ -25,6 +28,9 @@ public class RestartLevelEffect extends TimeDelayedEffect {
     //has no arguments.
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime,
       Map<String, String> variables, GameInternal game) {

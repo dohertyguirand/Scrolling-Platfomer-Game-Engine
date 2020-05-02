@@ -24,6 +24,10 @@ public class SetImageEffect extends TimeDelayedEffect {
   public static final String GAMES_LIBRARY_IMAGE_PATH = "file:data/games-library/";
   String newImageFileName;
 
+  /**
+   * @param args  1. The name (variable or filepath) of the image to change to.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
+   */
   public SetImageEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
@@ -37,12 +41,7 @@ public class SetImageEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Checks if the specified data value maps to an entity variable. Changes image to that variable, otherwise to preset value.
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity entity we are "interacting with" in this effect
-   * @param elapsedTime time between steps in ms
-   * @param variables   game variables
-   * @param game        game instance
+   * {@inheritDoc}
    */
   @Override
   public void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

@@ -22,6 +22,11 @@ public class MoveTowardsEntityEffect extends TimeDelayedEffect {
   String myAcceleration;
   String myMaxSpeed;
 
+  /**
+   * @param args  1. The acceleration to apply toward the target entity.
+   *              2. The maximum speed toward the entity that this Effect can cause.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
+   */
   public MoveTowardsEntityEffect(List<String> args) {
     super(args);
   }
@@ -35,6 +40,9 @@ public class MoveTowardsEntityEffect extends TimeDelayedEffect {
     myMaxSpeed = args.get(1);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime,
       Map<String, String> variables, GameInternal game) {

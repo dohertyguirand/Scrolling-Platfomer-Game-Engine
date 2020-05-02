@@ -17,7 +17,9 @@ public class SetVelocityEffect extends TimeDelayedEffect {
   private String velocityYData;
 
   /**
-   * @param args The String arguments of this effect.
+   * @param args  1. The X component of the velocity to apply to this Entity.
+   *              2. The Y component of the velocity to apply to this Entity.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
    */
   public SetVelocityEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
@@ -33,8 +35,9 @@ public class SetVelocityEffect extends TimeDelayedEffect {
     velocityYData = args.get(1);
   }
 
-
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     subject.setVelocity(parseData(velocityXData, subject, variables, 0.0),
