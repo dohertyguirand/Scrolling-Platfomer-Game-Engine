@@ -3,14 +3,14 @@
     <Thumbnail>Downwell_logo.png</Thumbnail>
     <Description>Explore the abyss</Description>
     <Entities>
-        <!-- Welltaro behavior  -->
+        <!-- Welltaro -->
         <ImageEntity>
             <Name>Welltaro</Name>
             <Width>45</Width>
             <Height>45</Height>
             <Image>dw_main_character_idle_fall_right.png</Image>
-            <VariableNames>FacingRight FacingLeft CameraBorderYBottom CameraBorderYTop</VariableNames>
-            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_idle_fall_left.png 400 100</VariableValues>
+            <VariableNames>FacingRight FacingLeft Firing</VariableNames>
+            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_idle_fall_left.png downwell/dw_main_character_firing.png</VariableValues>
             <Behaviors>
                 <!-- A Key Input -->
                 <Behavior>
@@ -41,13 +41,14 @@
                     <InputCondition>
                         <Key>UpKey2</Key>
                         <InputRequirement>Pressed</InputRequirement>
-                        <IndependentAction>
-                            <Effect>SetImage FacingRight</Effect>
-                            <Effect>SetVelocity 0 0</Effect>
-                        </IndependentAction>
                     </InputCondition>
+                    <IndependentAction>
+                        <Effect>CreateEntityRelative BootBullet 11 25</Effect>
+                        <Effect>CreateEntityRelative BootMuzzleFlash -3 25</Effect>
+                        <Effect>SetImage Firing</Effect>
+                        <Effect>SetVelocity 0 -0.01</Effect>
+                    </IndependentAction>
                 </Behavior>
-
                 <!--Gravity Behavior-->
                 <Behavior>
                     <IndependentAction>
@@ -65,6 +66,28 @@
                         <Args>universalTerrain Down</Args>
                         <Effect>TerrainCollisionDown</Effect>
                         <Effect>SetVariable Jumping False</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <!--  Run into a brick Left to stop too-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Left</Args>
+                        <Effect>TerrainCollisionLeft</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <!--  Run into a brick Right to stop too-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Right</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Right</Args>
+                        <Effect>TerrainCollisionRight</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
                 <!-- Run into left side of screen and die-->
@@ -116,14 +139,54 @@
                         <Effect>GoToLevel 1</Effect>
                         <Effect>SetVariable Lives 1.0</Effect>
                         <Effect>SetVariable Score 0.0</Effect>
-                        <Effect>SetVariable CameraShiftValue 0.0</Effect>
-                        <Effect>SetVariable CameraBorderYPos 200</Effect>
-                        <Effect>SetVariable FloorValue 800</Effect>
+                        <Effect>SetVariable CameraBorderYBottom 300</Effect>
+                        <Effect>SetVariable CameraBorderYTop 100</Effect>
                     </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
-        <!-- Background Behavior  -->
+        <!-- Boot muzzle flash -->
+        <ImageEntity>
+            <Name>BootMuzzleFlash</Name>
+            <Width>48</Width>
+            <Height>48</Height>
+            <Image>dw_boot_muzzle_flash.png</Image>
+            <!-- immediately destroy self-->
+            <Behavior>
+                <IndependentAction>
+                    <Effect>RemoveSelf</Effect>
+                </IndependentAction>
+            </Behavior>
+        </ImageEntity>
+        <!-- Boot projectiles -->
+        <ImageEntity>
+            <Name>BootBullet</Name>
+            <Width>24</Width>
+            <Height>54</Height>
+            <Image>dw_boot_bullet.png</Image>
+            <VariableNames>MyYOffset</VariableNames>
+            <VariableValues>0</VariableValues>
+            <!-- move downward when created-->
+            <Behavior>
+                <IndependentAction>
+                    <Effect>SetVelocity 0 1</Effect>
+                    <Effect>SetVariable MyYOffset YPos</Effect>
+                    <Effect>ChangeVariable MyYOffset - CameraBorderYBottom</Effect>
+                </IndependentAction>
+            </Behavior>
+            <!-- get destroyed when out of view-->
+            <Behavior>
+                <EntityVariableCondition>
+                    <VariableName>MyYOffset</VariableName>
+                    <Comparison>GreaterThan</Comparison>
+                    <RequiredValue>500</RequiredValue>
+                </EntityVariableCondition>
+                <IndependentAction>
+                    <Effect>RemoveSelf</Effect>
+                </IndependentAction>
+            </Behavior>
+        </ImageEntity>
+        <!-- Background -->
         <ImageEntity>
             <Name>Background</Name>
             <Width>1000</Width>
@@ -131,33 +194,30 @@
             <Image>downwellBackground.png</Image>
             <Stationary>true</Stationary>
         </ImageEntity>
-        <!-- Screen movement Behavior  -->
-        <ImageEntity>
-            <Name>DecreaseHeight</Name>
-            <Width>2000</Width>
-            <Height>200</Height>
-            <Image>dw_platform_tile_side_up.png</Image>
-            <Stationary>true</Stationary>
-            <Behavior>
-                <RequiredCollisionCondition>
-                    <Entity1>Welltaro</Entity1>
-                    <Entity2>DecreaseHeight</Entity2>
-                    <Direction>Down</Direction>
-                </RequiredCollisionCondition>
-                <IndependentAction>
-                    <Effect>SetVariable CameraShiftValue -50</Effect>    <!--set CameraShiftValue to 50-->
-                    <Effect>ShiftCamera 0 CameraShiftValue </Effect>    <!--shift camera 0 in the x direction and CameraShiftValue down in the y-->
-                    <Effect>ChangePosition 0 50 + </Effect>             <!--move invisible ceiling down by 50    NOTE: I think this is redundant-->
-                    <Effect>ChangeVariable FloorValue + 50</Effect>    <!--move floor down by 50-->
-                </IndependentAction>
-            </Behavior>
-        </ImageEntity>
-        <!-- Platform Tile Behavior  -->
+        <!-- Platform Tile -->
         <ImageEntity>
             <Name>PlatformTile</Name>
             <Width>57</Width>
             <Height>57</Height>
             <Image>dw_platform_tile_side_up.png</Image>
+            <VariableNames>TerrainID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
+        </ImageEntity>
+        <!-- Cave Wall Left Tiles -->
+        <ImageEntity>
+            <Name>CaveTileLeft</Name>
+            <Width>60</Width>
+            <Height>60</Height>
+            <Image>dw_cave_wall_left.png</Image>
+            <VariableNames>TerrainID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
+        </ImageEntity>
+        <!-- Cave Wall Right Tiles -->
+        <ImageEntity>
+            <Name>CaveTileRight</Name>
+            <Width>60</Width>
+            <Height>60</Height>
+            <Image>dw_cave_wall_right.png</Image>
             <VariableNames>TerrainID</VariableNames>
             <VariableValues>universalTerrain</VariableValues>
         </ImageEntity>
@@ -177,6 +237,16 @@
         <Variable>
             <Name>CameraDiff</Name>
             <StartValue>0</StartValue>
+        </Variable>
+        <!-- Camera Top Border Variable    -->
+        <Variable>
+            <Name>CameraBorderYTop</Name>
+            <StartValue>100</StartValue>
+        </Variable>
+        <!-- Camera Top Border Variable    -->
+        <Variable>
+            <Name>CameraBorderYBottom</Name>
+            <StartValue>300</StartValue>
         </Variable>
     </Variables>
     <Levels>
@@ -220,6 +290,19 @@
                     <YPos>200</YPos>
                     <Rows>40</Rows>
                     <YGap>200</YGap>
+                </ImageEntityInstance>
+                <!--cave walls-->
+                <ImageEntityInstance>
+                    <Name>CaveTileLeft</Name>
+                    <XPos>100</XPos>
+                    <YPos>100</YPos>
+                    <Rows>20</Rows>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>CaveTileRight</Name>
+                    <XPos>840</XPos>
+                    <YPos>100</YPos>
+                    <Rows>20</Rows>
                 </ImageEntityInstance>
             </ImageEntityInstances>
         </Level>
