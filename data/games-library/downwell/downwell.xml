@@ -12,12 +12,14 @@
             <VariableNames>IdleFallSprite JumpingSprite WalkingSprite FiringSprite StandingSprite Facing Falling Jumping SidewaysMovement Firing PreviousY YVel</VariableNames>
             <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_jumping_right.png downwell/dw_main_character_walking_right.gif downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.gif Right True False False False 100 0</VariableValues>
             <Behaviors>
-                <!-- Update YVel and PreviousY -->
+                <!-- Update WelltaroXPos, WelltaroYPos, YVel and PreviousY -->
                 <Behavior>
                     <IndependentAction>
                         <Effect>SetVariable YVel YPos</Effect>
                         <Effect>ChangeVariable YVel - PreviousY</Effect>
                         <Effect>SetVariable PreviousY YPos</Effect>
+                        <Effect>SetVariable WelltaroXPos XPos</Effect>
+                        <Effect>SetVariable WelltaroYPos YPos</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- if YVel is positive, set falling to true and jumping to false -->
@@ -230,7 +232,7 @@
                         <Effect>SetImage WalkingSprite</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--  not moving sideways, falling, or jumping means using standing sprite-->
+                <!--  not moving sideways, falling, or jumping means using standing sprite and not firing-->
                 <Behavior>
                     <EntityVariableCondition>
                         <VariableName>SidewaysMovement</VariableName>
@@ -246,6 +248,7 @@
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>SetImage StandingSprite</Effect>
+                        <Effect>SetVariable Firing False</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!--  Run into a brick downward to stop falling.-->
@@ -384,12 +387,41 @@
                 <RequiredCollisionCondition>
                     <Entity1>SELF</Entity1>
                     <Entity2>universalTerrain</Entity2>
-                    <Direction>Down</Direction>
+                    <Direction>ANY</Direction>
                 </RequiredCollisionCondition>
                 <CollisionDeterminedAction>
                     <Args>universalTerrain Down</Args>
                     <Effect>RemoveSelf</Effect>
                 </CollisionDeterminedAction>
+            </Behavior>
+        </ImageEntity>
+        <!-- Red Trail -->
+        <ImageEntity>
+            <Name>RedTrail</Name>
+            <Width>45</Width>
+            <Height>45</Height>
+            <Image>dw_red_trail.png</Image>
+            <!-- when created, the frame position is given a number -->
+            <!-- the frame position corresponds to the current position in the cycle (resetting position every 5 frames) -->
+            <VariableNames>FramePosition</VariableNames>
+            <VariableValues>0</VariableValues>
+            <!-- add 1 to FramePosition -->
+            <Behavior>
+                <IndependentAction>
+                    <Effect>ChangeVariable FramePosition + 1</Effect>
+                </IndependentAction>
+            </Behavior>
+            <!-- when the FramePosition reaches 5, reset it to 0 and move to where welltaro is -->
+            <Behavior>
+                <EntityVariableCondition>
+                    <VariableName>FramePosition</VariableName>
+                    <Comparison>GreaterThanEquals</Comparison>
+                    <RequiredValue>10</RequiredValue>
+                </EntityVariableCondition>
+                <IndependentAction>
+                    <Effect>SetVariable FramePosition 0</Effect>
+                    <Effect>SetPosition WelltaroXPos WelltaroYPos</Effect>
+                </IndependentAction>
             </Behavior>
         </ImageEntity>
         <!-- Background -->
@@ -439,6 +471,16 @@
             <Name>Lives</Name>
             <StartValue>1</StartValue>
         </Variable>
+        <!-- Welltaro x poition  -->
+        <Variable>
+            <Name>WelltaroXPos</Name>
+            <StartValue>500</StartValue>
+        </Variable>
+        <!-- Welltaro y poition  -->
+        <Variable>
+            <Name>WelltaroYPos</Name>
+            <StartValue>100</StartValue>
+        </Variable>
         <!-- Camera Difference Variable    -->
         <Variable>
             <Name>CameraDiff</Name>
@@ -461,10 +503,11 @@
             <NextLevel>1</NextLevel>
             <TextEntityInstances>
                 <TextEntityInstance>
-                    <Text>Score: %.0f</Text>
+<!--                    <Text>Score: %.0f</Text>-->
+                    <Text>Score: %f</Text>
                     <Font>Times New Roman</Font>
                     <XPos>700</XPos>
-                    <YPos>0</YPos>
+                    <YPos>-50</YPos>
                     <Width>150</Width>
                     <Height>50</Height>
                     <Stationary>true</Stationary>
@@ -481,6 +524,42 @@
                     <XPos>0</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
+                <!--Trail pieces-->
+                <ImageEntityInstance>
+                    <Name>RedTrail</Name>
+                    <XPos>100</XPos>
+                    <YPos>200</YPos>
+                    <VariableNames>FramePosition</VariableNames>
+                    <VariableValues>0</VariableValues>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>RedTrail</Name>
+                    <XPos>100</XPos>
+                    <YPos>200</YPos>
+                    <VariableNames>FramePosition</VariableNames>
+                    <VariableValues>2</VariableValues>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>RedTrail</Name>
+                    <XPos>100</XPos>
+                    <YPos>200</YPos>
+                    <VariableNames>FramePosition</VariableNames>
+                    <VariableValues>4</VariableValues>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>RedTrail</Name>
+                    <XPos>100</XPos>
+                    <YPos>200</YPos>
+                    <VariableNames>FramePosition</VariableNames>
+                    <VariableValues>6</VariableValues>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>RedTrail</Name>
+                    <XPos>100</XPos>
+                    <YPos>200</YPos>
+                    <VariableNames>FramePosition</VariableNames>
+                    <VariableValues>8</VariableValues>
+                </ImageEntityInstance>
                 <!--welltaro-->
                 <ImageEntityInstance>
                     <Name>Welltaro</Name>
@@ -492,7 +571,7 @@
                 <!--blocks-->
                 <ImageEntityInstance>
                     <Name>PlatformTile</Name>
-                    <XPos>414</XPos>
+                    <XPos>150</XPos>
                     <YPos>200</YPos>
                     <Rows>15</Rows>
                     <YGap>200</YGap>
