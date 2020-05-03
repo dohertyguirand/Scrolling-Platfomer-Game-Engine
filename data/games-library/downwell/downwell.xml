@@ -9,8 +9,8 @@
             <Width>45</Width>
             <Height>45</Height>
             <Image>dw_main_character_idle_fall_right.png</Image>
-            <VariableNames>FacingRight FacingLeft Firing</VariableNames>
-            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_idle_fall_left.png downwell/dw_main_character_firing.png</VariableValues>
+            <VariableNames>FacingRightSprite FacingLeftSprite FiringSprite</VariableNames>
+            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_idle_fall_left.png downwell/dw_main_character_firing_right.png</VariableValues>
             <Behaviors>
                 <!-- A Key Input -->
                 <Behavior>
@@ -21,7 +21,7 @@
                     </InputCondition>
                     <IndependentAction>
                         <Effect>VelocityInput -.1600 0 + .3200</Effect>
-                        <Effect>SetImage FacingLeft</Effect>
+                        <Effect>SetImage FacingLeftSprite</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- D Key Input -->
@@ -33,19 +33,19 @@
                     </InputCondition>
                     <IndependentAction>
                         <Effect>VelocityInput .1600 0 + .3200</Effect>
-                        <Effect>SetImage FacingRight</Effect>
+                        <Effect>SetImage FacingRightSprite</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!-- W Key Input -->
+                <!-- Up Key Input -->
                 <Behavior>
                     <InputCondition>
-                        <Key>UpKey2</Key>
+                        <Key>UpKey</Key>
                         <InputRequirement>Pressed</InputRequirement>
                     </InputCondition>
                     <IndependentAction>
                         <Effect>CreateEntityRelative BootBullet 11 25</Effect>
                         <Effect>CreateEntityRelative BootMuzzleFlash -3 25</Effect>
-                        <Effect>SetImage Firing</Effect>
+                        <Effect>SetImage FiringSprite</Effect>
                         <Effect>SetVelocity 0 -0.01</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -169,7 +169,7 @@
             <!-- move downward when created-->
             <Behavior>
                 <IndependentAction>
-                    <Effect>SetVelocity 0 1</Effect>
+                    <Effect>SetVelocity 0 1.5</Effect>
                     <Effect>SetVariable MyYOffset YPos</Effect>
                     <Effect>ChangeVariable MyYOffset - CameraBorderYBottom</Effect>
                 </IndependentAction>
