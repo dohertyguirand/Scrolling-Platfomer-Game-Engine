@@ -384,7 +384,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
       String name = getFirstElementByTag(variableConditionElement, "VariableNameTag2", myDataResources.getString("MissingVariableNameException"));
       String requiredValue = getFirstElementByTag(variableConditionElement, "RequiredValueTag", myDataResources.getString("MissingVariableValueException"));
       VariableComparator comparator = getComparator(variableConditionElement);
-      variableConditions.add(new OogaVariableCondition(name,comparator,requiredValue));
+      variableConditions.add(new OogaEntityVarCondition(name,comparator,requiredValue));
     }
     return variableConditions;
   }
@@ -439,7 +439,7 @@ public class XMLGameDataReader implements GameDataReaderInternal, XMLDataReader 
     String name = getFirstElementByTag(variableConditionElement, "VariableNameTag2", myDataResources.getString("MissingVariableNameException"));
     String requiredValue = getFirstElementByTag(variableConditionElement, "RequiredValueTag", myDataResources.getString("MissingVariableValueException"));
     VariableComparator comparator = getComparator(variableConditionElement);
-    return new OogaVariableCondition(name,comparator,requiredValue);
+    return new OogaEntityVarCondition(name,comparator,requiredValue);
   }
 
   private VariableComparator getComparator(Element variableConditionElement)

@@ -7,7 +7,8 @@ import ooga.game.behaviors.comparators.VariableComparator;
 
 /**
  * @author sam thompson
- * Carries out the functionality of VariableCondition for Ooga.
+ * Checks whether a Comparator evaluation between the value of the subject Entity's variable
+ * and a given value is true.
  * Since Ooga variables can have String OR Double values, and the variable given could be
  * a Game or an Entity variable, it has a built-in priority order for finding out what to check.
  * Dependencies:  Relies on EntityInternal to check whether the Entity that owns this condition
@@ -16,7 +17,7 @@ import ooga.game.behaviors.comparators.VariableComparator;
  * Example: A Behavior that starts the game over might require the Condition to be true
  * that the Game's Lives variable is less than 1.
  */
-public class OogaVariableCondition implements Condition {
+public class OogaEntityVarCondition implements Condition {
 
   private final VariableComparator myComparator;
   private final String myCompareTo;
@@ -29,33 +30,20 @@ public class OogaVariableCondition implements Condition {
    *                   the target value.
    * @param value The target value to compare the variable to. Can be a variable name.
    */
-  public OogaVariableCondition(String varName, VariableComparator comparator, String value) {
+  public OogaEntityVarCondition(String varName, VariableComparator comparator, String value) {
     myComparator = comparator;
     myCompareTo = value;
     myVariableName = varName;
   }
 
   /**
-   * @return A String representation of this Condition.
-   * Example: "Compares variable Lives to 0.0"
-   */
-  @Override
-  public String toString() {
-    return "Compares variable " + myVariableName + " to value " + myCompareTo;
-  }
-
-  /**
    * Dereferences the given variable name using a Map that combines Game and subject Entity
    * variables.
-   * Then it dereferences the target value in the following priority order:
-   * 1. It checks the Game variables for a variable name matching myCompareTo.
-   * 2. It checks the Entity variables of the subject for a match to myCompareTo.
-   * 3. It uses the immediate value of myCompare to as given.
-   * @param behaviorEntity The EntityInternal that owns this behavior.
-   * @param gameVariables The Game's Map from variable names to String values. Doesn't have to
-   *                      be mutable.
-   * @param subjectVariables The Map of variables of the EntityInternal that owns this behavior.
-   * @return True if the condition is satisfied based on the variable values.
+   * Then it dereferences the value to 'compare to' in the following priority order:
+   * 1. It checks for a Game variable with that name.
+   * 2. It checks the Entity variables of Subject for a variable with that name.
+   * 3. It uses the immediate value of myCompareTo to as given.
+   * {@inheritDoc}
    */
   @Override
   public boolean isSatisfied(EntityInternal subject, GameInternal game, Map<String, String> inputs,
@@ -65,6 +53,12 @@ public class OogaVariableCondition implements Condition {
     if (!subjectVariables.containsKey(myVariableName)) {
       return false;
     }
+    return (myComparator.compareVars(subjectVariables.get(myVariableName),findCompareToValue(subject, gameVariables)));
+  }
+
+  //Carries out the order for dereferencing the value to compare to, as described in isSatisfied
+  //documentation.
+  private String findCompareToValue(EntityInternal subject, Map<String, String> gameVariables) {
     String compareToValue = myCompareTo;
     if (gameVariables.containsKey(myCompareTo)) {
       compareToValue = gameVariables.get(myCompareTo);
@@ -72,6 +66,15 @@ public class OogaVariableCondition implements Condition {
     else if (subject.getVariable(myCompareTo) != null) {
       compareToValue = subject.getVariable(myCompareTo);
     }
-    return (myComparator.compareVars(subjectVariables.get(myVariableName),compareToValue));
+    return compareToValue;
+  }
+
+  /**
+   * @return A String representation of this Condition.
+   * Example: "Lives == 0.0"
+   */
+  @Override
+  public String toString() {
+    return myVariableName + " " + myComparator.toString() + " " + myCompareTo;
   }
 }
