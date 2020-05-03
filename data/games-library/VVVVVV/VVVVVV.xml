@@ -3,13 +3,14 @@
     <Thumbnail>VVVVVV-thumbnail.jpg</Thumbnail>
     <Description>A 2010 puzzle-platform video game created by Terry Cavanagh.</Description>
     <Entities>
+        <!-- Avatar Definition-->
         <ImageEntity>
             <Name>Avatar</Name>
             <Width>50</Width>
             <Height>100</Height>
-            <Image>avatarUp.jpg</Image>
-            <VariableNames>Up Down GravityDown RespawnXLocation RespawnYLocation</VariableNames>
-            <VariableValues>VVVVVV/avatarUp.jpg VVVVVV/avatarDown.jpg -1 100 500</VariableValues>
+            <Image>spriteUp.png</Image>
+            <VariableNames>Up Down GravityDown</VariableNames>
+            <VariableValues>VVVVVV/spriteUp.png VVVVVV/spriteDown.png -1</VariableValues>
             <Behaviors>
                 <Behavior>
                     <EntityVariableCondition>
@@ -124,7 +125,7 @@
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>Avatar</Entity1>
-                        <Entity2>Spikes</Entity2>
+                        <Entity2>enemy</Entity2>
                         <Direction>ANY</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
@@ -133,54 +134,104 @@
                 </Behavior>
             </Behaviors>
         </ImageEntity>
+        <!--  Floor Definition-->
         <ImageEntity>
             <Name>Floor</Name>
             <Width>100</Width>
             <Height>50</Height>
-            <Image>brick.jpg</Image>
+            <Image>tile.png</Image>
             <VariableNames>TerrainID</VariableNames>
-            <VariableValues>universalTerrain</VariableValues>
+            <VariableValues>universalTerrain</VariableValues>c
         </ImageEntity>
+        <!-- Spikes Definition-->
         <ImageEntity>
             <Name>Spikes</Name>
-            <Width>100</Width>
-            <Height>50</Height>
-            <Image>spikes.jpg</Image>
+            <Width>12</Width>
+            <Height>12</Height>
+            <Image>spike.png</Image>
+            <VariableNames>TerrainID</VariableNames>
+            <VariableValues>enemy</VariableValues>
         </ImageEntity>
+        <!-- Background Definition-->
         <ImageEntity>
             <Name>Background</Name>
             <Width>1000</Width>
             <Height>800</Height>
             <Image>background.jpg</Image>
         </ImageEntity>
+        <!-- CheckPoint Definition-->
         <ImageEntity>
             <Name>CheckPoint</Name>
             <Width>50</Width>
             <Height>100</Height>
-            <Image>checkpoint.jpg</Image>
-            <VariableNames>CheckPointXLocation CheckPointYLocation</VariableNames>
-            <VariableValues>400 500</VariableValues>
+            <Image>checkpoint.png</Image>
             <Behaviors>
                 <Behavior>
                     <RequiredCollisionCondition>
-                        <Entity1>Avatar</Entity1>
-                        <Entity2>CheckPoint</Entity2>
+                        <Entity2>Avatar</Entity2>
                         <Direction>ANY</Direction>
-                        <IndependantAction>
-                            <Effect>SetVariable RespawnYLocation CheckPointYLocation</Effect>
-                            <Effect>SetVariable RespawnXLocation CheckPointXLocation</Effect>
-                        </IndependantAction>
                     </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable RespawnXLocation XLocation</Effect>
+                        <Effect>SetVariable RespawnYLocation YLocation</Effect>
+                    </IndependentAction>
                 </Behavior>
             </Behaviors>
         </ImageEntity>
+        <!-- Blob Definition-->
+        <ImageEntity>
+            <Name>Blob</Name>
+            <Width>100</Width>
+            <Height>100</Height>
+            <Image>blob.png</Image>
+            <VariableNames>TerrainID yVel</VariableNames>
+            <VariableValues>enemy 0.1300</VariableValues>
+            <!--  Move Up and Down-->
+            <Behavior>
+                <IndependentAction>
+                    <Effect>VelocityInput 0.0 yVel + 0.2600</Effect>
+                </IndependentAction>
+            </Behavior>
+            <!--    Run into floor down turn around-->
+            <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity2>universalTerrain</Entity2>
+                    <Direction>Up</Direction>
+                </RequiredCollisionCondition>
+                <CollisionDeterminedAction>
+                    <Args>universalTerrain Up</Args>
+                    <Effect>TerrainCollisionUp</Effect>
+                    <Effect>SetVariable yVel 0.1300</Effect>
+                </CollisionDeterminedAction>
+            </Behavior>
+            <!--    Run into floor up turn around-->
+            <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity2>universalTerrain</Entity2>
+                    <Direction>Down</Direction>
+                </RequiredCollisionCondition>
+                <CollisionDeterminedAction>
+                    <Args>universalTerrain Down</Args>
+                    <Effect>TerrainCollisionDown</Effect>
+                    <Effect>SetVariable yVel -0.1300</Effect>
+                </CollisionDeterminedAction>
+            </Behavior>
+        </ImageEntity>
     </Entities>
-    <Variables></Variables>
+    <Variables>
+        <Variable>
+            <Name>RespawnXLocation</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <Variable>
+            <Name>RespawnXLocation</Name>
+            <StartValue>500</StartValue>
+        </Variable>
+    </Variables>
     <Levels>
         <Level>
             <ID>1</ID>
             <NextLevel>1</NextLevel>
-            <EndCondition>DestroyAll Koopa</EndCondition>
             <ImageEntityInstances>
                 <ImageEntityInstance>
                     <Name>Background</Name>
@@ -189,7 +240,7 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>CheckPoint</Name>
-                    <XPos>400</XPos>
+                    <XPos>100</XPos>
                     <YPos>500</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
@@ -231,40 +282,28 @@
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Floor</Name>
-                    <XPos>300</XPos>
+                    <XPos>200</XPos>
                     <YPos>300</YPos>
                     <Columns>1</Columns>
                     <Rows>10</Rows>
                 </ImageEntityInstance>
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>Floor</Name>-->
-<!--                    <XPos>800</XPos>-->
-<!--                    <YPos>600</YPos>-->
-<!--                    <Columns>2</Columns>-->
-<!--                    <Gap>0.0</Gap>-->
-<!--                </ImageEntityInstance>-->
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>Floor</Name>-->
-<!--                    <XPos>0</XPos>-->
-<!--                    <YPos>0</YPos>-->
-<!--                    <Rows>12</Rows>-->
-<!--                </ImageEntityInstance>-->
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>Floor</Name>-->
-<!--                    <XPos>950</XPos>-->
-<!--                    <YPos>000</YPos>-->
-<!--                    <Rows>12</Rows>-->
-<!--                </ImageEntityInstance>-->
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>Floor</Name>-->
-<!--                    <XPos>275</XPos>-->
-<!--                    <YPos>425</YPos>-->
-<!--                    <Columns>6</Columns>-->
-<!--                </ImageEntityInstance>-->
+                <ImageEntityInstance>
+                    <Name>Floor</Name>
+                    <XPos>400</XPos>
+                    <YPos>0</YPos>
+                    <Columns>1</Columns>
+                    <Rows>10</Rows>
+                </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Spikes</Name>
                     <XPos>500</XPos>
-                    <YPos>600</YPos>
+                    <YPos>588</YPos>
+                    <Columns>10</Columns>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>Blob</Name>
+                    <XPos>700</XPos>
+                    <YPos>400</YPos>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>Avatar</Name>
@@ -272,32 +311,20 @@
                     <YPos>500</YPos>
                 </ImageEntityInstance>
             </ImageEntityInstances>
-<!--            <TextEntityInstances>-->
-<!--                <TextEntityInstance>-->
-<!--                    <Text>Lives: 0</Text>-->
-<!--                    <Font>Times New Roman</Font>-->
-<!--                    <XPos>850</XPos>-->
-<!--                    <YPos>0</YPos>-->
-<!--                    <Width>150</Width>-->
-<!--                    <Height>50</Height>-->
-<!--                    <PropertyVariableDependency>-->
-<!--                        <VariableName>Lives</VariableName>-->
-<!--                        <PropertyName>Text</PropertyName>-->
-<!--                    </PropertyVariableDependency>-->
-<!--                </TextEntityInstance>-->
-<!--                <TextEntityInstance>-->
-<!--                    <Text>Score: 0</Text>-->
-<!--                    <Font>Times New Roman</Font>-->
-<!--                    <XPos>650</XPos>-->
-<!--                    <YPos>0</YPos>-->
-<!--                    <Width>150</Width>-->
-<!--                    <Height>50</Height>-->
-<!--                    <PropertyVariableDependency>-->
-<!--                        <VariableName>Score</VariableName>-->
-<!--                        <PropertyName>Text</PropertyName>-->
-<!--                    </PropertyVariableDependency>-->
-<!--                </TextEntityInstance>-->
-<!--            </TextEntityInstances>-->
+            <TextEntityInstances>
+                <TextEntityInstance>
+                    <Text>Score: 0</Text>
+                    <Font>Times New Roman</Font>
+                    <XPos>650</XPos>
+                    <YPos>0</YPos>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                    <PropertyVariableDependency>
+                        <VariableName>RespawnXLocation</VariableName>
+                        <PropertyName>Text</PropertyName>
+                    </PropertyVariableDependency>
+                </TextEntityInstance>
+            </TextEntityInstances>
         </Level>
     </Levels>
 </Game>

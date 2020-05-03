@@ -6,7 +6,7 @@ import ooga.Entity;
 import ooga.data.entities.OogaEntity;
 
 /**
- * @author caryshindell, sam thompson
+ * @author caryshindell
  * This is a data-represented entity that contains text (basically the data/game version of javafx Text)
  * Assumptions: if the text has a property variable dependency, the text should be formattable to string (e.g. score %f)
  * Dependencies: entity internal
