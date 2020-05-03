@@ -119,7 +119,7 @@ public class ViewProfile{
         FileChooser fileChooser = new FileChooser();
         Stage stage = new Stage();
         File fileChosen = fileChooser.showOpenDialog(stage);
-        setNewProfilePhoto(fileChosen);
+        if(fileChosen != null) setNewProfilePhoto(fileChosen);
     }
     private void handleDroppedPhoto(DragEvent e){
         Dragboard db = e.getDragboard();

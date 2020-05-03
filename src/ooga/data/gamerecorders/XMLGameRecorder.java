@@ -10,18 +10,18 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import ooga.game.Level;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
- * @author braeden ward, caryshindell, doherty guirand, sam thompson
+ * @author braeden ward, cary shindell, doherty guirand, sam thompson
  */
 public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
 
@@ -55,7 +55,7 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
       File savesDirectoryFile = new File(savesDirectory);
       savesDirectoryFile.mkdir();
     }
-    String filepath = savesDirectory + "/"+ gameName + "-save.xml";
+    String saveFilepath = savesDirectory + "/"+ gameName + System.currentTimeMillis()+"-save.xml";
     // create a new .xml file with name gameName + "-save.xml"
     try {
       Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
@@ -108,12 +108,12 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       DOMSource domSource = new DOMSource(document);
-      StreamResult streamResult = new StreamResult(new File(filepath));
+      StreamResult streamResult = new StreamResult(new File(saveFilepath));
       transformer.transform(domSource, streamResult);
     } catch (ParserConfigurationException | TransformerException ignored) {
       //Don't save the level if it can't be made into a valid file.
     }
-    saveUserFile(userName, gameName, filepath);
+    saveUserFile(userName, gameName, saveFilepath);
   }
 
   private void saveUserFile(String userName, String gameName, String filepath) {
@@ -126,18 +126,28 @@ public class XMLGameRecorder implements XMLDataReader, GameRecorderInternal {
       Element newGameElement = userDoc.createElement("Game");
       saveGameStatesElement.appendChild(newGameElement);
       Element newGameNameElement = userDoc.createElement("Name");
-      newGameElement.setTextContent(gameName);
+      newGameNameElement.setTextContent(gameName);
       newGameElement.appendChild(newGameNameElement);
       Element newGameSaveElement = userDoc.createElement("Save");
       newGameElement.appendChild(newGameSaveElement);
-      //TODO: Add date
       Element newSaveDateElement = userDoc.createElement("Date");
+      Calendar cal = Calendar.getInstance();
+      SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy  HH:mm:ss");
+      newSaveDateElement.setTextContent(formatter.format(cal.getTime()));
       newGameSaveElement.appendChild(newSaveDateElement);
       Element newSaveFileElement = userDoc.createElement("StateFilePath");
       newSaveFileElement.setTextContent(filepath);
       newGameSaveElement.appendChild(newSaveFileElement);
-    } catch (OogaDataException ignored) {
+
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
+      DOMSource domSource = new DOMSource(userDoc);
+      StreamResult streamResult = new StreamResult(new File("data/users/"+userName+"/"+userName+".xml"));
+      transformer.transform(domSource, streamResult);
+    } catch (OogaDataException | TransformerConfigurationException ignored) {
       //If we can't make a document out of it, don't make the document
+    } catch (TransformerException e) {
+      e.printStackTrace();
     }
   }
 

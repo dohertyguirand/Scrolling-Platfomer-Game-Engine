@@ -32,8 +32,7 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
   }
 
   /**
-   * This should be variable name, operator (e.g. +), value
-   * @param args The String arguments given for this effect in the data file.
+   * {@inheritDoc}
    */
   @Override
   public void processArgs(List<String> args) {

@@ -8,6 +8,7 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson, caryshindell
+ * Sets the velocity of the subject entity to the specified value.
  */
 @SuppressWarnings("unused")
 public class SetVelocityEffect extends TimeDelayedEffect {
@@ -15,14 +16,16 @@ public class SetVelocityEffect extends TimeDelayedEffect {
   private String velocityXData;
   private String velocityYData;
 
+  /**
+   * @param args The String arguments of this effect.
+   */
   public SetVelocityEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
 
+
   /**
-   * Processes the String arguments given in the data file into values used by this effect.
-   *
-   * @param args The String arguments given for this effect in the data file.
+   * {@inheritDoc}
    */
   @Override
   public void processArgs(List<String> args) {
@@ -30,14 +33,8 @@ public class SetVelocityEffect extends TimeDelayedEffect {
     velocityYData = args.get(1);
   }
 
-  /**
-   * Performs the effect
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity
-   * @param elapsedTime
-   * @param variables
-   * @param game
-   */
+
+
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
     subject.setVelocity(parseData(velocityXData, subject, variables, 0.0),

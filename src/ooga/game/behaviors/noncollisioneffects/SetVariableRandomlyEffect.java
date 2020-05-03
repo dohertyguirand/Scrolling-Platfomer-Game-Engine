@@ -10,6 +10,8 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
+ * Sets a given variable with a random Double value within a given range.
+ * Example: An enemy might jump by a random amount every few seconds.
  */
 @SuppressWarnings("unused")
 public class SetVariableRandomlyEffect extends TimeDelayedEffect {
@@ -22,10 +24,9 @@ public class SetVariableRandomlyEffect extends TimeDelayedEffect {
     super(args);
   }
 
+
   /**
-   * Processes the String arguments given in the data file into values used by this effect.
-   *
-   * @param args The String arguments given for this effect in the data file.
+   * {@inheritDoc}
    */
   @Override
   public void processArgs(List<String> args) {

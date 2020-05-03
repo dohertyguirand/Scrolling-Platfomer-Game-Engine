@@ -12,6 +12,8 @@ import java.util.Map;
 
 /**
  * @author sam thompson, caryshindell
+ * Changes the subject's position by a specified amount.
+ * Detects what arithmetic operator is used to make the change.
  */
 @SuppressWarnings("unused")
 public class ChangePositionEffect extends TimeDelayedEffect {
@@ -24,6 +26,9 @@ public class ChangePositionEffect extends TimeDelayedEffect {
         super(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void processArgs(List<String> args) {
         int index = 0;

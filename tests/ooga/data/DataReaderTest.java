@@ -17,10 +17,8 @@ import ooga.game.OogaLevel;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.ls.LSException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -295,13 +293,20 @@ public class DataReaderTest {
 
     @Test
     public void testSaveLevel(){
-        List<EntityInternal> entityList = new ArrayList<>();
-        Entity entity = new ImageEntity("testName", "testImage", 0.0, 0.1, 400, 500){};
-        Map<String, String> entityVars = new HashMap<>();
-//        entityVars.put("And he's singin'", "wayo wayo wayo wayo");
-//        entityVars.put("ooAAAAooo", "WAAyo Wayo");
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        System.out.println(formatter.format(cal.getTime()));
 
-        Level testLevel = new OogaLevel(entityList, "1");
+        List<EntityInternal> entityList = new ArrayList<>();
+        EntityInternal entity = new ImageEntity("testName", "testImage", 0.0, 0.1, 400, 500){};
+        Map<String, String> entityVars = new HashMap<>();
+        entityVars.put("And he's singin'", "wayo wayo wayo wayo");
+        entityVars.put("ooAAAAooo", "WAAyo Wayo");
+        entity.setVariables(entityVars);
+
+        entityList.add(entity);
+
+        Level testLevel = new OogaLevel(entityList, "What's up Gamers");
         XMLGameRecorder testGameRecorder = new XMLGameRecorder();
         Map<String, String > vars = new HashMap<>();
         vars.put("Lives", "2");

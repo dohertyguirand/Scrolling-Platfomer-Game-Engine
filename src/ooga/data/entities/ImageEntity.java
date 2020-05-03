@@ -6,7 +6,7 @@ import javafx.beans.property.StringProperty;
 import ooga.Entity;
 
 /**
- * @author caryshindell, sam thompson
+ * @author caryshindell
  * An entity implementation that stores an image
  * Dependencies: entity, OogaEntity
  * Notes: only contains the image file path. ViewImageEntity will have the javafx ImageView

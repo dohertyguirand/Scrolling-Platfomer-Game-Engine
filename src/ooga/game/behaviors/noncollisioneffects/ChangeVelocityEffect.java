@@ -14,6 +14,7 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson, caryshindell
+ * Changes the velocity of the subject by a specified amount.
  */
 public class ChangeVelocityEffect extends TimeDelayedEffect {
 
@@ -28,6 +29,9 @@ public class ChangeVelocityEffect extends TimeDelayedEffect {
     super(args);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void processArgs(List<String> args) {
     int index = 0;
