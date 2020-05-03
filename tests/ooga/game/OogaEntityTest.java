@@ -7,9 +7,7 @@ import ooga.game.behaviors.Action;
 import ooga.game.behaviors.BehaviorInstance;
 import ooga.game.behaviors.ConditionalBehavior;
 import ooga.game.behaviors.Effect;
-import ooga.game.behaviors.actions.CollisionDeterminedAction;
 import ooga.game.behaviors.actions.IndependentAction;
-import ooga.game.behaviors.collisioneffects.RunIntoTerrainLeftEffect;
 import ooga.game.behaviors.noncollisioneffects.SetVariableEffect;
 import ooga.game.collisiondetection.DirectionalCollisionDetector;
 import ooga.game.controls.KeyboardControls;
@@ -50,7 +48,7 @@ public class OogaEntityTest {
     EntityInternal entity1 = myGameInternal.getInternalEntities().get(myGameInternal.getInternalEntities().size()-1);
     Effect setVariableEffect = new SetVariableEffect(List.of("Lives", "Width"));
     Action action = new IndependentAction(List.of(), List.of(setVariableEffect));
-    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action));
+    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action), new ArrayList<>());
     entity1.setConditionalBehaviors(List.of(behavior));
     myGame.doGameStep(ELAPSED_TIME);
     assertEquals(myGameInternal.getVariables().get("Lives"), String.valueOf(entity1.getWidth()));

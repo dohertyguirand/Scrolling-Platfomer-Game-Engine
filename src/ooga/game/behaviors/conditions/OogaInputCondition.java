@@ -10,7 +10,9 @@ package ooga.game.behaviors.conditions;
 import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.BehaviorCreationException;
 import ooga.game.behaviors.Condition;
+import ooga.game.behaviors.OogaCondition;
 
 /**
  * @author Sam Thompson
@@ -19,10 +21,10 @@ import ooga.game.behaviors.Condition;
  * Example: To make Mario jump, UpKey must be Pressed this game step.
  * @see Condition
  */
-public class OogaInputCondition implements Condition {
+public class OogaInputCondition extends OogaCondition {
 
-  private static final String ANY_KEY_REQUIREMENT = "ANY";
-  private static final String KEY_INACTIVE_REQUIREMENT = "Inactive";
+  private static final String ANY_KEY_REQUIREMENT = "KeyAny";
+  private static final String KEY_INACTIVE_REQUIREMENT = "KeyInactive";
   public static final String INPUT_NAME_LABEL = "Key";
   public static final String INPUT_REQUIREMENT_LABEL = "InputRequirement";
   private String inputName;
@@ -32,10 +34,11 @@ public class OogaInputCondition implements Condition {
    * @param args A String-String Map with the following:
    *             "Key" maps to the standardized input name.
    *             "InputRequirement" maps to the input status to check for.
+   * @throws BehaviorCreationException if a required argument is missing.
    */
-  public OogaInputCondition(Map<String,String> args) {
-    inputName = args.get(INPUT_NAME_LABEL);
-    requiredStatus = args.get(INPUT_REQUIREMENT_LABEL);
+  public OogaInputCondition(Map<String,String> args) throws BehaviorCreationException {
+    inputName = processArgument(INPUT_NAME_LABEL,args);
+    requiredStatus = processArgument(INPUT_REQUIREMENT_LABEL,args);
   }
 
   /**

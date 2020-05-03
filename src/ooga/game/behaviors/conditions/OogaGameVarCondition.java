@@ -11,6 +11,7 @@ package ooga.game.behaviors.conditions;
 import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.BehaviorCreationException;
 
 /**
  * @author Sam Thompson
@@ -22,7 +23,7 @@ public class OogaGameVarCondition extends OogaVariableCondition {
   /**
    * {@inheritDoc}
    */
-  public OogaGameVarCondition(Map<String, String> args) {
+  public OogaGameVarCondition(Map<String, String> args) throws BehaviorCreationException {
     super(args);
   }
 

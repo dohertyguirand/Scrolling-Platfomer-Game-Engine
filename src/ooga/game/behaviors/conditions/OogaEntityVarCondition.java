@@ -1,8 +1,12 @@
+// A concrete example of OogaVariableCondition that checks only the Entity variables of the
+// Entity that owns the behavior that has this condition.
+
 package ooga.game.behaviors.conditions;
 
 import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.BehaviorCreationException;
 
 /**
  * @author Sam Thompson
@@ -15,7 +19,7 @@ public class OogaEntityVarCondition extends OogaVariableCondition {
   /**
    * {@inheritDoc}
    */
-  public OogaEntityVarCondition(Map<String, String> args) {
+  public OogaEntityVarCondition(Map<String, String> args) throws BehaviorCreationException {
     super(args);
   }
 

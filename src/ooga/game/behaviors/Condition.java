@@ -6,6 +6,9 @@
 // be created polymorphically. Because the interface has just one method, the ConditionalBehavior
 // can have a loop that goes through each and checks it, instead of having the long if statement
 // that the Checklist dislikes (BehaviorInstance lines 72-77).
+// NOTE: Some parts of this masterpiece are based on code I wrote, and some parts are based on
+// code I wrote jointly with Cary Shindell. I feel that I have some ownership over all involved
+// code here.
 
 package ooga.game.behaviors;
 

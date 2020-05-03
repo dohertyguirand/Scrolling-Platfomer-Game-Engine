@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.BehaviorCreationException;
 import ooga.game.behaviors.Condition;
+import ooga.game.behaviors.OogaCondition;
 
 /**
  * @author Sam Thompson
@@ -29,13 +31,14 @@ import ooga.game.behaviors.Condition;
  * a Koopa, the Koopa is NOT colliding downward with Mario.
  * @see Condition
  */
-public class OogaCollisionCondition implements Condition {
+public class OogaCollisionCondition extends OogaCondition {
 
   public static final String ANY_COLLISION = "ANY";
   public static final String FIRST_ENTITY_LABEL = "FirstEntity";
   public static final String SECOND_ENTITY_LABEL = "SecondEntity";
   public static final String COLLISION_TYPE_LABEL = "Direction";
   public static final String BANNED_LABEL = "Banned";
+  private static final String SELF_IDENTIFIER = "SELF";
   private String firstEntity;
   private String secondEntity;
   private String requiredDirection;
@@ -47,11 +50,12 @@ public class OogaCollisionCondition implements Condition {
    *             "SecondEntity" maps to the name of the second entity in the collision.
    *             "Direction" maps to the direction (or more generally, 'type') of collision.
    *             "Banned" maps to a Boolean saying whether
+   * @throws BehaviorCreationException if a required argument is missing.
    */
-  public OogaCollisionCondition(Map<String,String> args) {
-    firstEntity = args.get(FIRST_ENTITY_LABEL);
-    secondEntity = args.get(SECOND_ENTITY_LABEL);
-    requiredDirection = args.get(COLLISION_TYPE_LABEL);
+  public OogaCollisionCondition(Map<String,String> args) throws BehaviorCreationException {
+    firstEntity = processArgument(FIRST_ENTITY_LABEL,args);
+    secondEntity = processArgument(SECOND_ENTITY_LABEL,args);
+    requiredDirection = processArgument(COLLISION_TYPE_LABEL,args);
     collisionAllowed = !(Boolean.parseBoolean(args.get(BANNED_LABEL)));
   }
 
@@ -64,7 +68,7 @@ public class OogaCollisionCondition implements Condition {
   @Override
   public boolean isSatisfied(EntityInternal subject, GameInternal game, Map<String, String> inputs,
       Map<EntityInternal, Map<EntityInternal, String>> collisions) {
-    List<Map<EntityInternal, String>> collisionsWithSubject = getSubjectCollisions(firstEntity,collisions);
+    List<Map<EntityInternal, String>> collisionsWithSubject = getSubjectCollisions(firstEntity,collisions, subject,game);
     for (Map<EntityInternal,String> collisionsWithIndividual : collisionsWithSubject) {
       if (collisionsMeetRequirement(collisionsWithIndividual)) {
         return collisionAllowed;
@@ -77,7 +81,7 @@ public class OogaCollisionCondition implements Condition {
   //the collision that this condition is looking for.
   private boolean collisionsMeetRequirement(Map<EntityInternal, String> collisionsWithIndividual) {
     for (Entry<EntityInternal,String> collision : collisionsWithIndividual.entrySet()) {
-      if (secondEntity.equals(collision.getKey().getName()) && directionMatches(requiredDirection,
+      if (entityMatches(secondEntity,collision.getKey()) && directionMatches(requiredDirection,
           collision.getValue())) {
         return true;
       }
@@ -92,13 +96,56 @@ public class OogaCollisionCondition implements Condition {
   }
 
   //Returns the Map of collisions with an Entity of the given name this game step.
-  private List<Map<EntityInternal, String>> getSubjectCollisions(String firstEntity, Map<EntityInternal, Map<EntityInternal, String>> collisions) {
+  private List<Map<EntityInternal, String>> getSubjectCollisions(String firstEntity,
+      Map<EntityInternal, Map<EntityInternal, String>> collisions, EntityInternal subject,
+      GameInternal game) {
     List<Map<EntityInternal,String>> collisionsWithFirst = new ArrayList<>();
     for (Entry<EntityInternal, Map<EntityInternal, String>> entityCollisions : collisions.entrySet()) {
       if (entityCollisions.getKey().getName().equals(firstEntity)) {
         collisionsWithFirst.add(entityCollisions.getValue());
       }
     }
+    if (collisions.containsKey(identifyEntityVariableSubject(subject,game,firstEntity))) {
+      collisionsWithFirst.add(collisions.get(identifyEntityVariableSubject(subject,game,firstEntity)));
+    }
     return collisionsWithFirst;
   }
+
+  private EntityInternal identifyEntityVariableSubject(EntityInternal subject, GameInternal gameInternal, String label) {
+    if (label.equals(SELF_IDENTIFIER)) {
+      return subject;
+    }
+    else {
+      return otherEntitySubject(subject, gameInternal, label);
+    }
+  }
+
+  private EntityInternal otherEntitySubject(EntityInternal subject, GameInternal gameInternal, String label) {
+    String subjectVariable = subject.getVariable(label);
+    if (subjectVariable != null) {
+      EntityInternal e = gameInternal.getEntityWithId(subject.getVariable(label));
+      if (e != null) {
+        return e;
+      }
+      List<EntityInternal> entitiesWithName = gameInternal.getEntitiesWithName(subjectVariable);
+      if (entitiesWithName.size() > 0) {
+        return entitiesWithName.get(0);
+      }
+    }
+    EntityInternal e = gameInternal.getEntityWithId(label);
+    if (e != null) {
+      return e;
+    }
+    List<EntityInternal> entitiesWithName = gameInternal.getEntitiesWithName(label);
+    if (!entitiesWithName.isEmpty()) {
+      return entitiesWithName.get(0);
+    }
+    return null;
+  }
+
+  private boolean entityMatches(String entity1Info, EntityInternal entity) {
+    return entity.getName().equals(entity1Info) ||
+        (entity.getVariable("TerrainID") != null && entity.getVariable("TerrainID").equals(entity1Info));
+  }
+
 }

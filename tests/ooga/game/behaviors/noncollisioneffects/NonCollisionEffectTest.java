@@ -220,7 +220,7 @@ class NonCollisionEffectTest {
 
   private EntityInternal createBehaviorWithEffect(Effect effect) {
     IndependentAction action = new IndependentAction(new ArrayList<>(),List.of(effect));
-    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action));
+    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action), new ArrayList<>());
     myGameInternal.getInternalEntities().get(0).setConditionalBehaviors(List.of(behavior));
     return myGameInternal.getInternalEntities().get(0);
   }

@@ -21,7 +21,8 @@ package ooga.game.behaviors.conditions;
 import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.Condition;
+import ooga.game.behaviors.BehaviorCreationException;
+import ooga.game.behaviors.OogaCondition;
 import ooga.game.behaviors.VariableComparatorFactory;
 import ooga.game.behaviors.comparators.VariableComparator;
 
@@ -37,11 +38,12 @@ import ooga.game.behaviors.comparators.VariableComparator;
  * Example: A Behavior that starts the game over might require the Condition to be true
  * that the Game's Lives variable is less than 1.
  */
-public abstract class OogaVariableCondition implements Condition {
+public abstract class OogaVariableCondition extends OogaCondition {
 
   public static final String COMPARATOR_LABEL = "Comparison";
   public static final String TARGET_VALUE_LABEL = "ComparedTo";
   public static final String VAR_NAME_LABEL = "VariableName";
+  public static final String DEFAULT_COMPARATOR = "Equals";
   private final VariableComparator myComparator;
   private final String myCompareTo;
   private final String myVariableName;
@@ -52,10 +54,10 @@ public abstract class OogaVariableCondition implements Condition {
    *             "ComparedTo" maps to the value to compare to (the target value).
    *             "VariableName" maps to the name of the variable to compare with the target value.
    */
-  public OogaVariableCondition(Map<String,String> args) {
-    myComparator = new VariableComparatorFactory().makeComparator(args.get(COMPARATOR_LABEL));
-    myCompareTo = args.get(TARGET_VALUE_LABEL);
-    myVariableName = args.get(VAR_NAME_LABEL);
+  public OogaVariableCondition(Map<String,String> args) throws BehaviorCreationException {
+    myComparator = initComparator(args);
+    myCompareTo = processArgument(TARGET_VALUE_LABEL,args);
+    myVariableName = processArgument(VAR_NAME_LABEL,args);
   }
 
   /**
@@ -79,6 +81,7 @@ public abstract class OogaVariableCondition implements Condition {
    * @param variableName The name of the variable specified when the Condition was created.
    * @return  The actual value to compare to the target value when evaluating this Condition.
    *          Can be a String representing a Double, or some other String, or null.
+   * @throws BehaviorCreationException if a required argument is missing.
    */
   public abstract String findVariableValue(EntityInternal subject, GameInternal game, String variableName);
 
@@ -102,5 +105,14 @@ public abstract class OogaVariableCondition implements Condition {
       compareToValue = subject.getVariable(myCompareTo);
     }
     return compareToValue;
+  }
+
+  //Creates a comparator, handling the situation when no comparator type is given.
+  private VariableComparator initComparator(Map<String, String> args) {
+    VariableComparator comparator = new VariableComparatorFactory().makeComparator(DEFAULT_COMPARATOR);
+    if (args.containsKey(COMPARATOR_LABEL)) {
+      comparator = new VariableComparatorFactory().makeComparator(args.get(COMPARATOR_LABEL));
+    }
+    return comparator;
   }
 }

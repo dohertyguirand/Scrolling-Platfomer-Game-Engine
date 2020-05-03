@@ -1,8 +1,11 @@
 package ooga.game.behaviors;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import ooga.Entity;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
@@ -26,6 +29,7 @@ public class BehaviorInstance implements ConditionalBehavior {
   final Map<List<String>, String> bannedCollisionConditions;
   final List<VariableCondition> gameVarConditions;
   final Map<String,List<VariableCondition>> entityVarConditions;
+  final List<Condition> myConditions;
   final List<Action> actions;
 
   /**
@@ -33,21 +37,35 @@ public class BehaviorInstance implements ConditionalBehavior {
    * @param entityVariableConditions
    * @param inputConditions
    * @param requiredCollisionConditions conditions that must be true Map<List<String>, String> [entity 1 info, entity 2 info] : direction (or "ANY")
-   *   entity info can be id or name, method will check for either
+*   entity info can be id or name, method will check for either
    * @param bannedCollisionConditions conditions that must be false (see above)
    * @param actions
+   * @param conditions
    */
   public BehaviorInstance(List<VariableCondition> gameVariableConditions,
       Map<String, List<VariableCondition>> entityVariableConditions,
       Map<String, List<String>> inputConditions,
       Map<List<String>, String> requiredCollisionConditions,
-      Map<List<String>, String> bannedCollisionConditions, List<Action> actions){
+      Map<List<String>, String> bannedCollisionConditions, List<Action> actions,
+      List<Condition> conditions){
     this.inputConditions = inputConditions;
     this.gameVarConditions = gameVariableConditions;
     this.entityVarConditions = entityVariableConditions;
     this.requiredCollisionConditions = requiredCollisionConditions;
     this.bannedCollisionConditions = bannedCollisionConditions;
     this.actions = actions;
+    myConditions = conditions;
+  }
+
+  public BehaviorInstance(List<Action> actions,
+      List<Condition> conditions){
+    this.inputConditions = new HashMap<>();
+    this.gameVarConditions = new ArrayList<>();
+    this.entityVarConditions = new HashMap<>();
+    this.requiredCollisionConditions = new HashMap<>();
+    this.bannedCollisionConditions = new HashMap<>();
+    this.actions = actions;
+    myConditions = conditions;
   }
 
   /**
@@ -69,13 +87,38 @@ public class BehaviorInstance implements ConditionalBehavior {
   public void doConditionalUpdate(double elapsedTime, EntityInternal subject, Map<String, String> variables, Map<String, String> inputs,
                                   Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo, GameInternal gameInternal) {
     // TODO: add ability for entity instances to have additional behaviors?
-    if (checkGameVariableConditions(subject,variables)
-    &&  checkEntityVariableConditions(subject,gameInternal,variables)
-    &&  checkInputConditions(inputs)
-    && allCollisionConditionsSatisfied(collisionInfo, requiredCollisionConditions, true, subject, gameInternal)
-    && allCollisionConditionsSatisfied(collisionInfo, bannedCollisionConditions, false, subject, gameInternal)) {
-      doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
+    for (Condition condition : myConditions) {
+      if (!condition.isSatisfied(subject,gameInternal,inputs,convertToNicerMap(collisionInfo))) {
+        return;
+      }
+//    }
+//    if (checkGameVariableConditions(subject,variables)
+//    &&  checkEntityVariableConditions(subject,gameInternal,variables)
+//    &&  checkInputConditions(inputs)
+//    && allCollisionConditionsSatisfied(collisionInfo, requiredCollisionConditions, true, subject, gameInternal)
+//    && allCollisionConditionsSatisfied(collisionInfo, bannedCollisionConditions, false, subject, gameInternal)) {
     }
+    doActions(elapsedTime, subject, variables, collisionInfo, gameInternal);
+  }
+
+  private Map<EntityInternal, Map<EntityInternal, String>> convertToNicerMap(
+      Map<EntityInternal, Map<String, List<EntityInternal>>> collisionInfo) {
+    Map<EntityInternal,Map<EntityInternal,String>> returnMap = new HashMap<>();
+    for (Entry<EntityInternal,Map<String,List<EntityInternal>>> collisions : collisionInfo.entrySet()) {
+      Map<EntityInternal,String> convertedCollisions = convertCollisions(collisions.getValue());
+      returnMap.put(collisions.getKey(),convertedCollisions);
+    }
+    return returnMap;
+  }
+
+  private Map<EntityInternal, String> convertCollisions(Map<String, List<EntityInternal>> value) {
+    Map<EntityInternal,String> converted = new HashMap<>();
+    for (Entry<String,List<EntityInternal>> directionCollisions : value.entrySet()) {
+      for (EntityInternal e : directionCollisions.getValue()) {
+        converted.put(e,directionCollisions.getKey());
+      }
+    }
+    return converted;
   }
 
   private boolean checkInputConditions(Map<String, String> inputs) {

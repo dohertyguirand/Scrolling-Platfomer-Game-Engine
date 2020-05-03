@@ -72,10 +72,10 @@ public class VariableDeterminedAction extends Action {
     VariableComparator myComparator = determineComparator();
     List<EntityInternal> otherEntities = new ArrayList<>();
     for(EntityInternal otherEntity : gameInternal.getInternalEntities()){
-      VariableCondition variableCondition = new OogaVariableCondition(myVariable, myComparator, myValueData);
-      if(variableCondition.isSatisfied(subject, variables, subject.getVariables())){
-        otherEntities.add(otherEntity);
-      }
+//      VariableCondition variableCondition = new OogaVariableCondition(myVariable, myComparator, myValueData);
+//      if(variableCondition.isSatisfied(subject, variables, subject.getVariables())){
+//        otherEntities.add(otherEntity);
+//      }
     }
     return otherEntities;
   }

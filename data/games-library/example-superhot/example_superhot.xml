@@ -23,7 +23,6 @@
           <InputCondition>
             <Key>RightKey2</Key>
             <InputRequirement>Active</InputRequirement>
-            <InputRequirement>Pressed</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput .2000 0 + .3200</Effect>
@@ -34,8 +33,7 @@
         <Behavior>
           <InputCondition>
             <Key>LeftKey2</Key>
-            <InputRequirement>Active</InputRequirement>
-            <InputRequirement>Pressed</InputRequirement>
+            <InputRequirement>ANY</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput -.2000 0 + .3200</Effect>
@@ -46,8 +44,7 @@
         <Behavior>
           <InputCondition>
             <Key>UpKey2</Key>
-            <InputRequirement>Active</InputRequirement>
-            <InputRequirement>Pressed</InputRequirement>
+            <InputRequirement>ANY</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput 0 -.2000 + .3200</Effect>
@@ -58,8 +55,7 @@
         <Behavior>
           <InputCondition>
             <Key>DownKey2</Key>
-            <InputRequirement>Active</InputRequirement>
-            <InputRequirement>Pressed</InputRequirement>
+            <InputRequirement>ANY</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>VelocityInput 0 .2000 + .3200</Effect>
@@ -324,8 +320,7 @@
         <Behavior>
           <InputCondition>
             <Key>ClickedOn</Key>
-            <InputRequirement>Pressed</InputRequirement>
-            <InputRequirement>Active</InputRequirement>
+            <InputRequirement>ANY</InputRequirement>
           </InputCondition>
           <IndependentAction>
             <Effect>CreateEntityRelative ProjectileFragment -20 0</Effect>

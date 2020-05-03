@@ -23,9 +23,13 @@ public interface GameDataReaderExternal {
   String EFFECTS_PROPERTIES_LOCATION = "ooga/data/resources/effects";
   String ACTIONS_PROPERTIES_LOCATION = "ooga/data/resources/actions";
   String COMPARATORS_PROPERTIES_LOCATION = "ooga/data/resources/comparators";
+  String CONDITIONS_PROPERTIES_LOCATION = "ooga/data/resources/conditions";
+  String CONDITIONS_ARGS_LOCATION = "ooga/game/behaviors/conditions/resources/conditionarguments";
   ResourceBundle myEffectsResources = ResourceBundle.getBundle(EFFECTS_PROPERTIES_LOCATION);
   ResourceBundle myActionsResources = ResourceBundle.getBundle(ACTIONS_PROPERTIES_LOCATION);
   ResourceBundle myComparatorsResources = ResourceBundle.getBundle(COMPARATORS_PROPERTIES_LOCATION);
+  ResourceBundle myConditionsResources = ResourceBundle.getBundle(CONDITIONS_PROPERTIES_LOCATION);
+  ResourceBundle myConditionArgsResources = ResourceBundle.getBundle(CONDITIONS_ARGS_LOCATION);
   ResourceBundle myEnglishResources = ResourceBundle.getBundle(ENGLISH_PROPERTIES_LOCATION);
   String SLASH = myEnglishResources.getString("Slash");
 

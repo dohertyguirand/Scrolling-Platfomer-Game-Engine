@@ -50,7 +50,7 @@ class CollisionEffectTest {
     myGame.doGameStep(ELAPSED_TIME);
     EntityInternal terrainEntity = myGameInternal.getInternalEntities().get(myGameInternal.getInternalEntities().size()-1);
     CollisionDeterminedAction action = new CollisionDeterminedAction(List.of("Brick", "Left"),List.of(new RunIntoTerrainLeftEffect(args)));
-    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action));
+    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action), new ArrayList<>());
     entity1.setConditionalBehaviors(List.of(behavior));
     myGame.doGameStep(ELAPSED_TIME);
     assertEquals(terrainEntity.getPosition().get(0)+terrainEntity.getWidth(), entity1.getPosition().get(0));
@@ -66,7 +66,7 @@ class CollisionEffectTest {
     myGame.doGameStep(ELAPSED_TIME);
     EntityInternal terrainEntity = myGameInternal.getInternalEntities().get(myGameInternal.getInternalEntities().size()-1);
     CollisionDeterminedAction action = new CollisionDeterminedAction(List.of("Brick", "Right"),List.of(new RunIntoTerrainRightEffect(args)));
-    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action));
+    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action), new ArrayList<>());
     entity1.setConditionalBehaviors(List.of(behavior));
     myGame.doGameStep(ELAPSED_TIME);
     assertEquals(terrainEntity.getPosition().get(0), entity1.getPosition().get(0)+entity1.getWidth());
@@ -82,7 +82,7 @@ class CollisionEffectTest {
     myGame.doGameStep(ELAPSED_TIME);
     EntityInternal terrainEntity = myGameInternal.getInternalEntities().get(myGameInternal.getInternalEntities().size()-1);
     CollisionDeterminedAction action = new CollisionDeterminedAction(List.of("Brick", "Up"),List.of(new RunIntoTerrainUpEffect(args)));
-    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action));
+    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action), new ArrayList<>());
     entity1.setConditionalBehaviors(List.of(behavior));
     myGame.doGameStep(ELAPSED_TIME);
     assertEquals(terrainEntity.getPosition().get(1)+terrainEntity.getHeight(), entity1.getPosition().get(1)-0.07);
@@ -98,7 +98,7 @@ class CollisionEffectTest {
     myGame.doGameStep(ELAPSED_TIME);
     EntityInternal terrainEntity = myGameInternal.getInternalEntities().get(myGameInternal.getInternalEntities().size()-1);
     CollisionDeterminedAction action = new CollisionDeterminedAction(List.of("Brick", "Down"),List.of(new RunIntoTerrainDownEffect(args)));
-    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action));
+    ConditionalBehavior behavior = new BehaviorInstance(new ArrayList<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), List.of(action), new ArrayList<>());
     entity1.setConditionalBehaviors(List.of(behavior));
     myGame.doGameStep(ELAPSED_TIME);
     assertEquals(terrainEntity.getPosition().get(1), entity1.getPosition().get(1)+entity1.getHeight());
