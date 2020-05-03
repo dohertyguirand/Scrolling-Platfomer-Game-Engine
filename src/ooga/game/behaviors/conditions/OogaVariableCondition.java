@@ -1,8 +1,9 @@
-package ooga.game.behaviors;
+package ooga.game.behaviors.conditions;
 
 import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.Condition;
 import ooga.game.behaviors.comparators.VariableComparator;
 
 /**

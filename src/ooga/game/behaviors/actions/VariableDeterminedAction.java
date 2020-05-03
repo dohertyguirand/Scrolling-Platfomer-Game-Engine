@@ -11,7 +11,7 @@ import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
-import ooga.game.behaviors.OogaVariableCondition;
+import ooga.game.behaviors.conditions.OogaVariableCondition;
 import ooga.game.behaviors.VariableCondition;
 import ooga.game.behaviors.comparators.VariableComparator;
 import ooga.game.behaviors.comparators.VariableEquals;

@@ -1,4 +1,4 @@
-package ooga.game.behaviors;
+package ooga.game.behaviors.conditions;
 
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;

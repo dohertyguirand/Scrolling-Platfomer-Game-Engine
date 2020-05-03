@@ -15,6 +15,7 @@ import ooga.game.Level;
 import ooga.game.OogaLevel;
 import ooga.game.behaviors.*;
 import ooga.game.behaviors.comparators.VariableComparator;
+import ooga.game.behaviors.conditions.OogaVariableCondition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

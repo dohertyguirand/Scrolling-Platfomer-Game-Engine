@@ -1,8 +1,9 @@
-package ooga.game.behaviors;
+package ooga.game.behaviors.conditions;
 
 import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
+import ooga.game.behaviors.Condition;
 
 /**
  * @author Sam Thompson
@@ -24,6 +25,7 @@ public class OogaInputCondition implements Condition {
   }
 
   /**
+   * Evaluates to true when the specific desired input has the desired status.
    * {@inheritDoc}
    */
   @Override
