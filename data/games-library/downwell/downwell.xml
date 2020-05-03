@@ -9,9 +9,41 @@
             <Width>45</Width>
             <Height>45</Height>
             <Image>dw_main_character_idle_fall_right.png</Image>
-            <VariableNames>IdleFallSprite FiringSprite StandingSprite Facing Falling Firing</VariableNames>
-            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.png Right True False</VariableValues>
+            <VariableNames>IdleFallSprite JumpingSprite FiringSprite StandingSprite Facing Falling Jumping Firing PreviousY YVel</VariableNames>
+            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_jumping_right.png downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.png Right True False False 100 0</VariableValues>
             <Behaviors>
+                <!-- Update YVel and PreviousY -->
+                <Behavior>
+                    <IndependentAction>
+                        <Effect>SetVariable YVel YPos</Effect>
+                        <Effect>ChangeVariable YVel - PreviousY</Effect>
+                        <Effect>SetVariable PreviousY YPos</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- if YVel is positive, set falling to true and jumping to false -->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>YVel</VariableName>
+                        <Comparison>GreaterThan</Comparison>
+                        <RequiredValue>0</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable Falling True</Effect>
+                        <Effect>SetVariable Jumping False</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- if YVel is negative, set falling to false and jumping to true-->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>YVel</VariableName>
+                        <Comparison>LessThan</Comparison>
+                        <RequiredValue>0</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable Falling False</Effect>
+                        <Effect>SetVariable Jumping True</Effect>
+                    </IndependentAction>
+                </Behavior>
                 <!-- A Key Input -->
                 <Behavior>
                     <InputCondition>
@@ -38,25 +70,64 @@
                         <Effect>SetVariable Firing False</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!-- Up Key Input -->
+                <!-- W Key Input - fire while falling -->
                 <Behavior>
                     <InputCondition>
-                        <Key>UpKey</Key>
+                        <Key>UpKey2</Key>
                         <InputRequirement>Pressed</InputRequirement>
                     </InputCondition>
+                    <EntityVariableCondition>
+                        <VariableName>Falling</VariableName>
+                        <RequiredValue>True</RequiredValue>
+                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>CreateEntityRelative BootBullet 11 25</Effect>
                         <Effect>CreateEntityRelative BootMuzzleFlash -3 25</Effect>
                         <Effect>SetImage FiringSprite</Effect>
-                        <Effect>SetVelocity 0 -0.01</Effect>
+                        <Effect>SetVelocity 0 -0.1</Effect>
                         <Effect>SetVariable Firing True</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--Gravity Behavior-->
+                <!-- W Key Input - fire while jumping (doesn't cancel velocity)-->
+                <Behavior>
+                    <InputCondition>
+                        <Key>UpKey2</Key>
+                        <InputRequirement>Pressed</InputRequirement>
+                    </InputCondition>
+                    <EntityVariableCondition>
+                        <VariableName>Jumping</VariableName>
+                        <RequiredValue>True</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>CreateEntityRelative BootBullet 11 25</Effect>
+                        <Effect>CreateEntityRelative BootMuzzleFlash -3 25</Effect>
+                        <Effect>SetImage FiringSprite</Effect>
+                        <Effect>SetVariable Firing True</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- W Key Input - jump while standing-->
+                <Behavior>
+                    <InputCondition>
+                        <Key>UpKey2</Key>
+                        <InputRequirement>Pressed</InputRequirement>
+                    </InputCondition>
+                    <EntityVariableCondition>
+                        <VariableName>Falling</VariableName>
+                        <RequiredValue>False</RequiredValue>
+                    </EntityVariableCondition>
+                    <EntityVariableCondition>
+                        <VariableName>Jumping</VariableName>
+                        <RequiredValue>False</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>Jump 0 -0.8 + 10.0</Effect>
+                        <Effect>SetImage IdleFallSprite</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- Gravity Behavior-->
                 <Behavior>
                     <IndependentAction>
                         <Effect>Gravity 0 0.05 + 20</Effect>
-                        <Effect>SetVariable Falling True</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!--  Facing right means using the right facing sprites-->
@@ -68,6 +139,7 @@
                     <IndependentAction>
                         <Effect>SetVariable FiringSprite downwell/dw_main_character_firing_right.png</Effect>
                         <Effect>SetVariable IdleFallSprite downwell/dw_main_character_idle_fall_right.png</Effect>
+                        <Effect>SetVariable JumpingSprite downwell/dw_main_character_jumping_right.png</Effect>
                         <Effect>SetVariable StandingSprite downwell/dw_main_character_standing_right.png</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -80,6 +152,7 @@
                     <IndependentAction>
                         <Effect>SetVariable FiringSprite downwell/dw_main_character_firing_left.png</Effect>
                         <Effect>SetVariable IdleFallSprite downwell/dw_main_character_idle_fall_left.png</Effect>
+                        <Effect>SetVariable JumpingSprite downwell/dw_main_character_jumping_left.png</Effect>
                         <Effect>SetVariable StandingSprite downwell/dw_main_character_standing_left.png</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -111,17 +184,35 @@
                         <Effect>SetImage IdleFallSprite</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--  not falling means using stanging sprite-->
+                <!--  jumping means using jumping sprite-->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>Firing</VariableName>
+                        <RequiredValue>False</RequiredValue>
+                    </EntityVariableCondition>
+                    <EntityVariableCondition>
+                        <VariableName>Jumping</VariableName>
+                        <RequiredValue>True</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetImage JumpingSprite</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--  not falling or jumping means using standing sprite-->
                 <Behavior>
                     <EntityVariableCondition>
                         <VariableName>Falling</VariableName>
+                        <RequiredValue>False</RequiredValue>
+                    </EntityVariableCondition>
+                    <EntityVariableCondition>
+                        <VariableName>Jumping</VariableName>
                         <RequiredValue>False</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>SetImage StandingSprite</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!-- Run into a brick downward to stop falling.-->
+                <!--  Run into a brick downward to stop falling.-->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>SELF</Entity1>
@@ -131,6 +222,7 @@
                     <CollisionDeterminedAction>
                         <Args>universalTerrain Down</Args>
                         <Effect>TerrainCollisionDown</Effect>
+                        <Effect>SetVariable Jumping False</Effect>
                         <Effect>SetVariable Falling False</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
@@ -195,7 +287,7 @@
                         <Effect>ChangeVariable CameraBorderYTop - CameraDiff</Effect>      <!-- move the upper border right by the difference-->
                     </IndependentAction>
                 </Behavior>
-                <!--   Resetting the Game and all the variables  when lives reaches 0-->
+                <!-- Resetting the Game and all the variables when lives reaches 0-->
                 <Behavior>
                     <GameVariableCondition>
                         <VariableName>Lives</VariableName>
