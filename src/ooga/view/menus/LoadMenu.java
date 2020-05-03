@@ -14,7 +14,12 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * @author doherty guirand, chris warren
+ *  * @author Chris Warren, Doherty guirand,
+ *  * LoadMenu: Menu which displays options to either Load a level, save a level or reset the game and start new
+ *  * Dependencies: Relies on OptionMenu it extends this abstract class to get its format
+ *                  Relies on GameRecorderExternal to be able to load past saves
+ *  * Example: I am playing a game and then I pause the game. I have 3 options, I can reset the game and start from the beginning,
+ *  * Load a save state that was already there, or save the current state of the game.
  */
 public class LoadMenu extends OptionMenu {
 

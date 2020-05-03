@@ -18,7 +18,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * @author chris warren, doherty guirand
+ *  * @author Chris warren, doherty guirand
+ *  * ProfileMenu: Menu which displays a collection of profiles to choose from before the user selects a game. The profile
+ *  * menu also allows users to make their own profile.
+ *  * Dependencies: Relies on Scroll Menu because that is how it gets its format for the UI
+ *                  Relies of ViewProfile to get the appropriate files to display
+ *  * Example: I load the game, I appear at a screen with a bunch of panels each representing a profile. I click the profile
+ *  * with the flowers, which means for all the game moving forward I am playing on that profile which save files used for.
  */
 public class ProfileMenu extends ScrollMenu {
     private final ObjectProperty<ViewProfile> profileSelected = new SimpleObjectProperty<>();
@@ -32,6 +38,7 @@ public class ProfileMenu extends ScrollMenu {
 
     /**
      * Shows profile options for user to choose, user can also add a new profile
+     * @param languageResources - the language resource file which determines the language
      */
     public ProfileMenu(ResourceBundle languageResources){
         super(languageResources,PROFILE_MENU_TITLE_KEY );
@@ -96,10 +103,6 @@ public class ProfileMenu extends ScrollMenu {
             File photoFile = profile.getFileChosen();
             if(photoFile != null){
                 myProfileReader.addNewProfile(profile.getProfileName(),profile.getFileChosen());
-//                myProfiles.add(profile);
-//                Button button = makeButton(new ImageView(profile.getProfilePath()), profile.getProfileName());
-//                button.setOnAction(e -> setProfileSelected(profile));
-//                myHBox.getChildren().add(button);
                 this.setBottom(horizontalScroller());
                 myProfiles = new ArrayList<>();
                 makeViewProfiles();
@@ -112,7 +115,6 @@ public class ProfileMenu extends ScrollMenu {
             Button button = makeButton(new ImageView(DEFAULT_IMAGE_PATH), profile.getProfileName());
             button.setOnAction(e -> setProfileSelected(profile));
             myHBox.getChildren().add(button);
-            //BUG TO BE FIXED LATER
         }
      }
 
