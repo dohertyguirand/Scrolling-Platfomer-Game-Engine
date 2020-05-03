@@ -136,7 +136,7 @@
                         <RequiredValue>False</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>Jump 0 -0.8 + 10.0</Effect>
+                        <Effect>Jump 0 -0.9 + 10.0</Effect>
                         <Effect>SetImage IdleFallSprite</Effect>
                     </IndependentAction>
                 </Behavior>
