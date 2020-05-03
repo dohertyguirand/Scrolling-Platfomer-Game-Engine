@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 
 /**
  *  * @author Chris warren, doherty guirand, caryshindell
- *  * ProfileMenu: Menu which displays a collection of profiles to choose from before the user selects a game. The profile
+ *  * GameMenu: Menu which displays a collection of profiles to choose from before the user selects a game. The profile
  *  * menu also allows users to make their own profile.
  *  * Dependencies: Relies on Scroll Menu because that is how it gets its format for the UI
  *                  Relies of ViewProfile to get the appropriate files to display

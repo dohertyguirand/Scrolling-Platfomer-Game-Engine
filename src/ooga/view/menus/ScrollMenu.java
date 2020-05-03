@@ -20,7 +20,11 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * @author Chris warren, caryshindell, doherty guirand
+ *  * @author Chris Warren, Doherty guirand
+ *  * ScrollMenu: Abstract class which sets up the basic formatting of the profile and game menu to have a nice UI where a user
+ *  * can scroll and choose a profile or game
+ *               Relies on GameReaderExternal to receive the possible games to display on the menu
+ *               Relies on ProfileReaderExternal to receive the possible profiles
  */
 public abstract class ScrollMenu extends BorderPane {
 
