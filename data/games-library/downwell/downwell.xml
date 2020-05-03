@@ -324,7 +324,7 @@
             <Image>dw_boot_bullet.png</Image>
             <VariableNames>MyYOffset</VariableNames>
             <VariableValues>0</VariableValues>
-            <!-- move downward when created-->
+            <!-- move downward and update screen position variable every frame -->
             <Behavior>
                 <IndependentAction>
                     <Effect>SetVelocity 0 1.5</Effect>
@@ -332,7 +332,7 @@
                     <Effect>ChangeVariable MyYOffset - CameraBorderYBottom</Effect>
                 </IndependentAction>
             </Behavior>
-            <!-- get destroyed when out of view-->
+            <!-- get destroyed when out of view -->
             <Behavior>
                 <EntityVariableCondition>
                     <VariableName>MyYOffset</VariableName>
@@ -342,6 +342,18 @@
                 <IndependentAction>
                     <Effect>RemoveSelf</Effect>
                 </IndependentAction>
+            </Behavior>
+            <!-- get destroyed on contact with terrain -->
+            <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity1>SELF</Entity1>
+                    <Entity2>universalTerrain</Entity2>
+                    <Direction>Down</Direction>
+                </RequiredCollisionCondition>
+                <CollisionDeterminedAction>
+                    <Args>universalTerrain Down</Args>
+                    <Effect>RemoveSelf</Effect>
+                </CollisionDeterminedAction>
             </Behavior>
         </ImageEntity>
         <!-- Background -->
@@ -356,7 +368,7 @@
         <ImageEntity>
             <Name>PlatformTile</Name>
             <Width>57</Width>
-            <Height>57</Height>
+            <Height>42</Height>
             <Image>dw_platform_tile_side_up.png</Image>
             <VariableNames>TerrainID</VariableNames>
             <VariableValues>universalTerrain</VariableValues>
