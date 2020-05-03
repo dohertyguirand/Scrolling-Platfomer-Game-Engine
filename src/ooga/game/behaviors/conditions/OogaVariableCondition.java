@@ -1,3 +1,21 @@
+// There are two types of variable conditions, GameVariableConditions and EntityVariableConditions,
+// and they both have the same process of taking a value, dereferencing a second value in a
+// specified order of where to look (game -> entity -> immediate). Their one difference is where
+// they get the variable value to compare to the target. So, I made an abstract class whose one
+// method exists purely to define what is used for that value. If you wanted, you could also implement
+// this abstract method to compare something else to the target, like asking the GameInternal
+// if the current number of Entities is less than something.
+// I planned my masterpiece so that you can use reflection to instantiate Conditions, as they all
+// have the same constructor. This presented a challenge for making a VariableComparator to compare
+// the two values, so I decided that a VariableComparatorFactory should instantiate the Comparator.
+// This creates a new dependency, but there's nowhere else where VariableComparators are used,
+// so it's not too bad.
+// For reflection, I use two major properties files: ooga/data/resources/conditions.properties
+// and ooga/game/behaviors/conditions/resources/conditionarguments.properties. The first one
+// gives one or more nicknames to each Condition class, and the second lists the arguments of
+// each separated by commas. If the Data modules can deliver these, it can make any Condition
+// in a data-driven way.
+
 package ooga.game.behaviors.conditions;
 
 import java.util.Map;

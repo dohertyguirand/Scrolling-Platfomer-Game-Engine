@@ -1,3 +1,15 @@
+// Handles both 'banned collision conditions' and 'required collision conditions'.
+// It borrows much of the algorithm from BehaviorInstance's collision condition checking,
+// which is exactly what is needed, since BehaviorInstance shouldn't have to worry about those
+// implementation details. This class also relies on a different representation of collisions,
+// where an Entity is mapped to its collisions, and its collisions are themselves a Map of
+// String-EntityInternal pairs representing who is being collided with and in what direction.
+// This representation was slightly more readable to navigate.
+// It handles not being given anything with a 'Banned' tag, since 'Banned' isn't listed in the
+// properties file (which means it's not required, assuming that the Data module uses the
+// properties file). It handles this just by using 'true' for collisionAllowed, which is
+// intuitive.
+
 package ooga.game.behaviors.conditions;
 
 import java.util.ArrayList;

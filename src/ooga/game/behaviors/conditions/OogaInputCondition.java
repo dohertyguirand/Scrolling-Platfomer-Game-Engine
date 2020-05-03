@@ -1,3 +1,10 @@
+// This condition uses the provided inputs map in "isSatisfied" to check whether a certain
+// input is pressed. It can be instantiated using reflection, and all constants that are used
+// are standardized Strings that can act as the key set for a large number of localization
+// resource bundles. (Examples: "ANY","Inactive","Key","InputRequirement")
+// On a lower level, all of the boolean return statements are built for maximizing readability,
+// with boolean helper methods that robustly handle null inputs.
+
 package ooga.game.behaviors.conditions;
 
 import java.util.Map;

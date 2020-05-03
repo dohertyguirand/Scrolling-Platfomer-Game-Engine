@@ -1,3 +1,12 @@
+// For my masterpiece I decided to make conditions for Behaviors into their own type of object,
+// with an outward facing interface, so that ConditionalBehavior classes don't have to know
+// the implementation details about what kinds of conditions exist. This way, as long as the
+// Data component of the project has a way of making Condition instances (maybe with a Simple
+// Factory), the ConditionalBehavior can have any number and type of Conditions, and new types can
+// be created polymorphically. Because the interface has just one method, the ConditionalBehavior
+// can have a loop that goes through each and checks it, instead of having the long if statement
+// that the Checklist dislikes (BehaviorInstance lines 72-77).
+
 package ooga.game.behaviors;
 
 import java.util.Map;
