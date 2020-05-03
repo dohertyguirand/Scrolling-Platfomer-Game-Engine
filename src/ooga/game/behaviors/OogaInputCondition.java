@@ -4,6 +4,13 @@ import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
+/**
+ * @author Sam Thompson
+ * Is satisfied if a specific input has a specific status, with both of these being defined
+ * when the Condition was initialized.
+ * Example: To make Mario jump, UpKey must be Pressed this game step.
+ * @see Condition
+ */
 public class OogaInputCondition implements Condition {
 
   private static final String ANY_KEY_REQUIREMENT = "ANY";
@@ -16,6 +23,9 @@ public class OogaInputCondition implements Condition {
     requiredStatus = status;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isSatisfied(EntityInternal subject, GameInternal game, Map<String, String> inputs,
       Map<EntityInternal, Map<EntityInternal, String>> collisions) {
@@ -25,10 +35,12 @@ public class OogaInputCondition implements Condition {
         keyInactiveSatisfied(requiredStatus, keyState);
   }
 
+  //Returns true if the input is not inactive and the requirement accepts any active input state.
   private boolean keyAnySatisfied(String inputType, String keyState) {
     return inputType.equals(ANY_KEY_REQUIREMENT) && keyState != null;
   }
 
+  //Returns true if the input needs to be inactive and is inactive.
   private boolean keyInactiveSatisfied(String inputType, String keyState) {
     return inputType.equals(KEY_INACTIVE_REQUIREMENT) && keyState == null;
   }

@@ -11,7 +11,7 @@ import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Action;
 import ooga.game.behaviors.Effect;
-import ooga.game.behaviors.OogaEntityVarCondition;
+import ooga.game.behaviors.OogaVariableCondition;
 import ooga.game.behaviors.VariableCondition;
 import ooga.game.behaviors.comparators.VariableComparator;
 import ooga.game.behaviors.comparators.VariableEquals;
@@ -72,7 +72,7 @@ public class VariableDeterminedAction extends Action {
     VariableComparator myComparator = determineComparator();
     List<EntityInternal> otherEntities = new ArrayList<>();
     for(EntityInternal otherEntity : gameInternal.getInternalEntities()){
-      VariableCondition variableCondition = new OogaEntityVarCondition(myVariable, myComparator, myValueData);
+      VariableCondition variableCondition = new OogaVariableCondition(myVariable, myComparator, myValueData);
       if(variableCondition.isSatisfied(subject, variables, subject.getVariables())){
         otherEntities.add(otherEntity);
       }
