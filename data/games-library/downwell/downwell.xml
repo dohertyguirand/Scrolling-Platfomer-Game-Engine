@@ -9,8 +9,8 @@
             <Width>45</Width>
             <Height>45</Height>
             <Image>dw_main_character_idle_fall_right.png</Image>
-            <VariableNames>IdleFallSprite JumpingSprite FiringSprite StandingSprite Facing Falling Jumping Firing PreviousY YVel</VariableNames>
-            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_jumping_right.png downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.png Right True False False 100 0</VariableValues>
+            <VariableNames>IdleFallSprite JumpingSprite WalkingSprite FiringSprite StandingSprite Facing Falling Jumping SidewaysMovement Firing PreviousY YVel</VariableNames>
+            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_jumping_right.png downwell/dw_main_character_walking_right.gif downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.png Right True False False False 100 0</VariableValues>
             <Behaviors>
                 <!-- Update YVel and PreviousY -->
                 <Behavior>
@@ -55,6 +55,7 @@
                         <Effect>VelocityInput -.1600 0 + .3200</Effect>
                         <Effect>SetVariable Facing Left</Effect>
                         <Effect>SetVariable Firing False</Effect>
+                        <Effect>SetVariable SidewaysMovement True</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- D Key Input -->
@@ -68,6 +69,21 @@
                         <Effect>VelocityInput .1600 0 + .3200</Effect>
                         <Effect>SetVariable Facing Right</Effect>
                         <Effect>SetVariable Firing False</Effect>
+                        <Effect>SetVariable SidewaysMovement True</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--  neither D nor A keys input -->
+                <Behavior>
+                    <InputCondition>
+                        <Key>RightKey2</Key>
+                        <InputRequirement>Inactive</InputRequirement>
+                    </InputCondition>
+                    <InputCondition>
+                        <Key>LeftKey2</Key>
+                        <InputRequirement>Inactive</InputRequirement>
+                    </InputCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable SidewaysMovement False</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- W Key Input - fire while falling -->
@@ -127,7 +143,7 @@
                 <!-- Gravity Behavior-->
                 <Behavior>
                     <IndependentAction>
-                        <Effect>Gravity 0 0.05 + 20</Effect>
+                        <Effect>Gravity 0 0.07 + 20</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!--  Facing right means using the right facing sprites-->
@@ -140,6 +156,7 @@
                         <Effect>SetVariable FiringSprite downwell/dw_main_character_firing_right.png</Effect>
                         <Effect>SetVariable IdleFallSprite downwell/dw_main_character_idle_fall_right.png</Effect>
                         <Effect>SetVariable JumpingSprite downwell/dw_main_character_jumping_right.png</Effect>
+                        <Effect>SetVariable WalkingSprite downwell/dw_main_character_walking_right.gif</Effect>
                         <Effect>SetVariable StandingSprite downwell/dw_main_character_standing_right.png</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -154,6 +171,7 @@
                         <Effect>SetVariable IdleFallSprite downwell/dw_main_character_idle_fall_left.png</Effect>
                         <Effect>SetVariable JumpingSprite downwell/dw_main_character_jumping_left.png</Effect>
                         <Effect>SetVariable StandingSprite downwell/dw_main_character_standing_left.png</Effect>
+                        <Effect>SetVariable WalkingSprite downwell/dw_main_character_walking_left.gif</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!--  firing means using firing sprite-->
@@ -162,15 +180,11 @@
                         <VariableName>Firing</VariableName>
                         <RequiredValue>True</RequiredValue>
                     </EntityVariableCondition>
-                    <EntityVariableCondition>
-                        <VariableName>Falling</VariableName>
-                        <RequiredValue>True</RequiredValue>
-                    </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>SetImage FiringSprite</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--  falling means using falling sprite-->
+                <!--  falling and not firing means using falling sprite-->
                 <Behavior>
                     <EntityVariableCondition>
                         <VariableName>Firing</VariableName>
@@ -184,7 +198,7 @@
                         <Effect>SetImage IdleFallSprite</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--  jumping means using jumping sprite-->
+                <!--  jumping and not firing means using jumping sprite-->
                 <Behavior>
                     <EntityVariableCondition>
                         <VariableName>Firing</VariableName>
@@ -198,8 +212,30 @@
                         <Effect>SetImage JumpingSprite</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--  not falling or jumping means using standing sprite-->
+                <!-- moving sideways and not falling or jumping means using walking sprites-->
                 <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>SidewaysMovement</VariableName>
+                        <RequiredValue>True</RequiredValue>
+                    </EntityVariableCondition>
+                    <EntityVariableCondition>
+                        <VariableName>Falling</VariableName>
+                        <RequiredValue>False</RequiredValue>
+                    </EntityVariableCondition>
+                    <EntityVariableCondition>
+                        <VariableName>Jumping</VariableName>
+                        <RequiredValue>False</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetImage WalkingSprite</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--  not moving sideways, falling, or jumping means using standing sprite-->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>SidewaysMovement</VariableName>
+                        <RequiredValue>False</RequiredValue>
+                    </EntityVariableCondition>
                     <EntityVariableCondition>
                         <VariableName>Falling</VariableName>
                         <RequiredValue>False</RequiredValue>
@@ -460,7 +496,7 @@
                     <YPos>200</YPos>
                     <Rows>15</Rows>
                     <YGap>200</YGap>
-                    <Columns>3</Columns>
+                    <Columns>7</Columns>
                     <XGap>0</XGap>
                 </ImageEntityInstance>
                 <!--cave walls-->
