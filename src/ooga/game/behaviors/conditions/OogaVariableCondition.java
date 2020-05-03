@@ -53,6 +53,7 @@ public abstract class OogaVariableCondition extends OogaCondition {
    *             "Comparison" maps to the comparator to use.
    *             "ComparedTo" maps to the value to compare to (the target value).
    *             "VariableName" maps to the name of the variable to compare with the target value.
+   * @throws BehaviorCreationException if a required argument is missing.
    */
   public OogaVariableCondition(Map<String,String> args) throws BehaviorCreationException {
     myComparator = initComparator(args);
@@ -81,7 +82,6 @@ public abstract class OogaVariableCondition extends OogaCondition {
    * @param variableName The name of the variable specified when the Condition was created.
    * @return  The actual value to compare to the target value when evaluating this Condition.
    *          Can be a String representing a Double, or some other String, or null.
-   * @throws BehaviorCreationException if a required argument is missing.
    */
   public abstract String findVariableValue(EntityInternal subject, GameInternal game, String variableName);
 
