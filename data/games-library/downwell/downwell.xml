@@ -10,7 +10,7 @@
             <Height>45</Height>
             <Image>dw_main_character_idle_fall_right.png</Image>
             <VariableNames>IdleFallSprite JumpingSprite WalkingSprite FiringSprite StandingSprite Facing Falling Jumping SidewaysMovement Firing PreviousY YVel</VariableNames>
-            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_jumping_right.png downwell/dw_main_character_walking_right.gif downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.png Right True False False False 100 0</VariableValues>
+            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_jumping_right.png downwell/dw_main_character_walking_right.gif downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.gif Right True False False False 100 0</VariableValues>
             <Behaviors>
                 <!-- Update YVel and PreviousY -->
                 <Behavior>
@@ -72,7 +72,7 @@
                         <Effect>SetVariable SidewaysMovement True</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--  neither D nor A keys input -->
+                <!-- neither D nor A keys input -->
                 <Behavior>
                     <InputCondition>
                         <Key>RightKey2</Key>
@@ -157,7 +157,7 @@
                         <Effect>SetVariable IdleFallSprite downwell/dw_main_character_idle_fall_right.png</Effect>
                         <Effect>SetVariable JumpingSprite downwell/dw_main_character_jumping_right.png</Effect>
                         <Effect>SetVariable WalkingSprite downwell/dw_main_character_walking_right.gif</Effect>
-                        <Effect>SetVariable StandingSprite downwell/dw_main_character_standing_right.png</Effect>
+                        <Effect>SetVariable StandingSprite downwell/dw_main_character_standing_right.gif</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!--  Facing left with means using the left facing sprites-->
@@ -170,7 +170,7 @@
                         <Effect>SetVariable FiringSprite downwell/dw_main_character_firing_left.png</Effect>
                         <Effect>SetVariable IdleFallSprite downwell/dw_main_character_idle_fall_left.png</Effect>
                         <Effect>SetVariable JumpingSprite downwell/dw_main_character_jumping_left.png</Effect>
-                        <Effect>SetVariable StandingSprite downwell/dw_main_character_standing_left.png</Effect>
+                        <Effect>SetVariable StandingSprite downwell/dw_main_character_standing_left.gif</Effect>
                         <Effect>SetVariable WalkingSprite downwell/dw_main_character_walking_left.gif</Effect>
                     </IndependentAction>
                 </Behavior>
