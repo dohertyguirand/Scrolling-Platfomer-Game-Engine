@@ -14,6 +14,7 @@ import ooga.game.behaviors.comparators.VariableComparator;
  * a Game or an Entity variable, it has a built-in priority order for finding out what to check.
  * Dependencies:  Relies on EntityInternal to check whether the Entity that owns this condition
  * has the variable, and what its value is.
+ * Relies on VariableComparatorFactory to instantiate the appropriate Comparator when created.
  *                Relies on VariableComparator for the type of comparison between variable and value.
  * Example: A Behavior that starts the game over might require the Condition to be true
  * that the Game's Lives variable is less than 1.
@@ -63,6 +64,15 @@ public abstract class OogaVariableCondition implements Condition {
    */
   public abstract String findVariableValue(EntityInternal subject, GameInternal game, String variableName);
 
+  /**
+   * @return A String representation of this Condition.
+   * Example: "Lives == 0.0"
+   */
+  @Override
+  public String toString() {
+    return myVariableName + " " + myComparator.toString() + " " + myCompareTo;
+  }
+
   //Carries out the order for dereferencing the value to compare to, as described in isSatisfied
   //documentation.
   private String findCompareToValue(EntityInternal subject, GameInternal game) {
@@ -74,14 +84,5 @@ public abstract class OogaVariableCondition implements Condition {
       compareToValue = subject.getVariable(myCompareTo);
     }
     return compareToValue;
-  }
-
-  /**
-   * @return A String representation of this Condition.
-   * Example: "Lives == 0.0"
-   */
-  @Override
-  public String toString() {
-    return myVariableName + " " + myComparator.toString() + " " + myCompareTo;
   }
 }
