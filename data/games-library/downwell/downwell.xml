@@ -9,8 +9,8 @@
             <Width>45</Width>
             <Height>45</Height>
             <Image>dw_main_character_idle_fall_right.png</Image>
-            <VariableNames>FacingRight FacingLeft CameraBorderXRight</VariableNames>
-            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_idle_fall_left.png 550</VariableValues>
+            <VariableNames>FacingRight FacingLeft CameraBorderYBottom CameraBorderYTop</VariableNames>
+            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_idle_fall_left.png 400 100</VariableValues>
             <Behaviors>
                 <!-- A Key Input -->
                 <Behavior>
@@ -42,17 +42,19 @@
                         <Key>UpKey2</Key>
                         <InputRequirement>Pressed</InputRequirement>
                         <IndependentAction>
-                            <Effect>Jump 0 -0.8 + 10.0</Effect>
+                            <Effect>SetImage FacingRight</Effect>
+                            <Effect>SetVelocity 0 0</Effect>
                         </IndependentAction>
                     </InputCondition>
                 </Behavior>
+
                 <!--Gravity Behavior-->
                 <Behavior>
                     <IndependentAction>
                         <Effect>Gravity 0 0.05 + 20</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--  Run into a brick downward to stop falling.-->
+                <!-- Run into a brick downward to stop falling.-->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>SELF</Entity1>
@@ -87,21 +89,21 @@
                         <Effect>ChangeVariable Lives + -1.0</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!--  Go to the right of the camera X border to shift the camera (Based on Cary's sonic.xml)-->
+                <!-- Fall below the lower camera border to lower the camera (Based on Cary's sonic.xml)-->
                 <Behavior>
+                    <!-- If Welltaro is below the lower y border-->
                     <EntityVariableCondition>
                         <VariableName>YPos</VariableName>
                         <Comparison>GreaterThan</Comparison>
-                        <RequiredValue>CameraBorderXRight</RequiredValue>
+                        <RequiredValue>CameraBorderYBottom</RequiredValue>
                     </EntityVariableCondition>
                     <IndependentAction>
-                        <Effect>SetVariable CameraDiff XPos</Effect>
-                        <Effect>ChangeVariable CameraDiff - CameraBorderXRight</Effect>
-                        <Effect>ChangeVariable CameraDiff * -1</Effect>
-                        <Effect>ShiftCamera CameraDiff 0</Effect>
-                        <Effect>ChangeVariable CameraBorderXRight - CameraDiff</Effect>
-                        <Effect>SetVariable CameraBorderXLeft CameraBorderXRight</Effect>
-                        <Effect>ChangeVariable CameraBorderXLeft - 200.0</Effect>
+                        <Effect>SetVariable CameraDiff YPos</Effect>                        <!-- Set CameraDiff to be Welltaro's current y pos ...-->
+                        <Effect>ChangeVariable CameraDiff - CameraBorderYBottom</Effect>     <!-- ... minus the lower border ... -->
+                        <Effect>ChangeVariable CameraDiff * -1</Effect>                     <!-- ... times -1-->
+                        <Effect>ShiftCamera 0 CameraDiff</Effect>                           <!-- move the camera 'CameraDiff' distance in the y direction-->
+                        <Effect>ChangeVariable CameraBorderYBottom - CameraDiff</Effect>     <!-- move the lower border right by the difference-->
+                        <Effect>ChangeVariable CameraBorderYTop - CameraDiff</Effect>      <!-- move the upper border right by the difference-->
                     </IndependentAction>
                 </Behavior>
                 <!--   Resetting the Game and all the variables  when lives reaches 0-->
@@ -171,20 +173,10 @@
             <Name>Lives</Name>
             <StartValue>1</StartValue>
         </Variable>
-        <!-- Camera Shift Value behavior  -->
+        <!-- Camera Difference Variable    -->
         <Variable>
-            <Name>CameraShiftValue</Name>
+            <Name>CameraDiff</Name>
             <StartValue>0</StartValue>
-        </Variable>
-        <!-- Camera Y border behavior  -->
-        <Variable>
-            <Name>CameraBorderYPos</Name>
-            <StartValue>200</StartValue>
-        </Variable>
-        <!-- Floor Value behavior  -->
-        <Variable>
-            <Name>FloorValue</Name>
-            <StartValue>800</StartValue>
         </Variable>
     </Variables>
     <Levels>
@@ -213,12 +205,6 @@
                     <XPos>0</XPos>
                     <YPos>0</YPos>
                 </ImageEntityInstance>
-                <!--camera movement thingy-->
-<!--                <ImageEntityInstance>-->
-<!--                    <Name>DecreaseHeight</Name>-->
-<!--                    <XPos>-500</XPos>-->
-<!--                    <YPos>500</YPos>-->
-<!--                </ImageEntityInstance>-->
                 <!--welltaro-->
                 <ImageEntityInstance>
                     <Name>Welltaro</Name>
@@ -232,41 +218,8 @@
                     <Name>PlatformTile</Name>
                     <XPos>500</XPos>
                     <YPos>200</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>PlatformTile</Name>
-                    <XPos>500</XPos>
-                    <YPos>400</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>PlatformTile</Name>
-                    <XPos>500</XPos>
-                    <YPos>600</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>PlatformTile</Name>
-                    <XPos>500</XPos>
-                    <YPos>800</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>PlatformTile</Name>
-                    <XPos>500</XPos>
-                    <YPos>1000</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>PlatformTile</Name>
-                    <XPos>500</XPos>
-                    <YPos>1200</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>PlatformTile</Name>
-                    <XPos>500</XPos>
-                    <YPos>1400</YPos>
-                </ImageEntityInstance>
-                <ImageEntityInstance>
-                    <Name>PlatformTile</Name>
-                    <XPos>500</XPos>
-                    <YPos>1600</YPos>
+                    <Rows>40</Rows>
+                    <YGap>200</YGap>
                 </ImageEntityInstance>
             </ImageEntityInstances>
         </Level>
