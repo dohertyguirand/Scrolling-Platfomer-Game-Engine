@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 
-public class CollisionCondition implements Condition {
+public class OogaCollisionCondition implements Condition {
 
   //TODO: Revisit this and make it abstract so it can be implemented by
   // BannedCollisionCondition and RequiredCollisionCondition
@@ -13,9 +13,13 @@ public class CollisionCondition implements Condition {
   private String firstEntity;
   private String secondEntity;
   private String requiredDirection;
+  private boolean collisionAllowed;
 
-  public CollisionCondition(String firstEntity, String secondEntity, String requiredDirection) {
-
+  public OogaCollisionCondition(String first, String second, String direction, boolean allowed) {
+    firstEntity = first;
+    secondEntity = second;
+    requiredDirection = direction;
+    collisionAllowed = allowed;
   }
 
   @Override
@@ -23,15 +27,15 @@ public class CollisionCondition implements Condition {
       Map<EntityInternal, Map<EntityInternal, String>> collisions) {
     Map<EntityInternal, String> collisionsWithSubject = getSubjectCollisions(firstEntity,collisions);
     if (collisionsWithSubject == null) {
-      return false;
+      return (!collisionAllowed);
     }
     for (Entry<EntityInternal,String> collision : collisionsWithSubject.entrySet()) {
       if (secondEntity.equals(collision.getKey().getName()) && directionMatches(requiredDirection,
           collision.getValue())) {
-        return true;
+        return collisionAllowed;
       }
     }
-    return false;
+    return (!collisionAllowed);
   }
 
   private boolean directionMatches(String requiredDirection, String value) {

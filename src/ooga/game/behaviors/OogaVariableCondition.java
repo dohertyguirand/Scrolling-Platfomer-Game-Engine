@@ -2,6 +2,7 @@ package ooga.game.behaviors;
 
 import java.util.Map;
 import ooga.game.EntityInternal;
+import ooga.game.GameInternal;
 import ooga.game.behaviors.comparators.VariableComparator;
 
 /**
@@ -15,7 +16,7 @@ import ooga.game.behaviors.comparators.VariableComparator;
  * Example: A Behavior that starts the game over might require the Condition to be true
  * that the Game's Lives variable is less than 1.
  */
-public class OogaVariableCondition implements VariableCondition {
+public class OogaVariableCondition implements Condition {
 
   private final VariableComparator myComparator;
   private final String myCompareTo;
@@ -35,6 +36,15 @@ public class OogaVariableCondition implements VariableCondition {
   }
 
   /**
+   * @return A String representation of this Condition.
+   * Example: "Compares variable Lives to 0.0"
+   */
+  @Override
+  public String toString() {
+    return "Compares variable " + myVariableName + " to value " + myCompareTo;
+  }
+
+  /**
    * Dereferences the given variable name using a Map that combines Game and subject Entity
    * variables.
    * Then it dereferences the target value in the following priority order:
@@ -48,8 +58,10 @@ public class OogaVariableCondition implements VariableCondition {
    * @return True if the condition is satisfied based on the variable values.
    */
   @Override
-  public boolean isSatisfied(EntityInternal behaviorEntity, Map<String, String> gameVariables,
-      Map<String, String> subjectVariables) {
+  public boolean isSatisfied(EntityInternal subject, GameInternal game, Map<String, String> inputs,
+      Map<EntityInternal, Map<EntityInternal, String>> collisions) {
+    Map<String,String> subjectVariables = subject.getVariables();
+    Map<String,String> gameVariables = game.getVariables();
     if (!subjectVariables.containsKey(myVariableName)) {
       return false;
     }
@@ -57,18 +69,9 @@ public class OogaVariableCondition implements VariableCondition {
     if (gameVariables.containsKey(myCompareTo)) {
       compareToValue = gameVariables.get(myCompareTo);
     }
-    else if (behaviorEntity.getVariable(myCompareTo) != null) {
-      compareToValue = behaviorEntity.getVariable(myCompareTo);
+    else if (subject.getVariable(myCompareTo) != null) {
+      compareToValue = subject.getVariable(myCompareTo);
     }
     return (myComparator.compareVars(subjectVariables.get(myVariableName),compareToValue));
-  }
-
-  /**
-   * @return A String representation of this Condition.
-   * Example: "Compares variable Lives to 0.0"
-   */
-  @Override
-  public String toString() {
-    return "Compares variable " + myVariableName + " to value " + myCompareTo;
   }
 }
