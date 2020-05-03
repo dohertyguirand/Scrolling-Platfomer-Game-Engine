@@ -16,12 +16,19 @@ public class OogaInputCondition implements Condition {
 
   private static final String ANY_KEY_REQUIREMENT = "ANY";
   private static final String KEY_INACTIVE_REQUIREMENT = "Inactive";
+  public static final String INPUT_NAME_LABEL = "Key";
+  public static final String INPUT_REQUIREMENT_LABEL = "InputRequirement";
   private String inputName;
   private String requiredStatus;
 
-  public OogaInputCondition(String input, String status) {
-    inputName = input;
-    requiredStatus = status;
+  /**
+   * @param args A String-String Map with the following:
+   *             "Key" maps to the standardized input name.
+   *             "InputRequirement" maps to the input status to check for.
+   */
+  public OogaInputCondition(Map<String,String> args) {
+    inputName = args.get(INPUT_NAME_LABEL);
+    requiredStatus = args.get(INPUT_REQUIREMENT_LABEL);
   }
 
   /**

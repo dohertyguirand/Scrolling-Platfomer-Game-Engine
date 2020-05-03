@@ -1,8 +1,8 @@
 package ooga.game.behaviors.conditions;
 
+import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
-import ooga.game.behaviors.comparators.VariableComparator;
 
 /**
  * @author Sam Thompson
@@ -13,15 +13,10 @@ import ooga.game.behaviors.comparators.VariableComparator;
 public class OogaEntityVarCondition extends OogaVariableCondition {
 
   /**
-   * @param varName    The name of the variable to check the value of. It could be a Game variable or
-   *                   a variable related to the Entity that whose behavior owns this condition.
-   * @param comparator The VariableComparator to use to compare the value of the variable to the
-   *                   target value.
-   * @param value      The target value to compare the variable to. Can be a variable name.
+   * {@inheritDoc}
    */
-  public OogaEntityVarCondition(String varName,
-      VariableComparator comparator, String value) {
-    super(varName, comparator, value);
+  public OogaEntityVarCondition(Map<String, String> args) {
+    super(args);
   }
 
   /**

@@ -8,6 +8,8 @@ import ooga.game.GameInternal;
  * @author Sam Thompson
  * Represents some kind of predicate that must be true in order for the Effects of a Behavior
  * to execute. Is owned by a Behavior for assessment each game step.
+ * For Reflection: Each concrete implementation should have a constructor that takes in a
+ *              Map of String,String pairs as arguments and throw an exception if it is invalid.
  * Dependencies:  Relies on EntityInternal for access to information about them, such as their Map
  *                of variables, or their position.
  *                Relies on GameInternal for access to game-wide information and variables.

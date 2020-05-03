@@ -4,6 +4,7 @@ import java.util.Map;
 import ooga.game.EntityInternal;
 import ooga.game.GameInternal;
 import ooga.game.behaviors.Condition;
+import ooga.game.behaviors.VariableComparatorFactory;
 import ooga.game.behaviors.comparators.VariableComparator;
 
 /**
@@ -19,21 +20,23 @@ import ooga.game.behaviors.comparators.VariableComparator;
  */
 public abstract class OogaVariableCondition implements Condition {
 
+  public static final String COMPARATOR_LABEL = "Comparison";
+  public static final String TARGET_VALUE_LABEL = "ComparedTo";
+  public static final String VAR_NAME_LABEL = "VariableName";
   private final VariableComparator myComparator;
   private final String myCompareTo;
   private final String myVariableName;
 
   /**
-   * @param varName The name of the variable to check the value of. It could be a Game variable
-   *                or a variable related to the Entity that whose behavior owns this condition.
-   * @param comparator The VariableComparator to use to compare the value of the variable to
-   *                   the target value.
-   * @param value The target value to compare the variable to. Can be a variable name.
+   * @param args A String-String Map with the following:
+   *             "Comparison" maps to the comparator to use.
+   *             "ComparedTo" maps to the value to compare to (the target value).
+   *             "VariableName" maps to the name of the variable to compare with the target value.
    */
-  public OogaVariableCondition(String varName, VariableComparator comparator, String value) {
-    myComparator = comparator;
-    myCompareTo = value;
-    myVariableName = varName;
+  public OogaVariableCondition(Map<String,String> args) {
+    myComparator = new VariableComparatorFactory().makeComparator(args.get(COMPARATOR_LABEL));
+    myCompareTo = args.get(TARGET_VALUE_LABEL);
+    myVariableName = args.get(VAR_NAME_LABEL);
   }
 
   /**

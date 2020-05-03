@@ -1,7 +1,6 @@
 package ooga.game.behaviors.conditions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,23 +13,34 @@ import ooga.game.behaviors.Condition;
  * Evaluates to true when there exists a collision this game step between two entities with
  * specified names, and the collision is of a specified type (such as Up, Down, Left Right).
  * Can also evaluate to false when such a collision exists, if that is specified.
+ * NOTE: These collisions may not be symmetrical. For example, if Mario is colliding downward with
+ * a Koopa, the Koopa is NOT colliding downward with Mario.
  * @see Condition
  */
 public class OogaCollisionCondition implements Condition {
 
-  //TODO: This doesn't work ALGORITHMICALLY, since it only checks against the collisions of the
-  // FIRST ENTITY WITH THE GIVEN NAME.
   public static final String ANY_COLLISION = "ANY";
+  public static final String FIRST_ENTITY_LABEL = "FirstEntity";
+  public static final String SECOND_ENTITY_LABEL = "SecondEntity";
+  public static final String COLLISION_TYPE_LABEL = "Direction";
+  public static final String BANNED_LABEL = "Banned";
   private String firstEntity;
   private String secondEntity;
   private String requiredDirection;
   private boolean collisionAllowed;
 
-  public OogaCollisionCondition(String first, String second, String direction, boolean allowed) {
-    firstEntity = first;
-    secondEntity = second;
-    requiredDirection = direction;
-    collisionAllowed = allowed;
+  /**
+   * @param args A String-String Map with the following:
+   *             "FirstEntity" maps to the name of the first entity in the collision.
+   *             "SecondEntity" maps to the name of the second entity in the collision.
+   *             "Direction" maps to the direction (or more generally, 'type') of collision.
+   *             "Banned" maps to a Boolean saying whether
+   */
+  public OogaCollisionCondition(Map<String,String> args) {
+    firstEntity = args.get(FIRST_ENTITY_LABEL);
+    secondEntity = args.get(SECOND_ENTITY_LABEL);
+    requiredDirection = args.get(COLLISION_TYPE_LABEL);
+    collisionAllowed = !(Boolean.parseBoolean(args.get(BANNED_LABEL)));
   }
 
   /**
