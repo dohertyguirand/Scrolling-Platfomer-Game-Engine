@@ -2,8 +2,8 @@
 // Implements findVariableValue() by looking for the variable name in the subject entity's
 // variables map, and leaves the superclass to do the comparing. It knows that the superclass
 // can handle a null return value.
-// If you wanted to make one for Game variables, you would instead look in the gameInternal's
-// variables.
+// If you wanted to make one for the subject entity's variables, you would instead look in the
+// gameInternal's variables.
 // Piggybacks off of its superclass for being reflection-compatible.
 
 package ooga.game.behaviors.conditions;
@@ -34,6 +34,6 @@ public class OogaGameVarCondition extends OogaVariableCondition {
    */
   @Override
   public String findVariableValue(EntityInternal subject, GameInternal game, String variableName) {
-    return subject.getVariable(variableName);
+    return game.getVariables().get(variableName);
   }
 }
