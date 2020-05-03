@@ -1,0 +1,274 @@
+<Game>
+    <Name>Downwell</Name>
+    <Thumbnail>Downwell_logo.png</Thumbnail>
+    <Description>Explore the abyss</Description>
+    <Entities>
+        <!-- Welltaro behavior  -->
+        <ImageEntity>
+            <Name>Welltaro</Name>
+            <Width>45</Width>
+            <Height>45</Height>
+            <Image>dw_main_character_idle_fall_right.png</Image>
+            <VariableNames>FacingRight FacingLeft CameraBorderXRight</VariableNames>
+            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_idle_fall_left.png 550</VariableValues>
+            <Behaviors>
+                <!-- A Key Input -->
+                <Behavior>
+                    <InputCondition>
+                        <Key>LeftKey2</Key>
+                        <InputRequirement>Active</InputRequirement>
+                        <InputRequirement>Pressed</InputRequirement>
+                    </InputCondition>
+                    <IndependentAction>
+                        <Effect>VelocityInput -.1600 0 + .3200</Effect>
+                        <Effect>SetImage FacingLeft</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- D Key Input -->
+                <Behavior>
+                    <InputCondition>
+                        <Key>RightKey2</Key>
+                        <InputRequirement>Active</InputRequirement>
+                        <InputRequirement>Pressed</InputRequirement>
+                    </InputCondition>
+                    <IndependentAction>
+                        <Effect>VelocityInput .1600 0 + .3200</Effect>
+                        <Effect>SetImage FacingRight</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- W Key Input -->
+                <Behavior>
+                    <InputCondition>
+                        <Key>UpKey2</Key>
+                        <InputRequirement>Pressed</InputRequirement>
+                        <IndependentAction>
+                            <Effect>Jump 0 -0.8 + 10.0</Effect>
+                        </IndependentAction>
+                    </InputCondition>
+                </Behavior>
+                <!--Gravity Behavior-->
+                <Behavior>
+                    <IndependentAction>
+                        <Effect>Gravity 0 0.05 + 20</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--  Run into a brick downward to stop falling.-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Down</Args>
+                        <Effect>TerrainCollisionDown</Effect>
+                        <Effect>SetVariable Jumping False</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <!-- Run into left side of screen and die-->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>XPos</VariableName>
+                        <Comparison>LessThan</Comparison>
+                        <RequiredValue>0</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- Run into right side of screen and die-->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>XPos</VariableName>
+                        <Comparison>GreaterThan</Comparison>
+                        <RequiredValue>955</RequiredValue> <!-- screen width (1000) minus width of Welltaro (45 at the moment) -->
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives + -1.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--  Go to the right of the camera X border to shift the camera (Based on Cary's sonic.xml)-->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>YPos</VariableName>
+                        <Comparison>GreaterThan</Comparison>
+                        <RequiredValue>CameraBorderXRight</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable CameraDiff XPos</Effect>
+                        <Effect>ChangeVariable CameraDiff - CameraBorderXRight</Effect>
+                        <Effect>ChangeVariable CameraDiff * -1</Effect>
+                        <Effect>ShiftCamera CameraDiff 0</Effect>
+                        <Effect>ChangeVariable CameraBorderXRight - CameraDiff</Effect>
+                        <Effect>SetVariable CameraBorderXLeft CameraBorderXRight</Effect>
+                        <Effect>ChangeVariable CameraBorderXLeft - 200.0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!--   Resetting the Game and all the variables  when lives reaches 0-->
+                <Behavior>
+                    <GameVariableCondition>
+                        <VariableName>Lives</VariableName>
+                        <RequiredValue>0.0</RequiredValue>
+                    </GameVariableCondition>
+                    <IndependentAction>
+                        <Effect>GoToLevel 1</Effect>
+                        <Effect>SetVariable Lives 1.0</Effect>
+                        <Effect>SetVariable Score 0.0</Effect>
+                        <Effect>SetVariable CameraShiftValue 0.0</Effect>
+                        <Effect>SetVariable CameraBorderYPos 200</Effect>
+                        <Effect>SetVariable FloorValue 800</Effect>
+                    </IndependentAction>
+                </Behavior>
+            </Behaviors>
+        </ImageEntity>
+        <!-- Background Behavior  -->
+        <ImageEntity>
+            <Name>Background</Name>
+            <Width>1000</Width>
+            <Height>800</Height>
+            <Image>downwellBackground.png</Image>
+            <Stationary>true</Stationary>
+        </ImageEntity>
+        <!-- Screen movement Behavior  -->
+        <ImageEntity>
+            <Name>DecreaseHeight</Name>
+            <Width>2000</Width>
+            <Height>200</Height>
+            <Image>dw_platform_tile_side_up.png</Image>
+            <Stationary>true</Stationary>
+            <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity1>Welltaro</Entity1>
+                    <Entity2>DecreaseHeight</Entity2>
+                    <Direction>Down</Direction>
+                </RequiredCollisionCondition>
+                <IndependentAction>
+                    <Effect>SetVariable CameraShiftValue -50</Effect>    <!--set CameraShiftValue to 50-->
+                    <Effect>ShiftCamera 0 CameraShiftValue </Effect>    <!--shift camera 0 in the x direction and CameraShiftValue down in the y-->
+                    <Effect>ChangePosition 0 50 + </Effect>             <!--move invisible ceiling down by 50    NOTE: I think this is redundant-->
+                    <Effect>ChangeVariable FloorValue + 50</Effect>    <!--move floor down by 50-->
+                </IndependentAction>
+            </Behavior>
+        </ImageEntity>
+        <!-- Platform Tile Behavior  -->
+        <ImageEntity>
+            <Name>PlatformTile</Name>
+            <Width>57</Width>
+            <Height>57</Height>
+            <Image>dw_platform_tile_side_up.png</Image>
+            <VariableNames>TerrainID</VariableNames>
+            <VariableValues>universalTerrain</VariableValues>
+        </ImageEntity>
+    </Entities>
+    <Variables>
+        <!-- Score behavior  -->
+        <Variable>
+            <Name>Score</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <!-- Lives behavior  -->
+        <Variable>
+            <Name>Lives</Name>
+            <StartValue>1</StartValue>
+        </Variable>
+        <!-- Camera Shift Value behavior  -->
+        <Variable>
+            <Name>CameraShiftValue</Name>
+            <StartValue>0</StartValue>
+        </Variable>
+        <!-- Camera Y border behavior  -->
+        <Variable>
+            <Name>CameraBorderYPos</Name>
+            <StartValue>200</StartValue>
+        </Variable>
+        <!-- Floor Value behavior  -->
+        <Variable>
+            <Name>FloorValue</Name>
+            <StartValue>800</StartValue>
+        </Variable>
+    </Variables>
+    <Levels>
+        <Level>
+            <ID>1</ID>
+            <NextLevel>1</NextLevel>
+            <TextEntityInstances>
+                <TextEntityInstance>
+                    <Text>Score: %.0f</Text>
+                    <Font>Times New Roman</Font>
+                    <XPos>700</XPos>
+                    <YPos>0</YPos>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                    <Stationary>true</Stationary>
+                    <PropertyVariableDependency>
+                        <VariableName>Score</VariableName>
+                        <PropertyName>Text</PropertyName>
+                    </PropertyVariableDependency>
+                </TextEntityInstance>
+            </TextEntityInstances>
+            <ImageEntityInstances>
+                <!--Background-->
+                <ImageEntityInstance>
+                    <Name>Background</Name>
+                    <XPos>0</XPos>
+                    <YPos>0</YPos>
+                </ImageEntityInstance>
+                <!--camera movement thingy-->
+<!--                <ImageEntityInstance>-->
+<!--                    <Name>DecreaseHeight</Name>-->
+<!--                    <XPos>-500</XPos>-->
+<!--                    <YPos>500</YPos>-->
+<!--                </ImageEntityInstance>-->
+                <!--welltaro-->
+                <ImageEntityInstance>
+                    <Name>Welltaro</Name>
+                    <XPos>500</XPos>
+                    <YPos>100</YPos>
+                    <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
+                    <VariableValues>0 0</VariableValues>
+                </ImageEntityInstance>
+                <!--blocks-->
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>500</XPos>
+                    <YPos>200</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>500</XPos>
+                    <YPos>400</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>500</XPos>
+                    <YPos>600</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>500</XPos>
+                    <YPos>800</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>500</XPos>
+                    <YPos>1000</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>500</XPos>
+                    <YPos>1200</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>500</XPos>
+                    <YPos>1400</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>500</XPos>
+                    <YPos>1600</YPos>
+                </ImageEntityInstance>
+            </ImageEntityInstances>
+        </Level>
+    </Levels>
+</Game>
