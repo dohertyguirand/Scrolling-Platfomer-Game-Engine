@@ -18,8 +18,9 @@ public class SetPositionEffect extends TimeDelayedEffect {
   private List<String> desiredLocation;
 
   /**
-   * Construct the set position effect by setting desiredLocation. Note that it adds strings because it could depend on variables.
-   * @param args list of arguments from XMLGameDataReader
+   * @param args  1. The X position for this Entity to go to.
+   *              2. The Y position for this Entity to go to.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
    */
   public SetPositionEffect(List<String> args) throws IndexOutOfBoundsException{
     super(args);
@@ -36,13 +37,7 @@ public class SetPositionEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Sets the location to the stored location. If stored location is variable dependent, attempts to find a matching game variable.
-   * If there is none, attempts to find a matching entity variable. If there is none, defaults to 0.0.
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity entity we are "interacting with" in this effect
-   * @param elapsedTime time between steps in ms
-   * @param variables   game variables
-   * @param game        game instance
+   * {@inheritDoc}
    */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

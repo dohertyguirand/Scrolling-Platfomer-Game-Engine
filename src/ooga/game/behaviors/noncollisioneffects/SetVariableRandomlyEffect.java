@@ -20,6 +20,12 @@ public class SetVariableRandomlyEffect extends TimeDelayedEffect {
   private String randomRangeMin;
   private String randomRangeMax;
 
+  /**
+   * @param args  1. The name of the variable to set.
+   *              2. The minimum Double value that the variable could be randomly set to.
+   *              3. The maximum Double value that the variable could be randomly set to.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
+   */
   public SetVariableRandomlyEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
@@ -36,12 +42,7 @@ public class SetVariableRandomlyEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Performs the effect
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity entity we are "interacting with" in this effect
-   * @param elapsedTime time between steps in ms
-   * @param variables   game variables
-   * @param game        game instance
+   * {@inheritDoc}
    */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

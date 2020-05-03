@@ -22,6 +22,14 @@ public class CreateEntityCustomEffect extends TimeDelayedEffect {
   private String createdEntityWidth;
   private String createdEntityHeight;
 
+  /**
+   * @param args  1. The type of entity to create. Must be an existing type for the effect to work.
+   *              2. The X value relative to this Entity where the new one is created.
+   *              3. The Y value relative to this Entity where the new one is created.
+   *              4. The width of the created Entity.
+   *              5. The height of the created Entity.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
+   */
   public CreateEntityCustomEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
@@ -41,12 +49,7 @@ public class CreateEntityCustomEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Performs the effect
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity
-   * @param elapsedTime
-   * @param variables
-   * @param game
+   * {@inheritDoc}
    */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

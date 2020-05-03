@@ -8,11 +8,14 @@ import ooga.game.behaviors.TimeDelayedEffect;
 
 /**
  * @author sam thompson
- * Tells the game to load the next level and set that as its active level.
+ * Tells the game to load the next level and switch to it.
  */
 @SuppressWarnings("unused")
 public class NextLevelEffect extends TimeDelayedEffect {
 
+  /**
+   * @param args Has no arguments.
+   */
   public NextLevelEffect(List<String> args) {
     super(args);
   }
@@ -25,6 +28,9 @@ public class NextLevelEffect extends TimeDelayedEffect {
     //has no arguments
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime,
                                      Map<String, String> variables, GameInternal game) {

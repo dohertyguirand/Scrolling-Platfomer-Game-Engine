@@ -20,6 +20,11 @@ public class SetVariableEffect extends TimeDelayedEffect {
   private String variableName;
   private String variableValue;
 
+  /**
+   * @param args  1. The name of the variable to set.
+   *              2. The value to set the variable to.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
+   */
   public SetVariableEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
@@ -34,12 +39,7 @@ public class SetVariableEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Performs the effect
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity entity we are "interacting with" in this effect
-   * @param elapsedTime time between steps in ms
-   * @param variables   game variables
-   * @param game        game instance
+   * {@inheritDoc}
    */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

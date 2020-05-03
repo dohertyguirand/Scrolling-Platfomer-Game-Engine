@@ -29,6 +29,15 @@ public class PatrolEffect extends TimeDelayedEffect {
 
   private List<String> myTargetPointData;
 
+  /**
+   * @param args  1. The acceleration to apply toward the current target point.
+   *              2. The maximum speed this Effect can cause.
+   *              3. The X value of the first patrol point.
+   *              4. The Y value of the first patrol point.
+   *              5. The X value of the second patrol point.
+   *              6. The Y value of the second patrol point.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
+   */
   public PatrolEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
@@ -53,12 +62,7 @@ public class PatrolEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Performs the effect
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity entity we are "interacting with" in this effect
-   * @param elapsedTime time between steps in ms
-   * @param variables   game variables
-   * @param game        game instance
+   * {@inheritDoc}
    */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {

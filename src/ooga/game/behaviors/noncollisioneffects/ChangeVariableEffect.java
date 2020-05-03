@@ -27,6 +27,12 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
   private String operatorData;
   private String changeValueData;
 
+  /**
+   * @param args  1. The name of the variable to modify.
+   *              2. The value by which to modify the variable.
+   *              3. The operator (+,-,*,/) to use on the current position to apply the change.
+   * @throws IndexOutOfBoundsException If there are arguments missing.
+   */
   public ChangeVariableEffect(List<String> args) throws IndexOutOfBoundsException {
     super(args);
   }
@@ -43,12 +49,7 @@ public class ChangeVariableEffect extends TimeDelayedEffect {
   }
 
   /**
-   * Performs the effect
-   * @param subject     The entity that owns this. This is the entity that should be modified.
-   * @param otherEntity entity we are "interacting with" in this effect
-   * @param elapsedTime time between steps in ms
-   * @param variables   game variables
-   * @param game        game instance
+   * {@inheritDoc}
    */
   @Override
   protected void doTimeDelayedEffect(EntityInternal subject, EntityInternal otherEntity, double elapsedTime, Map<String, String> variables, GameInternal game) {
