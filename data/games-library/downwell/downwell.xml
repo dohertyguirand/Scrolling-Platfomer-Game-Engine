@@ -289,6 +289,17 @@
                         <Effect>TerrainCollisionRight</Effect>
                     </CollisionDeterminedAction>
                 </Behavior>
+                <!--  Run into a brick up to stop too-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Up</Args>
+                        <Effect>TerrainCollisionUp</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
                 <!--  Run into a monster downward to bounce off of it-->
                 <Behavior>
                     <RequiredCollisionCondition>
@@ -297,7 +308,9 @@
                         <Direction>Down</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
+                        <Effect>ChangeVariable XVel * 0.001</Effect>
                         <Effect>SetVelocity XVel -1.1</Effect>
+                        <Effect>ChangeVariable XVel * 1000</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Run into left side of screen and die-->
@@ -403,7 +416,7 @@
                     <Direction>ANY</Direction>
                 </RequiredCollisionCondition>
                 <IndependentAction>
-                    <Effect>CreateEntityRelative BootMuzzleFlash -3 25</Effect>
+                    <Effect>CreateEntityRelative BootMuzzleFlash -12 25</Effect>
                     <Effect>RemoveSelf</Effect>
                 </IndependentAction>
             </Behavior>
@@ -415,6 +428,7 @@
                     <Direction>ANY</Direction>
                 </RequiredCollisionCondition>
                 <IndependentAction>
+                    <Effect>CreateEntityRelative BootMuzzleFlash -12 25</Effect>
                     <Effect>RemoveSelf</Effect>
                 </IndependentAction>
             </Behavior>
@@ -454,19 +468,81 @@
             <Width>60</Width>
             <Height>45</Height>
             <Image>dw_jelly_monster.gif</Image>
-            <VariableNames>MyHealth TerrainID XDiff YDiff XDiffPositive YDiffPositive</VariableNames>
-            <VariableValues>100 monster 0 0 0 0</VariableValues>
+            <VariableNames>MyHealth TerrainID XDiff YDiff XMoveDir YMoveDir Speed</VariableNames>
+            <VariableValues>100 monster 0 0 0 0 0.015</VariableValues>
             <Behaviors>
-                <!-- if below Welltaro, move up -->
+                <!-- move towards Welltaro behavior -->
                 <Behavior>
-                    <IndependentAction>SetVariable XDiff WelltaroXPos</IndependentAction>
-                    <IndependentAction>ChangeVariable XDiff - XPos</IndependentAction>
-                    <IndependentAction>SetVariable XDiffPositive XDiff</IndependentAction>
-                    <IndependentAction>ChangeVariable XDiffPositive ^ 2</IndependentAction>
-                    <IndependentAction>ChangeVariable XDiffPositive ^ 1/2</IndependentAction>
-                    <IndependentAction>SetVariable Score XDiffPositive</IndependentAction>
+                    <!-- determine the direction that welltaro is in -->
+                    <IndependentAction>
+                        <!-- calc. XMoveDir such that it's +1 if Welltaro is in the positive direction and -1 else-->
+                        <Effect>SetVariable XDiff WelltaroXPos</Effect>
+                        <Effect>ChangeVariable XDiff - XPos</Effect>
+                        <Effect>SetVariable XMoveDir XDiff</Effect>
+                        <Effect>ChangeVariable XMoveDir * XMoveDir</Effect>
+                        <Effect>ChangeVariable XMoveDir ^ 0.5</Effect>
+                        <Effect>ChangeVariable XMoveDir / XDiff</Effect>
+                        <!-- calc. YMoveDir such that it's +1 if Welltaro is in the positive direction and -1 else-->
+                        <Effect>SetVariable YDiff WelltaroYPos</Effect>
+                        <Effect>ChangeVariable YDiff - YPos</Effect>
+                        <Effect>SetVariable YMoveDir YDiff</Effect>
+                        <Effect>ChangeVariable YMoveDir * YMoveDir</Effect>
+                        <Effect>ChangeVariable YMoveDir ^ 0.5</Effect>
+                        <Effect>ChangeVariable YMoveDir / YDiff</Effect>
+                    </IndependentAction>
+                    <!-- move roughly in that direction -->
+                    <IndependentAction>
+                        <Effect>ChangeVariable XMoveDir * Speed</Effect>
+                        <Effect>ChangeVariable YMoveDir * Speed</Effect>
+                        <Effect>SetVelocity XMoveDir YMoveDir</Effect>
+                    </IndependentAction>
                 </Behavior>
-                <!-- if hit by bullet, reduce health -->
+                <!--  Run into a brick downward to stop falling.-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Down</Args>
+                        <Effect>TerrainCollisionDown</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <!--  Run into a brick Left to stop too-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Left</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Left</Args>
+                        <Effect>TerrainCollisionLeft</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <!--  Run into a brick Right to stop too-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Right</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Right</Args>
+                        <Effect>TerrainCollisionRight</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <!--  Run into a brick up to stop too-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>universalTerrain</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <CollisionDeterminedAction>
+                        <Args>universalTerrain Up</Args>
+                        <Effect>TerrainCollisionUp</Effect>
+                    </CollisionDeterminedAction>
+                </Behavior>
+                <!-- if hit by bullet, reduce health and add to score -->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>SELF</Entity1>
@@ -475,9 +551,10 @@
                     </RequiredCollisionCondition>
                     <IndependentAction>
                         <Effect>ChangeVariable MyHealth - 25</Effect>
+                        <Effect>ChangeVariable Score + 25</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!-- if hit by Welltaro from above, reduce health to zero -->
+                <!-- if hit by Welltaro from above, reduce health to zero and add to score-->
                 <Behavior>
                     <RequiredCollisionCondition>
                         <Entity1>SELF</Entity1>
@@ -485,10 +562,11 @@
                         <Direction>Up</Direction>
                     </RequiredCollisionCondition>
                     <IndependentAction>
+                        <Effect>ChangeVariable Score + 150</Effect>
                         <Effect>SetVariable MyHealth 0</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!-- if health is zero, die-->
+                <!-- if health is zero, die and add to score -->
                 <Behavior>
                     <EntityVariableCondition>
                         <VariableName>MyHealth</VariableName>
@@ -497,6 +575,7 @@
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>CreateEntityRelative MonsterExplosionEffect -45 -50</Effect>
+                        <Effect>ChangeVariable Score + 100</Effect>
                         <Effect>RemoveSelf</Effect>
                     </IndependentAction>
                 </Behavior>
@@ -665,10 +744,9 @@
             <NextLevel>1</NextLevel>
             <TextEntityInstances>
                 <TextEntityInstance>
-<!--                    <Text>Score: %.0f</Text>-->
-                    <Text>Score: %f</Text>
+                    <Text>Score: %.0f</Text>
                     <Font>Times New Roman</Font>
-                    <XPos>700</XPos>
+                    <XPos>500</XPos>
                     <YPos>-50</YPos>
                     <Width>150</Width>
                     <Height>50</Height>
@@ -725,7 +803,7 @@
                 <!--welltaro-->
                 <ImageEntityInstance>
                     <Name>Welltaro</Name>
-                    <XPos>500</XPos>
+                    <XPos>220</XPos>
                     <YPos>100</YPos>
                 </ImageEntityInstance>
                 <!--jelly monster-->
@@ -737,25 +815,132 @@
                 <!--blocks-->
                 <ImageEntityInstance>
                     <Name>PlatformTile</Name>
-                    <XPos>150</XPos>
+                    <XPos>160</XPos>
                     <YPos>200</YPos>
-                    <Rows>15</Rows>
-                    <YGap>200</YGap>
                     <Columns>7</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>620</XPos>
+                    <YPos>500</YPos>
+                    <Rows>3</Rows>
+                    <YGap>0</YGap>
+                    <Columns>3</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>200</XPos>
+                    <YPos>650</YPos>
+                    <Rows>2</Rows>
+                    <YGap>0</YGap>
+                    <Columns>3</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>433</XPos>
+                    <YPos>900</YPos>
+                    <Rows>1</Rows>
+                    <YGap>0</YGap>
+                    <Columns>3</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>200</XPos>
+                    <YPos>1100</YPos>
+                    <Rows>3</Rows>
+                    <YGap>0</YGap>
+                    <Columns>2</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>300</XPos>
+                    <YPos>1142</YPos>
+                    <Rows>2</Rows>
+                    <YGap>0</YGap>
+                    <Columns>2</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>675</XPos>
+                    <YPos>1100</YPos>
+                    <Rows>3</Rows>
+                    <YGap>0</YGap>
+                    <Columns>2</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>625</XPos>
+                    <YPos>1142</YPos>
+                    <Rows>2</Rows>
+                    <YGap>0</YGap>
+                    <Columns>1</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>300</XPos>
+                    <YPos>1350</YPos>
+                    <Rows>1</Rows>
+                    <YGap>0</YGap>
+                    <Columns>4</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>200</XPos>
+                    <YPos>1800</YPos>
+                    <Rows>3</Rows>
+                    <YGap>0</YGap>
+                    <Columns>2</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>680</XPos>
+                    <YPos>1800</YPos>
+                    <Rows>3</Rows>
+                    <YGap>0</YGap>
+                    <Columns>2</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>200</XPos>
+                    <YPos>1926</YPos>
+                    <Rows>11</Rows>
+                    <YGap>0</YGap>
+                    <Columns>3</Columns>
+                    <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>PlatformTile</Name>
+                    <XPos>625</XPos>
+                    <YPos>1926</YPos>
+                    <Rows>11</Rows>
+                    <YGap>0</YGap>
+                    <Columns>3</Columns>
                     <XGap>0</XGap>
                 </ImageEntityInstance>
                 <!--cave walls-->
                 <ImageEntityInstance>
                     <Name>CaveTileLeft</Name>
-                    <XPos>100</XPos>
-                    <YPos>100</YPos>
-                    <Rows>20</Rows>
+                    <XPos>150</XPos>
+                    <YPos>0</YPos>
+                    <Rows>40</Rows>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>CaveTileRight</Name>
-                    <XPos>840</XPos>
-                    <YPos>100</YPos>
-                    <Rows>20</Rows>
+                    <XPos>790</XPos>
+                    <YPos>0</YPos>
+                    <Rows>40</Rows>
                 </ImageEntityInstance>
             </ImageEntityInstances>
         </Level>
