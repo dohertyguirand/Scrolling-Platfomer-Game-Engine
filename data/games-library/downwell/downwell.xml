@@ -9,14 +9,17 @@
             <Width>45</Width>
             <Height>45</Height>
             <Image>dw_main_character_idle_fall_right.png</Image>
-            <VariableNames>IdleFallSprite JumpingSprite WalkingSprite FiringSprite StandingSprite Facing Falling Jumping SidewaysMovement Firing PreviousY YVel</VariableNames>
-            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_jumping_right.png downwell/dw_main_character_walking_right.gif downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.gif Right True False False False 100 0</VariableValues>
+            <VariableNames>IdleFallSprite JumpingSprite WalkingSprite FiringSprite StandingSprite Facing Falling Jumping SidewaysMovement Firing PreviousY YVel PreviousX XVel</VariableNames>
+            <VariableValues>downwell/dw_main_character_idle_fall_right.png downwell/dw_main_character_jumping_right.png downwell/dw_main_character_walking_right.gif downwell/dw_main_character_firing_right.png downwell/dw_main_character_standing_right.gif Right True False False False 100 0 500 0</VariableValues>
             <Behaviors>
-                <!-- Update WelltaroXPos, WelltaroYPos, YVel and PreviousY -->
+                <!-- Update WelltaroXPos, WelltaroYPos, XVel, YVel, PreviousX and PreviousY -->
                 <Behavior>
                     <IndependentAction>
+                        <Effect>SetVariable XVel XPos</Effect>
+                        <Effect>ChangeVariable XVel - PreviousX</Effect>
                         <Effect>SetVariable YVel YPos</Effect>
                         <Effect>ChangeVariable YVel - PreviousY</Effect>
+                        <Effect>SetVariable PreviousX XPos</Effect>
                         <Effect>SetVariable PreviousY YPos</Effect>
                         <Effect>SetVariable WelltaroXPos XPos</Effect>
                         <Effect>SetVariable WelltaroYPos YPos</Effect>
@@ -139,7 +142,6 @@
                     </EntityVariableCondition>
                     <IndependentAction>
                         <Effect>Jump 0 -0.9 + 10.0</Effect>
-                        <Effect>SetImage IdleFallSprite</Effect>
                     </IndependentAction>
                 </Behavior>
                 <!-- Gravity Behavior-->
@@ -214,7 +216,7 @@
                         <Effect>SetImage JumpingSprite</Effect>
                     </IndependentAction>
                 </Behavior>
-                <!-- moving sideways and not falling or jumping means using walking sprites-->
+                <!--  moving sideways and not falling or jumping means using walking sprites-->
                 <Behavior>
                     <EntityVariableCondition>
                         <VariableName>SidewaysMovement</VariableName>
@@ -286,6 +288,17 @@
                         <Args>universalTerrain Right</Args>
                         <Effect>TerrainCollisionRight</Effect>
                     </CollisionDeterminedAction>
+                </Behavior>
+                <!--  Run into a monster downward to bounce off of it-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
+                        <Entity2>monster</Entity2>
+                        <Direction>Down</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>SetVelocity XVel -1.1</Effect>
+                    </IndependentAction>
                 </Behavior>
                 <!-- Run into left side of screen and die-->
                 <Behavior>
@@ -389,10 +402,21 @@
                     <Entity2>universalTerrain</Entity2>
                     <Direction>ANY</Direction>
                 </RequiredCollisionCondition>
-                <CollisionDeterminedAction>
-                    <Args>universalTerrain Down</Args>
+                <IndependentAction>
+                    <Effect>CreateEntityRelative BootMuzzleFlash -3 25</Effect>
                     <Effect>RemoveSelf</Effect>
-                </CollisionDeterminedAction>
+                </IndependentAction>
+            </Behavior>
+            <!-- get destroyed on contact with any monster -->
+            <Behavior>
+                <RequiredCollisionCondition>
+                    <Entity1>SELF</Entity1>
+                    <Entity2>monster</Entity2>
+                    <Direction>ANY</Direction>
+                </RequiredCollisionCondition>
+                <IndependentAction>
+                    <Effect>RemoveSelf</Effect>
+                </IndependentAction>
             </Behavior>
         </ImageEntity>
         <!-- Red Trail -->
@@ -423,6 +447,144 @@
                     <Effect>SetPosition WelltaroXPos WelltaroYPos</Effect>
                 </IndependentAction>
             </Behavior>
+        </ImageEntity>
+        <!-- Jelly Monster -->
+        <ImageEntity>
+            <Name>JellyMonster</Name>
+            <Width>60</Width>
+            <Height>45</Height>
+            <Image>dw_jelly_monster.gif</Image>
+            <VariableNames>MyHealth TerrainID XDiff YDiff XDiffPositive YDiffPositive</VariableNames>
+            <VariableValues>100 monster 0 0 0 0</VariableValues>
+            <Behaviors>
+                <!-- if below Welltaro, move up -->
+                <Behavior>
+                    <IndependentAction>SetVariable XDiff WelltaroXPos</IndependentAction>
+                    <IndependentAction>ChangeVariable XDiff - XPos</IndependentAction>
+                    <IndependentAction>SetVariable XDiffPositive XDiff</IndependentAction>
+                    <IndependentAction>ChangeVariable XDiffPositive ^ 2</IndependentAction>
+                    <IndependentAction>ChangeVariable XDiffPositive ^ 1/2</IndependentAction>
+                    <IndependentAction>SetVariable Score XDiffPositive</IndependentAction>
+                </Behavior>
+                <!-- if hit by bullet, reduce health -->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
+                        <Entity2>BootBullet</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable MyHealth - 25</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- if hit by Welltaro from above, reduce health to zero -->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity1>SELF</Entity1>
+                        <Entity2>Welltaro</Entity2>
+                        <Direction>Up</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>SetVariable MyHealth 0</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- if health is zero, die-->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>MyHealth</VariableName>
+                        <Comparison>LessThanEquals</Comparison>
+                        <RequiredValue>0</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>CreateEntityRelative MonsterExplosionEffect -45 -50</Effect>
+                        <Effect>RemoveSelf</Effect>
+                    </IndependentAction>
+                </Behavior>
+            </Behaviors>
+        </ImageEntity>
+        <!-- Monster Explosion effect -->
+        <ImageEntity>
+            <Name>MonsterExplosionEffect</Name>
+            <Height>174</Height>
+            <Width>174</Width>
+            <Image>dw_monster_explosion_1.png</Image>
+            <VariableNames>FrameNumber</VariableNames>
+            <VariableValues>1</VariableValues>
+            <Behaviors>
+                <!-- increase frame number every frame -->
+                <Behavior>
+                    <IndependentAction>
+                        <Effect>ChangeVariable FrameNumber + 1</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- frame 1 -->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>FrameNumber</VariableName>
+                        <Comparison>Equals</Comparison>
+                        <RequiredValue>1</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetImage downwell/dw_monster_explosion_1.png</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- frame 2 -->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>FrameNumber</VariableName>
+                        <Comparison>Equals</Comparison>
+                        <RequiredValue>3</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable FrameNumber + 1</Effect>
+                        <Effect>SetImage downwell/dw_monster_explosion_2.png</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- frame 3 -->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>FrameNumber</VariableName>
+                        <Comparison>Equals</Comparison>
+                        <RequiredValue>5</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetImage downwell/dw_monster_explosion_3.png</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- frame 4 -->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>FrameNumber</VariableName>
+                        <Comparison>Equals</Comparison>
+                        <RequiredValue>7</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetImage downwell/dw_monster_explosion_4.png</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- frame 5 -->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>FrameNumber</VariableName>
+                        <Comparison>Equals</Comparison>
+                        <RequiredValue>9</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>SetImage downwell/dw_monster_explosion_5.png</Effect>
+                    </IndependentAction>
+                </Behavior>
+                <!-- after frame 5, remove self -->
+                <Behavior>
+                    <EntityVariableCondition>
+                        <VariableName>FrameNumber</VariableName>
+                        <Comparison>Equals</Comparison>
+                        <RequiredValue>11</RequiredValue>
+                    </EntityVariableCondition>
+                    <IndependentAction>
+                        <Effect>RemoveSelf</Effect>
+                    </IndependentAction>
+                </Behavior>
+            </Behaviors>
         </ImageEntity>
         <!-- Background -->
         <ImageEntity>
@@ -471,12 +633,12 @@
             <Name>Lives</Name>
             <StartValue>1</StartValue>
         </Variable>
-        <!-- Welltaro x poition  -->
+        <!-- Welltaro x position  -->
         <Variable>
             <Name>WelltaroXPos</Name>
             <StartValue>500</StartValue>
         </Variable>
-        <!-- Welltaro y poition  -->
+        <!-- Welltaro y position  -->
         <Variable>
             <Name>WelltaroYPos</Name>
             <StartValue>100</StartValue>
@@ -565,8 +727,12 @@
                     <Name>Welltaro</Name>
                     <XPos>500</XPos>
                     <YPos>100</YPos>
-                    <VariableNames>RespawnXLocation RespawnYLocation</VariableNames>
-                    <VariableValues>0 0</VariableValues>
+                </ImageEntityInstance>
+                <!--jelly monster-->
+                <ImageEntityInstance>
+                    <Name>JellyMonster</Name>
+                    <XPos>600</XPos>
+                    <YPos>300</YPos>
                 </ImageEntityInstance>
                 <!--blocks-->
                 <ImageEntityInstance>
