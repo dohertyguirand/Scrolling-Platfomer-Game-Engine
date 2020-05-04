@@ -335,6 +335,16 @@
                         <Effect>ChangeVariable Lives + -1.0</Effect>
                     </IndependentAction>
                 </Behavior>
+                <!-- Run into finish line and restart the level-->
+                <Behavior>
+                    <RequiredCollisionCondition>
+                        <Entity2>FinishLine</Entity2>
+                        <Direction>ANY</Direction>
+                    </RequiredCollisionCondition>
+                    <IndependentAction>
+                        <Effect>ChangeVariable Lives - 1</Effect>
+                    </IndependentAction>
+                </Behavior>
                 <!-- Fall below the lower camera border to lower the camera (Based on Cary's sonic.xml)-->
                 <Behavior>
                     <!-- If Welltaro is below the lower y border-->
@@ -581,6 +591,13 @@
                 </Behavior>
             </Behaviors>
         </ImageEntity>
+        <!-- Finish Line -->
+        <ImageEntity>
+            <Name>FinishLine</Name>
+            <Height>3</Height>
+            <Width>450</Width>
+            <Image>dw_finish_line.png</Image>
+        </ImageEntity>
         <!-- Monster Explosion effect -->
         <ImageEntity>
             <Name>MonsterExplosionEffect</Name>
@@ -809,8 +826,33 @@
                 <!--jelly monster-->
                 <ImageEntityInstance>
                     <Name>JellyMonster</Name>
-                    <XPos>600</XPos>
+                    <XPos>700</XPos>
                     <YPos>300</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>JellyMonster</Name>
+                    <XPos>300</XPos>
+                    <YPos>400</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>JellyMonster</Name>
+                    <XPos>333</XPos>
+                    <YPos>1000</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>JellyMonster</Name>
+                    <XPos>600</XPos>
+                    <YPos>1000</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>JellyMonster</Name>
+                    <XPos>333</XPos>
+                    <YPos>1700</YPos>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>JellyMonster</Name>
+                    <XPos>600</XPos>
+                    <YPos>1700</YPos>
                 </ImageEntityInstance>
                 <!--blocks-->
                 <ImageEntityInstance>
@@ -910,12 +952,11 @@
                     <Columns>2</Columns>
                     <XGap>0</XGap>
                 </ImageEntityInstance>
-
                 <ImageEntityInstance>
                     <Name>PlatformTile</Name>
                     <XPos>200</XPos>
                     <YPos>1926</YPos>
-                    <Rows>11</Rows>
+                    <Rows>6</Rows>
                     <YGap>0</YGap>
                     <Columns>3</Columns>
                     <XGap>0</XGap>
@@ -924,23 +965,28 @@
                     <Name>PlatformTile</Name>
                     <XPos>625</XPos>
                     <YPos>1926</YPos>
-                    <Rows>11</Rows>
+                    <Rows>6</Rows>
                     <YGap>0</YGap>
                     <Columns>3</Columns>
                     <XGap>0</XGap>
+                </ImageEntityInstance>
+                <ImageEntityInstance>
+                    <Name>FinishLine</Name>
+                    <XPos>275</XPos>
+                    <YPos>2178</YPos>
                 </ImageEntityInstance>
                 <!--cave walls-->
                 <ImageEntityInstance>
                     <Name>CaveTileLeft</Name>
                     <XPos>150</XPos>
                     <YPos>0</YPos>
-                    <Rows>40</Rows>
+                    <Rows>42</Rows>
                 </ImageEntityInstance>
                 <ImageEntityInstance>
                     <Name>CaveTileRight</Name>
                     <XPos>790</XPos>
                     <YPos>0</YPos>
-                    <Rows>40</Rows>
+                    <Rows>42</Rows>
                 </ImageEntityInstance>
             </ImageEntityInstances>
         </Level>
